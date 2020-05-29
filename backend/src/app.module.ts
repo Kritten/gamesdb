@@ -11,18 +11,27 @@ import { UniverseModule } from './modules/universe/universe.module';
 import { UserModule } from './modules/user/user.module';
 import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { MechanismModule } from './modules/mechanism/mechanism.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mariadb',
-      host: 'localhost',
-      port: 32770,
-      username: 'root',
-      password: 'test',
-      database: 'database',
-      autoLoadEntities: true,
-      synchronize: true,
+    ConfigModule.forRoot({ envFilePath: '../.env' }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mariadb',
+        host: configService.get<string>('MYSQL_HOST', 'localhost'),
+        port: configService.get<number>('MYSQL_PORT', 32770),
+        username: configService.get<string>('MYSQL_USER', 'root'),
+        password: configService.get<string>(
+          'MYSQL_PASSWORD',
+          configService.get<string>('MYSQL_ROOT_PASSWORD'),
+        ),
+        database: configService.get<string>('MYSQL_DATABASE'),
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
     GameModule,
     CategoryModule,
