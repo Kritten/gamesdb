@@ -12,6 +12,7 @@ import { UserModule } from './modules/user/user.module';
 import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { MechanismModule } from './modules/mechanism/mechanism.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
 
 @Module({
   imports: [
@@ -32,6 +33,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         synchronize: true,
       }),
       inject: [ConfigService],
+    }),
+    GraphQLModule.forRoot({
+      debug: true,
+      playground: true,
+      autoSchemaFile: true,
+      // debug: process.env.NODE_ENV === 'development',
+      // playground: process.env.NODE_ENV === 'development',
     }),
     GameModule,
     CategoryModule,

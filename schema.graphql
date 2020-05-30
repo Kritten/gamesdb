@@ -1,0 +1,75 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+}
+
+type CategoryType {
+    games: [GameType!]!
+    id: Int!
+    name: String!
+}
+
+type GameType {
+    categories: [CategoryType!]!
+    complexity: Int!
+    countPlayersMax: Int!
+    countPlayersMin: Int!
+    description: String!
+    expansions: [GameType!]!
+    id: Int!
+    isCoop: Boolean!
+    isExpansionOf: [GameType!]!
+    mechanisms: [MechanismType!]!
+    minutesPlaytimeMax: Int!
+    minutesPlaytimeMin: Int!
+    moods: [MoodType!]!
+    name: String!
+    playableWith: [GameType!]!
+    sessions: [SessionType!]!
+    size: Int!
+    universe: UniverseType!
+}
+
+type MechanismType {
+    games: [GameType!]!
+    id: Int!
+    name: String!
+}
+
+type MoodType {
+    games: [GameType!]!
+    id: Int!
+    name: String!
+}
+
+type PlayerType {
+    id: Int!
+    name: String!
+    sessionsPlayed: [SessionType!]!
+    sessionsWon: [SessionType!]!
+}
+
+type Query {
+    game: [GameType!]!
+}
+
+type SessionType {
+    date: DateTime!
+    duration: Int!
+    game: GameType!
+    id: Int!
+    players: [PlayerType!]!
+    rating: Int!
+    winners: [PlayerType!]!
+}
+
+type UniverseType {
+    games: [GameType!]!
+    id: Int!
+    name: String!
+}
+
+
+"A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
+scalar DateTime
