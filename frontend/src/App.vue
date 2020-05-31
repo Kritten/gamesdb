@@ -1,32 +1,35 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  {{ store.state.isInitialized }}
+  <router-view v-if="store.state.isInitialized" />
+  <div v-else>
+    Loading
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { ServiceApp } from '@/modules/app/app.service';
+import { useStore } from 'vuex';
+import { toRefs, ref, computed } from 'vue';
 
-#nav {
-  padding: 30px;
+export default {
+  setup() {
+    ServiceApp.initialize();
+    const store = useStore();
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+    // const isInitialized = computed(() => store.state.isInitialized);
+    // const isInitialized = ref(store.state.isInitialized);
+    // const isInitialized = store.state.isInitialized;
+    // console.warn(isInitialized, 'isInitialized');
+    // console.log(store.state.isInitialized, 'store');
+    //
+    // setTimeout(() => {
+    //   store.dispatch('setIsInitalized', true);
+    // }, 2000);
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+    return {
+      // isInitialized,
+      store,
+    };
+  },
+};
+</script>
