@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "proxy": "node proxy.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/Kritten/gamesdb#readme",
   "dependencies": {
-    "@nestjs/cli": "^7.2.0"
+    "@nestjs/cli": "^7.2.0",
+    "http-proxy": "^1.18.1",
+    "http-proxy-rules": "^1.1.3"
   }
 }
