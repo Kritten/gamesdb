@@ -1,5 +1,4 @@
 <template>
-  {{ store.state.isInitialized }}
   <router-view v-if="store.state.isInitialized" />
   <div v-else>
     Loading

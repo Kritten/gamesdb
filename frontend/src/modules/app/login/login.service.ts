@@ -1,5 +1,7 @@
 import { reactive, toRefs } from "vue";
-import { ServiceApp } from "@/modules/app/app.service";
+import { User } from "@/modules/user/user.model";
+import { store } from "@/modules/app/app.store";
+import { router } from "@/modules/app/app.router";
 
 export class ServiceLogin {
   static useLogin() {
@@ -9,16 +11,28 @@ export class ServiceLogin {
     });
 
     const login = async function() {
-      // ServiceApp.login(data);
-      console.warn(data.username, data.password);
-      const formData = new FormData();
+      const payload = {
+        username: data.username,
+        password: data.password
+      };
 
-      formData.append("username", data.username);
-      formData.append("password", data.password);
       const response = await fetch(`${process.env.VUE_APP_API_ENDPOINT}/login`, {
         method: "POST",
-        body: formData
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
       });
+
+      if (response.ok) {
+        const user = new User(await response.json());
+        console.warn(user, response, "response");
+        await store.dispatch("setUser", user);
+
+        await router.push({
+          name: "dashboard"
+        });
+      }
     };
 
     return {

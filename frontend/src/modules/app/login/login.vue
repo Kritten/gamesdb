@@ -1,5 +1,4 @@
 <template>
-  {{login}}
   <form @submit.prevent="login.login">
     <div>
       <label for="name">{{ t('login.name') }}</label>
@@ -26,6 +25,7 @@
 <script>
 import { useI18n } from 'vue-i18n';
 import { ServiceLogin } from '@/modules/app/login/login.service';
+import { useStore } from "vuex";
 
 export default {
   name: 'Login',
@@ -36,6 +36,7 @@ export default {
     return {
       login,
       t,
+      store: useStore(),
     };
   },
 };

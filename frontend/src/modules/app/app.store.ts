@@ -1,18 +1,19 @@
 import Vuex from "vuex";
+import { User } from "@/modules/user/user.model";
 
 export const store = Vuex.createStore({
   modules: {},
   state: {
     isInitialized: true,
-    isAuthenticated: false,
+    user: null,
     messagesSnackbar: []
   },
   mutations: {
     setIsInitalized(state, value: boolean) {
       state.isInitialized = value;
     },
-    setIsAuthenticated(state, value: boolean) {
-      state.isAuthenticated = value;
+    setUser(state, value: User) {
+      state.user = value;
     },
     addSnackbar(state, data) {
       Vue.set(state.messagesSnackbar, state.messagesSnackbar.length, data);
@@ -22,8 +23,8 @@ export const store = Vuex.createStore({
     setIsInitalized({ commit }, value: boolean) {
       commit("setIsInitalized", value);
     },
-    setIsAuthenticated({ commit }, value: boolean) {
-      commit("setIsAuthenticated", value);
+    setUser({ commit }, value: User) {
+      commit("setUser", value);
     },
     addSnackbar({ commit }, data) {
       commit("addSnackbar", data);
