@@ -11,4 +11,10 @@ export class User {
     unique: true,
   })
   name: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+  })
+  password: string;
 }

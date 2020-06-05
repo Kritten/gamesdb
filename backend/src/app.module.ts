@@ -13,6 +13,7 @@ import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { MechanismModule } from './modules/mechanism/mechanism.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { GraphQLModule } from '@nestjs/graphql';
       debug: true,
       playground: true,
       autoSchemaFile: true,
+      context: ({ req }) => ({ req }),
       // debug: process.env.NODE_ENV === 'development',
       // playground: process.env.NODE_ENV === 'development',
     }),
@@ -50,6 +52,7 @@ import { GraphQLModule } from '@nestjs/graphql';
     UserModule,
     WishlistModule,
     MechanismModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
