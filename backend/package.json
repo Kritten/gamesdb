@@ -29,6 +29,8 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/typeorm": "^7.1.0",
     "apollo-server-express": "^2.14.1",
+    "express-mysql-session": "^2.1.4",
+    "express-session": "^1.17.1",
     "graphql": "^15.0.0",
     "graphql-tools": "^6.0.4",
     "mariadb": "^2.4.0",
