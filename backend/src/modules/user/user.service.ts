@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import {forwardRef, Inject, Injectable} from '@nestjs/common';
 import { User } from './user.entity';
-import { getManager, Repository } from 'typeorm';
+import { getManager } from 'typeorm';
+import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class UserService {
-  constructor() {}
+  constructor(@Inject(forwardRef(() => AuthService)) private authService: AuthService) {}
 
   async findbyName(name: string): Promise<User> {
     const users = await getManager().find(User, {
@@ -20,6 +20,12 @@ export class UserService {
   }
 
   async createUser(data: User | User[]) {
-    return await getManager().insert(User, data);
+    const users = data instanceof User ? [data] : data;
+
+    for (let i = 0; i < users.length; i++) {
+      users[i].password = this.authService.createPasswordHash(users[i].password, users[i].name);
+    }
+
+    return await getManager().insert(User, users);
   }
 }
