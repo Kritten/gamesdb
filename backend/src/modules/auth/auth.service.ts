@@ -8,10 +8,10 @@ export class AuthService {
   constructor(@Inject(forwardRef(() => UserService)) private userService: UserService) {}
 
   async validateUser(username: string, password: string): Promise<User> {
-    const user = await this.userService.findbyName(username);
+    const user = await this.userService.findOneByName(username);
 
     // if (user === null) {
-    //   await this.userService.createUser(
+    //   await this.userService.create(
     //     getManager().create(User, {
     //       name: 'test1',
     //       password: 'testt',

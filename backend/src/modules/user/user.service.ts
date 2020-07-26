@@ -7,7 +7,7 @@ import {AuthService} from "../auth/auth.service";
 export class UserService {
   constructor(@Inject(forwardRef(() => AuthService)) private authService: AuthService) {}
 
-  async findbyName(name: string): Promise<User> {
+  async findOneByName(name: string): Promise<User> {
     const users = await getManager().find(User, {
       where: {
         name,
@@ -19,7 +19,7 @@ export class UserService {
     return null;
   }
 
-  async createUser(data: User | User[]) {
+  async create(data: User | User[]) {
     const users = data instanceof User ? [data] : data;
 
     for (let i = 0; i < users.length; i++) {
