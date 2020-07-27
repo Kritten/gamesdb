@@ -1,14 +1,14 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { GameType } from '../game/game.type';
+import { GameModel } from '../game/game.model';
 
 @ObjectType()
-export class CategoryType {
+export class CategoryModel {
   @Field(() => Int)
   id: number;
 
   @Field()
   name: string;
 
-  @Field(() => [GameType])
-  games: GameType[];
+  @Field(() => [GameModel])
+  games: GameModel[];
 }

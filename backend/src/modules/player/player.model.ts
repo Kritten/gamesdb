@@ -6,21 +6,21 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Session } from '../session/session.entity';
-import { SessionType } from '../session/session.type';
+import { SessionModel } from '../session/session.model';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { GameType } from '../game/game.type';
+import { GameModel } from '../game/game.model';
 
 @ObjectType()
-export class PlayerType {
+export class PlayerModel {
   @Field(() => Int)
   id: number;
 
   @Field()
   name: string;
 
-  @Field(() => [SessionType])
-  sessionsPlayed: SessionType[];
+  @Field(() => [SessionModel])
+  sessionsPlayed: SessionModel[];
 
-  @Field(() => [SessionType])
-  sessionsWon: SessionType[];
+  @Field(() => [SessionModel])
+  sessionsWon: SessionModel[];
 }

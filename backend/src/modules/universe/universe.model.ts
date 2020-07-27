@@ -2,21 +2,22 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToMany,
   JoinTable,
+  ManyToOne,
 } from 'typeorm';
 import { Game } from '../game/game.entity';
-import { GameType } from '../game/game.type';
+import { GameModel } from '../game/game.model';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { PlayerModel } from '../player/player.model';
 
 @ObjectType()
-export class MechanismType {
+export class UniverseModel {
   @Field(() => Int)
   id: number;
 
   @Field()
   name: string;
 
-  @Field(() => [GameType])
-  games: GameType[];
+  @Field(() => [GameModel])
+  games: GameModel[];
 }

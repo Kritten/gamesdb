@@ -5,72 +5,72 @@ schema {
     mutation: Mutation
 }
 
-type CategoryType {
-    games: [GameType!]!
+type CategoryModel {
+    games: [GameModel!]!
     id: Int!
     name: String!
 }
 
-type GameType {
-    categories: [CategoryType!]!
+type GameModel {
+    categories: [CategoryModel!]!
     complexity: Int!
     countPlayersMax: Int!
     countPlayersMin: Int!
     description: String!
-    expansions: [GameType!]!
+    expansions: [GameModel!]!
     id: Int!
     isCoop: Boolean!
-    isExpansionOf: [GameType!]!
-    mechanisms: [MechanismType!]!
+    isExpansionOf: [GameModel!]!
+    mechanisms: [MechanismModel!]!
     minutesPlaytimeMax: Int!
     minutesPlaytimeMin: Int!
-    moods: [MoodType!]!
+    moods: [MoodModel!]!
     name: String!
-    playableWith: [GameType!]!
-    sessions: [SessionType!]!
+    playableWith: [GameModel!]!
+    sessions: [SessionModel!]!
     size: Int!
-    universe: UniverseType!
+    universe: UniverseModel!
 }
 
-type MechanismType {
-    games: [GameType!]!
+type MechanismModel {
+    games: [GameModel!]!
     id: Int!
     name: String!
 }
 
-type MoodType {
-    games: [GameType!]!
+type MoodModel {
+    games: [GameModel!]!
     id: Int!
     name: String!
 }
 
 type Mutation {
-    createGame(gameData: GameInput!): GameType!
+    createGame(gameData: GameInput!): GameModel!
 }
 
-type PlayerType {
+type PlayerModel {
     id: Int!
     name: String!
-    sessionsPlayed: [SessionType!]!
-    sessionsWon: [SessionType!]!
+    sessionsPlayed: [SessionModel!]!
+    sessionsWon: [SessionModel!]!
 }
 
 type Query {
-    games: [GameType!]!
+    games: [GameModel!]!
 }
 
-type SessionType {
+type SessionModel {
     date: DateTime!
     duration: Int!
-    game: GameType!
+    game: GameModel!
     id: Int!
-    players: [PlayerType!]!
+    players: [PlayerModel!]!
     rating: Int!
-    winners: [PlayerType!]!
+    winners: [PlayerModel!]!
 }
 
-type UniverseType {
-    games: [GameType!]!
+type UniverseModel {
+    games: [GameModel!]!
     id: Int!
     name: String!
 }
