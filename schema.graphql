@@ -2,6 +2,7 @@
 
 schema {
     query: Query
+    mutation: Mutation
 }
 
 type CategoryType {
@@ -43,6 +44,10 @@ type MoodType {
     name: String!
 }
 
+type Mutation {
+    createGame(gameData: GameInput!): GameType!
+}
+
 type PlayerType {
     id: Int!
     name: String!
@@ -51,7 +56,7 @@ type PlayerType {
 }
 
 type Query {
-    game: [GameType!]!
+    games: [GameType!]!
 }
 
 type SessionType {
@@ -68,6 +73,26 @@ type UniverseType {
     games: [GameType!]!
     id: Int!
     name: String!
+}
+
+input GameInput {
+    categories: [Int!]
+    complexity: Int
+    countPlayersMax: Int
+    countPlayersMin: Int
+    description: String
+    expansions: [Int!]
+    id: Int
+    isCoop: Boolean
+    isExpansionOf: [Int!]
+    mechanisms: [Int!]
+    minutesPlaytimeMax: Int
+    minutesPlaytimeMin: Int
+    moods: [Int!]
+    name: String!
+    playableWith: [Int!]
+    size: Int
+    universe: Int
 }
 
 

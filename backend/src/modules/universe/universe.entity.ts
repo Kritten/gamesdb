@@ -3,7 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   JoinTable,
-  ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 import { Game } from '../game/game.entity';
 
@@ -19,7 +19,7 @@ export class Universe {
   })
   name: string;
 
-  @ManyToOne(
+  @ManyToMany(
     () => Game,
     game => game.universe,
   )

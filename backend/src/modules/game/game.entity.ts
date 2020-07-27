@@ -27,50 +27,58 @@ export class Game {
 
   @Column({
     type: 'text',
+    nullable: true,
   })
   description: string;
 
   @Column({
     type: 'tinyint',
+    nullable: true,
   })
   countPlayersMin: number;
 
   @Column({
     type: 'tinyint',
+    nullable: true,
   })
   countPlayersMax: number;
 
   @Column({
     type: 'tinyint',
+    nullable: true,
   })
   minutesPlaytimeMin: number;
 
   @Column({
     type: 'tinyint',
+    nullable: true,
   })
   minutesPlaytimeMax: number;
 
   @Column({
     type: 'boolean',
+    nullable: true,
   })
   isCoop: boolean;
 
   @Column({
     type: 'tinyint',
+    nullable: true,
   })
   complexity: number;
 
   @Column({
     type: 'tinyint',
+    nullable: true,
   })
   size: number;
 
-  @OneToMany(
+  @ManyToMany(
     () => Universe,
     universe => universe.games,
   )
   @JoinTable()
-  universe: Universe;
+  universe: Universe[];
 
   @ManyToMany(
     () => Category,

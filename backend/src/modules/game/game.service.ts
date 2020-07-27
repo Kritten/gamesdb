@@ -13,6 +13,8 @@ export class GameService {
   async create(data: Game | Game[]) {
     const games = data instanceof Game ? [data] : data;
 
-    return await getManager().insert(Game, games);
+    const result = await getManager().save(Game, games);
+
+    return result instanceof Game ? result : result[0];
   }
 }
