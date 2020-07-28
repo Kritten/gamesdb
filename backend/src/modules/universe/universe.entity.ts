@@ -6,10 +6,13 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { Game } from '../game/game.entity';
+import {Field, Int, ObjectType} from "@nestjs/graphql";
 
 @Entity()
+@ObjectType()
 export class Universe {
   @PrimaryGeneratedColumn()
+  @Field(() => Int)
   id: number;
 
   @Column({
@@ -24,5 +27,6 @@ export class Universe {
     game => game.universe,
   )
   @JoinTable()
+  @Field(() => [Game],{defaultValue: []})
   games: Game[];
 }

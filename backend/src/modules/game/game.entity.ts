@@ -12,10 +12,13 @@ import { Mechanism } from '../mechanism/mechanism.entity';
 import { Mood } from '../mood/mood.entity';
 import { Universe } from '../universe/universe.entity';
 import { Session } from '../session/session.entity';
+import {Field, Int, ObjectType} from "@nestjs/graphql";
 
 @Entity()
+@ObjectType()
 export class Game {
   @PrimaryGeneratedColumn()
+  @Field(() => Int)
   id: number;
 
   @Column({
@@ -29,55 +32,62 @@ export class Game {
     type: 'text',
     nullable: true,
   })
-  description: string;
+  description?: string;
 
   @Column({
     type: 'tinyint',
     nullable: true,
   })
-  countPlayersMin: number;
+  @Field(() => Int)
+  countPlayersMin?: number;
 
   @Column({
     type: 'tinyint',
     nullable: true,
   })
-  countPlayersMax: number;
+  @Field(() => Int)
+  countPlayersMax?: number;
 
   @Column({
     type: 'tinyint',
     nullable: true,
   })
-  minutesPlaytimeMin: number;
+  @Field(() => Int)
+  minutesPlaytimeMin?: number;
 
   @Column({
     type: 'tinyint',
     nullable: true,
   })
-  minutesPlaytimeMax: number;
+  @Field(() => Int)
+  minutesPlaytimeMax?: number;
 
   @Column({
     type: 'boolean',
     nullable: true,
   })
-  isCoop: boolean;
+  isCoop?: boolean;
 
   @Column({
     type: 'tinyint',
     nullable: true,
   })
-  complexity: number;
+  @Field(() => Int)
+  complexity?: number;
 
   @Column({
     type: 'tinyint',
     nullable: true,
   })
-  size: number;
+  @Field(() => Int)
+  size?: number;
 
   @ManyToMany(
     () => Universe,
     universe => universe.games,
   )
   @JoinTable()
+  @Field(() => [Universe],{defaultValue: []})
   universe: Universe[];
 
   @ManyToMany(
@@ -85,6 +95,7 @@ export class Game {
     category => category.games,
   )
   @JoinTable()
+  @Field(() => [Category],{defaultValue: []})
   categories: Category[];
 
   @ManyToMany(
@@ -92,6 +103,7 @@ export class Game {
     mechanism => mechanism.games,
   )
   @JoinTable()
+  @Field(() => [Mechanism],{defaultValue: []})
   mechanisms: Mechanism[];
 
   @ManyToMany(
@@ -99,10 +111,12 @@ export class Game {
     mood => mood.games,
   )
   @JoinTable()
+  @Field(() => [Mood],{defaultValue: []})
   moods: Mood[];
 
   @ManyToMany(() => Game)
   @JoinTable()
+  @Field(() => [Game],{defaultValue: []})
   playableWith: Game[];
 
   @ManyToOne(
@@ -110,6 +124,7 @@ export class Game {
     game => game.expansions,
   )
   @JoinTable()
+  @Field(() => [Game],{defaultValue: []})
   isExpansionOf: Game;
 
   @OneToMany(
@@ -117,6 +132,7 @@ export class Game {
     game => game.isExpansionOf,
   )
   @JoinTable()
+  @Field(() => [Game],{defaultValue: []})
   expansions: Game[];
 
   @OneToMany(
@@ -124,5 +140,6 @@ export class Game {
     session => session.game,
   )
   @JoinTable()
+  @Field(() => [Session],{defaultValue: []})
   sessions: Session[];
 }

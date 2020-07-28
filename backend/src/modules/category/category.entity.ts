@@ -6,9 +6,12 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Game } from '../game/game.entity';
+import {Field, Int, ObjectType} from "@nestjs/graphql";
 
 @Entity()
+@ObjectType()
 export class Category {
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -24,5 +27,6 @@ export class Category {
     game => game.categories,
   )
   @JoinTable()
+  @Field(() => [Game],{defaultValue: []})
   games: Game[];
 }

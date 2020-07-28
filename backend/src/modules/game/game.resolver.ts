@@ -1,5 +1,4 @@
 import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
-import { GameModel } from './game.model';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { CurrentUser } from '../user/user-current.decorator';
@@ -8,18 +7,18 @@ import {GameService} from "./game.service";
 import {Game} from "./game.entity";
 import {GameInput, UpdateGameInput} from "./game.input";
 
-@Resolver(() => GameModel)
+@Resolver(() => Game)
 export class GameResolver {
   constructor(private gameService: GameService) {
   }
 
-  @Query(() => [GameModel])
+  @Query(() => [Game])
   @UseGuards(GqlAuthGuard)
   async games(@CurrentUser() user: User) {
     return this.gameService.findAll();
   }
 
-  @Mutation(() => GameModel)
+  @Mutation(() => Game)
   @UseGuards(GqlAuthGuard)
   async createGame(@Args('gameData') gameData: GameInput) {
     const game = new Game();
@@ -27,9 +26,9 @@ export class GameResolver {
     return await this.gameService.create(game);
   }
 
-  @Mutation(() => GameModel)
-  @UseGuards(GqlAuthGuard)
-  async updateGame(@Args('gameData') gameData: UpdateGameInput) {
-    return await this.gameService.update(gameData);
-  }
+  // @Mutation(() => Game)
+  // @UseGuards(GqlAuthGuard)
+  // async updateGame(@Args('gameData') gameData: UpdateGameInput) {
+  //   return await this.gameService.update(gameData);
+  // }
 }
