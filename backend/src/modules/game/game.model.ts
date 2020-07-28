@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import {Field, Int, ObjectType} from '@nestjs/graphql';
 import { CategoryModel } from '../category/category.model';
 import { UniverseModel } from '../universe/universe.model';
 import { MechanismModel } from '../mechanism/mechanism.model';
@@ -10,54 +10,48 @@ export class GameModel {
   @Field(() => Int)
   id: number;
 
-  @Field()
   name: string;
 
-  @Field()
-  description: string;
+  description?: string;
 
   @Field(() => Int)
-  countPlayersMin: number;
+  countPlayersMin?: number;
 
   @Field(() => Int)
-  countPlayersMax: number;
+  countPlayersMax?: number;
 
   @Field(() => Int)
-  minutesPlaytimeMin: number;
+  minutesPlaytimeMin?: number;
 
   @Field(() => Int)
-  minutesPlaytimeMax: number;
+  minutesPlaytimeMax?: number;
 
-  @Field()
-  isCoop: boolean;
-
-  @Field(() => Int)
-  complexity: number;
+  isCoop?: boolean;
 
   @Field(() => Int)
-  size: number;
+  complexity?: number;
 
-  @Field(() => UniverseModel)
+  @Field(() => Int)
+  size?: number;
+
   universe: UniverseModel;
 
-  @Field(() => [CategoryModel])
   categories: CategoryModel[];
 
-  @Field(() => [MechanismModel])
   mechanisms: MechanismModel[];
 
-  @Field(() => [MoodModel])
+  @Field(() => [GameModel], {defaultValue: []})
   moods: MoodModel[];
 
-  @Field(() => [GameModel])
+  @Field(() => [GameModel], {defaultValue: []})
   playableWith: GameModel[];
 
-  @Field(() => [GameModel])
+  @Field(() => [GameModel], {defaultValue: []})
   isExpansionOf: GameModel;
 
-  @Field(() => [GameModel])
+  @Field(() => [GameModel], {defaultValue: []})
   expansions: GameModel[];
 
-  @Field(() => [SessionModel])
+  @Field(() => [SessionModel], {defaultValue: []})
   sessions: SessionModel[];
 }

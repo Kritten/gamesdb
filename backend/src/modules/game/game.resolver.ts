@@ -6,7 +6,7 @@ import { CurrentUser } from '../user/user-current.decorator';
 import { User } from '../user/user.entity';
 import {GameService} from "./game.service";
 import {Game} from "./game.entity";
-import {GameInput} from "./game.input";
+import {GameInput, UpdateGameInput} from "./game.input";
 
 @Resolver(() => GameModel)
 export class GameResolver {
@@ -25,5 +25,11 @@ export class GameResolver {
     const game = new Game();
     game.name = gameData.name;
     return await this.gameService.create(game);
+  }
+
+  @Mutation(() => GameModel)
+  @UseGuards(GqlAuthGuard)
+  async updateGame(@Args('gameData') gameData: UpdateGameInput) {
+    return await this.gameService.update(gameData);
   }
 }
