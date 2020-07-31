@@ -30,11 +30,11 @@ export class Session {
   @Field(() => Int)
   duration: number;
 
-  @Column({
-    type: 'tinyint',
-  })
-  @Field(() => Int)
-  rating: number;
+  // @Column({
+  //   type: 'tinyint',
+  // })
+  // @Field(() => Int)
+  // rating: number;
 
   @ManyToMany(
     () => Player,

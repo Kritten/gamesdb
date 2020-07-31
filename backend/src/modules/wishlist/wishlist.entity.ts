@@ -1,8 +1,11 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {Field, Int, ObjectType} from "@nestjs/graphql";
 
 @Entity()
+@ObjectType()
 export class Wishlist {
   @PrimaryGeneratedColumn()
+  @Field(() => Int)
   id: number;
 
   @Column({
@@ -15,6 +18,7 @@ export class Wishlist {
   @Column({
     type: 'tinyint',
   })
+  @Field(() => Int)
   price: number;
 
   @Column({

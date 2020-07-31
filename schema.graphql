@@ -47,10 +47,28 @@ type Mood {
 type Mutation {
     createCategory(categoryData: CategoryInput!): Category!
     createGame(gameData: GameInput!): Game!
+    createMechanism(mechanismData: MechanismInput!): Mechanism!
+    createMood(moodData: MoodInput!): Mood!
+    createPlayer(playerData: PlayerInput!): Player!
+    createSession(sessionData: SessionInput!): Session!
+    createUniverse(universeData: UniverseInput!): Universe!
+    createWishlist(wishlistData: WishlistInput!): Wishlist!
     deleteCategory(id: Int!): Boolean!
     deleteGame(id: Int!): Boolean!
+    deleteMechanism(id: Int!): Boolean!
+    deleteMood(id: Int!): Boolean!
+    deletePlayer(id: Int!): Boolean!
+    deleteSession(id: Int!): Boolean!
+    deleteUniverse(id: Int!): Boolean!
+    deleteWishlist(id: Int!): Boolean!
     updateCategory(categoryData: UpdateCategoryInput!): Category!
     updateGame(gameData: UpdateGameInput!): Game!
+    updateMechanism(mechanismData: UpdateMechanismInput!): Mechanism!
+    updateMood(moodData: UpdateMoodInput!): Mood!
+    updatePlayer(playerData: UpdatePlayerInput!): Player!
+    updateSession(sessionData: UpdateSessionInput!): Session!
+    updateUniverse(universeData: UpdateUniverseInput!): Universe!
+    updateWishlist(wishlistData: UpdateWishlistInput!): Wishlist!
 }
 
 type Player {
@@ -63,6 +81,12 @@ type Player {
 type Query {
     categories: [Category!]!
     games: [Game!]!
+    mechanisms: [Mechanism!]!
+    moods: [Mood!]!
+    players: [Player!]!
+    sessions: [Session!]!
+    universes: [Universe!]!
+    wishlists: [Wishlist!]!
 }
 
 type Session {
@@ -71,7 +95,6 @@ type Session {
     game: [Game!]!
     id: Int!
     players: [Player!]!
-    rating: Int!
     winners: [Player!]!
 }
 
@@ -79,6 +102,13 @@ type Universe {
     games: [Game!]!
     id: Int!
     name: String!
+}
+
+type Wishlist {
+    id: Int!
+    link: String!
+    name: String!
+    price: Int!
 }
 
 input CategoryInput {
@@ -107,6 +137,39 @@ input GameInput {
     universe: Int
 }
 
+input MechanismInput {
+    games: [Int!]
+    id: Int
+    name: String!
+}
+
+input MoodInput {
+    games: [Int!]
+    id: Int
+    name: String!
+}
+
+input PlayerInput {
+    games: [Int!]
+    id: Int
+    name: String!
+}
+
+input SessionInput {
+    date: DateTime!
+    duration: Float!
+    games: [Int!]
+    id: Int
+    players: [Int!]
+    winners: [Int!]
+}
+
+input UniverseInput {
+    games: [Int!]
+    id: Int
+    name: String!
+}
+
 input UpdateCategoryInput {
     games: [Int!]
     id: Int!
@@ -131,6 +194,51 @@ input UpdateGameInput {
     playableWith: [Int!]
     size: Int
     universe: Int
+}
+
+input UpdateMechanismInput {
+    games: [Int!]
+    id: Int!
+    name: String
+}
+
+input UpdateMoodInput {
+    games: [Int!]
+    id: Int!
+    name: String
+}
+
+input UpdatePlayerInput {
+    games: [Int!]
+    id: Int!
+    name: String
+}
+
+input UpdateSessionInput {
+    date: DateTime
+    duration: Float
+    games: [Int!]
+    id: Int!
+    players: [Int!]
+    winners: [Int!]
+}
+
+input UpdateUniverseInput {
+    games: [Int!]
+    id: Int!
+    name: String
+}
+
+input UpdateWishlistInput {
+    games: [Int!]
+    id: Int!
+    name: String
+}
+
+input WishlistInput {
+    games: [Int!]
+    id: Int
+    name: String!
 }
 
 
