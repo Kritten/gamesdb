@@ -16,6 +16,12 @@ export class UniverseResolver {
     return this.universeService.find();
   }
 
+  @Query(() => Universe)
+  @UseGuards(GqlAuthGuard)
+  async universe(@Args({name: 'id', type: () => Int}) id: number) {
+    return this.universeService.findOne(id);
+  }
+
   @Mutation(() => Universe)
   @UseGuards(GqlAuthGuard)
   async createUniverse(@Args('universeData') universeData: UniverseInput) {
@@ -37,7 +43,7 @@ export class UniverseResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteUniverse(@Args({name: 'id', type: () => Int}) idUniverse: number) {
-    return await this.universeService.delete(idUniverse);
+  async deleteUniverse(@Args({name: 'id', type: () => Int}) id: number) {
+    return await this.universeService.delete(id);
   }
 }

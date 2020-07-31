@@ -16,6 +16,12 @@ export class CategoryResolver {
     return this.categoryService.find();
   }
 
+  @Query(() => Category)
+  @UseGuards(GqlAuthGuard)
+  async category(@Args({name: 'id', type: () => Int}) id: number) {
+    return this.categoryService.findOne(id);
+  }
+
   @Mutation(() => Category)
   @UseGuards(GqlAuthGuard)
   async createCategory(@Args('categoryData') categoryData: CategoryInput) {
@@ -37,7 +43,7 @@ export class CategoryResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteCategory(@Args({name: 'id', type: () => Int}) idCategory: number) {
-    return await this.categoryService.delete(idCategory);
+  async deleteCategory(@Args({name: 'id', type: () => Int}) id: number) {
+    return await this.categoryService.delete(id);
   }
 }

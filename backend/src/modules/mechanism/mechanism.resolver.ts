@@ -16,6 +16,12 @@ export class MechanismResolver {
     return this.mechanismService.find();
   }
 
+  @Query(() => Mechanism)
+  @UseGuards(GqlAuthGuard)
+  async mechanism(@Args({name: 'id', type: () => Int}) id: number) {
+    return this.mechanismService.findOne(id);
+  }
+
   @Mutation(() => Mechanism)
   @UseGuards(GqlAuthGuard)
   async createMechanism(@Args('mechanismData') mechanismData: MechanismInput) {
@@ -37,7 +43,7 @@ export class MechanismResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteMechanism(@Args({name: 'id', type: () => Int}) idMechanism: number) {
-    return await this.mechanismService.delete(idMechanism);
+  async deleteMechanism(@Args({name: 'id', type: () => Int}) id: number) {
+    return await this.mechanismService.delete(id);
   }
 }

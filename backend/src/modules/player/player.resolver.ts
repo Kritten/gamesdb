@@ -16,6 +16,12 @@ export class PlayerResolver {
     return this.playerService.find();
   }
 
+  @Query(() => Player)
+  @UseGuards(GqlAuthGuard)
+  async player(@Args({name: 'id', type: () => Int}) id: number) {
+    return this.playerService.findOne(id);
+  }
+
   @Mutation(() => Player)
   @UseGuards(GqlAuthGuard)
   async createPlayer(@Args('playerData') playerData: PlayerInput) {
@@ -37,7 +43,7 @@ export class PlayerResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deletePlayer(@Args({name: 'id', type: () => Int}) idPlayer: number) {
-    return await this.playerService.delete(idPlayer);
+  async deletePlayer(@Args({name: 'id', type: () => Int}) id: number) {
+    return await this.playerService.delete(id);
   }
 }

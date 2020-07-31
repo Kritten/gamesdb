@@ -20,6 +20,12 @@ export class GameResolver {
     return this.gameService.find();
   }
 
+  @Query(() => Game)
+  @UseGuards(GqlAuthGuard)
+  async game(@Args({name: 'id', type: () => Int}) id: number) {
+    return this.gameService.findOne(id);
+  }
+
   @Mutation(() => Game)
   @UseGuards(GqlAuthGuard)
   async createGame(@Args('gameData') gameData: GameInput) {
@@ -64,7 +70,7 @@ export class GameResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteGame(@Args({name: 'id', type: () => Int}) idGame: number) {
-    return await this.gameService.delete(idGame);
+  async deleteGame(@Args({name: 'id', type: () => Int}) id: number) {
+    return await this.gameService.delete(id);
   }
 }

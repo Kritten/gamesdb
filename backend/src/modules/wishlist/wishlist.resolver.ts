@@ -16,6 +16,12 @@ export class WishlistResolver {
     return this.wishlistService.find();
   }
 
+  @Query(() => Wishlist)
+  @UseGuards(GqlAuthGuard)
+  async wishlist(@Args({name: 'id', type: () => Int}) id: number) {
+    return this.wishlistService.findOne(id);
+  }
+
   @Mutation(() => Wishlist)
   @UseGuards(GqlAuthGuard)
   async createWishlist(@Args('wishlistData') wishlistData: WishlistInput) {
@@ -37,7 +43,7 @@ export class WishlistResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteWishlist(@Args({name: 'id', type: () => Int}) idWishlist: number) {
-    return await this.wishlistService.delete(idWishlist);
+  async deleteWishlist(@Args({name: 'id', type: () => Int}) id: number) {
+    return await this.wishlistService.delete(id);
   }
 }

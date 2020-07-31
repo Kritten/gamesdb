@@ -80,12 +80,20 @@ type Player {
 
 type Query {
     categories: [Category!]!
+    category(id: Int!): Category!
+    game(id: Int!): Game!
     games: [Game!]!
+    mechanism(id: Int!): Mechanism!
     mechanisms: [Mechanism!]!
+    mood(id: Int!): Mood!
     moods: [Mood!]!
+    player(id: Int!): Player!
     players: [Player!]!
+    session(id: Int!): Session!
     sessions: [Session!]!
+    universe(id: Int!): Universe!
     universes: [Universe!]!
+    wishlist(id: Int!): Wishlist!
     wishlists: [Wishlist!]!
 }
 

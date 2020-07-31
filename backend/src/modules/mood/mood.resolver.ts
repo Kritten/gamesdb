@@ -16,6 +16,12 @@ export class MoodResolver {
     return this.moodService.find();
   }
 
+  @Query(() => Mood)
+  @UseGuards(GqlAuthGuard)
+  async mood(@Args({name: 'id', type: () => Int}) id: number) {
+    return this.moodService.findOne(id);
+  }
+
   @Mutation(() => Mood)
   @UseGuards(GqlAuthGuard)
   async createMood(@Args('moodData') moodData: MoodInput) {
@@ -37,7 +43,7 @@ export class MoodResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteMood(@Args({name: 'id', type: () => Int}) idMood: number) {
-    return await this.moodService.delete(idMood);
+  async deleteMood(@Args({name: 'id', type: () => Int}) id: number) {
+    return await this.moodService.delete(id);
   }
 }

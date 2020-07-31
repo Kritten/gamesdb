@@ -16,6 +16,12 @@ export class SessionResolver {
     return this.sessionService.find();
   }
 
+  @Query(() => Session)
+  @UseGuards(GqlAuthGuard)
+  async session(@Args({name: 'id', type: () => Int}) id: number) {
+    return this.sessionService.findOne(id);
+  }
+
   @Mutation(() => Session)
   @UseGuards(GqlAuthGuard)
   async createSession(@Args('sessionData') sessionData: SessionInput) {
@@ -39,7 +45,7 @@ export class SessionResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteSession(@Args({name: 'id', type: () => Int}) idSession: number) {
-    return await this.sessionService.delete(idSession);
+  async deleteSession(@Args({name: 'id', type: () => Int}) id: number) {
+    return await this.sessionService.delete(id);
   }
 }
