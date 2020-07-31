@@ -57,7 +57,7 @@ export class GameResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteGame(@Args({name: 'idGame', type: () => Int}) idGame: number) {
+  async deleteGame(@Args({name: 'id', type: () => Int}) idGame: number) {
     return await this.gameService.delete(idGame);
   }
 }

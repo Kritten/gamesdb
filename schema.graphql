@@ -45,8 +45,11 @@ type Mood {
 }
 
 type Mutation {
+    createCategory(categoryData: CategoryInput!): Category!
     createGame(gameData: GameInput!): Game!
-    deleteGame(idGame: Int!): Boolean!
+    deleteCategory(id: Int!): Boolean!
+    deleteGame(id: Int!): Boolean!
+    updateCategory(categoryData: UpdateCategoryInput!): Category!
     updateGame(gameData: UpdateGameInput!): Game!
 }
 
@@ -58,6 +61,7 @@ type Player {
 }
 
 type Query {
+    categories: [Category!]!
     games: [Game!]!
 }
 
@@ -74,6 +78,12 @@ type Session {
 type Universe {
     games: [Game!]!
     id: Int!
+    name: String!
+}
+
+input CategoryInput {
+    games: [Int!]
+    id: Int
     name: String!
 }
 
@@ -95,6 +105,12 @@ input GameInput {
     playableWith: [Int!]
     size: Int
     universe: Int
+}
+
+input UpdateCategoryInput {
+    games: [Int!]
+    id: Int!
+    name: String
 }
 
 input UpdateGameInput {
