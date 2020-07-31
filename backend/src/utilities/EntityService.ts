@@ -7,25 +7,25 @@ interface InterfaceEntity {
 
 @Injectable()
 export class EntityService<T extends InterfaceEntity> {
-    private readonly entityClass: { new(): T };
     protected relations: string[] = [];
 
+    private readonly entityClass: { new(): T };
+    private readonly optionsDefault: {};
+
     constructor(@Optional() cls?: { new(): T }) {
-        console.log(cls, "cls");
         this.entityClass = cls;
+        this.optionsDefault = {
+            relations: this.relations
+        };
     }
 
     async findOne(id: number): Promise<T> {
-        return await getManager().findOne(this.entityClass, id, {
-            relations: this.relations
-        });
+        return await getManager().findOne(this.entityClass, id, this.optionsDefault);
     }
 
     async find(data: any = {}): Promise<T[]> {
         return await getManager().find(this.entityClass, {
-            ...{
-                relations: this.relations,
-            },
+            ...this.optionsDefault,
             ...data
         });
     }
@@ -46,9 +46,7 @@ export class EntityService<T extends InterfaceEntity> {
         const itemsNew: T[] = await getManager().findByIds(
             this.entityClass,
             result.map(entity => entity.id),
-            {
-                relations: this.relations,
-            },
+            this.optionsDefault,
         );
 
         return Array.isArray(data) ? itemsNew : itemsNew[0];
