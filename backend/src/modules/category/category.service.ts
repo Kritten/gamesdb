@@ -1,38 +1,16 @@
-import {Injectable} from '@nestjs/common';
 import { getManager } from 'typeorm';
 import {Category} from "./category.entity";
+import {EntityService} from "../../utilities/EntityService";
 
-@Injectable()
-export class CategoryService {
-  constructor() {}
+export class CategoryService extends EntityService<Category> {
+  constructor() {
+    super();
+    this.entityClass = Category;
+  }
 
   async findAll(): Promise<Category[]> {
-    return await getManager().find(Category, {relations: ['games']});
-  }
-
-  async find(data: any): Promise<Category[]> {
-    return await getManager().find(Category, data);
-  }
-
-  async create(data: Category | Category[]) {
-    const categories = data instanceof Category ? [data] : data;
-
-    const result = await getManager().save(Category, categories);
-
-    return result instanceof Category ? result : result[0];
-  }
-
-  async update(data: Category | Category[]) {
-    const categories = data instanceof Category ? [data] : data;
-
-    const result = await getManager().save(Category, categories);
-
-    return result instanceof Category ? result : result[0];
-  }
-
-  async delete(id: number | number[]) {
-    const result = await getManager().delete(Category, id);
-
-    return result.affected > 0;
+    return await getManager().find(Category, {
+      relations: ['games'],
+    });
   }
 }
