@@ -5,67 +5,74 @@ schema {
     mutation: Mutation
 }
 
-type CategoryModel {
-    games: [GameModel!]!
+type Category {
+    games: [Game!]!
     id: Int!
     name: String!
 }
 
-type GameModel {
-    categories: [CategoryModel!]!
+type Game {
+    categories: [Category!]!
     complexity: Int
     countPlayersMax: Int
     countPlayersMin: Int
     description: String
-    expansions: [GameModel!]!
+    expansions: [Game!]!
     id: Int!
     isCoop: Boolean
-    isExpansionOf: [GameModel!]!
-    mechanisms: [MechanismModel!]!
+    isExpansionOf: [Game!]!
+    mechanisms: [Mechanism!]!
     minutesPlaytimeMax: Int
     minutesPlaytimeMin: Int
-    moods: [GameModel!]!
+    moods: [Mood!]!
     name: String!
-    playableWith: [GameModel!]!
-    sessions: [SessionModel!]!
+    playableWith: [Game!]!
+    sessions: [Session!]!
     size: Int
-    universe: UniverseModel!
+    universe: [Universe!]!
 }
 
-type MechanismModel {
-    games: [GameModel!]!
+type Mechanism {
+    games: [Game!]!
     id: Int!
+    name: String!
+}
+
+type Mood {
+    games: [Game!]!
+    id: Float!
     name: String!
 }
 
 type Mutation {
-    createGame(gameData: GameInput!): GameModel!
-    updateGame(gameData: UpdateGameInput!): GameModel!
+    createGame(gameData: GameInput!): Game!
+    deleteGame(idGame: Int!): Boolean!
+    updateGame(gameData: UpdateGameInput!): Game!
 }
 
-type PlayerModel {
+type Player {
     id: Int!
     name: String!
-    sessionsPlayed: [SessionModel!]!
-    sessionsWon: [SessionModel!]!
+    sessionsPlayed: [Session!]!
+    sessionsWon: [Session!]!
 }
 
 type Query {
-    games: [GameModel!]!
+    games: [Game!]!
 }
 
-type SessionModel {
+type Session {
     date: DateTime!
     duration: Int!
-    game: GameModel!
+    game: [Game!]!
     id: Int!
-    players: [PlayerModel!]!
+    players: [Player!]!
     rating: Int!
-    winners: [PlayerModel!]!
+    winners: [Player!]!
 }
 
-type UniverseModel {
-    games: [GameModel!]!
+type Universe {
+    games: [Game!]!
     id: Int!
     name: String!
 }
@@ -97,7 +104,7 @@ input UpdateGameInput {
     countPlayersMin: Int
     description: String
     expansions: [Int!]
-    id: Int
+    id: Int!
     isCoop: Boolean
     isExpansionOf: [Int!]
     mechanisms: [Int!]

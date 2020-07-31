@@ -53,4 +53,7 @@ export class GameInput {
 }
 
 @InputType()
-export class UpdateGameInput extends PartialType(GameInput) {}
+export class UpdateGameInput extends PartialType(GameInput) {
+    @Field(() => Int )
+    id: number;
+}

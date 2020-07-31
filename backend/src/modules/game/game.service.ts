@@ -25,4 +25,10 @@ export class GameService {
 
     return result instanceof Game ? result : result[0];
   }
+
+  async delete(idGame: number | number[]) {
+    const result = await getManager().delete(Game, idGame);
+
+    return result.affected > 0;
+  }
 }
