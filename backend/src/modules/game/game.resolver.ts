@@ -17,7 +17,7 @@ export class GameResolver {
   @Query(() => [Game])
   @UseGuards(GqlAuthGuard)
   async games(@CurrentUser() user: User) {
-    return this.gameService.findAll();
+    return this.gameService.find();
   }
 
   @Mutation(() => Game)

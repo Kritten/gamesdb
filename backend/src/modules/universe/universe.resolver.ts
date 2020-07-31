@@ -13,7 +13,7 @@ export class UniverseResolver {
   @Query(() => [Universe])
   @UseGuards(GqlAuthGuard)
   async universes() {
-    return this.universeService.findAll();
+    return this.universeService.find();
   }
 
   @Mutation(() => Universe)

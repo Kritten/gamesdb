@@ -13,7 +13,7 @@ export class MoodResolver {
   @Query(() => [Mood])
   @UseGuards(GqlAuthGuard)
   async moods() {
-    return this.moodService.findAll();
+    return this.moodService.find();
   }
 
   @Mutation(() => Mood)

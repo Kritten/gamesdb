@@ -13,7 +13,7 @@ export class MechanismResolver {
   @Query(() => [Mechanism])
   @UseGuards(GqlAuthGuard)
   async mechanisms() {
-    return this.mechanismService.findAll();
+    return this.mechanismService.find();
   }
 
   @Mutation(() => Mechanism)

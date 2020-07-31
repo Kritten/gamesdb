@@ -13,7 +13,7 @@ export class CategoryResolver {
   @Query(() => [Category])
   @UseGuards(GqlAuthGuard)
   async categories() {
-    return this.categoryService.findAll();
+    return this.categoryService.find();
   }
 
   @Mutation(() => Category)

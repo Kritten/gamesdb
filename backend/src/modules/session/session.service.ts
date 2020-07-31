@@ -3,7 +3,6 @@ import {EntityService} from "../../utilities/EntityService";
 
 export class SessionService extends EntityService<Session> {
   constructor() {
-    super();
-    this.entityClass = Session;
+    super(Session);
   }
 }

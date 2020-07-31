@@ -13,7 +13,7 @@ export class SessionResolver {
   @Query(() => [Session])
   @UseGuards(GqlAuthGuard)
   async sessions() {
-    return this.sessionService.findAll();
+    return this.sessionService.find();
   }
 
   @Mutation(() => Session)

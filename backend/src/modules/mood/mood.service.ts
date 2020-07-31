@@ -3,7 +3,6 @@ import {EntityService} from "../../utilities/EntityService";
 
 export class MoodService extends EntityService<Mood> {
   constructor() {
-    super();
-    this.entityClass = Mood;
+    super(Mood);
   }
 }

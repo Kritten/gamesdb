@@ -3,7 +3,6 @@ import {EntityService} from "../../utilities/EntityService";
 
 export class UniverseService extends EntityService<Universe> {
   constructor() {
-    super();
-    this.entityClass = Universe;
+    super(Universe);
   }
 }

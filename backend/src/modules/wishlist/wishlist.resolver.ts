@@ -13,7 +13,7 @@ export class WishlistResolver {
   @Query(() => [Wishlist])
   @UseGuards(GqlAuthGuard)
   async wishlists() {
-    return this.wishlistService.findAll();
+    return this.wishlistService.find();
   }
 
   @Mutation(() => Wishlist)

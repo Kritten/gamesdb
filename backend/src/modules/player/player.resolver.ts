@@ -13,7 +13,7 @@ export class PlayerResolver {
   @Query(() => [Player])
   @UseGuards(GqlAuthGuard)
   async players() {
-    return this.playerService.findAll();
+    return this.playerService.find();
   }
 
   @Mutation(() => Player)
