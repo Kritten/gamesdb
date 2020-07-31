@@ -7,7 +7,11 @@ export class CategoryService {
   constructor() {}
 
   async findAll(): Promise<Category[]> {
-    return await getManager().find(Category);
+    return await getManager().find(Category, {relations: ['games']});
+  }
+
+  async find(data: any): Promise<Category[]> {
+    return await getManager().find(Category, data);
   }
 
   async create(data: Category | Category[]) {

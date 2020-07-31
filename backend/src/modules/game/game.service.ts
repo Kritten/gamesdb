@@ -7,7 +7,9 @@ export class GameService {
   constructor() {}
 
   async findAll(): Promise<Game[]> {
-    return await getManager().find(Game);
+    return await getManager().find(Game, {
+      relations: ['categories'],
+    });
   }
 
   async create(data: Game | Game[]) {
@@ -26,8 +28,8 @@ export class GameService {
     return result instanceof Game ? result : result[0];
   }
 
-  async delete(idGame: number | number[]) {
-    const result = await getManager().delete(Game, idGame);
+  async delete(id: number | number[]) {
+    const result = await getManager().delete(Game, id);
 
     return result.affected > 0;
   }

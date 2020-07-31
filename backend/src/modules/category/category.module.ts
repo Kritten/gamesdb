@@ -7,5 +7,6 @@ import {CategoryResolver} from "./category.resolver";
 @Module({
   imports: [TypeOrmModule.forFeature([Category])],
   providers: [CategoryResolver, CategoryService],
+  exports: [CategoryService],
 })
 export class CategoryModule {}
