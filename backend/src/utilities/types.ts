@@ -1,11 +1,11 @@
 export interface BaseEntity {
-    [key: string]: any;
+  [key: string]: any;
 }
 
 export interface BaseInputData {
-    [key: string]: any;
+  [key: string]: any;
 }
 
 export interface BaseService {
-    find(data: {});
+  find(data: {});
 }

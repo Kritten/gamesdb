@@ -1,11 +1,13 @@
-import {forwardRef, Inject, Injectable} from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
 import { createHash } from 'crypto';
 
 @Injectable()
 export class AuthService {
-  constructor(@Inject(forwardRef(() => UserService)) private userService: UserService) {}
+  constructor(
+    @Inject(forwardRef(() => UserService)) private userService: UserService,
+  ) {}
 
   async validateUser(username: string, password: string): Promise<User> {
     const user = await this.userService.findOneByName(username);

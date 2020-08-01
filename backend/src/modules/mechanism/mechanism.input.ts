@@ -1,18 +1,18 @@
-import {Field, InputType, Int, PartialType} from "@nestjs/graphql";
+import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
 export class MechanismInput {
-    @Field(() => Int )
-    id?: number;
+  @Field(() => Int)
+  id?: number;
 
-    name: string;
+  name: string;
 
-    @Field(() => [Int])
-    games?: number[];
+  @Field(() => [Int])
+  games?: number[];
 }
 
 @InputType()
 export class UpdateMechanismInput extends PartialType(MechanismInput) {
-    @Field(() => Int )
-    id: number;
+  @Field(() => Int)
+  id: number;
 }

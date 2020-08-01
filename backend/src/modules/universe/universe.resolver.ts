@@ -1,14 +1,13 @@
-import {Args, Int, Mutation, Query, Resolver} from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import {Universe} from "./universe.entity";
-import {UniverseService} from "./universe.service";
-import {UniverseInput, UpdateUniverseInput} from "./universe.input";
+import { Universe } from './universe.entity';
+import { UniverseService } from './universe.service';
+import { UniverseInput, UpdateUniverseInput } from './universe.input';
 
 @Resolver(() => Universe)
 export class UniverseResolver {
-  constructor(private universeService: UniverseService) {
-  }
+  constructor(private universeService: UniverseService) {}
 
   @Query(() => [Universe])
   @UseGuards(GqlAuthGuard)
@@ -18,7 +17,7 @@ export class UniverseResolver {
 
   @Query(() => Universe)
   @UseGuards(GqlAuthGuard)
-  async universe(@Args({name: 'id', type: () => Int}) id: number) {
+  async universe(@Args({ name: 'id', type: () => Int }) id: number) {
     return this.universeService.findOne(id);
   }
 
@@ -33,7 +32,9 @@ export class UniverseResolver {
 
   @Mutation(() => Universe)
   @UseGuards(GqlAuthGuard)
-  async updateUniverse(@Args('universeData') universeData: UpdateUniverseInput) {
+  async updateUniverse(
+    @Args('universeData') universeData: UpdateUniverseInput,
+  ) {
     const universe = new Universe();
     universe.id = universeData.id;
     universe.name = universeData.name;
@@ -43,7 +44,7 @@ export class UniverseResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteUniverse(@Args({name: 'id', type: () => Int}) id: number) {
+  async deleteUniverse(@Args({ name: 'id', type: () => Int }) id: number) {
     return await this.universeService.delete(id);
   }
 }

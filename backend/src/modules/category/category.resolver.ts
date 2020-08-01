@@ -1,14 +1,13 @@
-import {Args, Int, Mutation, Query, Resolver} from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import {Category} from "./category.entity";
-import {CategoryService} from "./category.service";
-import {CategoryInput, UpdateCategoryInput} from "./category.input";
+import { Category } from './category.entity';
+import { CategoryService } from './category.service';
+import { CategoryInput, UpdateCategoryInput } from './category.input';
 
 @Resolver(() => Category)
 export class CategoryResolver {
-  constructor(private categoryService: CategoryService) {
-  }
+  constructor(private categoryService: CategoryService) {}
 
   @Query(() => [Category])
   @UseGuards(GqlAuthGuard)
@@ -18,7 +17,7 @@ export class CategoryResolver {
 
   @Query(() => Category)
   @UseGuards(GqlAuthGuard)
-  async category(@Args({name: 'id', type: () => Int}) id: number) {
+  async category(@Args({ name: 'id', type: () => Int }) id: number) {
     return this.categoryService.findOne(id);
   }
 
@@ -33,7 +32,9 @@ export class CategoryResolver {
 
   @Mutation(() => Category)
   @UseGuards(GqlAuthGuard)
-  async updateCategory(@Args('categoryData') categoryData: UpdateCategoryInput) {
+  async updateCategory(
+    @Args('categoryData') categoryData: UpdateCategoryInput,
+  ) {
     const category = new Category();
     category.id = categoryData.id;
     category.name = categoryData.name;
@@ -43,7 +44,7 @@ export class CategoryResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteCategory(@Args({name: 'id', type: () => Int}) id: number) {
+  async deleteCategory(@Args({ name: 'id', type: () => Int }) id: number) {
     return await this.categoryService.delete(id);
   }
 }

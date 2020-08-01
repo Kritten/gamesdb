@@ -1,14 +1,13 @@
-import {Args, Int, Mutation, Query, Resolver} from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import {Mood} from "./mood.entity";
-import {MoodService} from "./mood.service";
-import {MoodInput, UpdateMoodInput} from "./mood.input";
+import { Mood } from './mood.entity';
+import { MoodService } from './mood.service';
+import { MoodInput, UpdateMoodInput } from './mood.input';
 
 @Resolver(() => Mood)
 export class MoodResolver {
-  constructor(private moodService: MoodService) {
-  }
+  constructor(private moodService: MoodService) {}
 
   @Query(() => [Mood])
   @UseGuards(GqlAuthGuard)
@@ -18,7 +17,7 @@ export class MoodResolver {
 
   @Query(() => Mood)
   @UseGuards(GqlAuthGuard)
-  async mood(@Args({name: 'id', type: () => Int}) id: number) {
+  async mood(@Args({ name: 'id', type: () => Int }) id: number) {
     return this.moodService.findOne(id);
   }
 
@@ -43,7 +42,7 @@ export class MoodResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteMood(@Args({name: 'id', type: () => Int}) id: number) {
+  async deleteMood(@Args({ name: 'id', type: () => Int }) id: number) {
     return await this.moodService.delete(id);
   }
 }

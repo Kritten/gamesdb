@@ -6,8 +6,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Session } from '../session/session.entity';
-import {Field, Int, ObjectType} from "@nestjs/graphql";
-import {Game} from "../game/game.entity";
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @Entity()
 @ObjectType()
@@ -28,7 +27,7 @@ export class Player {
     session => session.players,
   )
   @JoinTable()
-  @Field(() => [Session],{defaultValue: []})
+  @Field(() => [Session], { defaultValue: [] })
   sessionsPlayed: Session[];
 
   @ManyToMany(
@@ -36,6 +35,6 @@ export class Player {
     session => session.winners,
   )
   @JoinTable()
-  @Field(() => [Session],{defaultValue: []})
+  @Field(() => [Session], { defaultValue: [] })
   sessionsWon: Session[];
 }

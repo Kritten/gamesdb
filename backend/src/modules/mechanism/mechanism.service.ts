@@ -1,5 +1,5 @@
-import {Mechanism} from "./mechanism.entity";
-import {EntityService} from "../../utilities/entity.service";
+import { Mechanism } from './mechanism.entity';
+import { EntityService } from '../../utilities/entity.service';
 
 export class MechanismService extends EntityService<Mechanism> {
   constructor() {

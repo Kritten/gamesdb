@@ -12,7 +12,7 @@ import { Mechanism } from '../mechanism/mechanism.entity';
 import { Mood } from '../mood/mood.entity';
 import { Universe } from '../universe/universe.entity';
 import { Session } from '../session/session.entity';
-import {Field, Int, ObjectType} from "@nestjs/graphql";
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @Entity()
 @ObjectType()
@@ -87,7 +87,7 @@ export class Game {
     universe => universe.games,
   )
   @JoinTable()
-  @Field(() => [Universe],{defaultValue: []})
+  @Field(() => [Universe], { defaultValue: [] })
   universes: Universe[];
 
   @ManyToMany(
@@ -95,7 +95,7 @@ export class Game {
     category => category.games,
   )
   @JoinTable()
-  @Field(() => [Category],{defaultValue: []})
+  @Field(() => [Category], { defaultValue: [] })
   categories: Category[];
 
   @ManyToMany(
@@ -103,7 +103,7 @@ export class Game {
     mechanism => mechanism.games,
   )
   @JoinTable()
-  @Field(() => [Mechanism],{defaultValue: []})
+  @Field(() => [Mechanism], { defaultValue: [] })
   mechanisms: Mechanism[];
 
   @ManyToMany(
@@ -111,12 +111,12 @@ export class Game {
     mood => mood.games,
   )
   @JoinTable()
-  @Field(() => [Mood],{defaultValue: []})
+  @Field(() => [Mood], { defaultValue: [] })
   moods: Mood[];
 
   @ManyToMany(() => Game)
   @JoinTable()
-  @Field(() => [Game],{defaultValue: []})
+  @Field(() => [Game], { defaultValue: [] })
   playableWith: Game[];
 
   @ManyToOne(
@@ -124,7 +124,7 @@ export class Game {
     game => game.expansions,
   )
   @JoinTable()
-  @Field(() => [Game],{defaultValue: []})
+  @Field(() => [Game], { defaultValue: [] })
   isExpansionOf: Game;
 
   @OneToMany(
@@ -132,7 +132,7 @@ export class Game {
     game => game.isExpansionOf,
   )
   @JoinTable()
-  @Field(() => [Game],{defaultValue: []})
+  @Field(() => [Game], { defaultValue: [] })
   expansions: Game[];
 
   @OneToMany(
@@ -140,6 +140,6 @@ export class Game {
     session => session.game,
   )
   @JoinTable()
-  @Field(() => [Session],{defaultValue: []})
+  @Field(() => [Session], { defaultValue: [] })
   sessions: Session[];
 }

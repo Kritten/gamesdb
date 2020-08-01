@@ -6,7 +6,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Game } from '../game/game.entity';
-import {Field, ObjectType} from "@nestjs/graphql";
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @Entity()
 @ObjectType()
@@ -26,6 +26,6 @@ export class Mood {
     game => game.mechanisms,
   )
   @JoinTable()
-  @Field(() => [Game],{defaultValue: []})
+  @Field(() => [Game], { defaultValue: [] })
   games: Game[];
 }

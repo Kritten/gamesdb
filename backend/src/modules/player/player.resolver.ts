@@ -1,14 +1,13 @@
-import {Args, Int, Mutation, Query, Resolver} from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import {Player} from "./player.entity";
-import {PlayerService} from "./player.service";
-import {PlayerInput, UpdatePlayerInput} from "./player.input";
+import { Player } from './player.entity';
+import { PlayerService } from './player.service';
+import { PlayerInput, UpdatePlayerInput } from './player.input';
 
 @Resolver(() => Player)
 export class PlayerResolver {
-  constructor(private playerService: PlayerService) {
-  }
+  constructor(private playerService: PlayerService) {}
 
   @Query(() => [Player])
   @UseGuards(GqlAuthGuard)
@@ -18,7 +17,7 @@ export class PlayerResolver {
 
   @Query(() => Player)
   @UseGuards(GqlAuthGuard)
-  async player(@Args({name: 'id', type: () => Int}) id: number) {
+  async player(@Args({ name: 'id', type: () => Int }) id: number) {
     return this.playerService.findOne(id);
   }
 
@@ -43,7 +42,7 @@ export class PlayerResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deletePlayer(@Args({name: 'id', type: () => Int}) id: number) {
+  async deletePlayer(@Args({ name: 'id', type: () => Int }) id: number) {
     return await this.playerService.delete(id);
   }
 }

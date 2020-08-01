@@ -1,14 +1,13 @@
-import {Args, Int, Mutation, Query, Resolver} from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import {Session} from "./session.entity";
-import {SessionService} from "./session.service";
-import {SessionInput, UpdateSessionInput} from "./session.input";
+import { Session } from './session.entity';
+import { SessionService } from './session.service';
+import { SessionInput, UpdateSessionInput } from './session.input';
 
 @Resolver(() => Session)
 export class SessionResolver {
-  constructor(private sessionService: SessionService) {
-  }
+  constructor(private sessionService: SessionService) {}
 
   @Query(() => [Session])
   @UseGuards(GqlAuthGuard)
@@ -18,7 +17,7 @@ export class SessionResolver {
 
   @Query(() => Session)
   @UseGuards(GqlAuthGuard)
-  async session(@Args({name: 'id', type: () => Int}) id: number) {
+  async session(@Args({ name: 'id', type: () => Int }) id: number) {
     return this.sessionService.findOne(id);
   }
 
@@ -45,7 +44,7 @@ export class SessionResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteSession(@Args({name: 'id', type: () => Int}) id: number) {
+  async deleteSession(@Args({ name: 'id', type: () => Int }) id: number) {
     return await this.sessionService.delete(id);
   }
 }
