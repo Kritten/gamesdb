@@ -7,11 +7,12 @@ import {GameService} from "./game.service";
 import {Game} from "./game.entity";
 import {GameInput, UpdateGameInput} from "./game.input";
 import {CategoryService} from "../category/category.service";
-import {In} from "typeorm/index";
+import {EntityResolver} from "../../utilities/entity.resolver";
 
 @Resolver(() => Game)
-export class GameResolver {
+export class GameResolver extends EntityResolver {
   constructor(private gameService: GameService, private categoryService: CategoryService) {
+    super();
   }
 
   @Query(() => [Game])
@@ -60,11 +61,8 @@ export class GameResolver {
     game.complexity = gameData.complexity;
     game.size = gameData.size;
     //TODO relations
-    console.warn(gameData.categories, "gameData.categories");
-    if (gameData.categories !== undefined) {
-      game.categories = await this.categoryService.find({id: In(gameData.categories)});
-    }
-    console.warn(game.categories, "game.categories");
+    await this.handleRelation('categories', game, gameData, this.categoryService);
+
     return await this.gameService.update(game);
   }
 

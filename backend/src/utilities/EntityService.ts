@@ -7,16 +7,12 @@ interface InterfaceEntity {
 
 @Injectable()
 export class EntityService<T extends InterfaceEntity> {
-    protected relations: string[] = [];
-
     private readonly entityClass: { new(): T };
     private readonly optionsDefault: {};
 
-    constructor(@Optional() cls?: { new(): T }) {
+    constructor(@Optional() cls: { new(): T }, @Optional() options?: {relations: string[]}) {
         this.entityClass = cls;
-        this.optionsDefault = {
-            relations: this.relations
-        };
+        this.optionsDefault = options;
     }
 
     async findOne(id: number): Promise<T> {
@@ -29,7 +25,7 @@ export class EntityService<T extends InterfaceEntity> {
         return await getManager().findOne(this.entityClass, id, this.optionsDefault);
     }
 
-    async find(data: any = {}): Promise<T[]> {
+    async find(data: {} = {}): Promise<T[]> {
         return await getManager().find(this.entityClass, {
             ...this.optionsDefault,
             ...data
