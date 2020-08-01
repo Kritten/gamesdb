@@ -4,10 +4,17 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Mechanism } from './mechanism.entity';
 import { MechanismInput, UpdateMechanismInput } from './mechanism.input';
 import { MechanismService } from './mechanism.service';
+import { GameService } from '../game/game.service';
+import { EntityResolver } from '../../utilities/entity.resolver';
 
 @Resolver(() => Mechanism)
-export class MechanismResolver {
-  constructor(private mechanismService: MechanismService) {}
+export class MechanismResolver extends EntityResolver {
+  constructor(
+    private mechanismService: MechanismService,
+    private gameService: GameService,
+  ) {
+    super();
+  }
 
   @Query(() => [Mechanism])
   @UseGuards(GqlAuthGuard)
@@ -26,7 +33,13 @@ export class MechanismResolver {
   async createMechanism(@Args('mechanismData') mechanismData: MechanismInput) {
     const mechanism = new Mechanism();
     mechanism.name = mechanismData.name;
-    //TODO relations
+    await this.handleRelation(
+      'games',
+      mechanism,
+      mechanismData,
+      this.gameService,
+    );
+
     return await this.mechanismService.create(mechanism);
   }
 
@@ -38,7 +51,13 @@ export class MechanismResolver {
     const mechanism = new Mechanism();
     mechanism.id = mechanismData.id;
     mechanism.name = mechanismData.name;
-    //TODO relations
+    await this.handleRelation(
+      'games',
+      mechanism,
+      mechanismData,
+      this.gameService,
+    );
+
     return await this.mechanismService.update(mechanism);
   }
 

@@ -23,7 +23,7 @@ export class Mood {
 
   @ManyToMany(
     () => Game,
-    game => game.mechanisms,
+    game => game.moods,
   )
   @JoinTable()
   @Field(() => [Game], { defaultValue: [] })

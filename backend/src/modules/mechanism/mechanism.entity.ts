@@ -24,7 +24,7 @@ export class Mechanism {
 
   @ManyToMany(
     () => Game,
-    game => game.categories,
+    game => game.mechanisms,
   )
   @JoinTable()
   @Field(() => [Game], { defaultValue: [] })
