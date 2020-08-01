@@ -1,5 +1,5 @@
 import {Entity, getManager} from "typeorm/index";
-import {Injectable, Optional} from "@nestjs/common";
+import {Injectable, NotFoundException, Optional} from "@nestjs/common";
 
 interface InterfaceEntity {
     id: number;
@@ -20,6 +20,12 @@ export class EntityService<T extends InterfaceEntity> {
     }
 
     async findOne(id: number): Promise<T> {
+        const result = await getManager().findOne(this.entityClass, id, this.optionsDefault);
+
+        if (result === undefined) {
+            throw new NotFoundException(`Entity with id ${id} not found`);
+        }
+
         return await getManager().findOne(this.entityClass, id, this.optionsDefault);
     }
 
