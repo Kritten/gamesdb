@@ -7,5 +7,6 @@ import {UniverseService} from "./universe.service";
 @Module({
   imports: [TypeOrmModule.forFeature([Universe])],
   providers: [UniverseResolver, UniverseService],
+  exports: [UniverseService],
 })
 export class UniverseModule {}

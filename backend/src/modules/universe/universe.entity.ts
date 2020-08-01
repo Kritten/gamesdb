@@ -24,7 +24,7 @@ export class Universe {
 
   @ManyToMany(
     () => Game,
-    game => game.universe,
+    game => game.universes,
   )
   @JoinTable()
   @Field(() => [Game],{defaultValue: []})

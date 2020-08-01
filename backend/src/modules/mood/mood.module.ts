@@ -7,5 +7,6 @@ import {MoodResolver} from "./mood.resolver";
 @Module({
   imports: [TypeOrmModule.forFeature([Mood])],
   providers: [MoodResolver, MoodService],
+  exports: [MoodService],
 })
 export class MoodModule {}

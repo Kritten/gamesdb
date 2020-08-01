@@ -8,10 +8,14 @@ import {Game} from "./game.entity";
 import {GameInput, UpdateGameInput} from "./game.input";
 import {CategoryService} from "../category/category.service";
 import {EntityResolver} from "../../utilities/entity.resolver";
+import {MechanismService} from "../mechanism/mechanism.service";
+import {MoodService} from "../mood/mood.service";
+import {SessionService} from "../session/session.service";
+import {UniverseService} from "../universe/universe.service";
 
 @Resolver(() => Game)
 export class GameResolver extends EntityResolver {
-  constructor(private gameService: GameService, private categoryService: CategoryService) {
+  constructor(private gameService: GameService, private categoryService: CategoryService, private universeService: UniverseService, private mechanismService: MechanismService, private moodService: MoodService, private sessionService: SessionService) {
     super();
   }
 
@@ -61,7 +65,13 @@ export class GameResolver extends EntityResolver {
     game.complexity = gameData.complexity;
     game.size = gameData.size;
     //TODO relations
+    await this.handleRelation('universes', game, gameData, this.universeService);
     await this.handleRelation('categories', game, gameData, this.categoryService);
+    await this.handleRelation('mechanisms', game, gameData, this.mechanismService);
+    await this.handleRelation('moods', game, gameData, this.moodService);
+    // await this.handleRelation('playableWith', game, gameData, this.Service);
+    await this.handleRelation('expansions', game, gameData, this.gameService);
+    await this.handleRelation('sessions', game, gameData, this.sessionService);
 
     return await this.gameService.update(game);
   }

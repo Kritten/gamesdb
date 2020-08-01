@@ -7,5 +7,6 @@ import {PlayerService} from "./player.service";
 @Module({
   imports: [TypeOrmModule.forFeature([Player])],
   providers: [PlayerResolver, PlayerService],
+  exports: [PlayerService],
 })
 export class PlayerModule {}

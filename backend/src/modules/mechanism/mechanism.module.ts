@@ -7,5 +7,6 @@ import {MechanismService} from "./mechanism.service";
 @Module({
   imports: [TypeOrmModule.forFeature([Mechanism])],
   providers: [MechanismResolver, MechanismService],
+  exports: [MechanismService],
 })
 export class MechanismModule {}

@@ -7,5 +7,6 @@ import {WishlistService} from "./wishlist.service";
 @Module({
   imports: [TypeOrmModule.forFeature([Wishlist])],
   providers: [WishlistResolver, WishlistService],
+  exports: [WishlistService],
 })
 export class WishlistModule {}
