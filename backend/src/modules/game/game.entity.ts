@@ -124,7 +124,7 @@ export class Game {
     game => game.expansions,
   )
   @JoinTable()
-  @Field(() => [Game], { defaultValue: [] })
+  @Field(() => Game, { nullable: true })
   isExpansionOf: Game;
 
   @OneToMany(

@@ -20,7 +20,7 @@ type Game {
     expansions: [Game!]!
     id: Int!
     isCoop: Boolean
-    isExpansionOf: [Game!]!
+    isExpansionOf: Game
     mechanisms: [Mechanism!]!
     minutesPlaytimeMax: Int
     minutesPlaytimeMin: Int
@@ -134,7 +134,7 @@ input GameInput {
     expansions: [Int!]
     id: Int
     isCoop: Boolean
-    isExpansionOf: [Int!]
+    isExpansionOf: Int
     mechanisms: [Int!]
     minutesPlaytimeMax: Int
     minutesPlaytimeMin: Int
@@ -193,7 +193,7 @@ input UpdateGameInput {
     expansions: [Int!]
     id: Int!
     isCoop: Boolean
-    isExpansionOf: [Int!]
+    isExpansionOf: Int
     mechanisms: [Int!]
     minutesPlaytimeMax: Int
     minutesPlaytimeMin: Int

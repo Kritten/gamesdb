@@ -45,7 +45,7 @@ export class GameInput {
   @Field(() => [Int])
   playableWith?: number[];
 
-  @Field(() => [Int])
+  @Field(() => Int)
   isExpansionOf?: number;
 
   @Field(() => [Int])

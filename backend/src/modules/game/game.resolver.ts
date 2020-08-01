@@ -50,26 +50,6 @@ export class GameResolver extends EntityResolver {
     game.isCoop = gameData.isCoop;
     game.complexity = gameData.complexity;
     game.size = gameData.size;
-    //TODO relations
-    return await this.gameService.create(game);
-  }
-
-  @Mutation(() => Game)
-  @UseGuards(GqlAuthGuard)
-  async updateGame(@Args('gameData') gameData: UpdateGameInput) {
-    const game = new Game();
-    game.id = gameData.id;
-    game.name = gameData.name;
-    game.description = gameData.description;
-    game.description = gameData.description;
-    game.countPlayersMin = gameData.countPlayersMin;
-    game.countPlayersMax = gameData.countPlayersMax;
-    game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
-    game.minutesPlaytimeMax = gameData.minutesPlaytimeMax;
-    game.isCoop = gameData.isCoop;
-    game.complexity = gameData.complexity;
-    game.size = gameData.size;
-    //TODO relations
     await this.handleRelation(
       'universes',
       game,
@@ -90,6 +70,59 @@ export class GameResolver extends EntityResolver {
     );
     await this.handleRelation('moods', game, gameData, this.moodService);
     await this.handleRelation('playableWith', game, gameData, this.gameService);
+    await this.handleRelation(
+      'isExpansionOf',
+      game,
+      gameData,
+      this.gameService,
+    );
+    await this.handleRelation('expansions', game, gameData, this.gameService);
+    await this.handleRelation('sessions', game, gameData, this.sessionService);
+
+    return await this.gameService.create(game);
+  }
+
+  @Mutation(() => Game)
+  @UseGuards(GqlAuthGuard)
+  async updateGame(@Args('gameData') gameData: UpdateGameInput) {
+    const game = new Game();
+    game.id = gameData.id;
+    game.name = gameData.name;
+    game.description = gameData.description;
+    game.description = gameData.description;
+    game.countPlayersMin = gameData.countPlayersMin;
+    game.countPlayersMax = gameData.countPlayersMax;
+    game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
+    game.minutesPlaytimeMax = gameData.minutesPlaytimeMax;
+    game.isCoop = gameData.isCoop;
+    game.complexity = gameData.complexity;
+    game.size = gameData.size;
+    await this.handleRelation(
+      'universes',
+      game,
+      gameData,
+      this.universeService,
+    );
+    await this.handleRelation(
+      'categories',
+      game,
+      gameData,
+      this.categoryService,
+    );
+    await this.handleRelation(
+      'mechanisms',
+      game,
+      gameData,
+      this.mechanismService,
+    );
+    await this.handleRelation('moods', game, gameData, this.moodService);
+    await this.handleRelation('playableWith', game, gameData, this.gameService);
+    await this.handleRelation(
+      'isExpansionOf',
+      game,
+      gameData,
+      this.gameService,
+    );
     await this.handleRelation('expansions', game, gameData, this.gameService);
     await this.handleRelation('sessions', game, gameData, this.sessionService);
 

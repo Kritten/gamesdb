@@ -8,4 +8,5 @@ export interface BaseInputData {
 
 export interface BaseService {
   find(data: {});
+  findOne(id: number);
 }

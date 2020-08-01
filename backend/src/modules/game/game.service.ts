@@ -10,6 +10,8 @@ export class GameService extends EntityService<Game> {
         'universes',
         'mechanisms',
         'playableWith',
+        'expansions',
+        'isExpansionOf',
       ],
     });
   }
