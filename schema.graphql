@@ -29,7 +29,7 @@ type Game {
     playableWith: [Game!]!
     sessions: [Session!]!
     size: Int
-    universe: [Universe!]!
+    universes: [Universe!]!
 }
 
 type Mechanism {
@@ -142,7 +142,7 @@ input GameInput {
     name: String!
     playableWith: [Int!]
     size: Int
-    universe: Int
+    universes: [Int!]
 }
 
 input MechanismInput {
@@ -201,7 +201,7 @@ input UpdateGameInput {
     name: String
     playableWith: [Int!]
     size: Int
-    universe: Int
+    universes: [Int!]
 }
 
 input UpdateMechanismInput {

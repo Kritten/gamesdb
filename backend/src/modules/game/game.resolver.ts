@@ -89,7 +89,7 @@ export class GameResolver extends EntityResolver {
       this.mechanismService,
     );
     await this.handleRelation('moods', game, gameData, this.moodService);
-    // await this.handleRelation('playableWith', game, gameData, this.Service);
+    await this.handleRelation('playableWith', game, gameData, this.gameService);
     await this.handleRelation('expansions', game, gameData, this.gameService);
     await this.handleRelation('sessions', game, gameData, this.sessionService);
 

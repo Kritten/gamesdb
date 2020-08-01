@@ -13,7 +13,7 @@ export class EntityResolver {
       entity[name] =
         entityData[name].length === 0
           ? []
-          : await service.find({ id: In(entityData[name]) });
+          : await service.find({ where: { id: In(entityData[name]) } });
 
       if (entity[name].length !== entityData[name].length) {
         const setIds = new Set(entity[name].map(item => item.id));

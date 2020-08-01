@@ -30,7 +30,7 @@ export class GameInput {
   @Field(() => Int)
   size?: number;
 
-  @Field(() => Int)
+  @Field(() => [Int])
   universes?: number[];
 
   @Field(() => [Int])
