@@ -3,6 +3,6 @@ import { EntityService } from '../../utilities/entity.service';
 
 export class UniverseService extends EntityService<Universe> {
   constructor() {
-    super(Universe);
+    super(Universe, { relations: ['games'] });
   }
 }

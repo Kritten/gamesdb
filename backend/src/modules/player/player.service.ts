@@ -3,6 +3,6 @@ import { EntityService } from '../../utilities/entity.service';
 
 export class PlayerService extends EntityService<Player> {
   constructor() {
-    super(Player);
+    super(Player, { relations: ['sessionsPlayed', 'sessionsWon'] });
   }
 }
