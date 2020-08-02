@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  JoinTable,
-  ManyToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { Game } from '../game/game.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
@@ -26,7 +20,6 @@ export class Universe {
     () => Game,
     game => game.universes,
   )
-  @JoinTable()
   @Field(() => [Game], { defaultValue: [] })
   games: Game[];
 }

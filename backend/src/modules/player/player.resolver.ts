@@ -4,10 +4,17 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Player } from './player.entity';
 import { PlayerService } from './player.service';
 import { PlayerInput, UpdatePlayerInput } from './player.input';
+import { EntityResolver } from '../../utilities/entity.resolver';
+import { SessionService } from '../session/session.service';
 
 @Resolver(() => Player)
-export class PlayerResolver {
-  constructor(private playerService: PlayerService) {}
+export class PlayerResolver extends EntityResolver {
+  constructor(
+    private playerService: PlayerService,
+    private sessionService: SessionService,
+  ) {
+    super();
+  }
 
   @Query(() => [Player])
   @UseGuards(GqlAuthGuard)
@@ -26,7 +33,19 @@ export class PlayerResolver {
   async createPlayer(@Args('playerData') playerData: PlayerInput) {
     const player = new Player();
     player.name = playerData.name;
-    //TODO relations
+    await this.handleRelation(
+      'sessionsPlayed',
+      player,
+      playerData,
+      this.sessionService,
+    );
+    await this.handleRelation(
+      'sessionsWon',
+      player,
+      playerData,
+      this.sessionService,
+    );
+
     return await this.playerService.create(player);
   }
 
@@ -36,7 +55,19 @@ export class PlayerResolver {
     const player = new Player();
     player.id = playerData.id;
     player.name = playerData.name;
-    //TODO relations
+    await this.handleRelation(
+      'sessionsPlayed',
+      player,
+      playerData,
+      this.sessionService,
+    );
+    await this.handleRelation(
+      'sessionsWon',
+      player,
+      playerData,
+      this.sessionService,
+    );
+
     return await this.playerService.update(player);
   }
 

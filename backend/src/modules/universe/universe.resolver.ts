@@ -4,10 +4,17 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Universe } from './universe.entity';
 import { UniverseService } from './universe.service';
 import { UniverseInput, UpdateUniverseInput } from './universe.input';
+import { EntityResolver } from '../../utilities/entity.resolver';
+import { GameService } from '../game/game.service';
 
 @Resolver(() => Universe)
-export class UniverseResolver {
-  constructor(private universeService: UniverseService) {}
+export class UniverseResolver extends EntityResolver {
+  constructor(
+    private universeService: UniverseService,
+    private gameService: GameService,
+  ) {
+    super();
+  }
 
   @Query(() => [Universe])
   @UseGuards(GqlAuthGuard)
@@ -26,7 +33,13 @@ export class UniverseResolver {
   async createUniverse(@Args('universeData') universeData: UniverseInput) {
     const universe = new Universe();
     universe.name = universeData.name;
-    //TODO relations
+    await this.handleRelation(
+      'games',
+      universe,
+      universeData,
+      this.gameService,
+    );
+
     return await this.universeService.create(universe);
   }
 
@@ -38,7 +51,13 @@ export class UniverseResolver {
     const universe = new Universe();
     universe.id = universeData.id;
     universe.name = universeData.name;
-    //TODO relations
+    await this.handleRelation(
+      'games',
+      universe,
+      universeData,
+      this.gameService,
+    );
+
     return await this.universeService.update(universe);
   }
 

@@ -4,10 +4,19 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Session } from './session.entity';
 import { SessionService } from './session.service';
 import { SessionInput, UpdateSessionInput } from './session.input';
+import { GameService } from '../game/game.service';
+import { PlayerService } from '../player/player.service';
+import { EntityResolver } from '../../utilities/entity.resolver';
 
 @Resolver(() => Session)
-export class SessionResolver {
-  constructor(private sessionService: SessionService) {}
+export class SessionResolver extends EntityResolver {
+  constructor(
+    private sessionService: SessionService,
+    private playerService: PlayerService,
+    private gameService: GameService,
+  ) {
+    super();
+  }
 
   @Query(() => [Session])
   @UseGuards(GqlAuthGuard)
@@ -27,7 +36,20 @@ export class SessionResolver {
     const session = new Session();
     session.date = sessionData.date;
     session.duration = sessionData.duration;
-    //TODO relations
+    await this.handleRelation(
+      'players',
+      session,
+      sessionData,
+      this.playerService,
+    );
+    await this.handleRelation(
+      'winners',
+      session,
+      sessionData,
+      this.playerService,
+    );
+    await this.handleRelation('game', session, sessionData, this.gameService);
+
     return await this.sessionService.create(session);
   }
 
@@ -38,7 +60,20 @@ export class SessionResolver {
     session.id = sessionData.id;
     session.date = sessionData.date;
     session.duration = sessionData.duration;
-    //TODO relations
+    await this.handleRelation(
+      'players',
+      session,
+      sessionData,
+      this.playerService,
+    );
+    await this.handleRelation(
+      'winners',
+      session,
+      sessionData,
+      this.playerService,
+    );
+    await this.handleRelation('game', session, sessionData, this.gameService);
+
     return await this.sessionService.update(session);
   }
 

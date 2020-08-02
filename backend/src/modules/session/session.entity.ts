@@ -55,7 +55,6 @@ export class Session {
     () => Game,
     game => game.sessions,
   )
-  @JoinTable()
   @Field(() => [Game], { defaultValue: [] })
   game: Game;
 }

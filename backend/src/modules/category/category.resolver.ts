@@ -4,10 +4,17 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Category } from './category.entity';
 import { CategoryService } from './category.service';
 import { CategoryInput, UpdateCategoryInput } from './category.input';
+import { EntityResolver } from '../../utilities/entity.resolver';
+import { GameService } from '../game/game.service';
 
 @Resolver(() => Category)
-export class CategoryResolver {
-  constructor(private categoryService: CategoryService) {}
+export class CategoryResolver extends EntityResolver {
+  constructor(
+    private categoryService: CategoryService,
+    private gameService: GameService,
+  ) {
+    super();
+  }
 
   @Query(() => [Category])
   @UseGuards(GqlAuthGuard)
@@ -26,7 +33,13 @@ export class CategoryResolver {
   async createCategory(@Args('categoryData') categoryData: CategoryInput) {
     const category = new Category();
     category.name = categoryData.name;
-    //TODO relations
+    await this.handleRelation(
+      'games',
+      category,
+      categoryData,
+      this.gameService,
+    );
+
     return await this.categoryService.create(category);
   }
 
@@ -38,7 +51,13 @@ export class CategoryResolver {
     const category = new Category();
     category.id = categoryData.id;
     category.name = categoryData.name;
-    //TODO relations
+    await this.handleRelation(
+      'games',
+      category,
+      categoryData,
+      this.gameService,
+    );
+
     return await this.categoryService.update(category);
   }
 

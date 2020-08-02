@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { Session } from '../session/session.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
@@ -26,7 +20,6 @@ export class Player {
     () => Session,
     session => session.players,
   )
-  @JoinTable()
   @Field(() => [Session], { defaultValue: [] })
   sessionsPlayed: Session[];
 
@@ -34,7 +27,6 @@ export class Player {
     () => Session,
     session => session.winners,
   )
-  @JoinTable()
   @Field(() => [Session], { defaultValue: [] })
   sessionsWon: Session[];
 }

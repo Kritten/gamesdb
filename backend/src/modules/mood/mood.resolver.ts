@@ -4,10 +4,17 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Mood } from './mood.entity';
 import { MoodService } from './mood.service';
 import { MoodInput, UpdateMoodInput } from './mood.input';
+import { GameService } from '../game/game.service';
+import { EntityResolver } from '../../utilities/entity.resolver';
 
 @Resolver(() => Mood)
-export class MoodResolver {
-  constructor(private moodService: MoodService) {}
+export class MoodResolver extends EntityResolver {
+  constructor(
+    private moodService: MoodService,
+    private gameService: GameService,
+  ) {
+    super();
+  }
 
   @Query(() => [Mood])
   @UseGuards(GqlAuthGuard)
@@ -26,7 +33,8 @@ export class MoodResolver {
   async createMood(@Args('moodData') moodData: MoodInput) {
     const mood = new Mood();
     mood.name = moodData.name;
-    //TODO relations
+    await this.handleRelation('games', mood, moodData, this.gameService);
+
     return await this.moodService.create(mood);
   }
 
@@ -36,7 +44,8 @@ export class MoodResolver {
     const mood = new Mood();
     mood.id = moodData.id;
     mood.name = moodData.name;
-    //TODO relations
+    await this.handleRelation('games', mood, moodData, this.gameService);
+
     return await this.moodService.update(mood);
   }
 
