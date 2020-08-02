@@ -5,9 +5,9 @@ export class SessionInput {
   @Field(() => Int)
   id?: number;
 
-  date: Date;
+  start: Date;
 
-  duration: number;
+  end: Date;
 
   @Field(() => [Int])
   players?: number[];
@@ -15,8 +15,8 @@ export class SessionInput {
   @Field(() => [Int])
   winners?: number[];
 
-  @Field(() => [Int])
-  games?: number[];
+  @Field(() => Int)
+  game?: number;
 }
 
 @InputType()

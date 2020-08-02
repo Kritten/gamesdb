@@ -98,11 +98,11 @@ type Query {
 }
 
 type Session {
-    date: DateTime!
-    duration: Int!
-    game: [Game!]!
+    end: DateTime!
+    game: Game
     id: Int!
     players: [Player!]!
+    start: DateTime!
     winners: [Player!]!
 }
 
@@ -164,11 +164,11 @@ input PlayerInput {
 }
 
 input SessionInput {
-    date: DateTime!
-    duration: Float!
-    games: [Int!]
+    end: DateTime!
+    game: Int
     id: Int
     players: [Int!]
+    start: DateTime!
     winners: [Int!]
 }
 
@@ -223,11 +223,11 @@ input UpdatePlayerInput {
 }
 
 input UpdateSessionInput {
-    date: DateTime
-    duration: Float
-    games: [Int!]
+    end: DateTime
+    game: Int
     id: Int!
     players: [Int!]
+    start: DateTime
     winners: [Int!]
 }
 

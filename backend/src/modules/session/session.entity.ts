@@ -21,13 +21,13 @@ export class Session {
     type: 'datetime',
   })
   @Field(() => GraphQLISODateTime)
-  date: Date;
+  start: Date;
 
   @Column({
-    type: 'int',
+    type: 'datetime',
   })
-  @Field(() => Int)
-  duration: number;
+  @Field(() => GraphQLISODateTime)
+  end: Date;
 
   // @Column({
   //   type: 'tinyint',
@@ -55,6 +55,6 @@ export class Session {
     () => Game,
     game => game.sessions,
   )
-  @Field(() => [Game], { defaultValue: [] })
+  @Field(() => Game, { nullable: true })
   game: Game;
 }

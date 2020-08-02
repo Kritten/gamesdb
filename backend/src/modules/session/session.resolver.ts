@@ -34,8 +34,8 @@ export class SessionResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async createSession(@Args('sessionData') sessionData: SessionInput) {
     const session = new Session();
-    session.date = sessionData.date;
-    session.duration = sessionData.duration;
+    session.start = sessionData.start;
+    session.end = sessionData.end;
     await this.handleRelation(
       'players',
       session,
@@ -58,8 +58,8 @@ export class SessionResolver extends EntityResolver {
   async updateSession(@Args('sessionData') sessionData: UpdateSessionInput) {
     const session = new Session();
     session.id = sessionData.id;
-    session.date = sessionData.date;
-    session.duration = sessionData.duration;
+    session.start = sessionData.start;
+    session.end = sessionData.end;
     await this.handleRelation(
       'players',
       session,
