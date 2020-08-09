@@ -33,7 +33,9 @@ export class GameResolver extends EntityResolver {
   @Query(() => Game)
   @UseGuards(GqlAuthGuard)
   async game(@Args({ name: 'id', type: () => Int }) id: number) {
-    return this.gameService.findOne(id);
+    return this.gameService.findOne(id, {
+      // relations: ['ratings.game'],
+    });
   }
 
   @Mutation(() => Game)

@@ -14,6 +14,7 @@ import { MechanismModule } from './modules/mechanism/mechanism.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AuthModule } from './modules/auth/auth.module';
+import { RatingModule } from './modules/rating/rating.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { AuthModule } from './modules/auth/auth.module';
     WishlistModule,
     MechanismModule,
     AuthModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

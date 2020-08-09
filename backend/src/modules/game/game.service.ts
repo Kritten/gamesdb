@@ -13,6 +13,7 @@ export class GameService extends EntityService<Game> {
         'expansions',
         'isExpansionOf',
         'sessions',
+        'ratings',
       ],
     });
   }

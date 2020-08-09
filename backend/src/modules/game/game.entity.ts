@@ -13,6 +13,7 @@ import { Mood } from '../mood/mood.entity';
 import { Universe } from '../universe/universe.entity';
 import { Session } from '../session/session.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Rating } from '../rating/rating.entity';
 
 @Entity()
 @ObjectType()
@@ -134,6 +135,13 @@ export class Game {
   @JoinTable()
   @Field(() => [Game], { defaultValue: [] })
   expansions: Game[];
+
+  @OneToMany(
+    () => Rating,
+    rating => rating.game,
+  )
+  @Field(() => [Rating], { defaultValue: [] })
+  ratings: Rating[];
 
   @OneToMany(
     () => Session,

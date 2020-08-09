@@ -1,5 +1,6 @@
 import { Entity, getManager } from 'typeorm/index';
 import { Injectable, NotFoundException, Optional } from '@nestjs/common';
+import { merge } from 'lodash';
 
 interface InterfaceEntity {
   id: number;
@@ -18,29 +19,25 @@ export class EntityService<T extends InterfaceEntity> {
     this.optionsDefault = options;
   }
 
-  async findOne(id: number): Promise<T> {
+  async findOne(id: number, options: {} = {}): Promise<T> {
     const result = await getManager().findOne(
       this.entityClass,
       id,
-      this.optionsDefault,
+      merge(this.optionsDefault, options),
     );
 
     if (result === undefined) {
       throw new NotFoundException(`Entity with id ${id} not found`);
     }
 
-    return await getManager().findOne(
-      this.entityClass,
-      id,
-      this.optionsDefault,
-    );
+    return result;
   }
 
-  async find(data: {} = {}): Promise<T[]> {
-    return await getManager().find(this.entityClass, {
-      ...this.optionsDefault,
-      ...data,
-    });
+  async find(options: {} = {}): Promise<T[]> {
+    return await getManager().find(
+      this.entityClass,
+      merge(this.optionsDefault, options),
+    );
   }
 
   async create(data: T | T[]): Promise<T | T[]> {
