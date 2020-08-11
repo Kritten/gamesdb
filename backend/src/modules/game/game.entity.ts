@@ -50,14 +50,14 @@ export class Game {
   countPlayersMax?: number;
 
   @Column({
-    type: 'tinyint',
+    type: 'smallint',
     nullable: true,
   })
   @Field(() => Int)
   minutesPlaytimeMin?: number;
 
   @Column({
-    type: 'tinyint',
+    type: 'smallint',
     nullable: true,
   })
   @Field(() => Int)
