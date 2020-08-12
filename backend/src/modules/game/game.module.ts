@@ -8,6 +8,7 @@ import { UniverseModule } from '../universe/universe.module';
 import { SessionModule } from '../session/session.module';
 import { MechanismModule } from '../mechanism/mechanism.module';
 import { MoodModule } from '../mood/mood.module';
+import { ImageModule } from '../image/image.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MoodModule } from '../mood/mood.module';
     forwardRef(() => SessionModule),
     forwardRef(() => MechanismModule),
     forwardRef(() => MoodModule),
+    forwardRef(() => ImageModule),
   ],
   providers: [GameResolver, GameService],
   exports: [GameService],

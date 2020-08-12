@@ -15,6 +15,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AuthModule } from './modules/auth/auth.module';
 import { RatingModule } from './modules/rating/rating.module';
+import { ConsoleModule } from 'nestjs-console';
+import { MyCommands } from './commands';
+import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
@@ -55,6 +58,7 @@ import { RatingModule } from './modules/rating/rating.module';
     MechanismModule,
     AuthModule,
     RatingModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

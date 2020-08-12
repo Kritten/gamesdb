@@ -14,6 +14,7 @@ import { Universe } from '../universe/universe.entity';
 import { Session } from '../session/session.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Rating } from '../rating/rating.entity';
+import { Image } from '../image/image.entity';
 
 @Entity()
 @ObjectType()
@@ -114,6 +115,14 @@ export class Game {
   @JoinTable()
   @Field(() => [Mood], { defaultValue: [] })
   moods: Mood[];
+
+  @ManyToMany(
+    () => Image,
+    image => image.games,
+  )
+  @JoinTable()
+  @Field(() => [Image], { defaultValue: [] })
+  images: Image[];
 
   @ManyToMany(() => Game)
   @JoinTable()
