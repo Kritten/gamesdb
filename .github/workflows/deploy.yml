@@ -31,7 +31,7 @@ jobs:
       - run: pwd
       - uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
-          ftp-server: sftp://reinmuth.uberspace.de:22/var/www/virtual/kritten/projects/games/frontend/dist_tmp
+          ftp-server: sftp://reinmuth.uberspace.de:22/var/www/virtual/kritten/projects/gamesdb/frontend/dist_tmp
           ftp-username: ${{ secrets.UBERSPACE_NAME }}
           ftp-password: ${{ secrets.UBERSPACE_PASSWORD }}
           #          known-hosts: ${{ secrets.UBERSPACE_HOST }}
@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: garygrossgarten/github-action-ssh@release
         with:
-          command: cd /var/www/virtual/kritten/projects/games/ && ./restart.sh
+          command: cd /var/www/virtual/kritten/projects/gamesdb/ && ./restart.sh
           host: reinmuth.uberspace.de
           username: ${{ secrets.UBERSPACE_NAME }}
           password: ${{ secrets.UBERSPACE_PASSWORD }}
