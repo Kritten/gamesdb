@@ -21,6 +21,7 @@ import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
+    ConsoleModule,
     ConfigModule.forRoot({ envFilePath: '../.env' }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -61,6 +62,7 @@ import { ImageModule } from './modules/image/image.module';
     ImageModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MyCommands],
+  exports: [MyCommands],
 })
 export class AppModule {}

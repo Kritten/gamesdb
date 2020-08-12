@@ -18,7 +18,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "console:dev": "ts-node -r tsconfig-paths/register src/console.ts",
+    "console": "node dist/console.js"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -30,6 +32,7 @@
     "@nestjs/typeorm": "^7.1.0",
     "@types/lodash-es": "^4.17.3",
     "apollo-server-express": "^2.14.1",
+    "commander": "^6.0.0",
     "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.1",
     "graphql": "^15.0.0",
@@ -37,6 +40,7 @@
     "lodash": "^4.17.19",
     "mariadb": "^2.4.0",
     "mysql": "^2.18.1",
+    "nestjs-console": "^3.1.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
