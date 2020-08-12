@@ -28,7 +28,13 @@ mkdir dist
 cp base.htaccess dist/.htaccess
 cp -r dist_tmp/* dist
 
-cd ..
+echo "6/7 deploy backend"
+cd ../backend
+rm -r dist
+mkdir dist
+cp -r dist_tmp/* dist
+
 echo "7/7 restart server"
+npm run start:prod
 #touch backend/backend/wsgi.py
 
