@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '12'
       - run: npm install
-      - run: ls dist
+      - run: ls
       - run: npm run build-action
         continue-on-error: true
 #        env:
@@ -27,7 +27,7 @@ jobs:
 #          VUE_APP_API_ENDPOINT: ${{ secrets.VUE_APP_API_ENDPOINT }}
 #          ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
 #          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      - run: ls
+      - run: ls dist
       - run: pwd
       - uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
