@@ -35,6 +35,5 @@ mkdir dist
 cp -r dist_tmp/* dist
 
 echo "7/7 restart server"
-npm run start:prod
-#touch backend/backend/wsgi.py
+supervisorctl restart gamesdb
 
