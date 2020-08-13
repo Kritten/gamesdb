@@ -113,6 +113,7 @@ type Query {
     sessions: [Session!]!
     universe(id: Int!): Universe!
     universes: [Universe!]!
+    user(id: Int): User!
     wishlist(id: Int!): Wishlist!
     wishlists: [Wishlist!]!
 }
@@ -137,6 +138,12 @@ type Universe {
     games: [Game!]!
     id: Int!
     name: String!
+}
+
+type User {
+    id: Int!
+    name: String!
+    password: String!
 }
 
 type Wishlist {
