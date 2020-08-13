@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
 import { createHash } from 'crypto';
+import { getManager } from 'typeorm/index';
 
 @Injectable()
 export class AuthService {
@@ -11,15 +12,6 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<User> {
     const user = await this.userService.findOneByName(username);
-
-    // if (user === null) {
-    //   await this.userService.create(
-    //     getManager().create(User, {
-    //       name: 'test1',
-    //       password: 'testt',
-    //     }),
-    //   );
-    // }
 
     // if (user && user.name === password) {
     // const { ...result } = user;

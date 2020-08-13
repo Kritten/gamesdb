@@ -10,10 +10,27 @@ import { Image } from './modules/image/image.entity';
 import { ImageService } from './modules/image/image.service';
 import { Game } from './modules/game/game.entity';
 import { GameService } from './modules/game/game.service';
-import { In } from 'typeorm/index';
+import { getManager, In } from 'typeorm/index';
+import { UserService } from './modules/user/user.service';
+import { User } from './modules/user/user.entity';
 
 @Console()
 export class MyCommands {
+  constructor(private userService: UserService) {}
+
+  @Command({
+    command: 'createuser <name> <password>',
+    description: 'Creates a user',
+  })
+  async createUser(name: string, password: string): Promise<void> {
+    await this.userService.create(
+      getManager().create(User, {
+        name,
+        password,
+      }),
+    );
+  }
+
   @Command({
     command: 'import <path>',
     description: 'Import database from wedding page',
