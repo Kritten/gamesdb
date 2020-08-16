@@ -1,21 +1,34 @@
+import { apolloClient } from '@/vue-apollo';
+import { queryUserCurrent } from '@/modules/user/graphql/user.graphql';
+import { User } from '@/modules/user/user.model';
+import { store } from '@/modules/app/app.store';
+import { router } from '@/modules/app/app.router';
+
 export class ServiceApp {
   static async initialize() {
-    const payload = {};
+    try {
+      const response = await apolloClient.query({
+        query: queryUserCurrent,
+      });
 
-    const response = await fetch(`${process.env.VUE_APP_API_ENDPOINT}/graphql`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body:
-        '{"operationName":null,"variables":{},"query":"{\\n  games {\\n    id\\n    name\\n  }\\n}\\n"}'
-      // body: JSON.stringify(payload)
-    });
-    console.warn(response, "response");
-    // try {
-    //   // const response = await apolloClient.query({
-    //   //   query: queryInitial
-    //   // });
-    // } catch (e) {}
+      await ServiceApp.setCurrentUser(response.data.user);
+
+      store.commit('setIsInitialized', true);
+
+      if (router.currentRoute.value.name === 'login') {
+        router.push({
+          name: 'dashboard',
+        });
+      }
+    } catch (e) {}
+
+    store.commit('setIsInitialized', true);
+  }
+  /**
+   * Set current user
+   */
+  static async setCurrentUser(data: {}) {
+    const user = new User(data);
+    await store.dispatch('setUser', user);
   }
 }

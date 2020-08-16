@@ -1,43 +1,40 @@
-import { reactive, toRefs } from "vue";
-import { User } from "@/modules/user/user.model";
-import { store } from "@/modules/app/app.store";
-import { router } from "@/modules/app/app.router";
+import { reactive, toRefs } from 'vue';
+import { router } from '@/modules/app/app.router';
+import { ServiceApp } from '@/modules/app/app.service';
 
 export class ServiceLogin {
   static useLogin() {
     const data = reactive({
       username: null,
-      password: null
+      password: null,
     });
 
     const login = async function() {
       const payload = {
         username: data.username,
-        password: data.password
+        password: data.password,
       };
 
       const response = await fetch(`${process.env.VUE_APP_API_ENDPOINT}/login`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        const user = new User(await response.json());
-        console.warn(user, response, "response");
-        await store.dispatch("setUser", user);
+        await ServiceApp.setCurrentUser(await response.json());
 
         await router.push({
-          name: "dashboard"
+          name: 'dashboard',
         });
       }
     };
 
     return {
       ...toRefs(data),
-      login
+      login,
     };
   }
 }
