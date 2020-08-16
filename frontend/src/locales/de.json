@@ -3,5 +3,11 @@
     "name": "Name",
     "password": "Passwort",
     "submit": "Anmelden"
+  },
+  "dashboard": {
+    "label": "Dashboard"
+  },
+  "game": {
+    "label": "Spiel | Spiele"
   }
 }

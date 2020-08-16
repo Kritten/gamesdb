@@ -2,6 +2,7 @@ import { RouteConfig, createRouter, createWebHistory } from 'vue-router';
 import Login from '@/modules/app/login/login';
 import ViewApp from '@/modules/app/app.view';
 import ViewDashboard from '@/modules/app/dashboard/dashboard.view';
+import ViewGame from '@/modules/game/game.view';
 import { queue } from '@/queue';
 
 const routes: Array<RouteConfig> = [
@@ -18,6 +19,11 @@ const routes: Array<RouteConfig> = [
         path: '',
         name: 'dashboard',
         component: ViewDashboard,
+      },
+      {
+        path: 'games',
+        name: 'games',
+        component: ViewGame,
       },
     ],
   },
