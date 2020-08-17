@@ -2,13 +2,14 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Game } from './game.entity';
 import { GameResolver } from './game.resolver';
-import { GameService } from './game.service';
+import { GameEntityService } from './game.entity.service';
 import { CategoryModule } from '../category/category.module';
 import { UniverseModule } from '../universe/universe.module';
 import { SessionModule } from '../session/session.module';
 import { MechanismModule } from '../mechanism/mechanism.module';
 import { MoodModule } from '../mood/mood.module';
 import { ImageModule } from '../image/image.module';
+import { GameCollectionService } from './game.collection.service';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { ImageModule } from '../image/image.module';
     forwardRef(() => MoodModule),
     forwardRef(() => ImageModule),
   ],
-  providers: [GameResolver, GameService],
-  exports: [GameService],
+  providers: [GameResolver, GameEntityService, GameCollectionService],
+  exports: [GameEntityService],
 })
 export class GameModule {}

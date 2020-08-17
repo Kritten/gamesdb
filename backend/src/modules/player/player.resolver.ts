@@ -4,7 +4,7 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Player } from './player.entity';
 import { PlayerService } from './player.service';
 import { PlayerInput, UpdatePlayerInput } from './player.input';
-import { EntityResolver } from '../../utilities/entity.resolver';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { SessionService } from '../session/session.service';
 
 @Resolver(() => Player)

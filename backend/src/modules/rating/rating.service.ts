@@ -1,4 +1,4 @@
-import { EntityService } from '../../utilities/entity.service';
+import { EntityService } from '../../utilities/entity/entity.service';
 import { Rating } from './rating.entity';
 
 export class RatingService extends EntityService<Rating> {

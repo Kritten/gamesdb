@@ -1,18 +1,18 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import { EntityResolver } from '../../utilities/entity.resolver';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { Rating } from './rating.entity';
 import { RatingService } from './rating.service';
 import { RatingInput, UpdateRatingInput } from './rating.input';
 import { PlayerService } from '../player/player.service';
-import { GameService } from '../game/game.service';
+import { GameEntityService } from '../game/game.entity.service';
 
 @Resolver(() => Rating)
 export class RatingResolver extends EntityResolver {
   constructor(
     private ratingService: RatingService,
-    private gameService: GameService,
+    private gameService: GameEntityService,
     private playerService: PlayerService,
   ) {
     super();

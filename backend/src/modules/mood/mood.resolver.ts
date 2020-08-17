@@ -4,14 +4,14 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Mood } from './mood.entity';
 import { MoodService } from './mood.service';
 import { MoodInput, UpdateMoodInput } from './mood.input';
-import { GameService } from '../game/game.service';
-import { EntityResolver } from '../../utilities/entity.resolver';
+import { GameEntityService } from '../game/game.entity.service';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
 
 @Resolver(() => Mood)
 export class MoodResolver extends EntityResolver {
   constructor(
     private moodService: MoodService,
-    private gameService: GameService,
+    private gameService: GameEntityService,
   ) {
     super();
   }

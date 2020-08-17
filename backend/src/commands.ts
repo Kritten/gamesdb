@@ -9,7 +9,7 @@ import { Category } from './modules/category/category.entity';
 import { Image } from './modules/image/image.entity';
 import { ImageService } from './modules/image/image.service';
 import { Game } from './modules/game/game.entity';
-import { GameService } from './modules/game/game.service';
+import { GameEntityService } from './modules/game/game.entity.service';
 import { getManager, In } from 'typeorm/index';
 import { UserService } from './modules/user/user.service';
 import { User } from './modules/user/user.entity';
@@ -40,7 +40,7 @@ export class MyCommands {
     const moodService = new MoodService();
     const categoryService = new CategoryService();
     const imageService = new ImageService();
-    const gameService = new GameService();
+    const gameService = new GameEntityService();
     const spin = createSpinner();
     spin.start(`Import database`);
 

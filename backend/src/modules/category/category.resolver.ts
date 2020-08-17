@@ -4,14 +4,14 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Category } from './category.entity';
 import { CategoryService } from './category.service';
 import { CategoryInput, UpdateCategoryInput } from './category.input';
-import { EntityResolver } from '../../utilities/entity.resolver';
-import { GameService } from '../game/game.service';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
+import { GameEntityService } from '../game/game.entity.service';
 
 @Resolver(() => Category)
 export class CategoryResolver extends EntityResolver {
   constructor(
     private categoryService: CategoryService,
-    private gameService: GameService,
+    private gameService: GameEntityService,
   ) {
     super();
   }

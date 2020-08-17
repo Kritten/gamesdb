@@ -4,16 +4,16 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Session } from './session.entity';
 import { SessionService } from './session.service';
 import { SessionInput, UpdateSessionInput } from './session.input';
-import { GameService } from '../game/game.service';
+import { GameEntityService } from '../game/game.entity.service';
 import { PlayerService } from '../player/player.service';
-import { EntityResolver } from '../../utilities/entity.resolver';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
 
 @Resolver(() => Session)
 export class SessionResolver extends EntityResolver {
   constructor(
     private sessionService: SessionService,
     private playerService: PlayerService,
-    private gameService: GameService,
+    private gameService: GameEntityService,
   ) {
     super();
   }

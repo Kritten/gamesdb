@@ -1,5 +1,5 @@
 import { Player } from './player.entity';
-import { EntityService } from '../../utilities/entity.service';
+import { EntityService } from '../../utilities/entity/entity.service';
 
 export class PlayerService extends EntityService<Player> {
   constructor() {

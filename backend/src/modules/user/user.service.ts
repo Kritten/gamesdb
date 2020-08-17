@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { getManager } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
-import { EntityService } from '../../utilities/entity.service';
+import { EntityService } from '../../utilities/entity/entity.service';
 
 @Injectable()
 export class UserService extends EntityService<User> {

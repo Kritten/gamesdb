@@ -1,7 +1,7 @@
 import { Game } from './game.entity';
-import { EntityService } from '../../utilities/entity.service';
+import { EntityService } from '../../utilities/entity/entity.service';
 
-export class GameService extends EntityService<Game> {
+export class GameEntityService extends EntityService<Game> {
   constructor() {
     super(Game, {
       relations: [

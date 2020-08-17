@@ -1,13 +1,14 @@
-import { BaseEntity, BaseInputData, BaseService } from './types';
+import { BaseEntity, BaseInputData } from '../types';
 import { In } from 'typeorm/index';
 import { NotFoundException } from '@nestjs/common';
+import { EntityService } from './entity.service';
 
 export class EntityResolver {
   async handleRelation(
     name: string,
     entity: BaseEntity,
     entityData: BaseInputData,
-    service: BaseService,
+    service: EntityService<BaseEntity>,
   ) {
     if (entityData[name] !== undefined) {
       if (Array.isArray(entityData[name])) {

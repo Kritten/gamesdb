@@ -3,15 +3,15 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { ImageService } from './image.service';
 import { ImageInput, UpdateImageInput } from './image.input';
-import { EntityResolver } from '../../utilities/entity.resolver';
-import { GameService } from '../game/game.service';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
+import { GameEntityService } from '../game/game.entity.service';
 import { Image } from './image.entity';
 
 @Resolver(() => Image)
 export class ImageResolver extends EntityResolver {
   constructor(
     private imageService: ImageService,
-    private gameService: GameService,
+    private gameService: GameEntityService,
   ) {
     super();
   }

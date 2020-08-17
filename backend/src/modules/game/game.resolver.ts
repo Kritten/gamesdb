@@ -1,20 +1,23 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import { GameService } from './game.service';
+import { GameEntityService } from './game.entity.service';
 import { Game } from './game.entity';
 import { GameInput, UpdateGameInput } from './game.input';
 import { CategoryService } from '../category/category.service';
-import { EntityResolver } from '../../utilities/entity.resolver';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { MechanismService } from '../mechanism/mechanism.service';
 import { MoodService } from '../mood/mood.service';
 import { SessionService } from '../session/session.service';
 import { UniverseService } from '../universe/universe.service';
+import { InputCollection } from '../../utilities/collection/collection.input';
+import { GameCollectionService } from './game.collection.service';
 
 @Resolver(() => Game)
 export class GameResolver extends EntityResolver {
   constructor(
-    private gameService: GameService,
+    private gameEntityService: GameEntityService,
+    private gameCollectionService: GameCollectionService,
     private categoryService: CategoryService,
     private universeService: UniverseService,
     private mechanismService: MechanismService,
@@ -26,14 +29,14 @@ export class GameResolver extends EntityResolver {
 
   @Query(() => [Game])
   @UseGuards(GqlAuthGuard)
-  async games() {
-    return this.gameService.find();
+  async games(@Args('gameData') data: InputCollection) {
+    return this.gameCollectionService.loadPage(data);
   }
 
   @Query(() => Game)
   @UseGuards(GqlAuthGuard)
   async game(@Args({ name: 'id', type: () => Int }) id: number) {
-    return this.gameService.findOne(id, {
+    return this.gameEntityService.findOne(id, {
       // relations: ['ratings.game'],
     });
   }
@@ -71,17 +74,27 @@ export class GameResolver extends EntityResolver {
       this.mechanismService,
     );
     await this.handleRelation('moods', game, gameData, this.moodService);
-    await this.handleRelation('playableWith', game, gameData, this.gameService);
+    await this.handleRelation(
+      'playableWith',
+      game,
+      gameData,
+      this.gameEntityService,
+    );
     await this.handleRelation(
       'isExpansionOf',
       game,
       gameData,
-      this.gameService,
+      this.gameEntityService,
     );
-    await this.handleRelation('expansions', game, gameData, this.gameService);
+    await this.handleRelation(
+      'expansions',
+      game,
+      gameData,
+      this.gameEntityService,
+    );
     await this.handleRelation('sessions', game, gameData, this.sessionService);
 
-    return await this.gameService.create(game);
+    return await this.gameEntityService.create(game);
   }
 
   @Mutation(() => Game)
@@ -118,22 +131,32 @@ export class GameResolver extends EntityResolver {
       this.mechanismService,
     );
     await this.handleRelation('moods', game, gameData, this.moodService);
-    await this.handleRelation('playableWith', game, gameData, this.gameService);
+    await this.handleRelation(
+      'playableWith',
+      game,
+      gameData,
+      this.gameEntityService,
+    );
     await this.handleRelation(
       'isExpansionOf',
       game,
       gameData,
-      this.gameService,
+      this.gameEntityService,
     );
-    await this.handleRelation('expansions', game, gameData, this.gameService);
+    await this.handleRelation(
+      'expansions',
+      game,
+      gameData,
+      this.gameEntityService,
+    );
     await this.handleRelation('sessions', game, gameData, this.sessionService);
 
-    return await this.gameService.update(game);
+    return await this.gameEntityService.update(game);
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deleteGame(@Args({ name: 'id', type: () => Int }) id: number) {
-    return await this.gameService.delete(id);
+    return await this.gameEntityService.delete(id);
   }
 }

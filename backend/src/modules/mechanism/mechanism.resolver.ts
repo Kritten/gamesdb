@@ -4,14 +4,14 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Mechanism } from './mechanism.entity';
 import { MechanismInput, UpdateMechanismInput } from './mechanism.input';
 import { MechanismService } from './mechanism.service';
-import { GameService } from '../game/game.service';
-import { EntityResolver } from '../../utilities/entity.resolver';
+import { GameEntityService } from '../game/game.entity.service';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
 
 @Resolver(() => Mechanism)
 export class MechanismResolver extends EntityResolver {
   constructor(
     private mechanismService: MechanismService,
-    private gameService: GameService,
+    private gameService: GameEntityService,
   ) {
     super();
   }

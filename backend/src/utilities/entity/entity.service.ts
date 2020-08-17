@@ -1,13 +1,10 @@
 import { Entity, getManager } from 'typeorm/index';
 import { Injectable, NotFoundException, Optional } from '@nestjs/common';
 import { merge } from 'lodash';
-
-interface InterfaceEntity {
-  id: number;
-}
+import { BaseEntity } from '../types';
 
 @Injectable()
-export class EntityService<T extends InterfaceEntity> {
+export class EntityService<T extends BaseEntity> {
   private readonly entityClass: { new (): T };
   private readonly optionsDefault: {};
 

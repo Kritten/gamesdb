@@ -4,14 +4,14 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Universe } from './universe.entity';
 import { UniverseService } from './universe.service';
 import { UniverseInput, UpdateUniverseInput } from './universe.input';
-import { EntityResolver } from '../../utilities/entity.resolver';
-import { GameService } from '../game/game.service';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
+import { GameEntityService } from '../game/game.entity.service';
 
 @Resolver(() => Universe)
 export class UniverseResolver extends EntityResolver {
   constructor(
     private universeService: UniverseService,
-    private gameService: GameService,
+    private gameService: GameEntityService,
   ) {
     super();
   }
