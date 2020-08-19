@@ -50,6 +50,10 @@ export default {
         label: t('player.label', 2),
         name: 'players',
       },
+      {
+        label: t('image.label', 2),
+        name: 'images',
+      },
     ];
 
     return {

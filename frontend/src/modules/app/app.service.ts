@@ -11,6 +11,8 @@ import { queryMoods } from '@/modules/mood/graphql/mood.graphql';
 import { Mood } from '@/modules/mood/mood.model';
 import { queryPlayers } from '@/modules/player/graphql/player.graphql';
 import { Player } from '@/modules/player/player.model';
+import { queryImages } from '@/modules/image/graphql/image.graphql';
+import { Image } from '@/modules/image/image.model';
 
 export class ServiceApp {
   static async initialize() {
@@ -79,6 +81,16 @@ export class ServiceApp {
           store.commit(
             'modulePlayer/setPlayers',
             Player.convertFromServerToStore(response.data.players),
+          );
+        }),
+      apolloClient
+        .query({
+          query: queryImages,
+        })
+        .then(response => {
+          store.commit(
+            'moduleImage/setImages',
+            Image.convertFromServerToStore(response.data.images),
           );
         }),
     ]);

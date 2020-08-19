@@ -7,6 +7,7 @@ import ViewCategory from '@/modules/category/category.view';
 import ViewMechanism from '@/modules/mechanism/mechanism.view';
 import ViewMood from '@/modules/mood/mood.view';
 import ViewPlayer from '@/modules/player/player.view';
+import ViewImage from '@/modules/image/image.view';
 import { queue } from '@/queue';
 
 const routes: Array<RouteConfig> = [
@@ -48,6 +49,11 @@ const routes: Array<RouteConfig> = [
         path: 'players',
         name: 'players',
         component: ViewPlayer,
+      },
+      {
+        path: 'images',
+        name: 'images',
+        component: ViewImage,
       },
     ],
   },
