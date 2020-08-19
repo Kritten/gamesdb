@@ -47,6 +47,10 @@ export default {
         name: 'moods',
       },
       {
+        label: t('universe.label', 2),
+        name: 'universes',
+      },
+      {
         label: t('player.label', 2),
         name: 'players',
       },

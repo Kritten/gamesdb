@@ -5,6 +5,7 @@ import { moduleMechanism } from '@/modules/mechanism/mechanism.store';
 import { moduleMood } from '@/modules/mood/mood.store';
 import { modulePlayer } from '@/modules/player/player.store';
 import { moduleImage } from '@/modules/image/image.store';
+import { moduleUniverse } from '@/modules/universe/universe.store';
 
 export const store = createStore({
   modules: {
@@ -13,6 +14,7 @@ export const store = createStore({
     moduleMood,
     modulePlayer,
     moduleImage,
+    moduleUniverse,
   },
   state: {
     isInitialized: false,

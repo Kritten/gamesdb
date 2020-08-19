@@ -13,6 +13,8 @@ import { queryPlayers } from '@/modules/player/graphql/player.graphql';
 import { Player } from '@/modules/player/player.model';
 import { queryImages } from '@/modules/image/graphql/image.graphql';
 import { Image } from '@/modules/image/image.model';
+import { queryUniverses } from '@/modules/universe/graphql/universe.graphql';
+import { Universe } from '@/modules/universe/universe.model';
 
 export class ServiceApp {
   static async initialize() {
@@ -91,6 +93,16 @@ export class ServiceApp {
           store.commit(
             'moduleImage/setImages',
             Image.convertFromServerToStore(response.data.images),
+          );
+        }),
+      apolloClient
+        .query({
+          query: queryUniverses,
+        })
+        .then(response => {
+          store.commit(
+            'moduleUniverse/setUniverses',
+            Universe.convertFromServerToStore(response.data.universes),
           );
         }),
     ]);
