@@ -1,8 +1,13 @@
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import { User } from '@/modules/user/user.model';
+import { moduleCategory } from '@/modules/category/category.store';
+import { moduleMechanism } from '@/modules/mechanism/mechanism.store';
 
-export const store = Vuex.createStore({
-  modules: {},
+export const store = createStore({
+  modules: {
+    moduleCategory,
+    moduleMechanism,
+  },
   state: {
     isInitialized: false,
     user: null,

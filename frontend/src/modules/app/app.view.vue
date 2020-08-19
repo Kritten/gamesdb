@@ -34,6 +34,14 @@ export default {
         label: t('game.label', 2),
         name: 'games',
       },
+      {
+        label: t('category.label', 2),
+        name: 'categories',
+      },
+      {
+        label: t('mechanism.label', 2),
+        name: 'mechanisms',
+      },
     ];
 
     return {
