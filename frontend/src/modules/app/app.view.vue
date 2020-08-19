@@ -42,6 +42,10 @@ export default {
         label: t('mechanism.label', 2),
         name: 'mechanisms',
       },
+      {
+        label: t('mood.label', 2),
+        name: 'moods',
+      },
     ];
 
     return {

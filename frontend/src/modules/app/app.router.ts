@@ -5,6 +5,7 @@ import ViewDashboard from '@/modules/app/dashboard/dashboard.view';
 import ViewGame from '@/modules/game/game.view';
 import ViewCategory from '@/modules/category/category.view';
 import ViewMechanism from '@/modules/mechanism/mechanism.view';
+import ViewMood from '@/modules/mood/mood.view';
 import { queue } from '@/queue';
 
 const routes: Array<RouteConfig> = [
@@ -36,6 +37,11 @@ const routes: Array<RouteConfig> = [
         path: 'mechanisms',
         name: 'mechanisms',
         component: ViewMechanism,
+      },
+      {
+        path: 'moods',
+        name: 'moods',
+        component: ViewMood,
       },
     ],
   },
