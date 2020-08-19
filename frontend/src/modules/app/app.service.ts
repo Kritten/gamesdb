@@ -9,6 +9,8 @@ import { queryMechanisms } from '@/modules/mechanism/graphql/mechanism.graphql';
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
 import { queryMoods } from '@/modules/mood/graphql/mood.graphql';
 import { Mood } from '@/modules/mood/mood.model';
+import { queryPlayers } from '@/modules/player/graphql/player.graphql';
+import { Player } from '@/modules/player/player.model';
 
 export class ServiceApp {
   static async initialize() {
@@ -68,6 +70,16 @@ export class ServiceApp {
         })
         .then(response => {
           store.commit('moduleMood/setMoods', Mood.convertFromServerToStore(response.data.moods));
+        }),
+      apolloClient
+        .query({
+          query: queryPlayers,
+        })
+        .then(response => {
+          store.commit(
+            'modulePlayer/setPlayers',
+            Player.convertFromServerToStore(response.data.players),
+          );
         }),
     ]);
   }

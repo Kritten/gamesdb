@@ -46,6 +46,10 @@ export default {
         label: t('mood.label', 2),
         name: 'moods',
       },
+      {
+        label: t('player.label', 2),
+        name: 'players',
+      },
     ];
 
     return {

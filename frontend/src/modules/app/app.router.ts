@@ -6,6 +6,7 @@ import ViewGame from '@/modules/game/game.view';
 import ViewCategory from '@/modules/category/category.view';
 import ViewMechanism from '@/modules/mechanism/mechanism.view';
 import ViewMood from '@/modules/mood/mood.view';
+import ViewPlayer from '@/modules/player/player.view';
 import { queue } from '@/queue';
 
 const routes: Array<RouteConfig> = [
@@ -42,6 +43,11 @@ const routes: Array<RouteConfig> = [
         path: 'moods',
         name: 'moods',
         component: ViewMood,
+      },
+      {
+        path: 'players',
+        name: 'players',
+        component: ViewPlayer,
       },
     ],
   },
