@@ -7,6 +7,7 @@ import { SessionInput, UpdateSessionInput } from './session.input';
 import { GameEntityService } from '../game/game.entity.service';
 import { PlayerService } from '../player/player.service';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
+import { PlaytimeEntityService } from '../playtime/playtime.entity.service';
 
 @Resolver(() => Session)
 export class SessionResolver extends EntityResolver {
@@ -14,6 +15,7 @@ export class SessionResolver extends EntityResolver {
     private sessionService: SessionService,
     private playerService: PlayerService,
     private gameService: GameEntityService,
+    private playtimeService: PlaytimeEntityService,
   ) {
     super();
   }
@@ -34,8 +36,6 @@ export class SessionResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async createSession(@Args('sessionData') sessionData: SessionInput) {
     const session = new Session();
-    session.start = sessionData.start;
-    session.end = sessionData.end;
     await this.handleRelation(
       'players',
       session,
@@ -47,6 +47,12 @@ export class SessionResolver extends EntityResolver {
       session,
       sessionData,
       this.playerService,
+    );
+    await this.handleRelation(
+      'playtimes',
+      session,
+      sessionData,
+      this.playtimeService,
     );
     await this.handleRelation('game', session, sessionData, this.gameService);
 
@@ -58,8 +64,6 @@ export class SessionResolver extends EntityResolver {
   async updateSession(@Args('sessionData') sessionData: UpdateSessionInput) {
     const session = new Session();
     session.id = sessionData.id;
-    session.start = sessionData.start;
-    session.end = sessionData.end;
     await this.handleRelation(
       'players',
       session,
@@ -71,6 +75,12 @@ export class SessionResolver extends EntityResolver {
       session,
       sessionData,
       this.playerService,
+    );
+    await this.handleRelation(
+      'playtimes',
+      session,
+      sessionData,
+      this.playtimeService,
     );
     await this.handleRelation('game', session, sessionData, this.gameService);
 

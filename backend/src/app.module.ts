@@ -18,6 +18,7 @@ import { RatingModule } from './modules/rating/rating.module';
 import { ConsoleModule } from 'nestjs-console';
 import { MyCommands } from './commands';
 import { ImageModule } from './modules/image/image.module';
+import { PlaytimeModule } from './modules/playtime/playtime.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { ImageModule } from './modules/image/image.module';
     AuthModule,
     RatingModule,
     ImageModule,
+    PlaytimeModule,
   ],
   controllers: [AppController],
   providers: [AppService, MyCommands],

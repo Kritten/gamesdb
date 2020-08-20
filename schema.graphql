@@ -60,6 +60,7 @@ type Mutation {
     createMechanism(mechanismData: MechanismInput!): Mechanism!
     createMood(moodData: MoodInput!): Mood!
     createPlayer(playerData: PlayerInput!): Player!
+    createPlaytime(playtimeData: PlaytimeInput!): Playtime!
     createRating(ratingData: RatingInput!): Rating!
     createSession(sessionData: SessionInput!): Session!
     createUniverse(universeData: UniverseInput!): Universe!
@@ -70,6 +71,7 @@ type Mutation {
     deleteMechanism(id: Int!): Boolean!
     deleteMood(id: Int!): Boolean!
     deletePlayer(id: Int!): Boolean!
+    deletePlaytime(id: Int!): Boolean!
     deleteRating(id: Int!): Boolean!
     deleteSession(id: Int!): Boolean!
     deleteUniverse(id: Int!): Boolean!
@@ -80,6 +82,7 @@ type Mutation {
     updateMechanism(mechanismData: UpdateMechanismInput!): Mechanism!
     updateMood(moodData: UpdateMoodInput!): Mood!
     updatePlayer(playerData: UpdatePlayerInput!): Player!
+    updatePlaytime(playtimeData: UpdatePlaytimeInput!): Playtime!
     updateRating(ratingData: UpdateRatingInput!): Rating!
     updateSession(sessionData: UpdateSessionInput!): Session!
     updateUniverse(universeData: UpdateUniverseInput!): Universe!
@@ -94,11 +97,18 @@ type Player {
     sessionsWon: [Session!]!
 }
 
+type Playtime {
+    end: DateTime!
+    id: Int!
+    session: Session!
+    start: DateTime!
+}
+
 type Query {
     categories: [Category!]!
     category(id: Int!): Category!
     game(id: Int!): Game!
-    games: [Game!]!
+    games(gameData: InputCollection!): [Game!]!
     image(id: Int!): Image!
     images: [Image!]!
     mechanism(id: Int!): Mechanism!
@@ -107,6 +117,8 @@ type Query {
     moods: [Mood!]!
     player(id: Int!): Player!
     players: [Player!]!
+    playtime(id: Int!): Playtime!
+    playtimes: [Playtime!]!
     rating(id: Int!): Rating!
     ratings: [Rating!]!
     session(id: Int!): Session!
@@ -126,11 +138,10 @@ type Rating {
 }
 
 type Session {
-    end: DateTime!
     game: Game
     id: Int!
     players: [Player!]!
-    start: DateTime!
+    playtimes: [Playtime!]!
     winners: [Player!]!
 }
 
@@ -186,6 +197,13 @@ input ImageInput {
     name: String!
 }
 
+input InputCollection {
+    count: Float!
+    page: Float!
+    sortBy: String!
+    sortDesc: Boolean!
+}
+
 input MechanismInput {
     games: [Int!]
     id: Int
@@ -204,6 +222,13 @@ input PlayerInput {
     name: String!
 }
 
+input PlaytimeInput {
+    end: DateTime!
+    id: Int
+    session: Int!
+    start: DateTime!
+}
+
 input RatingInput {
     game: Int!
     id: Int
@@ -212,11 +237,10 @@ input RatingInput {
 }
 
 input SessionInput {
-    end: DateTime!
     game: Int
     id: Int
     players: [Int!]
-    start: DateTime!
+    playtimes: [Int!]
     winners: [Int!]
 }
 
@@ -277,6 +301,13 @@ input UpdatePlayerInput {
     name: String
 }
 
+input UpdatePlaytimeInput {
+    end: DateTime
+    id: Int!
+    session: Int
+    start: DateTime
+}
+
 input UpdateRatingInput {
     game: Int
     id: Int!
@@ -285,11 +316,10 @@ input UpdateRatingInput {
 }
 
 input UpdateSessionInput {
-    end: DateTime
     game: Int
     id: Int!
     players: [Int!]
-    start: DateTime
+    playtimes: [Int!]
     winners: [Int!]
 }
 

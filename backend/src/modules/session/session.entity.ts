@@ -5,10 +5,12 @@ import {
   ManyToMany,
   JoinTable,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Player } from '../player/player.entity';
 import { Game } from '../game/game.entity';
 import { Field, GraphQLISODateTime, Int, ObjectType } from '@nestjs/graphql';
+import { Playtime } from '../playtime/playtime.entity';
 
 @Entity()
 @ObjectType()
@@ -16,24 +18,6 @@ export class Session {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
   id: number;
-
-  @Column({
-    type: 'datetime',
-  })
-  @Field(() => GraphQLISODateTime)
-  start: Date;
-
-  @Column({
-    type: 'datetime',
-  })
-  @Field(() => GraphQLISODateTime)
-  end: Date;
-
-  // @Column({
-  //   type: 'tinyint',
-  // })
-  // @Field(() => Int)
-  // rating: number;
 
   @ManyToMany(
     () => Player,
@@ -57,4 +41,12 @@ export class Session {
   )
   @Field(() => Game, { nullable: true })
   game: Game;
+
+  @OneToMany(
+    () => Playtime,
+    playtime => playtime.session,
+  )
+  @JoinTable()
+  @Field(() => [Playtime], { defaultValue: [] })
+  playtimes: Playtime[];
 }
