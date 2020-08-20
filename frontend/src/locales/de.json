@@ -1,4 +1,9 @@
 {
+  "common": {
+    "create": "Anlegen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
+  },
   "login": {
     "name": "Name",
     "password": "Passwort",
@@ -9,5 +14,23 @@
   },
   "game": {
     "label": "Spiel | Spiele"
+  },
+  "category": {
+    "label": "Kategorie | Kategorien"
+  },
+  "mechanism": {
+    "label": "Mechanismus | Mechanismen"
+  },
+  "mood": {
+    "label": "Stimmung | Stimmungen"
+  },
+  "player": {
+    "label": "Spieler | Spieler"
+  },
+  "image": {
+    "label": "Bild | Bilder"
+  },
+  "universe": {
+    "label": "Universum | Universen"
   }
 }
