@@ -1,22 +1,26 @@
 <template>
-  <div
-    v-for="game in games"
-    :key="game.name"
-  >
-    {{ game.name }}
-  </div>
+  <table>
+    <list-item-game
+      v-for="game in useCollection.items.value"
+      :key="game.id"
+      :game="game"
+    />
+  </table>
+  <button @click="useCollection.loadNextItems">Mehr laden</button>
 </template>
 
-<script>
+<script lang="ts">
+import { ServiceGame } from '@/modules/game/game.service';
+import ListItemGame from '@/modules/game/list/list-item-game.vue';
+
 export default {
   name: 'ListGames',
+  components: { ListItemGame },
   setup() {
-    const games = [{
-      name: 'Game1',
-    }];
+    const useCollection = ServiceGame.useCollection();
 
     return {
-      games,
+      useCollection,
     };
   },
 };

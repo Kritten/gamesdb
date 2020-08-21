@@ -198,8 +198,8 @@ input ImageInput {
 }
 
 input InputCollection {
-    count: Float!
-    page: Float!
+    count: Int!
+    page: Int!
     sortBy: String!
     sortDesc: Boolean!
 }

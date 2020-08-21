@@ -1,13 +1,13 @@
 <template>
-  <games />
+  <list-games />
 </template>
 
 <script>
-import Games from '@/modules/game/list/games';
+import ListGames from '@/modules/game/list/list-games';
 
 export default {
   name: 'ViewGame',
-  components: { Games },
+  components: { ListGames },
 };
 </script>
 
