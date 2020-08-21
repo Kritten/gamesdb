@@ -5,17 +5,20 @@ import { ref } from 'vue';
 
 export class ServiceGame {
   static useCollection() {
-    const items = ref([]);
+    const items = ref<Game[]>([]);
+    const page = 1;
+    const count = 10;
+    const sortBy = 'name';
+    const sortDesc = false;
 
     const loadNextItems = () => {
       ServiceGame.loadPage({
-        page: 1,
-        count: 5,
-        sortBy: 'name',
-        sortDesc: false,
-      }).then((data: Game[]) => {
-        console.log(data[0], 'data[0]');
-        items.value = data;
+        page,
+        count,
+        sortBy,
+        sortDesc,
+      }).then(({ count, items: itemsLocal }: { count: number; items: Game[] }) => {
+        items.value = itemsLocal;
       });
     };
 
@@ -47,7 +50,10 @@ export class ServiceGame {
         sortDesc,
       },
     });
-    console.warn(response.data.games[0], 'response.data.games[0]');
-    return response.data.games.map((game: Game) => Game.parseFromServer(game));
+
+    return {
+      count: response.data.games.count,
+      items: response.data.games.items.map((game: Game) => Game.parseFromServer(game)),
+    };
   }
 }

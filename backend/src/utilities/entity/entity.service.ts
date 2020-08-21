@@ -37,6 +37,13 @@ export class EntityService<T extends BaseEntity> {
     );
   }
 
+  async findAndCount(options: {} = {}): Promise<[T[], number]> {
+    return await getManager().findAndCount(
+      this.entityClass,
+      merge(this.optionsDefault, options),
+    );
+  }
+
   async create(data: T | T[]): Promise<T | T[]> {
     const items = Array.isArray(data) ? data : [data];
 

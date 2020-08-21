@@ -16,13 +16,18 @@ export class CollectionService<T extends BaseEntity> {
     this.service = service;
   }
 
-  loadPage(data: InputCollection) {
-    return this.service.find({
+  async loadPage(data: InputCollection) {
+    const [items, count] = await this.service.findAndCount({
       take: data.count,
       skip: (data.page - 1) * data.count,
       order: {
         [data.sortBy]: data.sortDesc ? 'DESC' : 'ASC',
       },
     });
+
+    return {
+      items,
+      count,
+    };
   }
 }

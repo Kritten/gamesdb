@@ -12,6 +12,7 @@ import { SessionService } from '../session/session.service';
 import { UniverseService } from '../universe/universe.service';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { GameCollectionService } from './game.collection.service';
+import { CollectionData } from '../../utilities/collection/collection.types';
 
 @Resolver(() => Game)
 export class GameResolver extends EntityResolver {
@@ -27,7 +28,7 @@ export class GameResolver extends EntityResolver {
     super();
   }
 
-  @Query(() => [Game])
+  @Query(() => CollectionData)
   @UseGuards(GqlAuthGuard)
   async games(@Args('gameData') data: InputCollection) {
     return this.gameCollectionService.loadPage(data);
