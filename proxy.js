@@ -12,13 +12,27 @@ const proxyRules = new HttpProxyRules({
 
 const proxy = httpProxy.createProxyServer();
 
-http
-  .createServer((req, res) => {
+const proxyServer = http.createServer((req, res) => {
+    const config = {
+        ws: true,
+    }
     const target = proxyRules.match(req);
     if (target) {
       return proxy.web(req, res, {
+          ...config,
         target
       });
     }
-  })
-  .listen(4020);
+
+    return config;
+  });
+
+proxy.on('error', (err, req, res) => {
+    // res.writeHead(500, {
+    //     'Content-Type': 'text/plain'
+    // });
+    //
+    // res.end('Something went wrong. And we are reporting a custom error message.');
+});
+
+proxyServer.listen(4020);
