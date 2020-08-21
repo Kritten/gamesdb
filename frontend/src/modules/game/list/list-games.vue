@@ -1,4 +1,5 @@
 <template>
+  {{ useCollection.countItems.value }} Spiele
   <table>
     <list-item-game
       v-for="game in useCollection.items.value"
@@ -6,7 +7,12 @@
       :game="game"
     />
   </table>
-  <button @click="useCollection.loadNextItems">Mehr laden</button>
+  <button
+    v-if="useCollection.hasNextPage.value"
+    @click="useCollection.loadNextItems"
+  >
+    Mehr laden
+  </button>
 </template>
 
 <script lang="ts">

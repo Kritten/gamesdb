@@ -1,24 +1,30 @@
 import { apolloClient } from '@/vue-apollo';
 import { queryPageGame } from '@/modules/game/graphql/game.graphql';
 import { Game } from '@/modules/game/game.model';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 export class ServiceGame {
   static useCollection() {
     const items = ref<Game[]>([]);
-    const page = 1;
-    const count = 10;
-    const sortBy = 'name';
-    const sortDesc = false;
+    const countItems = ref(-1);
+    let page = 0;
+    let countPerPage = 10;
+    let sortBy = 'name';
+    let sortDesc = false;
+
+    const hasNextPage = computed(() => countItems.value !== items.value.length);
 
     const loadNextItems = () => {
+      page += 1;
+
       ServiceGame.loadPage({
         page,
-        count,
+        count: countPerPage,
         sortBy,
         sortDesc,
       }).then(({ count, items: itemsLocal }: { count: number; items: Game[] }) => {
-        items.value = itemsLocal;
+        countItems.value = count;
+        items.value = items.value.concat(itemsLocal);
       });
     };
 
@@ -26,6 +32,8 @@ export class ServiceGame {
 
     return {
       items,
+      countItems,
+      hasNextPage,
       loadNextItems,
     };
   }
