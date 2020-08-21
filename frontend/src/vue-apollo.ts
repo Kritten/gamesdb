@@ -15,12 +15,7 @@ export const apolloClient = new ApolloClient({
   // You should use an absolute URL here
   uri: httpEndpoint,
   onError(error) {
-    if (
-      error.graphQLErrors !== undefined &&
-      error.graphQLErrors[0].message === 'Forbidden resource'
-    ) {
-      queue.notify('graphqlError');
-    }
+    queue.notify('graphqlError', error.graphQLErrors);
   },
 });
 
