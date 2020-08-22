@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { Session } from '../session/session.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Rating } from '../rating/rating.entity';
 import { OneToMany } from 'typeorm/index';
 
@@ -8,7 +8,7 @@ import { OneToMany } from 'typeorm/index';
 @ObjectType()
 export class Player {
   @PrimaryGeneratedColumn()
-  @Field(() => Int)
+  @Field(() => ID)
   id: number;
 
   @Column({

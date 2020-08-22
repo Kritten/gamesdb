@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
@@ -26,7 +26,7 @@ export class RatingResolver extends EntityResolver {
 
   @Query(() => Rating)
   @UseGuards(GqlAuthGuard)
-  async rating(@Args({ name: 'id', type: () => Int }) id: number) {
+  async rating(@Args({ name: 'id', type: () => ID }) id: number) {
     return this.ratingService.findOne(id);
   }
 
@@ -55,7 +55,7 @@ export class RatingResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteRating(@Args({ name: 'id', type: () => Int }) id: number) {
+  async deleteRating(@Args({ name: 'id', type: () => ID }) id: number) {
     return await this.ratingService.delete(id);
   }
 }

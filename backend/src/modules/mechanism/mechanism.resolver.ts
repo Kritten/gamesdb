@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Mechanism } from './mechanism.entity';
@@ -24,7 +24,7 @@ export class MechanismResolver extends EntityResolver {
 
   @Query(() => Mechanism)
   @UseGuards(GqlAuthGuard)
-  async mechanism(@Args({ name: 'id', type: () => Int }) id: number) {
+  async mechanism(@Args({ name: 'id', type: () => ID }) id: number) {
     return this.mechanismService.findOne(id);
   }
 
@@ -63,7 +63,7 @@ export class MechanismResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteMechanism(@Args({ name: 'id', type: () => Int }) id: number) {
+  async deleteMechanism(@Args({ name: 'id', type: () => ID }) id: number) {
     return await this.mechanismService.delete(id);
   }
 }

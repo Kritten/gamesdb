@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { ImageService } from './image.service';
@@ -24,7 +24,7 @@ export class ImageResolver extends EntityResolver {
 
   @Query(() => Image)
   @UseGuards(GqlAuthGuard)
-  async image(@Args({ name: 'id', type: () => Int }) id: number) {
+  async image(@Args({ name: 'id', type: () => ID }) id: number) {
     return this.imageService.findOne(id);
   }
 
@@ -53,7 +53,7 @@ export class ImageResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteImage(@Args({ name: 'id', type: () => Int }) id: number) {
+  async deleteImage(@Args({ name: 'id', type: () => ID }) id: number) {
     return await this.imageService.delete(id);
   }
 }

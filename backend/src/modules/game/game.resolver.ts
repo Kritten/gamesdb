@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { GameEntityService } from './game.entity.service';
@@ -36,7 +36,7 @@ export class GameResolver extends EntityResolver {
 
   @Query(() => Game)
   @UseGuards(GqlAuthGuard)
-  async game(@Args({ name: 'id', type: () => Int }) id: number) {
+  async game(@Args({ name: 'id', type: () => ID }) id: number) {
     return this.gameEntityService.findOne(id, {
       // relations: ['ratings.game'],
     });
@@ -157,7 +157,7 @@ export class GameResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteGame(@Args({ name: 'id', type: () => Int }) id: number) {
+  async deleteGame(@Args({ name: 'id', type: () => ID }) id: number) {
     return await this.gameEntityService.delete(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Mood } from './mood.entity';
@@ -24,7 +24,7 @@ export class MoodResolver extends EntityResolver {
 
   @Query(() => Mood)
   @UseGuards(GqlAuthGuard)
-  async mood(@Args({ name: 'id', type: () => Int }) id: number) {
+  async mood(@Args({ name: 'id', type: () => ID }) id: number) {
     return this.moodService.findOne(id);
   }
 
@@ -51,7 +51,7 @@ export class MoodResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteMood(@Args({ name: 'id', type: () => Int }) id: number) {
+  async deleteMood(@Args({ name: 'id', type: () => ID }) id: number) {
     return await this.moodService.delete(id);
   }
 }

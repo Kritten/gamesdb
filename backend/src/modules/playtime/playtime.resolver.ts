@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
@@ -24,7 +24,7 @@ export class PlaytimeResolver extends EntityResolver {
 
   @Query(() => Playtime)
   @UseGuards(GqlAuthGuard)
-  async playtime(@Args({ name: 'id', type: () => Int }) id: number) {
+  async playtime(@Args({ name: 'id', type: () => ID }) id: number) {
     return this.playtimeService.findOne(id);
   }
 
@@ -65,7 +65,7 @@ export class PlaytimeResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deletePlaytime(@Args({ name: 'id', type: () => Int }) id: number) {
+  async deletePlaytime(@Args({ name: 'id', type: () => ID }) id: number) {
     return await this.playtimeService.delete(id);
   }
 }

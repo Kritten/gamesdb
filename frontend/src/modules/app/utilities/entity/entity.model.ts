@@ -1,7 +1,7 @@
-import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
+import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
 
 export class Entity implements EntityInterface {
-  id?: number;
+  id?: ID;
 
   protected constructor(data: EntityInterface) {
     this.id = data.id;

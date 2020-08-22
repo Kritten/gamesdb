@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
@@ -16,7 +16,7 @@ export class UserResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async user(
     @CurrentUser() user: User,
-    @Args({ name: 'id', type: () => Int, nullable: true }) id: number,
+    @Args({ name: 'id', type: () => ID, nullable: true }) id: number,
   ) {
     if (id === undefined) {
       return user;

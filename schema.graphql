@@ -7,7 +7,7 @@ schema {
 
 type Category {
     games: [Game!]!
-    id: Int!
+    id: ID!
     name: String!
 }
 
@@ -23,7 +23,7 @@ type Game {
     countPlayersMin: Int
     description: String
     expansions: [Game!]!
-    id: Int!
+    id: ID!
     images: [Image!]!
     isCoop: Boolean
     isExpansionOf: Game
@@ -41,20 +41,20 @@ type Game {
 
 type Image {
     games: [Game!]!
-    id: Int!
+    id: ID!
     link: String!
     name: String!
 }
 
 type Mechanism {
     games: [Game!]!
-    id: Int!
+    id: ID!
     name: String!
 }
 
 type Mood {
     games: [Game!]!
-    id: Float!
+    id: ID!
     name: String!
 }
 
@@ -70,16 +70,16 @@ type Mutation {
     createSession(sessionData: SessionInput!): Session!
     createUniverse(universeData: UniverseInput!): Universe!
     createWishlist(wishlistData: WishlistInput!): Wishlist!
-    deleteCategory(id: Int!): Boolean!
-    deleteGame(id: Int!): Boolean!
-    deleteImage(id: Int!): Boolean!
-    deleteMechanism(id: Int!): Boolean!
-    deleteMood(id: Int!): Boolean!
-    deletePlayer(id: Int!): Boolean!
-    deletePlaytime(id: Int!): Boolean!
-    deleteRating(id: Int!): Boolean!
-    deleteSession(id: Int!): Boolean!
-    deleteUniverse(id: Int!): Boolean!
+    deleteCategory(id: ID!): Boolean!
+    deleteGame(id: ID!): Boolean!
+    deleteImage(id: ID!): Boolean!
+    deleteMechanism(id: ID!): Boolean!
+    deleteMood(id: ID!): Boolean!
+    deletePlayer(id: ID!): Boolean!
+    deletePlaytime(id: ID!): Boolean!
+    deleteRating(id: ID!): Boolean!
+    deleteSession(id: ID!): Boolean!
+    deleteUniverse(id: ID!): Boolean!
     deleteWishlist(id: Int!): Boolean!
     updateCategory(categoryData: UpdateCategoryInput!): Category!
     updateGame(gameData: UpdateGameInput!): Game!
@@ -95,7 +95,7 @@ type Mutation {
 }
 
 type Player {
-    id: Int!
+    id: ID!
     name: String!
     ratings: [Rating!]!
     sessionsPlayed: [Session!]!
@@ -104,47 +104,47 @@ type Player {
 
 type Playtime {
     end: DateTime!
-    id: Int!
+    id: ID!
     session: Session!
     start: DateTime!
 }
 
 type Query {
     categories: [Category!]!
-    category(id: Int!): Category!
-    game(id: Int!): Game!
+    category(id: ID!): Category!
+    game(id: ID!): Game!
     games(gameData: InputCollection!): CollectionData!
-    image(id: Int!): Image!
+    image(id: ID!): Image!
     images: [Image!]!
-    mechanism(id: Int!): Mechanism!
+    mechanism(id: ID!): Mechanism!
     mechanisms: [Mechanism!]!
-    mood(id: Int!): Mood!
+    mood(id: ID!): Mood!
     moods: [Mood!]!
-    player(id: Int!): Player!
+    player(id: ID!): Player!
     players: [Player!]!
-    playtime(id: Int!): Playtime!
+    playtime(id: ID!): Playtime!
     playtimes: [Playtime!]!
-    rating(id: Int!): Rating!
+    rating(id: ID!): Rating!
     ratings: [Rating!]!
-    session(id: Int!): Session!
+    session(id: ID!): Session!
     sessions: [Session!]!
-    universe(id: Int!): Universe!
+    universe(id: ID!): Universe!
     universes: [Universe!]!
-    user(id: Int): User!
+    user(id: ID): User!
     wishlist(id: Int!): Wishlist!
     wishlists: [Wishlist!]!
 }
 
 type Rating {
     game: Game!
-    id: Int!
+    id: ID!
     player: Player!
     rating: Int
 }
 
 type Session {
     game: Game
-    id: Int!
+    id: ID!
     players: [Player!]!
     playtimes: [Playtime!]!
     winners: [Player!]!
@@ -152,52 +152,52 @@ type Session {
 
 type Universe {
     games: [Game!]!
-    id: Int!
+    id: ID!
     name: String!
 }
 
 type User {
-    id: Int!
+    id: ID!
     name: String!
     password: String!
 }
 
 type Wishlist {
-    id: Int!
+    id: ID!
     link: String!
     name: String!
     price: Int!
 }
 
 input CategoryInput {
-    games: [Int!]
-    id: Int
+    games: [ID!]
+    id: ID
     name: String!
 }
 
 input GameInput {
-    categories: [Int!]
+    categories: [ID!]
     complexity: Int
     countPlayersMax: Int
     countPlayersMin: Int
     description: String
-    expansions: [Int!]
-    id: Int
+    expansions: [ID!]
+    id: ID
     isCoop: Boolean
-    isExpansionOf: Int
-    mechanisms: [Int!]
+    isExpansionOf: ID
+    mechanisms: [ID!]
     minutesPlaytimeMax: Int
     minutesPlaytimeMin: Int
-    moods: [Int!]
+    moods: [ID!]
     name: String!
-    playableWith: [Int!]
+    playableWith: [ID!]
     size: Int
-    universes: [Int!]
+    universes: [ID!]
 }
 
 input ImageInput {
-    games: [Int!]
-    id: Int
+    games: [ID!]
+    id: ID
     link: String!
     name: String!
 }
@@ -210,127 +210,127 @@ input InputCollection {
 }
 
 input MechanismInput {
-    games: [Int!]
-    id: Int
+    games: [ID!]
+    id: ID
     name: String!
 }
 
 input MoodInput {
-    games: [Int!]
-    id: Int
+    games: [ID!]
+    id: ID
     name: String!
 }
 
 input PlayerInput {
-    games: [Int!]
-    id: Int
+    games: [ID!]
+    id: ID
     name: String!
 }
 
 input PlaytimeInput {
     end: DateTime!
-    id: Int
-    session: Int!
+    id: ID
+    session: ID!
     start: DateTime!
 }
 
 input RatingInput {
-    game: Int!
-    id: Int
-    player: Int!
-    rating: Float!
+    game: ID!
+    id: ID
+    player: ID!
+    rating: Int!
 }
 
 input SessionInput {
-    game: Int
-    id: Int
-    players: [Int!]
-    playtimes: [Int!]
-    winners: [Int!]
+    game: ID
+    id: ID
+    players: [ID!]
+    playtimes: [ID!]
+    winners: [ID!]
 }
 
 input UniverseInput {
-    games: [Int!]
-    id: Int
+    games: [ID!]
+    id: ID
     name: String!
 }
 
 input UpdateCategoryInput {
-    games: [Int!]
-    id: Int!
+    games: [ID!]
+    id: ID!
     name: String
 }
 
 input UpdateGameInput {
-    categories: [Int!]
+    categories: [ID!]
     complexity: Int
     countPlayersMax: Int
     countPlayersMin: Int
     description: String
-    expansions: [Int!]
-    id: Int!
+    expansions: [ID!]
+    id: ID!
     isCoop: Boolean
-    isExpansionOf: Int
-    mechanisms: [Int!]
+    isExpansionOf: ID
+    mechanisms: [ID!]
     minutesPlaytimeMax: Int
     minutesPlaytimeMin: Int
-    moods: [Int!]
+    moods: [ID!]
     name: String
-    playableWith: [Int!]
+    playableWith: [ID!]
     size: Int
-    universes: [Int!]
+    universes: [ID!]
 }
 
 input UpdateImageInput {
-    games: [Int!]
-    id: Int!
+    games: [ID!]
+    id: ID!
     link: String
     name: String
 }
 
 input UpdateMechanismInput {
-    games: [Int!]
-    id: Int!
+    games: [ID!]
+    id: ID!
     name: String
 }
 
 input UpdateMoodInput {
-    games: [Int!]
-    id: Int!
+    games: [ID!]
+    id: ID!
     name: String
 }
 
 input UpdatePlayerInput {
-    games: [Int!]
-    id: Int!
+    games: [ID!]
+    id: ID!
     name: String
 }
 
 input UpdatePlaytimeInput {
     end: DateTime
-    id: Int!
-    session: Int
+    id: ID!
+    session: ID
     start: DateTime
 }
 
 input UpdateRatingInput {
-    game: Int
-    id: Int!
-    player: Int
-    rating: Float
+    game: ID
+    id: ID!
+    player: ID
+    rating: Int
 }
 
 input UpdateSessionInput {
-    game: Int
-    id: Int!
-    players: [Int!]
-    playtimes: [Int!]
-    winners: [Int!]
+    game: ID
+    id: ID!
+    players: [ID!]
+    playtimes: [ID!]
+    winners: [ID!]
 }
 
 input UpdateUniverseInput {
-    games: [Int!]
-    id: Int!
+    games: [ID!]
+    id: ID!
     name: String
 }
 

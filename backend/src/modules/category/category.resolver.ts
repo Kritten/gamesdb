@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Category } from './category.entity';
@@ -24,7 +24,7 @@ export class CategoryResolver extends EntityResolver {
 
   @Query(() => Category)
   @UseGuards(GqlAuthGuard)
-  async category(@Args({ name: 'id', type: () => Int }) id: number) {
+  async category(@Args({ name: 'id', type: () => ID }) id: number) {
     return this.categoryService.findOne(id);
   }
 
@@ -63,7 +63,7 @@ export class CategoryResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteCategory(@Args({ name: 'id', type: () => Int }) id: number) {
+  async deleteCategory(@Args({ name: 'id', type: () => ID }) id: number) {
     return await this.categoryService.delete(id);
   }
 }

@@ -18,6 +18,7 @@
 <script lang="ts">
 import { ServiceGame } from '@/modules/game/game.service';
 import ListItemGame from '@/modules/game/list/list-item-game.vue';
+import { useStore } from 'vuex';
 
 export default {
   name: 'ListGames',
@@ -27,6 +28,7 @@ export default {
 
     return {
       useCollection,
+      store: useStore(),
     };
   },
 };

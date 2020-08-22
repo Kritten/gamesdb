@@ -12,7 +12,7 @@ import { Mechanism } from '../mechanism/mechanism.entity';
 import { Mood } from '../mood/mood.entity';
 import { Universe } from '../universe/universe.entity';
 import { Session } from '../session/session.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { Rating } from '../rating/rating.entity';
 import { Image } from '../image/image.entity';
 
@@ -20,7 +20,7 @@ import { Image } from '../image/image.entity';
 @ObjectType()
 export class Game {
   @PrimaryGeneratedColumn()
-  @Field(() => Int)
+  @Field(() => ID)
   id: number;
 
   @Column({

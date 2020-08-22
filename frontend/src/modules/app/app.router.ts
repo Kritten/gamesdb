@@ -2,7 +2,8 @@ import { RouteConfig, createRouter, createWebHistory } from 'vue-router';
 import Login from '@/modules/app/login/login';
 import ViewApp from '@/modules/app/app.view';
 import ViewDashboard from '@/modules/app/dashboard/dashboard.view';
-import ViewGame from '@/modules/game/game.view';
+import ViewGames from '@/modules/game/views/games.view.vue';
+import ViewGame from '@/modules/game/views/game.view.vue';
 import ViewCategory from '@/modules/category/category.view';
 import ViewMechanism from '@/modules/mechanism/mechanism.view';
 import ViewMood from '@/modules/mood/mood.view';
@@ -29,6 +30,11 @@ const routes: Array<RouteConfig> = [
       {
         path: 'games',
         name: 'games',
+        component: ViewGames,
+      },
+      {
+        path: 'games/:id',
+        name: 'game',
         component: ViewGame,
       },
       {

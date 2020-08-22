@@ -1,6 +1,5 @@
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
@@ -9,14 +8,14 @@ import {
 } from 'typeorm';
 import { Player } from '../player/player.entity';
 import { Game } from '../game/game.entity';
-import { Field, GraphQLISODateTime, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Playtime } from '../playtime/playtime.entity';
 
 @Entity()
 @ObjectType()
 export class Session {
   @PrimaryGeneratedColumn()
-  @Field(() => Int)
+  @Field(() => ID)
   id: number;
 
   @ManyToMany(

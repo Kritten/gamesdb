@@ -1,20 +1,20 @@
-import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
+import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 
 @InputType()
 export class PlaytimeInput {
-  @Field(() => Int)
+  @Field(() => ID)
   id?: number;
 
   start: Date;
 
   end: Date;
 
-  @Field(() => Int)
+  @Field(() => ID)
   session: number;
 }
 
 @InputType()
 export class UpdatePlaytimeInput extends PartialType(PlaytimeInput) {
-  @Field(() => Int)
+  @Field(() => ID)
   id: number;
 }
