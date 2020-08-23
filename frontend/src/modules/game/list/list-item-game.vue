@@ -1,7 +1,9 @@
 <template>
   <tr>
     <td>
-      {{ game.name }}
+      <router-link :to="{name: 'game', params: {id: game.id}}">
+        {{ game.name }}
+      </router-link>
     </td>
     <!--    <td>-->
     <!--      <delete-game :game="game" />-->
@@ -13,7 +15,6 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 import { Game } from '@/modules/game/game.model';
 
 export default {
@@ -23,13 +24,6 @@ export default {
       required: true,
       type: Game,
     },
-  },
-  setup() {
-    const openDialog = ref(false);
-
-    return {
-      openDialog,
-    };
   },
 };
 </script>

@@ -250,8 +250,13 @@ input SessionInput {
     game: ID
     id: ID
     players: [ID!]
-    playtimes: [ID!]
+    playtimes: [SessionPlaytimeInput!]
     winners: [ID!]
+}
+
+input SessionPlaytimeInput {
+    end: DateTime!
+    start: DateTime!
 }
 
 input UniverseInput {
@@ -329,7 +334,7 @@ input UpdateSessionInput {
     game: ID
     id: ID!
     players: [ID!]
-    playtimes: [ID!]
+    playtimes: [SessionPlaytimeInput!]
     winners: [ID!]
 }
 

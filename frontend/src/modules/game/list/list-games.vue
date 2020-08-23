@@ -1,15 +1,15 @@
 <template>
-  {{ useCollection.countItems.value }} Spiele
+  {{ collection.countItems.value }} Spiele
   <table>
     <list-item-game
-      v-for="game in useCollection.items.value"
+      v-for="game in collection.items.value"
       :key="game.id"
       :game="game"
     />
   </table>
   <button
-    v-if="useCollection.hasNextPage.value"
-    @click="useCollection.loadNextItems"
+    v-if="collection.hasNextPage.value"
+    @click="collection.loadNextItems"
   >
     Mehr laden
   </button>
@@ -19,15 +19,17 @@
 import { ServiceGame } from '@/modules/game/game.service';
 import ListItemGame from '@/modules/game/list/list-item-game.vue';
 import { useStore } from 'vuex';
+import { useCollection } from '@/modules/app/utilities/collection';
+import { Game } from '@/modules/game/game.model';
 
 export default {
   name: 'ListGames',
   components: { ListItemGame },
   setup() {
-    const useCollection = ServiceGame.useCollection();
+    const collection = useCollection(Game, ServiceGame);
 
     return {
-      useCollection,
+      collection,
       store: useStore(),
     };
   },

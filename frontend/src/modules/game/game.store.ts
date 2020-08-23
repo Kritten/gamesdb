@@ -1,17 +1,17 @@
 import { Game } from '@/modules/game/game.model';
 
 interface StateInterface {
-  games: Game[] | null;
+  games: { [key: number]: Game };
 }
 
 export const moduleGame = {
   namespaced: true,
   state: {
-    games: null,
+    games: {},
   },
   mutations: {
-    setGames(state: StateInterface, games: Game[]) {
-      state.games = games;
+    setGamesIfNotExisting(state: StateInterface, games: { [key: number]: Game }) {
+      Object.assign(state.games, games);
     },
   },
 };
