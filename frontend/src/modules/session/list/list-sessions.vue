@@ -1,5 +1,5 @@
 <template>
-  {{ collection.countItems.value }} Sessions
+  {{ collection.countItems.value }} {{ t('session.label', collection.countItems.value) }}
   <table>
     <list-item-session
       v-for="session in collection.items.value"
@@ -21,14 +21,17 @@ import { ServiceSession } from '@/modules/session/session.service';
 import ListItemSession from '@/modules/session/list/list-item-session.vue';
 import { useCollection } from '@/modules/app/utilities/collection';
 import { Session } from '@/modules/session/session.model';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'ListSession',
   components: { ListItemSession },
   setup() {
+    const { t } = useI18n();
     const collection = useCollection(Session, ServiceSession, 'id');
 
     return {
+      t,
       collection,
       store: useStore(),
     };
