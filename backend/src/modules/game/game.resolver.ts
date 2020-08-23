@@ -8,11 +8,11 @@ import { CategoryService } from '../category/category.service';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { MechanismService } from '../mechanism/mechanism.service';
 import { MoodService } from '../mood/mood.service';
-import { SessionService } from '../session/session.service';
+import { SessionEntityService } from '../session/session.entity.service';
 import { UniverseService } from '../universe/universe.service';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { GameCollectionService } from './game.collection.service';
-import { CollectionData } from '../../utilities/collection/collection.types';
+import { GameCollectionData } from './game.collectionData';
 
 @Resolver(() => Game)
 export class GameResolver extends EntityResolver {
@@ -23,12 +23,12 @@ export class GameResolver extends EntityResolver {
     private universeService: UniverseService,
     private mechanismService: MechanismService,
     private moodService: MoodService,
-    private sessionService: SessionService,
+    private sessionService: SessionEntityService,
   ) {
     super();
   }
 
-  @Query(() => CollectionData)
+  @Query(() => GameCollectionData)
   @UseGuards(GqlAuthGuard)
   async games(@Args('gameData') data: InputCollection) {
     return this.gameCollectionService.loadPage(data);

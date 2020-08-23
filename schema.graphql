@@ -11,11 +11,6 @@ type Category {
     name: String!
 }
 
-type CollectionData {
-    count: Int!
-    items: [Game!]!
-}
-
 type Game {
     categories: [Category!]!
     complexity: Int
@@ -37,6 +32,11 @@ type Game {
     sessions: [Session!]!
     size: Int
     universes: [Universe!]!
+}
+
+type GameCollectionData {
+    count: Int!
+    items: [Game!]!
 }
 
 type Image {
@@ -113,7 +113,7 @@ type Query {
     categories: [Category!]!
     category(id: ID!): Category!
     game(id: ID!): Game!
-    games(gameData: InputCollection!): CollectionData!
+    games(gameData: InputCollection!): GameCollectionData!
     image(id: ID!): Image!
     images: [Image!]!
     mechanism(id: ID!): Mechanism!
@@ -127,7 +127,7 @@ type Query {
     rating(id: ID!): Rating!
     ratings: [Rating!]!
     session(id: ID!): Session!
-    sessions: [Session!]!
+    sessions(sessionData: InputCollection!): SessionCollectionData!
     universe(id: ID!): Universe!
     universes: [Universe!]!
     user(id: ID): User!
@@ -148,6 +148,11 @@ type Session {
     players: [Player!]!
     playtimes: [Playtime!]!
     winners: [Player!]!
+}
+
+type SessionCollectionData {
+    count: Int!
+    items: [Session!]!
 }
 
 type Universe {

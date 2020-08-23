@@ -1,6 +1,12 @@
 import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 
 @InputType()
+class SessionPlaytimeInput {
+  start: Date;
+  end: Date;
+}
+
+@InputType()
 export class SessionInput {
   @Field(() => ID)
   id?: number;
@@ -14,8 +20,8 @@ export class SessionInput {
   @Field(() => ID)
   game?: number;
 
-  @Field(() => [ID])
-  playtimes?: number[];
+  @Field(() => [SessionPlaytimeInput])
+  playtimes?: SessionPlaytimeInput[];
 }
 
 @InputType()

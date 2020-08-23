@@ -5,13 +5,13 @@ import { Player } from './player.entity';
 import { PlayerService } from './player.service';
 import { PlayerInput, UpdatePlayerInput } from './player.input';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
-import { SessionService } from '../session/session.service';
+import { SessionEntityService } from '../session/session.entity.service';
 
 @Resolver(() => Player)
 export class PlayerResolver extends EntityResolver {
   constructor(
     private playerService: PlayerService,
-    private sessionService: SessionService,
+    private sessionService: SessionEntityService,
   ) {
     super();
   }

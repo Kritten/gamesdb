@@ -5,13 +5,13 @@ import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { Playtime } from './playtime.entity';
 import { PlaytimeEntityService } from './playtime.entity.service';
 import { PlaytimeInput, UpdatePlaytimeInput } from './playtime.input';
-import { SessionService } from '../session/session.service';
+import { SessionEntityService } from '../session/session.entity.service';
 
 @Resolver(() => Playtime)
 export class PlaytimeResolver extends EntityResolver {
   constructor(
     private playtimeService: PlaytimeEntityService,
-    private sessionService: SessionService,
+    private sessionService: SessionEntityService,
   ) {
     super();
   }

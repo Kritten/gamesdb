@@ -2,10 +2,11 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Session } from './session.entity';
 import { SessionResolver } from './session.resolver';
-import { SessionService } from './session.service';
+import { SessionEntityService } from './session.entity.service';
 import { GameModule } from '../game/game.module';
 import { PlayerModule } from '../player/player.module';
 import { PlaytimeModule } from '../playtime/playtime.module';
+import { SessionCollectionService } from './session.collection.service';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { PlaytimeModule } from '../playtime/playtime.module';
     forwardRef(() => PlayerModule),
     forwardRef(() => PlaytimeModule),
   ],
-  providers: [SessionResolver, SessionService],
-  exports: [SessionService],
+  providers: [SessionResolver, SessionEntityService, SessionCollectionService],
+  exports: [SessionEntityService],
 })
 export class SessionModule {}
