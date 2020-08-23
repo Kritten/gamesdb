@@ -27,10 +27,21 @@
   "player": {
     "label": "Spieler | Spieler"
   },
+  "winner": {
+    "label": "Gewinner | Gewinner"
+  },
   "image": {
     "label": "Bild | Bilder"
   },
   "universe": {
     "label": "Universum | Universen"
+  },
+  "session": {
+    "label": "Session | Sessions"
+  },
+  "playtime": {
+    "label": "Spielzeit | Spielzeiten",
+    "start": "Anfang",
+    "end": "Ende"
   }
 }
