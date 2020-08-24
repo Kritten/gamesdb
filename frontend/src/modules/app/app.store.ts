@@ -7,6 +7,7 @@ import { modulePlayer } from '@/modules/player/player.store';
 import { moduleImage } from '@/modules/image/image.store';
 import { moduleUniverse } from '@/modules/universe/universe.store';
 import { moduleGame } from '@/modules/game/game.store';
+import { moduleSession } from '@/modules/session/session.store';
 
 export const store = createStore({
   modules: {
@@ -17,6 +18,7 @@ export const store = createStore({
     moduleImage,
     moduleUniverse,
     moduleGame,
+    moduleSession,
   },
   state: {
     isInitialized: false,

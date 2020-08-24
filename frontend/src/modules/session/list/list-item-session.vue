@@ -2,10 +2,15 @@
   <tr>
     <td>
       {{ session.id }}
-      {{ session.game }}
-      {{ session.players }}
-      {{ session.winners }}
-      {{ session.playtimes }}
+    </td>
+    <td>
+      {{ session.players.map(player => player.name).join(', ') }}
+    </td>
+    <td>
+      {{ session.winners.map(player => player.name).join(', ') }}
+    </td>
+    <td>
+      {{ session.playtimes.map(playtime => `${playtime.start} - ${playtime.end}`).join(', ') }}
     </td>
   </tr>
 </template>

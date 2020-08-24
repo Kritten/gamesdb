@@ -1,6 +1,12 @@
 <template>
   {{ collection.countItems.value }} {{ t('session.label', collection.countItems.value) }}
-  <table>
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Spieler</th>
+      <th>Gewinner</th>
+      <th>Spielzeiten</th>
+    </tr>
     <list-item-session
       v-for="session in collection.items.value"
       :key="session.id"

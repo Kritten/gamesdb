@@ -68,12 +68,12 @@ export class ServiceSession {
       },
     });
 
-    const entities: Entity[] = response.data.sessions.items.map((session: Session) =>
-      Session.parseFromServer(session),
+    const entities: Entity[] = await Promise.all(
+      response.data.sessions.items.map((session: Session) => Session.parseFromServer(session)),
     );
 
     store.commit(
-      'moduleSession/setSessionIfNotExisting',
+      'moduleSession/setSessionsIfNotExisting',
       entities.reduce((obj, entity) => {
         obj[entity.id as ID] = entity;
         return obj;
