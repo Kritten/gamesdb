@@ -8,10 +8,10 @@ import { GameEntityService } from '../game/game.entity.service';
 import { PlayerService } from '../player/player.service';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { PlaytimeEntityService } from '../playtime/playtime.entity.service';
-import { SessionCollectionService } from './session.collection.service';
-import { InputCollection } from '../../utilities/collection/collection.input';
-import { SessionCollectionData } from './session.collectionData';
+import { SessionCollectionService } from './collection/session.collection.service';
+import { SessionCollectionData } from './collection/session.collectionData';
 import { Playtime } from '../playtime/playtime.entity';
+import { SessionCollectionInput } from './collection/session.collectionInput';
 
 @Resolver(() => Session)
 export class SessionResolver extends EntityResolver {
@@ -27,8 +27,8 @@ export class SessionResolver extends EntityResolver {
 
   @Query(() => SessionCollectionData)
   @UseGuards(GqlAuthGuard)
-  async sessions(@Args('sessionData') data: InputCollection) {
-    return this.sessionCollectionService.loadPage(data);
+  async sessions(@Args('sessionData') data: SessionCollectionInput) {
+    return this.sessionCollectionService.loadPage(data.collection);
   }
 
   @Query(() => Session)

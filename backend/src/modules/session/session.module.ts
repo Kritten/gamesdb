@@ -6,7 +6,7 @@ import { SessionEntityService } from './session.entity.service';
 import { GameModule } from '../game/game.module';
 import { PlayerModule } from '../player/player.module';
 import { PlaytimeModule } from '../playtime/playtime.module';
-import { SessionCollectionService } from './session.collection.service';
+import { SessionCollectionService } from './collection/session.collection.service';
 
 @Module({
   imports: [
