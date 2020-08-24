@@ -2,20 +2,23 @@ import { computed, ref } from 'vue';
 import { Game } from '@/modules/game/game.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 
-export function useCollection(entity: Entity, service: any, sortByPassed: string = 'name') {
+export function useCollection(
+  entity: Entity,
+  service: any,
+  {
+    page = 1,
+    countPerPage = 10,
+    sortBy = 'name',
+    sortDesc = false,
+  }: { page?: number; countPerPage?: number; sortBy?: string; sortDesc?: boolean } = {},
+) {
   const items = ref<typeof entity[]>([]);
   const countItems = ref(-1);
-  let page = 0;
-  let countPerPage = 10;
-  let sortBy = sortByPassed;
-  let sortDesc = false;
 
   const hasNextPage = computed(() => countItems.value !== items.value.length);
 
-  const loadNextItems = () => {
-    page += 1;
-
-    service
+  const loadNextItems = async () => {
+    return service
       .loadPage({
         page,
         count: countPerPage,
@@ -25,10 +28,12 @@ export function useCollection(entity: Entity, service: any, sortByPassed: string
       .then(({ count, items: itemsLocal }: { count: number; items: Game[] }) => {
         countItems.value = count;
         items.value = items.value.concat(itemsLocal);
+        //TODO add isLoading variable to prevent multiple loadings
+        page += 1;
       });
   };
 
-  loadNextItems();
+  loadNextItems().then();
 
   return {
     items,

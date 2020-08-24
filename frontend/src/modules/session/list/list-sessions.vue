@@ -34,7 +34,7 @@ export default {
   components: { ListItemSession },
   setup() {
     const { t } = useI18n();
-    const collection = useCollection(Session, ServiceSession, 'id');
+    const collection = useCollection(Session, ServiceSession, { sortBy: 'id' });
 
     return {
       t,
