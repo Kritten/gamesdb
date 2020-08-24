@@ -34,7 +34,7 @@ export const mutationUpdateMechanism = gql`
  * Delete
  */
 export const mutationDeleteMechanism = gql`
-  mutation deleteMechanism($id: Int!) {
+  mutation deleteMechanism($id: ID!) {
     deleteMechanism(id: $id)
   }
 `;

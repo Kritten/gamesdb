@@ -34,7 +34,7 @@ export const mutationUpdateRating = gql`
  * Delete
  */
 export const mutationDeleteRating = gql`
-  mutation deleteRating($id: Int!) {
+  mutation deleteRating($id: ID!) {
     deleteRating(id: $id)
   }
 `;
