@@ -6,7 +6,7 @@
 
     <h2>Sessions</h2>
     <create-session :game="game" />
-    <list-session />
+    <list-session :game="game" />
   </template>
 </template>
 

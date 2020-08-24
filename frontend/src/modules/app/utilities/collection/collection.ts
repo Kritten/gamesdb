@@ -1,16 +1,24 @@
 import { computed, ref } from 'vue';
 import { Game } from '@/modules/game/game.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
+import { ServiceCollectionStatic } from '@/modules/app/utilities/collection/collection.types';
 
 export function useCollection(
   entity: Entity,
-  service: any,
+  service: ServiceCollectionStatic,
   {
     page = 1,
     countPerPage = 10,
     sortBy = 'name',
     sortDesc = false,
-  }: { page?: number; countPerPage?: number; sortBy?: string; sortDesc?: boolean } = {},
+    params = {},
+  }: {
+    page?: number;
+    countPerPage?: number;
+    sortBy?: string;
+    sortDesc?: boolean;
+    params?: { [key: string]: any };
+  } = {},
 ) {
   const items = ref<typeof entity[]>([]);
   const countItems = ref(-1);
@@ -24,6 +32,7 @@ export function useCollection(
         count: countPerPage,
         sortBy,
         sortDesc,
+        params,
       })
       .then(({ count, items: itemsLocal }: { count: number; items: Game[] }) => {
         countItems.value = count;

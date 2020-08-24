@@ -12,6 +12,7 @@ import { SessionCollectionService } from './collection/session.collection.servic
 import { SessionCollectionData } from './collection/session.collectionData';
 import { Playtime } from '../playtime/playtime.entity';
 import { SessionCollectionInput } from './collection/session.collectionInput';
+import { FindOneOptions } from 'typeorm/index';
 
 @Resolver(() => Session)
 export class SessionResolver extends EntityResolver {
@@ -28,7 +29,12 @@ export class SessionResolver extends EntityResolver {
   @Query(() => SessionCollectionData)
   @UseGuards(GqlAuthGuard)
   async sessions(@Args('sessionData') data: SessionCollectionInput) {
-    return this.sessionCollectionService.loadPage(data.collection);
+    const options: FindOneOptions<Session> = {};
+    if (data.game !== undefined) {
+      options.where = [{ game: data.game }];
+    }
+
+    return this.sessionCollectionService.loadPage(data.collection, options);
   }
 
   @Query(() => Session)

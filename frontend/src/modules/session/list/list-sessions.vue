@@ -25,16 +25,23 @@
 import { useStore } from 'vuex';
 import { ServiceSession } from '@/modules/session/session.service';
 import ListItemSession from '@/modules/session/list/list-item-session.vue';
-import { useCollection } from '@/modules/app/utilities/collection';
+import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Session } from '@/modules/session/session.model';
 import { useI18n } from 'vue-i18n';
+import { Game } from '@/modules/game/game.model';
 
 export default {
   name: 'ListSession',
   components: { ListItemSession },
-  setup() {
+  props: {
+    game: {
+      type: Game,
+      required: true,
+    },
+  },
+  setup(context) {
     const { t } = useI18n();
-    const collection = useCollection(Session, ServiceSession, { sortBy: 'id' });
+    const collection = useCollection(Session, ServiceSession, { sortBy: 'id', params: { game: context.game.id } });
 
     return {
       t,

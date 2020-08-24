@@ -1,12 +1,16 @@
 import { apolloClient } from '@/vue-apollo';
 import { queryGame, queryPageGame } from '@/modules/game/graphql/game.graphql';
 import { Game } from '@/modules/game/game.model';
-import { ref, computed } from 'vue';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { store } from '@/modules/app/app.store';
 import { ID } from '@/modules/app/utilities/entity/entity.types';
+import {
+  ServiceCollectionLoadPageParameters,
+  ServiceCollectionLoadPageReturn,
+  ServiceCollectionStatic,
+} from '@/modules/app/utilities/collection/collection.types';
 
-export class ServiceGame {
+export const ServiceGame: ServiceCollectionStatic = class {
   static async loadGame(id: ID) {
     const response = await apolloClient.query({
       query: queryGame,
@@ -29,12 +33,8 @@ export class ServiceGame {
     count,
     sortBy,
     sortDesc,
-  }: {
-    page: number;
-    count: number;
-    sortBy: string;
-    sortDesc: boolean;
-  }) {
+    params,
+  }: ServiceCollectionLoadPageParameters): ServiceCollectionLoadPageReturn {
     const response = await apolloClient.query({
       query: queryPageGame,
       variables: {
@@ -42,6 +42,7 @@ export class ServiceGame {
         count,
         sortBy,
         sortDesc,
+        ...params,
       },
     });
 
@@ -62,4 +63,4 @@ export class ServiceGame {
       items: entities,
     };
   }
-}
+};

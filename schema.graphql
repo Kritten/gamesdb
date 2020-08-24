@@ -127,7 +127,7 @@ type Query {
     rating(id: ID!): Rating!
     ratings: [Rating!]!
     session(id: ID!): Session!
-    sessions(sessionData: InputCollection!): SessionCollectionData!
+    sessions(sessionData: SessionCollectionInput!): SessionCollectionData!
     universe(id: ID!): Universe!
     universes: [Universe!]!
     user(id: ID): User!
@@ -244,6 +244,11 @@ input RatingInput {
     id: ID
     player: ID!
     rating: Int!
+}
+
+input SessionCollectionInput {
+    collection: InputCollection!
+    game: ID
 }
 
 input SessionInput {

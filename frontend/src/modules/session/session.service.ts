@@ -5,11 +5,16 @@ import { Session } from '@/modules/session/session.model';
 import { mutationCreateSession, queryPageSession } from '@/modules/session/graphql/session.graphql';
 import { Playtime } from '@/modules/playtime/playtime.model';
 import { Game } from '@/modules/game/game.model';
-import { queryPageGame } from '@/modules/game/graphql/game.graphql';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { ID } from '@/modules/app/utilities/entity/entity.types';
+import { queue } from '@/queue';
+import {
+  ServiceCollectionStatic,
+  ServiceCollectionLoadPageParameters,
+  ServiceCollectionLoadPageReturn,
+} from '@/modules/app/utilities/collection/collection.types';
 
-export class ServiceSession {
+export const ServiceSession: ServiceCollectionStatic = class {
   static useCreate(game: Game) {
     const session = ref(new Session({ game: game.id }));
 
@@ -52,12 +57,8 @@ export class ServiceSession {
     count,
     sortBy,
     sortDesc,
-  }: {
-    page: number;
-    count: number;
-    sortBy: string;
-    sortDesc: boolean;
-  }) {
+    params,
+  }: ServiceCollectionLoadPageParameters): ServiceCollectionLoadPageReturn {
     const response = await apolloClient.query({
       query: queryPageSession,
       variables: {
@@ -65,6 +66,7 @@ export class ServiceSession {
         count,
         sortBy,
         sortDesc,
+        ...params,
       },
     });
 
@@ -85,4 +87,4 @@ export class ServiceSession {
       items: entities,
     };
   }
-}
+};
