@@ -2,18 +2,23 @@ import { Entity, getManager } from 'typeorm/index';
 import { Injectable, NotFoundException, Optional } from '@nestjs/common';
 import { merge } from 'lodash';
 import { BaseEntity } from '../types';
+import { cloneDeep } from 'lodash';
 
 @Injectable()
 export class EntityService<T extends BaseEntity> {
   private readonly entityClass: { new (): T };
-  private readonly optionsDefault: {};
+  private readonly _optionsDefaultPassed: {};
 
   constructor(
     @Optional() cls: { new (): T },
     @Optional() options?: { relations: string[] },
   ) {
     this.entityClass = cls;
-    this.optionsDefault = options;
+    this._optionsDefaultPassed = options;
+  }
+
+  private get optionsDefault() {
+    return cloneDeep(this._optionsDefaultPassed);
   }
 
   async findOne(id: number, options: {} = {}): Promise<T> {
