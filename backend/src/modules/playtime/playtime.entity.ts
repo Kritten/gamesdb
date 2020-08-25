@@ -25,6 +25,7 @@ export class Playtime {
   @ManyToOne(
     () => Session,
     session => session.playtimes,
+    { onDelete: 'CASCADE' },
   )
   @Field(() => Session)
   session: Session;
