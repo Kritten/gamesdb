@@ -2,19 +2,23 @@ import { ref } from 'vue';
 import { apolloClient } from '@/vue-apollo';
 import { store } from '@/modules/app/app.store';
 import { Session } from '@/modules/session/session.model';
-import { mutationCreateSession, queryPageSession } from '@/modules/session/graphql/session.graphql';
+import {
+  mutationCreateSession,
+  mutationDeleteSession,
+  queryPageSession,
+} from '@/modules/session/graphql/session.graphql';
 import { Playtime } from '@/modules/playtime/playtime.model';
 import { Game } from '@/modules/game/game.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { ID } from '@/modules/app/utilities/entity/entity.types';
 import { queue } from '@/queue';
 import {
-  ServiceCollectionStatic,
   ServiceCollectionLoadPageParameters,
   ServiceCollectionLoadPageReturn,
 } from '@/modules/app/utilities/collection/collection.types';
+import { ServiceSessionStatic } from '@/modules/session/session.types';
 
-export const ServiceSession: ServiceCollectionStatic = class {
+export const ServiceSession: ServiceSessionStatic = class {
   static useCreate(game: Game) {
     const session = ref(new Session({ game: game.id }));
 
@@ -40,6 +44,12 @@ export const ServiceSession: ServiceCollectionStatic = class {
         await ServiceSession.create(session.value);
         session.value = new Session();
       },
+    };
+  }
+
+  static useDelete() {
+    return {
+      delete: (session: Session) => ServiceSession.delete(session),
     };
   }
 
@@ -88,5 +98,16 @@ export const ServiceSession: ServiceCollectionStatic = class {
       count: response.data.sessions.count,
       items: entities,
     };
+  }
+
+  static async delete(session: Session) {
+    await apolloClient.mutate({
+      mutation: mutationDeleteSession,
+      variables: {
+        id: session.id,
+      },
+    });
+
+    queue.notify('deletedSession', session);
   }
 };

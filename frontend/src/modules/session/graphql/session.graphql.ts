@@ -37,3 +37,11 @@ export const mutationCreateSession = gql`
   }
   ${fragments.session}
 `;
+/**
+ * Delete
+ */
+export const mutationDeleteSession = gql`
+  mutation deleteSession($id: ID!) {
+    deleteSession(id: $id)
+  }
+`;

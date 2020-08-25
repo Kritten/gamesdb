@@ -12,14 +12,19 @@
     <td>
       {{ session.playtimes.map(playtime => `${playtime.start} - ${playtime.end}`).join(', ') }}
     </td>
+    <td>
+      <delete-session :session="session" />
+    </td>
   </tr>
 </template>
 
-<script>
+<script lang="ts">
 import { Session } from '@/modules/session/session.model';
+import DeleteSession from '@/modules/session/delete/delete-session';
 
 export default {
   name: 'ListItemSession',
+  components: { DeleteSession },
   props: {
     session: {
       required: true,

@@ -6,6 +6,7 @@
       <th>Spieler</th>
       <th>Gewinner</th>
       <th>Spielzeiten</th>
+      <th />
     </tr>
     <list-item-session
       v-for="session in collection.items.value"
@@ -44,9 +45,11 @@ export default {
     const { t } = useI18n();
     const collection = useCollection(Session, ServiceSession, { sortBy: 'id', params: { game: context.game.id } });
 
-    queue.listen('createdSession', () => {
-      collection.reset();
-    });
+    for (const event of ['createdSession', 'deletedSession']) {
+      queue.listen(event, () => {
+        collection.reset();
+      });
+    }
 
     return {
       t,
