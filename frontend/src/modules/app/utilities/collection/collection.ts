@@ -42,6 +42,13 @@ export function useCollection(
       });
   };
 
+  const reset = () => {
+    items.value = [];
+    countItems.value = -1;
+    page = 1;
+    loadNextItems().then();
+  };
+
   loadNextItems().then();
 
   return {
@@ -49,5 +56,6 @@ export function useCollection(
     countItems,
     hasNextPage,
     loadNextItems,
+    reset,
   };
 }

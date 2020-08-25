@@ -1,21 +1,30 @@
-import ApolloClient from 'apollo-boost';
-import VueApollo from 'vue-apollo';
 import { queue } from '@/queue';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client/core';
+import { onError } from '@apollo/client/link/error';
 
 const httpEndpoint =
   `${process.env.VUE_APP_API_ENDPOINT}/graphql` || 'http://localhost:4000/graphql';
 
-// const link = onError(error => {
-//   if (error.graphQLErrors[0].message === "PermissionDenied") {
-//     queue.notify("graphqlError");
-//   }
+// const httpLink = createHttpLink({
+//   // You should use an absolute URL here
+//   uri: httpEndpoint,
 // });
+
+const link = onError(({ graphQLErrors, networkError }) => {
+  console.warn(graphQLErrors, 'graphQLErrors');
+  console.warn(networkError, 'networkError');
+  if (graphQLErrors !== undefined && graphQLErrors[0].message === 'Forbidden resource') {
+    queue.notify('graphqlError');
+  }
+});
 
 export const apolloClient = new ApolloClient({
   // You should use an absolute URL here
-  uri: httpEndpoint,
-  onError(error) {
-    queue.notify('graphqlError', error.graphQLErrors);
+  // uri: httpEndpoint,
+  cache: new InMemoryCache(),
+  link: ApolloLink.from([link, new HttpLink({ uri: httpEndpoint })]),
+  defaultOptions: {
+    query: { fetchPolicy: 'network-only' },
   },
 });
 

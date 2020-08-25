@@ -29,6 +29,7 @@ import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Session } from '@/modules/session/session.model';
 import { useI18n } from 'vue-i18n';
 import { Game } from '@/modules/game/game.model';
+import { queue } from '@/queue';
 
 export default {
   name: 'ListSession',
@@ -42,6 +43,10 @@ export default {
   setup(context) {
     const { t } = useI18n();
     const collection = useCollection(Session, ServiceSession, { sortBy: 'id', params: { game: context.game.id } });
+
+    queue.listen('createdSession', () => {
+      collection.reset();
+    });
 
     return {
       t,

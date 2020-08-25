@@ -51,6 +51,8 @@ export const ServiceSession: ServiceCollectionStatic = class {
       },
     });
     console.warn('response', response);
+
+    queue.notify('createdSession', new Session(response.data.session));
   }
   static async loadPage({
     page,
