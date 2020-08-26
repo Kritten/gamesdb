@@ -17,7 +17,7 @@ class ServiceImageClass implements ServiceEntityInterface<Image> {
     return {
       entity: image,
       create: async () => {
-        const imageNew = await ServiceImage.create(image.value);
+        const imageNew = await this.create(image.value);
         image.value = new Image();
         return imageNew;
       },
@@ -30,14 +30,14 @@ class ServiceImageClass implements ServiceEntityInterface<Image> {
     return {
       entity: image,
       update: async () => {
-        image.value = cloneDeep(await ServiceImage.update(image.value));
+        image.value = cloneDeep(await this.update(image.value));
       },
     };
   }
 
   useDelete() {
     return {
-      delete: (image: Image) => ServiceImage.delete(image),
+      delete: (image: Image) => this.delete(image),
     };
   }
 

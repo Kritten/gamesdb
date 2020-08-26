@@ -17,7 +17,7 @@ class ServiceMechanismClass implements ServiceEntityInterface<Mechanism> {
     return {
       entity: mechanism,
       create: async () => {
-        const mechanismNew = await ServiceMechanism.create(mechanism.value);
+        const mechanismNew = await this.create(mechanism.value);
         mechanism.value = new Mechanism();
         return mechanismNew;
       },
@@ -30,14 +30,14 @@ class ServiceMechanismClass implements ServiceEntityInterface<Mechanism> {
     return {
       entity: mechanism,
       update: async () => {
-        mechanism.value = cloneDeep(await ServiceMechanism.update(mechanism.value));
+        mechanism.value = cloneDeep(await this.update(mechanism.value));
       },
     };
   }
 
   useDelete() {
     return {
-      delete: (mechanism: Mechanism) => ServiceMechanism.delete(mechanism),
+      delete: (mechanism: Mechanism) => this.delete(mechanism),
     };
   }
 

@@ -17,7 +17,7 @@ class ServiceCategoryClass implements ServiceEntityInterface<Category> {
     return {
       entity: category,
       create: async () => {
-        const categoryNew = await ServiceCategory.create(category.value);
+        const categoryNew = await this.create(category.value);
         category.value = new Category();
         return categoryNew;
       },
@@ -30,14 +30,14 @@ class ServiceCategoryClass implements ServiceEntityInterface<Category> {
     return {
       entity: category,
       update: async () => {
-        category.value = cloneDeep(await ServiceCategory.update(category.value));
+        category.value = cloneDeep(await this.update(category.value));
       },
     };
   }
 
   useDelete() {
     return {
-      delete: (category: Category) => ServiceCategory.delete(category),
+      delete: (category: Category) => this.delete(category),
     };
   }
 

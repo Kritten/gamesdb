@@ -17,7 +17,7 @@ class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
     return {
       entity: universe,
       create: async () => {
-        const universeNew = await ServiceUniverse.create(universe.value);
+        const universeNew = await this.create(universe.value);
         universe.value = new Universe();
         return universeNew;
       },
@@ -30,14 +30,14 @@ class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
     return {
       entity: universe,
       update: async () => {
-        universe.value = cloneDeep(await ServiceUniverse.update(universe.value));
+        universe.value = cloneDeep(await this.update(universe.value));
       },
     };
   }
 
   useDelete() {
     return {
-      delete: (universe: Universe) => ServiceUniverse.delete(universe),
+      delete: (universe: Universe) => this.delete(universe),
     };
   }
 

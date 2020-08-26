@@ -17,7 +17,7 @@ class ServiceMoodClass implements ServiceEntityInterface<Mood> {
     return {
       entity: mood,
       create: async () => {
-        const moodNew = await ServiceMood.create(mood.value);
+        const moodNew = await this.create(mood.value);
         mood.value = new Mood();
         return moodNew;
       },
@@ -30,14 +30,14 @@ class ServiceMoodClass implements ServiceEntityInterface<Mood> {
     return {
       entity: mood,
       update: async () => {
-        mood.value = cloneDeep(await ServiceMood.update(mood.value));
+        mood.value = cloneDeep(await this.update(mood.value));
       },
     };
   }
 
   useDelete() {
     return {
-      delete: (mood: Mood) => ServiceMood.delete(mood),
+      delete: (mood: Mood) => this.delete(mood),
     };
   }
 

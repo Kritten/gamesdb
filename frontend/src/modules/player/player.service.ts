@@ -17,7 +17,7 @@ export class ServicePlayerClass implements ServiceEntityInterface<Player> {
     return {
       entity: player,
       create: async () => {
-        const playerNew = await ServicePlayer.create(player.value);
+        const playerNew = await this.create(player.value);
         player.value = new Player();
         return playerNew;
       },
@@ -30,14 +30,14 @@ export class ServicePlayerClass implements ServiceEntityInterface<Player> {
     return {
       entity: player,
       update: async () => {
-        player.value = cloneDeep(await ServicePlayer.update(player.value));
+        player.value = cloneDeep(await this.update(player.value));
       },
     };
   }
 
   useDelete() {
     return {
-      delete: (player: Player) => ServicePlayer.delete(player),
+      delete: (player: Player) => this.delete(player),
     };
   }
 

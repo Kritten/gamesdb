@@ -62,7 +62,7 @@ class ServiceSessionClass
       },
     });
 
-    const sessionNew = new Session(response.data.session);
+    const sessionNew = await Session.parseFromServer(response.data.session);
 
     queue.notify('createdSession', sessionNew);
 
