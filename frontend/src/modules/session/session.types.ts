@@ -4,7 +4,7 @@ import { Player } from '@/modules/player/player.model';
 import { Game } from '@/modules/game/game.model';
 
 export interface SessionInterface extends EntityInterface {
-  game?: Game;
+  game: Game;
   players?: Player[];
   winners?: Player[];
   playtimes?: Playtime[];

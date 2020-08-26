@@ -6,3 +6,11 @@ export function useModelWrapper(props: {}, emit: () => {}, name: string = 'model
     set: value => emit(`update:${name}`, value),
   });
 }
+
+export function setDefaultIfNullOrUndefined<T>(value: T | undefined, defaultValue: T): T {
+  if (value === undefined || value === null) {
+    return defaultValue as T;
+  } else {
+    return value;
+  }
+}

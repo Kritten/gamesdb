@@ -1,11 +1,12 @@
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { CategoryInterface } from '@/modules/category/category.types';
+import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 
 export class Category extends Entity implements CategoryInterface {
-  name?: string;
+  name: string;
 
   constructor(data: CategoryInterface = {}) {
     super(data);
-    this.name = data.name;
+    this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
   }
 }

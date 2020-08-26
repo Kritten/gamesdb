@@ -6,7 +6,6 @@ import { Image } from '@/modules/image/image.model';
 import { Game } from '@/modules/game/game.model';
 import { Universe } from '@/modules/universe/universe.model';
 import { Category } from '@/modules/category/category.model';
-import { Session } from '@/modules/session/session.model';
 
 export interface GameInterface extends EntityInterface {
   name?: string;
@@ -24,7 +23,7 @@ export interface GameInterface extends EntityInterface {
   moods?: Mood[];
   images?: Image[];
   playableWith?: Game[];
-  isExpansionOf?: Game;
+  isExpansionOf?: Game | null;
   expansions?: Game[];
   ratings?: Rating[];
 }

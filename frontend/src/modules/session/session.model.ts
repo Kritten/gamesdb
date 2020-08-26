@@ -6,9 +6,10 @@ import { Playtime } from '@/modules/playtime/playtime.model';
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { store } from '@/modules/app/app.store';
 import { ServiceGame } from '@/modules/game/game.service';
+import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 
 export class Session extends Entity implements SessionInterface {
-  game?: Game;
+  game: Game;
   players: Player[];
   winners: Player[];
   playtimes: Playtime[];
@@ -16,9 +17,9 @@ export class Session extends Entity implements SessionInterface {
   constructor(data: SessionInterface = {}) {
     super(data);
     this.game = data.game;
-    this.players = data.players === undefined ? [] : data.players;
-    this.winners = data.winners === undefined ? [] : data.winners;
-    this.playtimes = data.playtimes === undefined ? [] : data.playtimes;
+    this.players = setDefaultIfNullOrUndefined<Player[]>(data.players, []);
+    this.winners = setDefaultIfNullOrUndefined<Player[]>(data.winners, []);
+    this.playtimes = setDefaultIfNullOrUndefined<Playtime[]>(data.playtimes, []);
   }
 
   static async parseFromServer(data: EntityInterface): Promise<Session> {
