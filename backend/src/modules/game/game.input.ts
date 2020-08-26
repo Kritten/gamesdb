@@ -43,6 +43,12 @@ export class GameInput {
   moods?: number[];
 
   @Field(() => [ID])
+  images?: number[];
+
+  @Field(() => [ID])
+  ratings?: number[];
+
+  @Field(() => [ID])
   playableWith?: number[];
 
   @Field(() => ID)

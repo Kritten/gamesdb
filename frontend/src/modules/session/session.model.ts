@@ -5,7 +5,6 @@ import { Player } from '@/modules/player/player.model';
 import { Playtime } from '@/modules/playtime/playtime.model';
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { store } from '@/modules/app/app.store';
-import { computed } from 'vue';
 import { ServiceGame } from '@/modules/game/game.service';
 
 export class Session extends Entity implements SessionInterface {

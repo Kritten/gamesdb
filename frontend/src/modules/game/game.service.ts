@@ -1,5 +1,10 @@
 import { apolloClient } from '@/vue-apollo';
-import { queryGame, queryPageGame } from '@/modules/game/graphql/game.graphql';
+import {
+  mutationCreateGame,
+  mutationDeleteGame,
+  queryGame,
+  queryPageGame,
+} from '@/modules/game/graphql/game.graphql';
 import { Game } from '@/modules/game/game.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { store } from '@/modules/app/app.store';
@@ -9,8 +14,41 @@ import {
   ServiceCollectionLoadPageReturn,
   ServiceCollectionStatic,
 } from '@/modules/app/utilities/collection/collection.types';
+import { ref } from 'vue';
+import { Session } from '@/modules/session/session.model';
+import { queue } from '@/queue';
 
 export const ServiceGame: ServiceCollectionStatic = class {
+  static useCreate() {
+    const game = ref(new Game());
+
+    return {
+      game,
+      create: async () => {
+        await ServiceGame.create(game.value);
+        game.value = new Game();
+      },
+    };
+  }
+
+  static useDelete() {
+    return {
+      delete: (game: Game) => ServiceGame.delete(game),
+    };
+  }
+
+  static async create(game: Game) {
+    const response = await apolloClient.mutate({
+      mutation: mutationCreateGame,
+      variables: {
+        game,
+      },
+    });
+    console.warn('response', response);
+
+    queue.notify('createdGame', new Session(response.data.game));
+  }
+
   static async loadGame(id: ID) {
     const response = await apolloClient.query({
       query: queryGame,
@@ -62,5 +100,16 @@ export const ServiceGame: ServiceCollectionStatic = class {
       count: response.data.games.count,
       items: entities,
     };
+  }
+
+  static async delete(game: Game) {
+    await apolloClient.mutate({
+      mutation: mutationDeleteGame,
+      variables: {
+        id: game.id,
+      },
+    });
+
+    queue.notify('deletedGame', game);
   }
 };

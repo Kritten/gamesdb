@@ -18,14 +18,13 @@ export interface GameInterface extends EntityInterface {
   isCoop?: boolean;
   complexity?: number;
   size?: number;
-  universes: Universe[];
-  categories: Category[];
-  mechanisms: Mechanism[];
-  moods: Mood[];
-  images: Image[];
-  playableWith: Game[];
-  isExpansionOf: Game;
-  expansions: Game[];
-  ratings: Rating[];
-  sessions: Session[];
+  universes?: Universe[];
+  categories?: Category[];
+  mechanisms?: Mechanism[];
+  moods?: Mood[];
+  images?: Image[];
+  playableWith?: Game[];
+  isExpansionOf?: Game;
+  expansions?: Game[];
+  ratings?: Rating[];
 }

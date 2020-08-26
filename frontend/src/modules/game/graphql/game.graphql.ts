@@ -21,3 +21,22 @@ export const queryGame = gql`
   }
   ${fragments.game}
 `;
+/**
+ * Create
+ */
+export const mutationCreateGame = gql`
+  mutation createGame($game: GameInput!) {
+    createGame(gameData: $game) {
+      ...game
+    }
+  }
+  ${fragments.game}
+`;
+/**
+ * Delete
+ */
+export const mutationDeleteGame = gql`
+  mutation deleteGame($id: ID!) {
+    deleteGame(id: $id)
+  }
+`;

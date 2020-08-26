@@ -37,6 +37,7 @@ export class Session {
   @ManyToOne(
     () => Game,
     game => game.sessions,
+    { onDelete: 'CASCADE' },
   )
   @Field(() => Game, { nullable: true })
   game: Game;

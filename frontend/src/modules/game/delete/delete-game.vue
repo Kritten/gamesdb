@@ -5,33 +5,32 @@
 </template>
 
 <script>
-import { ServiceUniverse } from '@/modules/universe/universe.service';
 import { useI18n } from 'vue-i18n';
-import { Universe } from '@/modules/universe/universe.model';
+import { ServiceGame } from '@/modules/game/game.service';
+import { Game } from '@/modules/game/game.model';
 
 export default {
-  name: 'DeleteUniverse',
+  name: 'DeleteGame',
   props: {
-    universe: {
+    game: {
       required: true,
-      type: Universe,
+      type: Game,
     },
   },
   setup(context) {
     const { t } = useI18n();
-    const deleteUniverse = ServiceUniverse.useDelete();
+    const deleteGame = ServiceGame.useDelete();
 
     const confirmDelete = () => {
-      const confirmed = confirm(`Universum '${context.universe.name}' löschen?`);
+      const confirmed = confirm(`Spiel ${context.game.name} löschen?`);
 
       if (confirmed) {
-        deleteUniverse.delete(context.universe);
+        deleteGame.delete(context.game);
       }
     };
 
     return {
       t,
-      deleteUniverse,
       confirmDelete,
     };
   },

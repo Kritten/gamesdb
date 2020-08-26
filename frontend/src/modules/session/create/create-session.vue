@@ -1,5 +1,4 @@
 <template>
-  {{ createSession.session.value }}
   <form @submit.prevent="createSession.create">
     <div>
       <label for="players">{{ t('player.label', 2) }}</label>
@@ -35,7 +34,6 @@
     </div>
     <div>
       <p>{{ t('playtime.label', 2) }}</p>
-      {{ createSession.playtimeNew.value }}
       <div>
         <label>{{ t('playtime.start') }}</label>
         <datetime-picker v-model="createSession.playtimeNew.value.start" />

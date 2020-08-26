@@ -13,7 +13,24 @@
     "label": "Dashboard"
   },
   "game": {
-    "label": "Spiel | Spiele"
+    "label": "Spiel | Spiele",
+    "name": "Name",
+    "description": "Beschreibung",
+    "countPlayersMin": "Spieler (min)",
+    "countPlayersMax": "Spieler (max)",
+    "minutesPlaytimeMin": "Spielzeit (min)",
+    "minutesPlaytimeMax": "Spielzeit (max)",
+    "isCoop": "Koop",
+    "complexity": "Schwierigkeit",
+    "size": "Größe",
+    "categories": "Beschreibung",
+    "mechanisms": "Beschreibung",
+    "moods": "Beschreibung",
+    "images": "Beschreibung",
+    "playableWith": "Beschreibung",
+    "isExpansionOf": "Beschreibung",
+    "expansions": "Beschreibung",
+    "ratings": "Beschreibung"
   },
   "category": {
     "label": "Kategorie | Kategorien"
