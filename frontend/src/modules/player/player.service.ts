@@ -47,7 +47,7 @@ export class ServicePlayer {
       },
     });
 
-    const playerNew = Player.parseFromServer(response.data.createPlayer);
+    const playerNew = await Player.parseFromServer(response.data.createPlayer);
     store.commit('modulePlayer/addPlayer', playerNew);
 
     return playerNew;
@@ -61,7 +61,7 @@ export class ServicePlayer {
       },
     });
 
-    const playerNew = Player.parseFromServer(response.data.updatePlayer);
+    const playerNew = await Player.parseFromServer(response.data.updatePlayer);
     store.commit('modulePlayer/addPlayer', playerNew);
 
     return playerNew;

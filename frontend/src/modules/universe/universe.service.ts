@@ -47,7 +47,7 @@ export class ServiceUniverse {
       },
     });
 
-    const universeNew = Universe.parseFromServer(response.data.createUniverse);
+    const universeNew = await Universe.parseFromServer(response.data.createUniverse);
     store.commit('moduleUniverse/addUniverse', universeNew);
 
     return universeNew;
@@ -61,7 +61,7 @@ export class ServiceUniverse {
       },
     });
 
-    const universeNew = Universe.parseFromServer(response.data.updateUniverse);
+    const universeNew = await Universe.parseFromServer(response.data.updateUniverse);
     store.commit('moduleUniverse/addUniverse', universeNew);
 
     return universeNew;

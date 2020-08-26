@@ -47,7 +47,7 @@ export class ServiceRating {
       },
     });
 
-    const ratingNew = Rating.parseFromServer(response.data.createRating);
+    const ratingNew = await Rating.parseFromServer(response.data.createRating);
     store.commit('moduleRating/addRating', ratingNew);
 
     return ratingNew;
@@ -61,7 +61,7 @@ export class ServiceRating {
       },
     });
 
-    const ratingNew = Rating.parseFromServer(response.data.updateRating);
+    const ratingNew = await Rating.parseFromServer(response.data.updateRating);
     store.commit('moduleRating/addRating', ratingNew);
 
     return ratingNew;

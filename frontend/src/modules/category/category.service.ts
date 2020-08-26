@@ -47,7 +47,7 @@ export class ServiceCategory {
       },
     });
 
-    const categoryNew = Category.parseFromServer(response.data.createCategory);
+    const categoryNew = await Category.parseFromServer(response.data.createCategory);
     store.commit('moduleCategory/addCategory', categoryNew);
 
     return categoryNew;
@@ -61,7 +61,7 @@ export class ServiceCategory {
       },
     });
 
-    const categoryNew = Category.parseFromServer(response.data.updateCategory);
+    const categoryNew = await Category.parseFromServer(response.data.updateCategory);
     store.commit('moduleCategory/addCategory', categoryNew);
 
     return categoryNew;

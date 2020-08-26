@@ -21,8 +21,8 @@ export class Session extends Entity implements SessionInterface {
     this.playtimes = data.playtimes === undefined ? [] : data.playtimes;
   }
 
-  static async parseFromServer(data: EntityInterface): Session {
-    const entity: Session = super.parseFromServer(data);
+  static async parseFromServer(data: EntityInterface): Promise<Session> {
+    const entity = (await super.parseFromServer(data)) as Session;
 
     if (entity.players !== undefined) {
       entity.players = entity.players.map(player => store.state.modulePlayer.players[player.id]);

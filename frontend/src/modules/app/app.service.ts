@@ -52,58 +52,49 @@ export class ServiceApp {
         .query({
           query: queryCategories,
         })
-        .then(response => {
-          store.commit(
-            'moduleCategory/setCategories',
-            Category.convertFromServerToStore(response.data.categories),
-          );
+        .then(response => Category.convertFromServerToStore(response.data.categories))
+        .then(categories => {
+          store.commit('moduleCategory/setCategories', categories);
         }),
       apolloClient
         .query({
           query: queryMechanisms,
         })
-        .then(response => {
-          store.commit(
-            'moduleMechanism/setMechanisms',
-            Mechanism.convertFromServerToStore(response.data.mechanisms),
-          );
+        .then(response => Mechanism.convertFromServerToStore(response.data.mechanisms))
+        .then(mechanisms => {
+          store.commit('moduleMechanism/setMechanisms', mechanisms);
         }),
       apolloClient
         .query({
           query: queryMoods,
         })
-        .then(response => {
-          store.commit('moduleMood/setMoods', Mood.convertFromServerToStore(response.data.moods));
+        .then(response => Mood.convertFromServerToStore(response.data.moods))
+        .then(moods => {
+          store.commit('moduleMood/setMoods', moods);
         }),
       apolloClient
         .query({
           query: queryPlayers,
         })
-        .then(response => {
-          store.commit(
-            'modulePlayer/setPlayers',
-            Player.convertFromServerToStore(response.data.players),
-          );
+        .then(response => Player.convertFromServerToStore(response.data.players))
+        .then(players => {
+          store.commit('modulePlayer/setPlayers', players);
         }),
       apolloClient
         .query({
           query: queryImages,
         })
-        .then(response => {
-          store.commit(
-            'moduleImage/setImages',
-            Image.convertFromServerToStore(response.data.images),
-          );
+        .then(response => Image.convertFromServerToStore(response.data.images))
+        .then(images => {
+          store.commit('moduleImage/setImages', images);
         }),
       apolloClient
         .query({
           query: queryUniverses,
         })
-        .then(response => {
-          store.commit(
-            'moduleUniverse/setUniverses',
-            Universe.convertFromServerToStore(response.data.universes),
-          );
+        .then(response => Universe.convertFromServerToStore(response.data.universes))
+        .then(universes => {
+          store.commit('moduleUniverse/setUniverses', universes);
         }),
     ]);
   }

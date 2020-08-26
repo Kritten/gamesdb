@@ -7,8 +7,12 @@ export class Entity implements EntityInterface {
     this.id = data.id;
   }
 
-  static convertFromServerToStore<T>(data: EntityInterface[]): { [key: number]: Entity } {
-    const entities: Entity[] = data.map((item: EntityInterface) => this.parseFromServer(item));
+  static async convertFromServerToStore<T>(
+    data: EntityInterface[],
+  ): Promise<{ [key: number]: Entity }> {
+    const entities: Entity[] = await Promise.all(
+      data.map((item: EntityInterface) => this.parseFromServer(item)),
+    );
 
     return entities.reduce((obj, entity) => {
       obj[entity.id as number] = entity;
@@ -16,7 +20,7 @@ export class Entity implements EntityInterface {
     }, {} as { [key: number]: Entity });
   }
 
-  static parseFromServer(data: EntityInterface): Entity {
+  static async parseFromServer(data: EntityInterface): Promise<Entity> {
     return new this(data);
   }
 }

@@ -47,7 +47,7 @@ export class ServiceMood {
       },
     });
 
-    const moodNew = Mood.parseFromServer(response.data.createMood);
+    const moodNew = await Mood.parseFromServer(response.data.createMood);
     store.commit('moduleMood/addMood', moodNew);
 
     return moodNew;
@@ -61,7 +61,7 @@ export class ServiceMood {
       },
     });
 
-    const moodNew = Mood.parseFromServer(response.data.updateMood);
+    const moodNew = await Mood.parseFromServer(response.data.updateMood);
     store.commit('moduleMood/addMood', moodNew);
 
     return moodNew;

@@ -47,7 +47,7 @@ export class ServiceImage {
       },
     });
 
-    const imageNew = Image.parseFromServer(response.data.createImage);
+    const imageNew = await Image.parseFromServer(response.data.createImage);
     store.commit('moduleImage/addImage', imageNew);
 
     return imageNew;
@@ -61,7 +61,7 @@ export class ServiceImage {
       },
     });
 
-    const imageNew = Image.parseFromServer(response.data.updateImage);
+    const imageNew = await Image.parseFromServer(response.data.updateImage);
     store.commit('moduleImage/addImage', imageNew);
 
     return imageNew;

@@ -59,7 +59,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
       },
     });
 
-    const game = Game.parseFromServer(response.data.game);
+    const game = await Game.parseFromServer(response.data.game);
 
     if (game.id !== undefined) {
       store.commit('moduleGame/setGamesIfNotExisting', {
@@ -80,8 +80,8 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
       },
     });
 
-    const entities: Game[] = response.data.games.items.map((game: Game) =>
-      Game.parseFromServer(game),
+    const entities: Game[] = await Promise.all(
+      response.data.games.items.map((game: Game) => Game.parseFromServer(game)),
     );
 
     store.commit(

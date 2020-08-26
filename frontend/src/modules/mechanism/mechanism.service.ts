@@ -47,7 +47,7 @@ export class ServiceMechanism {
       },
     });
 
-    const mechanismNew = Mechanism.parseFromServer(response.data.createMechanism);
+    const mechanismNew = await Mechanism.parseFromServer(response.data.createMechanism);
     store.commit('moduleMechanism/addMechanism', mechanismNew);
 
     return mechanismNew;
@@ -61,7 +61,7 @@ export class ServiceMechanism {
       },
     });
 
-    const mechanismNew = Mechanism.parseFromServer(response.data.updateMechanism);
+    const mechanismNew = await Mechanism.parseFromServer(response.data.updateMechanism);
     store.commit('moduleMechanism/addMechanism', mechanismNew);
 
     return mechanismNew;
