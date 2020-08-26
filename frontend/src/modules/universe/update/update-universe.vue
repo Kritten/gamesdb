@@ -4,7 +4,7 @@
       <label for="name">{{ t('universe.label') }}</label>
       <input
         id="name"
-        v-model="updateUniverse.universe.value.name"
+        v-model="updateUniverse.entity.value.name"
       >
     </div>
     <div>

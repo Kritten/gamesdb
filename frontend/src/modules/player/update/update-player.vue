@@ -4,7 +4,7 @@
       <label for="name">{{ t('player.label') }}</label>
       <input
         id="name"
-        v-model="updatePlayer.player.value.name"
+        v-model="updatePlayer.entity.value.name"
       >
     </div>
     <div>

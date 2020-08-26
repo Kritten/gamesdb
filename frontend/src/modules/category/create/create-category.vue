@@ -4,7 +4,7 @@
       <label for="name">{{ t('category.label') }}</label>
       <input
         id="name"
-        v-model="createCategory.category.value.name"
+        v-model="createCategory.entity.value.name"
       >
     </div>
     <div>

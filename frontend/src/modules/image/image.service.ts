@@ -8,38 +8,40 @@ import {
 import { Image } from '@/modules/image/image.model';
 import { store } from '@/modules/app/app.store';
 import { cloneDeep } from 'lodash';
+import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 
-export class ServiceImage {
-  static useCreate() {
+class ServiceImageClass implements ServiceEntityInterface<Image> {
+  useCreate() {
     let image = ref(new Image());
 
     return {
-      image,
+      entity: image,
       create: async () => {
-        await ServiceImage.create(image.value);
+        const imageNew = await ServiceImage.create(image.value);
         image.value = new Image();
+        return imageNew;
       },
     };
   }
 
-  static useUpdate(imagePassed: Image) {
+  useUpdate(imagePassed: Image) {
     let image = ref(cloneDeep(imagePassed));
 
     return {
-      image,
+      entity: image,
       update: async () => {
         image.value = cloneDeep(await ServiceImage.update(image.value));
       },
     };
   }
 
-  static useDelete() {
+  useDelete() {
     return {
       delete: (image: Image) => ServiceImage.delete(image),
     };
   }
 
-  static async create(image: Image) {
+  async create(image: Image) {
     const response = await apolloClient.mutate({
       mutation: mutationCreateImage,
       variables: {
@@ -53,7 +55,7 @@ export class ServiceImage {
     return imageNew;
   }
 
-  static async update(image: Image) {
+  async update(image: Image) {
     const response = await apolloClient.mutate({
       mutation: mutationUpdateImage,
       variables: {
@@ -67,8 +69,8 @@ export class ServiceImage {
     return imageNew;
   }
 
-  static async delete(image: Image) {
-    await apolloClient.mutate({
+  async delete(image: Image) {
+    const response = await apolloClient.mutate({
       mutation: mutationDeleteImage,
       variables: {
         id: image.id,
@@ -76,5 +78,9 @@ export class ServiceImage {
     });
 
     store.commit('moduleImage/deleteImage', image);
+
+    return response.data.deleteImage;
   }
 }
+
+export const ServiceImage = new ServiceImageClass();

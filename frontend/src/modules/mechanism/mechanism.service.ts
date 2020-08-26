@@ -8,38 +8,40 @@ import {
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
 import { store } from '@/modules/app/app.store';
 import { cloneDeep } from 'lodash';
+import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 
-export class ServiceMechanism {
-  static useCreate() {
+class ServiceMechanismClass implements ServiceEntityInterface<Mechanism> {
+  useCreate() {
     let mechanism = ref(new Mechanism());
 
     return {
-      mechanism,
+      entity: mechanism,
       create: async () => {
-        await ServiceMechanism.create(mechanism.value);
+        const mechanismNew = await ServiceMechanism.create(mechanism.value);
         mechanism.value = new Mechanism();
+        return mechanismNew;
       },
     };
   }
 
-  static useUpdate(mechanismPassed: Mechanism) {
+  useUpdate(mechanismPassed: Mechanism) {
     let mechanism = ref(cloneDeep(mechanismPassed));
 
     return {
-      mechanism,
+      entity: mechanism,
       update: async () => {
         mechanism.value = cloneDeep(await ServiceMechanism.update(mechanism.value));
       },
     };
   }
 
-  static useDelete() {
+  useDelete() {
     return {
       delete: (mechanism: Mechanism) => ServiceMechanism.delete(mechanism),
     };
   }
 
-  static async create(mechanism: Mechanism) {
+  async create(mechanism: Mechanism) {
     const response = await apolloClient.mutate({
       mutation: mutationCreateMechanism,
       variables: {
@@ -53,7 +55,7 @@ export class ServiceMechanism {
     return mechanismNew;
   }
 
-  static async update(mechanism: Mechanism) {
+  async update(mechanism: Mechanism) {
     const response = await apolloClient.mutate({
       mutation: mutationUpdateMechanism,
       variables: {
@@ -67,8 +69,8 @@ export class ServiceMechanism {
     return mechanismNew;
   }
 
-  static async delete(mechanism: Mechanism) {
-    await apolloClient.mutate({
+  async delete(mechanism: Mechanism) {
+    const response = await apolloClient.mutate({
       mutation: mutationDeleteMechanism,
       variables: {
         id: mechanism.id,
@@ -76,5 +78,9 @@ export class ServiceMechanism {
     });
 
     store.commit('moduleMechanism/deleteMechanism', mechanism);
+
+    return response.data.deleteMechanism;
   }
 }
+
+export const ServiceMechanism = new ServiceMechanismClass();

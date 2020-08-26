@@ -8,38 +8,40 @@ import {
 import { Category } from '@/modules/category/category.model';
 import { store } from '@/modules/app/app.store';
 import { cloneDeep } from 'lodash';
+import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 
-export class ServiceCategory {
-  static useCreate() {
+class ServiceCategoryClass implements ServiceEntityInterface<Category> {
+  useCreate() {
     let category = ref(new Category());
 
     return {
-      category,
+      entity: category,
       create: async () => {
-        await ServiceCategory.create(category.value);
+        const categoryNew = await ServiceCategory.create(category.value);
         category.value = new Category();
+        return categoryNew;
       },
     };
   }
 
-  static useUpdate(categoryPassed: Category) {
+  useUpdate(categoryPassed: Category) {
     let category = ref(cloneDeep(categoryPassed));
 
     return {
-      category,
+      entity: category,
       update: async () => {
         category.value = cloneDeep(await ServiceCategory.update(category.value));
       },
     };
   }
 
-  static useDelete() {
+  useDelete() {
     return {
       delete: (category: Category) => ServiceCategory.delete(category),
     };
   }
 
-  static async create(category: Category) {
+  async create(category: Category) {
     const response = await apolloClient.mutate({
       mutation: mutationCreateCategory,
       variables: {
@@ -53,7 +55,7 @@ export class ServiceCategory {
     return categoryNew;
   }
 
-  static async update(category: Category) {
+  async update(category: Category) {
     const response = await apolloClient.mutate({
       mutation: mutationUpdateCategory,
       variables: {
@@ -67,8 +69,8 @@ export class ServiceCategory {
     return categoryNew;
   }
 
-  static async delete(category: Category) {
-    await apolloClient.mutate({
+  async delete(category: Category) {
+    const response = await apolloClient.mutate({
       mutation: mutationDeleteCategory,
       variables: {
         id: category.id,
@@ -76,5 +78,9 @@ export class ServiceCategory {
     });
 
     store.commit('moduleCategory/deleteCategory', category);
+
+    return response.data.deleteCategory;
   }
 }
+
+export const ServiceCategory = new ServiceCategoryClass();

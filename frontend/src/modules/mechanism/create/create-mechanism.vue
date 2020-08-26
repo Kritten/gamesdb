@@ -4,7 +4,7 @@
       <label for="name">{{ t('mechanism.label') }}</label>
       <input
         id="name"
-        v-model="createMechanism.mechanism.value.name"
+        v-model="createMechanism.entity.value.name"
       >
     </div>
     <div>

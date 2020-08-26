@@ -8,38 +8,40 @@ import {
 import { Universe } from '@/modules/universe/universe.model';
 import { store } from '@/modules/app/app.store';
 import { cloneDeep } from 'lodash';
+import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 
-export class ServiceUniverse {
-  static useCreate() {
+class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
+  useCreate() {
     let universe = ref(new Universe());
 
     return {
-      universe,
+      entity: universe,
       create: async () => {
-        await ServiceUniverse.create(universe.value);
+        const universeNew = await ServiceUniverse.create(universe.value);
         universe.value = new Universe();
+        return universeNew;
       },
     };
   }
 
-  static useUpdate(universePassed: Universe) {
+  useUpdate(universePassed: Universe) {
     let universe = ref(cloneDeep(universePassed));
 
     return {
-      universe,
+      entity: universe,
       update: async () => {
         universe.value = cloneDeep(await ServiceUniverse.update(universe.value));
       },
     };
   }
 
-  static useDelete() {
+  useDelete() {
     return {
       delete: (universe: Universe) => ServiceUniverse.delete(universe),
     };
   }
 
-  static async create(universe: Universe) {
+  async create(universe: Universe) {
     const response = await apolloClient.mutate({
       mutation: mutationCreateUniverse,
       variables: {
@@ -53,7 +55,7 @@ export class ServiceUniverse {
     return universeNew;
   }
 
-  static async update(universe: Universe) {
+  async update(universe: Universe) {
     const response = await apolloClient.mutate({
       mutation: mutationUpdateUniverse,
       variables: {
@@ -67,8 +69,8 @@ export class ServiceUniverse {
     return universeNew;
   }
 
-  static async delete(universe: Universe) {
-    await apolloClient.mutate({
+  async delete(universe: Universe) {
+    const response = await apolloClient.mutate({
       mutation: mutationDeleteUniverse,
       variables: {
         id: universe.id,
@@ -76,5 +78,9 @@ export class ServiceUniverse {
     });
 
     store.commit('moduleUniverse/deleteUniverse', universe);
+
+    return response.data.deleteUniverse;
   }
 }
+
+export const ServiceUniverse = new ServiceUniverseClass();

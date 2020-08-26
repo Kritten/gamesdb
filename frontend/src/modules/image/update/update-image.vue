@@ -4,11 +4,11 @@
       <label for="name">{{ t('image.label') }}</label>
       <input
         id="name"
-        v-model="updateImage.image.value.name"
+        v-model="updateImage.entity.value.name"
       >
       <input
         id="link"
-        v-model="updateImage.image.value.link"
+        v-model="updateImage.entity.value.link"
       >
     </div>
     <div>

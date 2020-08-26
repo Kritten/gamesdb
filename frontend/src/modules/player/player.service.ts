@@ -8,38 +8,40 @@ import {
 import { Player } from '@/modules/player/player.model';
 import { store } from '@/modules/app/app.store';
 import { cloneDeep } from 'lodash';
+import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 
-export class ServicePlayer {
-  static useCreate() {
+export class ServicePlayerClass implements ServiceEntityInterface<Player> {
+  useCreate() {
     let player = ref(new Player());
 
     return {
-      player,
+      entity: player,
       create: async () => {
-        await ServicePlayer.create(player.value);
+        const playerNew = await ServicePlayer.create(player.value);
         player.value = new Player();
+        return playerNew;
       },
     };
   }
 
-  static useUpdate(playerPassed: Player) {
+  useUpdate(playerPassed: Player) {
     let player = ref(cloneDeep(playerPassed));
 
     return {
-      player,
+      entity: player,
       update: async () => {
         player.value = cloneDeep(await ServicePlayer.update(player.value));
       },
     };
   }
 
-  static useDelete() {
+  useDelete() {
     return {
       delete: (player: Player) => ServicePlayer.delete(player),
     };
   }
 
-  static async create(player: Player) {
+  async create(player: Player) {
     const response = await apolloClient.mutate({
       mutation: mutationCreatePlayer,
       variables: {
@@ -53,7 +55,7 @@ export class ServicePlayer {
     return playerNew;
   }
 
-  static async update(player: Player) {
+  async update(player: Player) {
     const response = await apolloClient.mutate({
       mutation: mutationUpdatePlayer,
       variables: {
@@ -67,8 +69,8 @@ export class ServicePlayer {
     return playerNew;
   }
 
-  static async delete(player: Player) {
-    await apolloClient.mutate({
+  async delete(player: Player) {
+    const response = await apolloClient.mutate({
       mutation: mutationDeletePlayer,
       variables: {
         id: player.id,
@@ -76,5 +78,9 @@ export class ServicePlayer {
     });
 
     store.commit('modulePlayer/deletePlayer', player);
+
+    return response.data.deletePlayer;
   }
 }
+
+export const ServicePlayer = new ServicePlayerClass();
