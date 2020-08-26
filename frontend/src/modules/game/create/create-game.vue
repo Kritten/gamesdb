@@ -1,20 +1,20 @@
 <template>
   <form @submit.prevent="createGame.create">
     <item-game
-      v-model:name="createGame.game.value.name"
-      v-model:description="createGame.game.value.description"
-      v-model:countPlayersMin="createGame.game.value.countPlayersMin"
-      v-model:countPlayersMax="createGame.game.value.countPlayersMax"
-      v-model:minutesPlaytimeMin="createGame.game.value.minutesPlaytimeMin"
-      v-model:minutesPlaytimeMax="createGame.game.value.minutesPlaytimeMax"
-      v-model:isCoop="createGame.game.value.isCoop"
-      v-model:complexity="createGame.game.value.complexity"
-      v-model:size="createGame.game.value.size"
-      v-model:universes="createGame.game.value.universes"
-      v-model:categories="createGame.game.value.categories"
-      v-model:mechanisms="createGame.game.value.mechanisms"
-      v-model:moods="createGame.game.value.moods"
-      v-model:images="createGame.game.value.images"
+      v-model:name="createGame.entity.value.name"
+      v-model:description="createGame.entity.value.description"
+      v-model:countPlayersMin="createGame.entity.value.countPlayersMin"
+      v-model:countPlayersMax="createGame.entity.value.countPlayersMax"
+      v-model:minutesPlaytimeMin="createGame.entity.value.minutesPlaytimeMin"
+      v-model:minutesPlaytimeMax="createGame.entity.value.minutesPlaytimeMax"
+      v-model:isCoop="createGame.entity.value.isCoop"
+      v-model:complexity="createGame.entity.value.complexity"
+      v-model:size="createGame.entity.value.size"
+      v-model:universes="createGame.entity.value.universes"
+      v-model:categories="createGame.entity.value.categories"
+      v-model:mechanisms="createGame.entity.value.mechanisms"
+      v-model:moods="createGame.entity.value.moods"
+      v-model:images="createGame.entity.value.images"
     />
     <div>
       <button type="submit">
@@ -36,6 +36,7 @@ export default {
   setup() {
     const { t } = useI18n();
     const store = useStore();
+
     const createGame = ServiceGame.useCreate();
 
     return {

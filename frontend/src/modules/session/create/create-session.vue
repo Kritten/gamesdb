@@ -4,7 +4,7 @@
       <label for="players">{{ t('player.label', 2) }}</label>
       <select
         id="players"
-        v-model="createSession.session.value.players"
+        v-model="createSession.entity.value.players"
         multiple
       >
         <option
@@ -20,7 +20,7 @@
       <label for="winners">{{ t('winner.label', 2) }}</label>
       <select
         id="winners"
-        v-model="createSession.session.value.winners"
+        v-model="createSession.entity.value.winners"
         multiple
       >
         <option
@@ -50,7 +50,7 @@
           {{ t('playtime.label') }} {{ t('common.create') }}
         </button>
       </div>
-      <div v-for="playtime in createSession.session.value.playtimes">
+      <div v-for="playtime in createSession.entity.value.playtimes">
         <span>{{ playtime.start }} - {{ playtime.end }}</span>
         <button
           type="button"

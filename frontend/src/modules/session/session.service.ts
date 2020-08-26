@@ -10,17 +10,17 @@ import {
 import { Playtime } from '@/modules/playtime/playtime.model';
 import { Game } from '@/modules/game/game.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
-import { ID } from '@/modules/app/utilities/entity/entity.types';
+import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { queue } from '@/queue';
 import {
+  ServiceCollectionInterface,
   ServiceCollectionLoadPageParameters,
-  ServiceCollectionLoadPageReturn,
 } from '@/modules/app/utilities/collection/collection.types';
-import { ServiceSessionStatic } from '@/modules/session/session.types';
 
-export const ServiceSession: ServiceSessionStatic = class {
-  static useCreate(game: Game) {
-    const session = ref(new Session({ game: game.id }));
+class ServiceSessionClass
+  implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
+  useCreate(game: Game) {
+    const session = ref(new Session({ game }));
 
     const playtimeNew = ref(new Playtime());
 
@@ -28,7 +28,7 @@ export const ServiceSession: ServiceSessionStatic = class {
       session.value.playtimes.push(playtimeNew.value);
       playtimeNew.value = new Playtime();
     };
-    const playtimeRemove = playtime => {
+    const playtimeRemove = (playtime: Playtime) => {
       session.value.playtimes = session.value.playtimes.filter(
         playtimeCurrent =>
           !(playtimeCurrent.start === playtime.start && playtimeCurrent.end === playtime.end),
@@ -36,41 +36,39 @@ export const ServiceSession: ServiceSessionStatic = class {
     };
 
     return {
-      session,
+      entity: session,
       playtimeNew,
       playtimeAdd,
       playtimeRemove,
       create: async () => {
-        await ServiceSession.create(session.value);
+        const sessionNew = await this.create(session.value);
         session.value = new Session();
+        return sessionNew;
       },
     };
   }
 
-  static useDelete() {
+  useDelete() {
     return {
-      delete: (session: Session) => ServiceSession.delete(session),
+      delete: (session: Session) => this.delete(session),
     };
   }
 
-  static async create(session: Session) {
+  async create(session: Session) {
     const response = await apolloClient.mutate({
       mutation: mutationCreateSession,
       variables: {
         session,
       },
     });
-    console.warn('response', response);
 
-    queue.notify('createdSession', new Session(response.data.session));
+    const sessionNew = new Session(response.data.session);
+
+    queue.notify('createdSession', sessionNew);
+
+    return sessionNew;
   }
-  static async loadPage({
-    page,
-    count,
-    sortBy,
-    sortDesc,
-    params,
-  }: ServiceCollectionLoadPageParameters): ServiceCollectionLoadPageReturn {
+  async loadPage({ page, count, sortBy, sortDesc, params }: ServiceCollectionLoadPageParameters) {
     const response = await apolloClient.query({
       query: queryPageSession,
       variables: {
@@ -82,7 +80,7 @@ export const ServiceSession: ServiceSessionStatic = class {
       },
     });
 
-    const entities: Entity[] = await Promise.all(
+    const entities: Session[] = await Promise.all(
       response.data.sessions.items.map((session: Session) => Session.parseFromServer(session)),
     );
 
@@ -100,8 +98,8 @@ export const ServiceSession: ServiceSessionStatic = class {
     };
   }
 
-  static async delete(session: Session) {
-    await apolloClient.mutate({
+  async delete(session: Session) {
+    const response = await apolloClient.mutate({
       mutation: mutationDeleteSession,
       variables: {
         id: session.id,
@@ -109,5 +107,9 @@ export const ServiceSession: ServiceSessionStatic = class {
     });
 
     queue.notify('deletedSession', session);
+
+    return response.data.deleteSession;
   }
-};
+}
+
+export const ServiceSession = new ServiceSessionClass();

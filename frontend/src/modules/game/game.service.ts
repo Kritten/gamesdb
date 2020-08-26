@@ -8,48 +8,50 @@ import {
 import { Game } from '@/modules/game/game.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { store } from '@/modules/app/app.store';
-import { ID } from '@/modules/app/utilities/entity/entity.types';
+import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import {
+  ServiceCollectionInterface,
   ServiceCollectionLoadPageParameters,
-  ServiceCollectionLoadPageReturn,
-  ServiceCollectionStatic,
 } from '@/modules/app/utilities/collection/collection.types';
-import { ref } from 'vue';
-import { Session } from '@/modules/session/session.model';
 import { queue } from '@/queue';
+import { ref } from 'vue';
 
-export const ServiceGame: ServiceCollectionStatic = class {
-  static useCreate() {
+class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
+  useCreate() {
     const game = ref(new Game());
 
     return {
-      game,
+      entity: game,
       create: async () => {
-        await ServiceGame.create(game.value);
+        const gameNew = await this.create(game.value);
         game.value = new Game();
+        return gameNew;
       },
     };
   }
 
-  static useDelete() {
+  useDelete() {
     return {
-      delete: (game: Game) => ServiceGame.delete(game),
+      delete: (game: Game) => this.delete(game),
     };
   }
 
-  static async create(game: Game) {
+  async create(game: Game) {
     const response = await apolloClient.mutate({
       mutation: mutationCreateGame,
       variables: {
         game,
       },
     });
-    console.warn('response', response);
 
-    queue.notify('createdGame', new Session(response.data.game));
+    const newGame = new Game(response.data.game);
+
+    queue.notify('createdGame', newGame);
+
+    return newGame;
   }
 
-  static async loadGame(id: ID) {
+  async loadGame(id: ID) {
     const response = await apolloClient.query({
       query: queryGame,
       variables: {
@@ -66,13 +68,7 @@ export const ServiceGame: ServiceCollectionStatic = class {
     }
   }
 
-  static async loadPage({
-    page,
-    count,
-    sortBy,
-    sortDesc,
-    params,
-  }: ServiceCollectionLoadPageParameters): ServiceCollectionLoadPageReturn {
+  async loadPage({ page, count, sortBy, sortDesc, params }: ServiceCollectionLoadPageParameters) {
     const response = await apolloClient.query({
       query: queryPageGame,
       variables: {
@@ -84,7 +80,7 @@ export const ServiceGame: ServiceCollectionStatic = class {
       },
     });
 
-    const entities: Entity[] = response.data.games.items.map((game: Game) =>
+    const entities: Game[] = response.data.games.items.map((game: Game) =>
       Game.parseFromServer(game),
     );
 
@@ -102,8 +98,8 @@ export const ServiceGame: ServiceCollectionStatic = class {
     };
   }
 
-  static async delete(game: Game) {
-    await apolloClient.mutate({
+  async delete(game: Game) {
+    const response = await apolloClient.mutate({
       mutation: mutationDeleteGame,
       variables: {
         id: game.id,
@@ -111,5 +107,9 @@ export const ServiceGame: ServiceCollectionStatic = class {
     });
 
     queue.notify('deletedGame', game);
+
+    return response.data.deleteGame;
   }
-};
+}
+
+export const ServiceGame = new ServiceGameClass();

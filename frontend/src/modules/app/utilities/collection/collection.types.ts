@@ -1,5 +1,3 @@
-import { Entity } from '@/modules/app/utilities/entity/entity.model';
-
 export type ServiceCollectionLoadPageParameters = {
   page: number;
   count: number;
@@ -8,8 +6,8 @@ export type ServiceCollectionLoadPageParameters = {
   params: { [key: string]: any };
 };
 
-export type ServiceCollectionLoadPageReturn = Promise<{ count: number; items: Entity[] }>;
+export type ServiceCollectionLoadPageReturn<T> = Promise<{ count: number; items: T[] }>;
 
-export interface ServiceCollectionStatic {
-  loadPage(data: ServiceCollectionLoadPageParameters): ServiceCollectionLoadPageReturn;
+export interface ServiceCollectionInterface<T> {
+  loadPage(data: ServiceCollectionLoadPageParameters): ServiceCollectionLoadPageReturn<T>;
 }

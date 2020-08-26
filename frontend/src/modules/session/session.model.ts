@@ -9,9 +9,9 @@ import { ServiceGame } from '@/modules/game/game.service';
 
 export class Session extends Entity implements SessionInterface {
   game?: Game;
-  players?: Player[];
-  winners?: Player[];
-  playtimes?: Playtime[];
+  players: Player[];
+  winners: Player[];
+  playtimes: Playtime[];
 
   constructor(data: SessionInterface = {}) {
     super(data);
