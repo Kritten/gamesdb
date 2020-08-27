@@ -1,5 +1,7 @@
 <template>
+  <h1>Spiel anlegen</h1>
   <create-game />
+  <h1>Spiele</h1>
   <list-games />
 </template>
 

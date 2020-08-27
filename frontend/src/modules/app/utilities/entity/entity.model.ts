@@ -23,4 +23,8 @@ export class Entity implements EntityInterface {
   static async parseFromServer(data: EntityInterface): Promise<Entity> {
     return new this(data);
   }
+
+  prepareForServer(): EntityInterface {
+    return { id: this.id };
+  }
 }

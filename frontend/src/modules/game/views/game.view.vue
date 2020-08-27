@@ -2,7 +2,7 @@
   <template v-if="game !== undefined">
     <h1>{{ game.name }}</h1>
     <p>{{ game.description }}</p>
-
+    <update-game :game="game" />
     <h2>Sessions</h2>
     <create-session :game="game" />
     <list-session :game="game" />
@@ -19,10 +19,13 @@ import { Game } from '@/modules/game/game.model';
 import CreateSession from '@/modules/session/create/create-session.vue';
 import ListSession from '@/modules/session/list/list-sessions.vue';
 import DeleteGame from '@/modules/game/delete/delete-game.vue';
+import UpdateGame from '@/modules/game/update/update-game.vue';
 
 export default {
   name: 'ViewGame',
-  components: { DeleteGame, ListSession, CreateSession },
+  components: {
+    UpdateGame, DeleteGame, ListSession, CreateSession,
+  },
   setup() {
     const store = useStore();
     const route = useRoute();

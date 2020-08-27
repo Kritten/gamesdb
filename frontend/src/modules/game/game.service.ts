@@ -2,6 +2,7 @@ import { apolloClient } from '@/vue-apollo';
 import {
   mutationCreateGame,
   mutationDeleteGame,
+  mutationUpdateGame,
   queryGame,
   queryPageGame,
 } from '@/modules/game/graphql/game.graphql';
@@ -15,6 +16,7 @@ import {
 } from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
 import { ref } from 'vue';
+import { cloneDeep } from 'lodash';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
   useCreate() {
@@ -26,6 +28,17 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
         const gameNew = await this.create(game.value);
         game.value = new Game();
         return gameNew;
+      },
+    };
+  }
+
+  useUpdate(gamePassed: Game) {
+    let game = ref(cloneDeep(gamePassed));
+
+    return {
+      entity: game,
+      update: async () => {
+        game.value = cloneDeep(await this.update(game.value));
       },
     };
   }
@@ -44,11 +57,26 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
       },
     });
 
-    const newGame = new Game(response.data.game);
+    const gameNew = await Game.parseFromServer(response.data.createGame);
 
-    queue.notify('createdGame', newGame);
+    queue.notify('createdGame', gameNew);
 
-    return newGame;
+    return gameNew;
+  }
+
+  async update(game: Game) {
+    const response = await apolloClient.mutate({
+      mutation: mutationUpdateGame,
+      variables: {
+        game: game.prepareForServer(),
+      },
+    });
+
+    const gameNew = await Game.parseFromServer(response.data.updateGame);
+
+    queue.notify('createdGame', gameNew);
+
+    return gameNew;
   }
 
   async loadGame(id: ID) {

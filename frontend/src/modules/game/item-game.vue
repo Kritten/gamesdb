@@ -160,7 +160,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
@@ -225,23 +225,28 @@ export default {
       required: true,
     },
   },
-  setup(context, { emit }) {
+  setup(props, { emit }) {
     const { t } = useI18n();
     const store = useStore();
-
-    // const foo = (name, value) => {
-    //     emit('update:modelValue:name', $event.target.value)
-    //   console.warn(event.target.value);
-    // },
 
     return {
       t,
       store,
-      universesInternal: useModelWrapper(context, emit, 'universes'),
-      categoriesInternal: useModelWrapper(context, emit, 'categories'),
-      mechanismsInternal: useModelWrapper(context, emit, 'mechanisms'),
-      moodsInternal: useModelWrapper(context, emit, 'moods'),
-      imagesInternal: useModelWrapper(context, emit, 'images'),
+      universesInternal: useModelWrapper({
+        props, emit, name: 'universes', isEntity: true,
+      }),
+      categoriesInternal: useModelWrapper({
+        props, emit, name: 'categories', isEntity: true,
+      }),
+      mechanismsInternal: useModelWrapper({
+        props, emit, name: 'mechanisms', isEntity: true,
+      }),
+      moodsInternal: useModelWrapper({
+        props, emit, name: 'moods', isEntity: true,
+      }),
+      imagesInternal: useModelWrapper({
+        props, emit, name: 'images', isEntity: true,
+      }),
     };
   },
 };

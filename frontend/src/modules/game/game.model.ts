@@ -79,4 +79,29 @@ export class Game extends Entity implements GameInterface {
 
     return entity;
   }
+
+  prepareForServer(): GameInterface {
+    const data: GameInterface = super.prepareForServer();
+
+    data.name = this.name;
+    data.description = this.description;
+    data.countPlayersMin = this.countPlayersMin;
+    data.countPlayersMax = this.countPlayersMax;
+    data.minutesPlaytimeMin = this.minutesPlaytimeMin;
+    data.minutesPlaytimeMax = this.minutesPlaytimeMax;
+    data.isCoop = this.isCoop;
+    data.complexity = this.complexity;
+    data.size = this.size;
+    data.universes = this.universes.map(universe => universe.id).filter(id => id !== undefined);
+    data.categories = this.categories.map(category => category.id);
+    data.mechanisms = this.mechanisms.map(mechanism => mechanism.id);
+    data.moods = this.moods.map(mood => mood.id);
+    data.images = this.images.map(image => image.id);
+    data.playableWith = this.playableWith.map(game => game.id);
+    data.isExpansionOf = this.isExpansionOf;
+    data.expansions = this.expansions.map(game => game.id);
+    // data.ratings = this.ratings.map(rating => rating.id);
+
+    return data;
+  }
 }

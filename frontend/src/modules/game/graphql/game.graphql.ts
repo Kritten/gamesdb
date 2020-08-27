@@ -33,6 +33,17 @@ export const mutationCreateGame = gql`
   ${fragments.game}
 `;
 /**
+ * Update
+ */
+export const mutationUpdateGame = gql`
+  mutation updateGame($game: UpdateGameInput!) {
+    updateGame(gameData: $game) {
+      ...game
+    }
+  }
+  ${fragments.game}
+`;
+/**
  * Delete
  */
 export const mutationDeleteGame = gql`
