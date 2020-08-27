@@ -6,14 +6,10 @@
     />
     <div>
       <p>{{ t('playtime.label', 2) }}</p>
-      <div>
-        <label>{{ t('playtime.start') }}</label>
-        <datetime-picker v-model="createSession.playtimeNew.value.start" />
-      </div>
-      <div>
-        <label>{{ t('playtime.end') }}</label>
-        <datetime-picker v-model="createSession.playtimeNew.value.end" />
-      </div>
+      <item-playtime
+        v-model:start="createSession.playtimeNew.value.start"
+        v-model:end="createSession.playtimeNew.value.end"
+      />
       <div>
         <button
           type="button"
@@ -47,10 +43,11 @@ import { useStore } from 'vuex';
 import DatetimePicker from '@/modules/app/base/datetime-picker';
 import { Game } from '@/modules/game/game.model';
 import ItemSession from '@/modules/session/item-session';
+import ItemPlaytime from '@/modules/playtime/item-playtime';
 
 export default {
   name: 'CreateSession',
-  components: { ItemSession, DatetimePicker },
+  components: { ItemPlaytime, ItemSession, DatetimePicker },
   props: {
     game: {
       type: Game,

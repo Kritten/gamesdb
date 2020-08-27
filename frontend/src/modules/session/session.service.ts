@@ -42,7 +42,7 @@ class ServiceSessionClass
       playtimeRemove,
       create: async () => {
         const sessionNew = await this.create(session.value);
-        session.value = new Session();
+        session.value = new Session({ game });
         return sessionNew;
       },
     };
@@ -62,7 +62,7 @@ class ServiceSessionClass
       },
     });
 
-    const sessionNew = await Session.parseFromServer(response.data.session);
+    const sessionNew = await Session.parseFromServer(response.data.createSession);
 
     queue.notify('createdSession', sessionNew);
 
