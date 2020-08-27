@@ -92,7 +92,7 @@ export class Game extends Entity implements GameInterface {
     data.isCoop = this.isCoop;
     data.complexity = this.complexity;
     data.size = this.size;
-    data.universes = this.universes.map(universe => universe.id).filter(id => id !== undefined);
+    data.universes = this.universes.map(universe => universe.id);
     data.categories = this.categories.map(category => category.id);
     data.mechanisms = this.mechanisms.map(mechanism => mechanism.id);
     data.moods = this.moods.map(mood => mood.id);

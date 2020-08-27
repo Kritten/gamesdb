@@ -53,7 +53,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
     const response = await apolloClient.mutate({
       mutation: mutationCreateGame,
       variables: {
-        game,
+        game: game.prepareForServer(),
       },
     });
 

@@ -3,81 +3,72 @@
     <label for="name">{{ t('game.name') }}</label>
     <input
       id="name"
-      :value="name"
-      @input="$emit('update:name', $event.target.value)"
+      v-model="nameInternal"
     >
   </div>
   <div>
     <label for="description">{{ t('game.description') }}</label>
     <textarea
       id="description"
-      :value="description"
+      v-model="descriptionInternal"
       cols="100"
       rows="5"
-      @input="$emit('update:description', $event.target.value)"
     />
   </div>
   <div>
     <label for="countPlayersMin">{{ t('game.countPlayersMin') }}</label>
     <input
       id="countPlayersMin"
-      :value="countPlayersMin"
+      v-model="countPlayersMinInternal"
       type="number"
-      @input="$emit('update:countPlayersMin', parseFloat($event.target.value))"
     >
   </div>
   <div>
     <label for="countPlayersMax">{{ t('game.countPlayersMax') }}</label>
     <input
       id="countPlayersMax"
-      :value="countPlayersMax"
+      v-model="countPlayersMaxInternal"
       type="number"
-      @input="$emit('update:countPlayersMax', parseFloat($event.target.value))"
     >
   </div>
   <div>
     <label for="minutesPlaytimeMin">{{ t('game.minutesPlaytimeMin') }}</label>
     <input
       id="minutesPlaytimeMin"
-      :value="minutesPlaytimeMin"
+      v-model="minutesPlaytimeMinInternal"
       type="number"
-      @input="$emit('update:minutesPlaytimeMin', parseFloat($event.target.value))"
     >
   </div>
   <div>
     <label for="minutesPlaytimeMax">{{ t('game.minutesPlaytimeMax') }}</label>
     <input
       id="minutesPlaytimeMax"
-      :value="minutesPlaytimeMax"
+      v-model="minutesPlaytimeMaxInternal"
       type="number"
-      @input="$emit('update:minutesPlaytimeMax', parseFloat($event.target.value))"
     >
   </div>
   <div>
     <label for="isCoop">{{ t('game.isCoop') }}</label>
     <input
       id="isCoop"
-      :value="isCoop"
+      v-model="isCoopInternal"
       type="checkbox"
-      @input="$emit('update:isCoop', $event.target.value)"
     >
   </div>
   <div>
     <label for="complexity">{{ t('game.complexity') }}</label>
     <input
       id="complexity"
-      :value="complexity"
+      v-model="complexityInternal"
       type="number"
-      @input="$emit('update:complexity', parseFloat($event.target.value))"
     >
   </div>
   <div>
     <label for="size">{{ t('game.size') }}</label>
     <input
       id="size"
-      :value="size"
+      v-model="sizeInternal"
       type="number"
-      @input="$emit('update:size', parseFloat($event.target.value))"
     >
   </div>
   <div>
@@ -234,6 +225,33 @@ export default {
     return {
       t,
       store,
+      nameInternal: useModelWrapper({
+        props, emit, name: 'name',
+      }),
+      descriptionInternal: useModelWrapper({
+        props, emit, name: 'description',
+      }),
+      countPlayersMinInternal: useModelWrapper({
+        props, emit, name: 'countPlayersMin',
+      }),
+      countPlayersMaxInternal: useModelWrapper({
+        props, emit, name: 'countPlayersMax',
+      }),
+      minutesPlaytimeMinInternal: useModelWrapper({
+        props, emit, name: 'minutesPlaytimeMin',
+      }),
+      minutesPlaytimeMaxInternal: useModelWrapper({
+        props, emit, name: 'minutesPlaytimeMax',
+      }),
+      isCoopInternal: useModelWrapper({
+        props, emit, name: 'isCoop',
+      }),
+      complexityInternal: useModelWrapper({
+        props, emit, name: 'complexity',
+      }),
+      sizeInternal: useModelWrapper({
+        props, emit, name: 'size',
+      }),
       universesInternal: useModelWrapper({
         props, emit, name: 'universes', isEntity: true,
       }),
