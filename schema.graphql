@@ -125,7 +125,7 @@ type Query {
     game(id: ID!): Game!
     games(gameData: InputCollection!): GameCollectionData!
     image(id: ID!): Image!
-    images(gameData: InputCollection!): ImageCollectionData!
+    images(imageData: InputCollection!): ImageCollectionData!
     mechanism(id: ID!): Mechanism!
     mechanisms: [Mechanism!]!
     mood(id: ID!): Mood!
@@ -133,7 +133,7 @@ type Query {
     player(id: ID!): Player!
     players: [Player!]!
     playtime(id: ID!): Playtime!
-    playtimes(gameData: InputCollection!): PlaytimeCollectionData!
+    playtimes(playtimeData: InputCollection!): PlaytimeCollectionData!
     rating(id: ID!): Rating!
     ratings: [Rating!]!
     session(id: ID!): Session!

@@ -22,7 +22,7 @@ export class ImageResolver extends EntityResolver {
 
   @Query(() => ImageCollectionData)
   @UseGuards(GqlAuthGuard)
-  async images(@Args('gameData') data: InputCollection) {
+  async images(@Args('imageData') data: InputCollection) {
     return this.imageCollectionService.loadPage(data);
   }
 

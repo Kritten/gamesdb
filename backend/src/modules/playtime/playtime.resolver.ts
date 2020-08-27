@@ -22,7 +22,7 @@ export class PlaytimeResolver extends EntityResolver {
 
   @Query(() => PlaytimeCollectionData)
   @UseGuards(GqlAuthGuard)
-  async playtimes(@Args('gameData') data: InputCollection) {
+  async playtimes(@Args('playtimeData') data: InputCollection) {
     return this.playtimeCollectionService.loadPage(data);
   }
 
