@@ -1,11 +1,8 @@
 import { computed, ref } from 'vue';
-import { Game } from '@/modules/game/game.model';
-import { Entity } from '@/modules/app/utilities/entity/entity.model';
-import { ServiceCollectionStatic } from '@/modules/app/utilities/collection/collection.types';
+import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 
-export function useCollection(
-  entity: Entity,
-  service: ServiceCollectionStatic,
+export function useCollection<T>(
+  service: ServiceCollectionInterface<T>,
   {
     page = 1,
     countPerPage = 10,
@@ -20,7 +17,7 @@ export function useCollection(
     params?: { [key: string]: any };
   } = {},
 ) {
-  const items = ref<typeof entity[]>([]);
+  const items = ref<T[]>([]);
   const countItems = ref(-1);
 
   const hasNextPage = computed(() => countItems.value !== items.value.length);
@@ -34,10 +31,11 @@ export function useCollection(
         sortDesc,
         params,
       })
-      .then(({ count, items: itemsLocal }: { count: number; items: Game[] }) => {
+      .then(({ count, items: itemsLocal }: { count: number; items: T[] }) => {
         countItems.value = count;
+        // @ts-ignore
         items.value = items.value.concat(itemsLocal);
-        //TODO add isLoading variable to prevent multiple loadings
+        //TODO add isLoading variable to prevent multiple loadings when pressing button multiple times
         page += 1;
       });
   };

@@ -43,7 +43,7 @@ export default {
   },
   setup(context) {
     const { t } = useI18n();
-    const collection = useCollection(Session, ServiceSession, { sortBy: 'id', params: { game: context.game.id } });
+    const collection = useCollection<Session>(ServiceSession, { sortBy: 'id', params: { game: context.game.id } });
 
     for (const event of ['createdSession', 'deletedSession']) {
       queue.listen(event, () => {

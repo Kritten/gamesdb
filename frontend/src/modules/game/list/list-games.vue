@@ -29,7 +29,7 @@ export default {
   components: { ListItemGame },
   setup() {
     const { t } = useI18n();
-    const collection = useCollection(Game, ServiceGame);
+    const collection = useCollection<Game>(ServiceGame);
 
     for (const event of ['createdGame', 'updatedGame']) {
       queue.listen(event, () => {
