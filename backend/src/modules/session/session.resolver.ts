@@ -5,7 +5,7 @@ import { Session } from './session.entity';
 import { SessionEntityService } from './session.entity.service';
 import { SessionInput, UpdateSessionInput } from './session.input';
 import { GameEntityService } from '../game/game.entity.service';
-import { PlayerService } from '../player/player.service';
+import { PlayerEntityService } from '../player/player.entity.service';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { PlaytimeEntityService } from '../playtime/playtime.entity.service';
 import { SessionCollectionService } from './collection/session.collection.service';
@@ -19,7 +19,7 @@ export class SessionResolver extends EntityResolver {
   constructor(
     private sessionService: SessionEntityService,
     private sessionCollectionService: SessionCollectionService,
-    private playerService: PlayerService,
+    private playerService: PlayerEntityService,
     private gameService: GameEntityService,
     private playtimeService: PlaytimeEntityService,
   ) {

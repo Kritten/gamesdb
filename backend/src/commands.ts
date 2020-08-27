@@ -1,22 +1,22 @@
 import { Console, Command, createSpinner } from 'nestjs-console';
 import * as fs from 'fs';
-import { MechanismService } from './modules/mechanism/mechanism.service';
+import { MechanismEntityService } from './modules/mechanism/mechanism.entity.service';
 import { Mechanism } from './modules/mechanism/mechanism.entity';
 import { Mood } from './modules/mood/mood.entity';
-import { MoodService } from './modules/mood/mood.service';
-import { CategoryService } from './modules/category/category.service';
+import { MoodEntityService } from './modules/mood/mood.entity.service';
+import { CategoryEntityService } from './modules/category/category.entity.service';
 import { Category } from './modules/category/category.entity';
 import { Image } from './modules/image/image.entity';
-import { ImageService } from './modules/image/image.service';
+import { ImageEntityService } from './modules/image/image.entity.service';
 import { Game } from './modules/game/game.entity';
 import { GameEntityService } from './modules/game/game.entity.service';
 import { getManager, In } from 'typeorm/index';
-import { UserService } from './modules/user/user.service';
+import { UserEntityService } from './modules/user/user.entity.service';
 import { User } from './modules/user/user.entity';
 
 @Console()
 export class MyCommands {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserEntityService) {}
 
   @Command({
     command: 'createuser <name> <password>',
@@ -36,10 +36,10 @@ export class MyCommands {
     description: 'Import database from wedding page',
   })
   async listContent(path: string): Promise<void> {
-    const mechanismService = new MechanismService();
-    const moodService = new MoodService();
-    const categoryService = new CategoryService();
-    const imageService = new ImageService();
+    const mechanismService = new MechanismEntityService();
+    const moodService = new MoodEntityService();
+    const categoryService = new CategoryEntityService();
+    const imageService = new ImageEntityService();
     const gameService = new GameEntityService();
     const spin = createSpinner();
     spin.start(`Import database`);

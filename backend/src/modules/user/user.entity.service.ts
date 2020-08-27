@@ -5,7 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { EntityService } from '../../utilities/entity/entity.service';
 
 @Injectable()
-export class UserService extends EntityService<User> {
+export class UserEntityService extends EntityService<User> {
   constructor(
     @Inject(forwardRef(() => AuthService)) private authService: AuthService,
   ) {

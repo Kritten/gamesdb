@@ -2,7 +2,7 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Player } from './player.entity';
-import { PlayerService } from './player.service';
+import { PlayerEntityService } from './player.entity.service';
 import { PlayerInput, UpdatePlayerInput } from './player.input';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { SessionEntityService } from '../session/session.entity.service';
@@ -10,7 +10,7 @@ import { SessionEntityService } from '../session/session.entity.service';
 @Resolver(() => Player)
 export class PlayerResolver extends EntityResolver {
   constructor(
-    private playerService: PlayerService,
+    private playerService: PlayerEntityService,
     private sessionService: SessionEntityService,
   ) {
     super();

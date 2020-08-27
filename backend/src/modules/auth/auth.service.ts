@@ -1,5 +1,5 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { UserEntityService } from '../user/user.entity.service';
 import { User } from '../user/user.entity';
 import { createHash } from 'crypto';
 import { getManager } from 'typeorm/index';
@@ -7,7 +7,8 @@ import { getManager } from 'typeorm/index';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(forwardRef(() => UserService)) private userService: UserService,
+    @Inject(forwardRef(() => UserEntityService))
+    private userService: UserEntityService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<User> {

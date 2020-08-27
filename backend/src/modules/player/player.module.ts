@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from './player.entity';
 import { PlayerResolver } from './player.resolver';
-import { PlayerService } from './player.service';
+import { PlayerEntityService } from './player.entity.service';
 import { GameModule } from '../game/game.module';
 import { SessionModule } from '../session/session.module';
 
@@ -11,7 +11,7 @@ import { SessionModule } from '../session/session.module';
     TypeOrmModule.forFeature([Player]),
     forwardRef(() => SessionModule),
   ],
-  providers: [PlayerResolver, PlayerService],
-  exports: [PlayerService],
+  providers: [PlayerResolver, PlayerEntityService],
+  exports: [PlayerEntityService],
 })
 export class PlayerModule {}

@@ -2,7 +2,7 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Mood } from './mood.entity';
-import { MoodService } from './mood.service';
+import { MoodEntityService } from './mood.entity.service';
 import { MoodInput, UpdateMoodInput } from './mood.input';
 import { GameEntityService } from '../game/game.entity.service';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
@@ -10,7 +10,7 @@ import { EntityResolver } from '../../utilities/entity/entity.resolver';
 @Resolver(() => Mood)
 export class MoodResolver extends EntityResolver {
   constructor(
-    private moodService: MoodService,
+    private moodService: MoodEntityService,
     private gameService: GameEntityService,
   ) {
     super();

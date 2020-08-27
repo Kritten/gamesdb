@@ -6,20 +6,24 @@ import { Playtime } from './playtime.entity';
 import { PlaytimeEntityService } from './playtime.entity.service';
 import { PlaytimeInput, UpdatePlaytimeInput } from './playtime.input';
 import { SessionEntityService } from '../session/session.entity.service';
+import { PlaytimeCollectionService } from './collection/playtime.collection.service';
+import { InputCollection } from '../../utilities/collection/collection.input';
+import { PlaytimeCollectionData } from './collection/playtime.collectionData';
 
 @Resolver(() => Playtime)
 export class PlaytimeResolver extends EntityResolver {
   constructor(
     private playtimeService: PlaytimeEntityService,
+    private playtimeCollectionService: PlaytimeCollectionService,
     private sessionService: SessionEntityService,
   ) {
     super();
   }
 
-  @Query(() => [Playtime])
+  @Query(() => PlaytimeCollectionData)
   @UseGuards(GqlAuthGuard)
-  async playtimes() {
-    return this.playtimeService.find();
+  async playtimes(@Args('gameData') data: InputCollection) {
+    return this.playtimeCollectionService.loadPage(data);
   }
 
   @Query(() => Playtime)

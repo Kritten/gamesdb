@@ -1,25 +1,29 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import { ImageService } from './image.service';
+import { ImageEntityService } from './image.entity.service';
 import { ImageInput, UpdateImageInput } from './image.input';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { GameEntityService } from '../game/game.entity.service';
 import { Image } from './image.entity';
+import { InputCollection } from '../../utilities/collection/collection.input';
+import { ImageCollectionService } from './collection/image.collection.service';
+import { ImageCollectionData } from './collection/image.collectionData';
 
 @Resolver(() => Image)
 export class ImageResolver extends EntityResolver {
   constructor(
-    private imageService: ImageService,
+    private imageService: ImageEntityService,
+    private imageCollectionService: ImageCollectionService,
     private gameService: GameEntityService,
   ) {
     super();
   }
 
-  @Query(() => [Image])
+  @Query(() => ImageCollectionData)
   @UseGuards(GqlAuthGuard)
-  async images() {
-    return this.imageService.find();
+  async images(@Args('gameData') data: InputCollection) {
+    return this.imageCollectionService.loadPage(data);
   }
 
   @Query(() => Image)

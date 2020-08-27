@@ -2,7 +2,7 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Universe } from './universe.entity';
-import { UniverseService } from './universe.service';
+import { UniverseEntityService } from './universe.entity.service';
 import { UniverseInput, UpdateUniverseInput } from './universe.input';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { GameEntityService } from '../game/game.entity.service';
@@ -10,7 +10,7 @@ import { GameEntityService } from '../game/game.entity.service';
 @Resolver(() => Universe)
 export class UniverseResolver extends EntityResolver {
   constructor(
-    private universeService: UniverseService,
+    private universeService: UniverseEntityService,
     private gameService: GameEntityService,
   ) {
     super();

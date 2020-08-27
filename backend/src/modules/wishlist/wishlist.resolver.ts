@@ -2,12 +2,12 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Wishlist } from './wishlist.entity';
-import { WishlistService } from './wishlist.service';
+import { WishlistEntityService } from './wishlist.entity.service';
 import { WishlistInput, UpdateWishlistInput } from './wishlist.input';
 
 @Resolver(() => Wishlist)
 export class WishlistResolver {
-  constructor(private wishlistService: WishlistService) {}
+  constructor(private wishlistService: WishlistEntityService) {}
 
   @Query(() => [Wishlist])
   @UseGuards(GqlAuthGuard)

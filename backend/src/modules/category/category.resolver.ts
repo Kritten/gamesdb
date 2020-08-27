@@ -2,7 +2,7 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Category } from './category.entity';
-import { CategoryService } from './category.service';
+import { CategoryEntityService } from './category.entity.service';
 import { CategoryInput, UpdateCategoryInput } from './category.input';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { GameEntityService } from '../game/game.entity.service';
@@ -10,7 +10,7 @@ import { GameEntityService } from '../game/game.entity.service';
 @Resolver(() => Category)
 export class CategoryResolver extends EntityResolver {
   constructor(
-    private categoryService: CategoryService,
+    private categoryService: CategoryEntityService,
     private gameService: GameEntityService,
   ) {
     super();

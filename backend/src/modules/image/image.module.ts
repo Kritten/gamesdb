@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GameModule } from '../game/game.module';
 import { Image } from './image.entity';
 import { ImageResolver } from './image.resolver';
-import { ImageService } from './image.service';
+import { ImageEntityService } from './image.entity.service';
+import { ImageCollectionService } from './collection/image.collection.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Image]), forwardRef(() => GameModule)],
-  providers: [ImageResolver, ImageService],
-  exports: [ImageService],
+  providers: [ImageResolver, ImageEntityService, ImageCollectionService],
+  exports: [ImageEntityService],
 })
 export class ImageModule {}

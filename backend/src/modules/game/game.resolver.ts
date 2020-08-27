@@ -4,25 +4,25 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { GameEntityService } from './game.entity.service';
 import { Game } from './game.entity';
 import { GameInput, UpdateGameInput } from './game.input';
-import { CategoryService } from '../category/category.service';
+import { CategoryEntityService } from '../category/category.entity.service';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
-import { MechanismService } from '../mechanism/mechanism.service';
-import { MoodService } from '../mood/mood.service';
+import { MechanismEntityService } from '../mechanism/mechanism.entity.service';
+import { MoodEntityService } from '../mood/mood.entity.service';
 import { SessionEntityService } from '../session/session.entity.service';
-import { UniverseService } from '../universe/universe.service';
+import { UniverseEntityService } from '../universe/universe.entity.service';
 import { InputCollection } from '../../utilities/collection/collection.input';
-import { GameCollectionService } from './game.collection.service';
-import { GameCollectionData } from './game.collectionData';
+import { GameCollectionService } from './collection/game.collection.service';
+import { GameCollectionData } from './collection/game.collectionData';
 
 @Resolver(() => Game)
 export class GameResolver extends EntityResolver {
   constructor(
     private gameEntityService: GameEntityService,
     private gameCollectionService: GameCollectionService,
-    private categoryService: CategoryService,
-    private universeService: UniverseService,
-    private mechanismService: MechanismService,
-    private moodService: MoodService,
+    private categoryService: CategoryEntityService,
+    private universeService: UniverseEntityService,
+    private mechanismService: MechanismEntityService,
+    private moodService: MoodEntityService,
     private sessionService: SessionEntityService,
   ) {
     super();

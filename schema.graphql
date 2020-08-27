@@ -46,6 +46,11 @@ type Image {
     name: String!
 }
 
+type ImageCollectionData {
+    count: Int!
+    items: [Image!]!
+}
+
 type Mechanism {
     games: [Game!]!
     id: ID!
@@ -109,13 +114,18 @@ type Playtime {
     start: DateTime!
 }
 
+type PlaytimeCollectionData {
+    count: Int!
+    items: [Playtime!]!
+}
+
 type Query {
     categories: [Category!]!
     category(id: ID!): Category!
     game(id: ID!): Game!
     games(gameData: InputCollection!): GameCollectionData!
     image(id: ID!): Image!
-    images: [Image!]!
+    images(gameData: InputCollection!): ImageCollectionData!
     mechanism(id: ID!): Mechanism!
     mechanisms: [Mechanism!]!
     mood(id: ID!): Mood!
@@ -123,7 +133,7 @@ type Query {
     player(id: ID!): Player!
     players: [Player!]!
     playtime(id: ID!): Playtime!
-    playtimes: [Playtime!]!
+    playtimes(gameData: InputCollection!): PlaytimeCollectionData!
     rating(id: ID!): Rating!
     ratings: [Rating!]!
     session(id: ID!): Session!
@@ -354,15 +364,11 @@ input UpdateUniverseInput {
 }
 
 input UpdateWishlistInput {
-    games: [Int!]
-    id: Int!
-    name: String
+    id: ID!
 }
 
 input WishlistInput {
-    games: [Int!]
-    id: Int
-    name: String!
+    id: ID
 }
 
 

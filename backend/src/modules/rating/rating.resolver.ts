@@ -3,17 +3,17 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { Rating } from './rating.entity';
-import { RatingService } from './rating.service';
+import { RatingEntityService } from './rating.entity.service';
 import { RatingInput, UpdateRatingInput } from './rating.input';
-import { PlayerService } from '../player/player.service';
+import { PlayerEntityService } from '../player/player.entity.service';
 import { GameEntityService } from '../game/game.entity.service';
 
 @Resolver(() => Rating)
 export class RatingResolver extends EntityResolver {
   constructor(
-    private ratingService: RatingService,
+    private ratingService: RatingEntityService,
     private gameService: GameEntityService,
-    private playerService: PlayerService,
+    private playerService: PlayerEntityService,
   ) {
     super();
   }

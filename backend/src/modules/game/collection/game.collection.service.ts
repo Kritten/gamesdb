@@ -1,6 +1,6 @@
-import { Game } from './game.entity';
-import { CollectionService } from '../../utilities/collection/collection.service';
-import { GameEntityService } from './game.entity.service';
+import { Game } from '../game.entity';
+import { CollectionService } from '../../../utilities/collection/collection.service';
+import { GameEntityService } from '../game.entity.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
