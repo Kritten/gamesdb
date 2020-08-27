@@ -24,7 +24,7 @@ export class Entity implements EntityInterface {
     return new this(data);
   }
 
-  prepareForServer(): EntityInterface {
+  prepareForServer(): { [key: string]: unknown } {
     return { id: this.id };
   }
 }

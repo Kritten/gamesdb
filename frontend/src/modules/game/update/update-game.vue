@@ -1,5 +1,4 @@
 <template>
-  {{updateGame.entity}}
   <form @submit.prevent="updateGame.update">
     <item-game
       v-model:name="updateGame.entity.value.name"

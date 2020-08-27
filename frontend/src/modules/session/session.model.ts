@@ -3,7 +3,7 @@ import { SessionInterface } from '@/modules/session/session.types';
 import { Game } from '@/modules/game/game.model';
 import { Player } from '@/modules/player/player.model';
 import { Playtime } from '@/modules/playtime/playtime.model';
-import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
+import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
 import { store } from '@/modules/app/app.store';
 import { ServiceGame } from '@/modules/game/game.service';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
@@ -14,7 +14,7 @@ export class Session extends Entity implements SessionInterface {
   winners: Player[];
   playtimes: Playtime[];
 
-  constructor(data: SessionInterface = {}) {
+  constructor(data: SessionInterface) {
     super(data);
     this.game = data.game;
     this.players = setDefaultIfNullOrUndefined<Player[]>(data.players, []);
@@ -35,13 +35,20 @@ export class Session extends Entity implements SessionInterface {
 
     if (entity.game !== undefined) {
       const idGame = entity.game.id;
-      entity.game = store.state.moduleGame.games[idGame];
-      if (entity.game === undefined) {
-        await ServiceGame.loadGame(idGame);
-        entity.game = store.state.moduleGame.games[idGame];
-      }
+      entity.game = await ServiceGame.loadGame(idGame as ID);
     }
 
     return entity;
+  }
+
+  prepareForServer() {
+    const data = super.prepareForServer();
+
+    data.game = this.game.id;
+    data.players = this.players.map(player => player.id);
+    data.winners = this.winners.map(winner => winner.id);
+    data.playtimes = this.playtimes;
+
+    return data;
   }
 }

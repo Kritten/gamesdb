@@ -80,8 +80,8 @@ export class Game extends Entity implements GameInterface {
     return entity;
   }
 
-  prepareForServer(): GameInterface {
-    const data: GameInterface = super.prepareForServer();
+  prepareForServer() {
+    const data = super.prepareForServer();
 
     data.name = this.name;
     data.description = this.description;

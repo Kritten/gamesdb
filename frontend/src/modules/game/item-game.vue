@@ -9,11 +9,13 @@
   </div>
   <div>
     <label for="description">{{ t('game.description') }}</label>
-    <input
+    <textarea
       id="description"
       :value="description"
+      cols="100"
+      rows="5"
       @input="$emit('update:description', $event.target.value)"
-    >
+    />
   </div>
   <div>
     <label for="countPlayersMin">{{ t('game.countPlayersMin') }}</label>

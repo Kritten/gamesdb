@@ -1,37 +1,9 @@
 <template>
   <form @submit.prevent="createSession.create">
-    <div>
-      <label for="players">{{ t('player.label', 2) }}</label>
-      <select
-        id="players"
-        v-model="createSession.entity.value.players"
-        multiple
-      >
-        <option
-          v-for="player in store.state.modulePlayer.players"
-          :key="player.id"
-          :value="player.id"
-        >
-          {{ player.name }}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label for="winners">{{ t('winner.label', 2) }}</label>
-      <select
-        id="winners"
-        v-model="createSession.entity.value.winners"
-        multiple
-      >
-        <option
-          v-for="winner in store.state.modulePlayer.players"
-          :key="winner.id"
-          :value="winner.id"
-        >
-          {{ winner.name }}
-        </option>
-      </select>
-    </div>
+    <item-session
+      v-model:players="createSession.entity.value.players"
+      v-model:winners="createSession.entity.value.winners"
+    />
     <div>
       <p>{{ t('playtime.label', 2) }}</p>
       <div>
@@ -74,10 +46,11 @@ import { ServiceSession } from '@/modules/session/session.service';
 import { useStore } from 'vuex';
 import DatetimePicker from '@/modules/app/base/datetime-picker';
 import { Game } from '@/modules/game/game.model';
+import ItemSession from '@/modules/session/item-session';
 
 export default {
   name: 'CreateSession',
-  components: { DatetimePicker },
+  components: { ItemSession, DatetimePicker },
   props: {
     game: {
       type: Game,

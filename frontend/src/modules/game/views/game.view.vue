@@ -1,5 +1,5 @@
 <template>
-  <template v-if="game !== undefined">
+  <template v-if="game !== null">
     <h1>{{ game.name }}</h1>
     <p>{{ game.description }}</p>
     <update-game :game="game" />
@@ -11,9 +11,8 @@
 </template>
 
 <script lang="ts">
-import { computed } from 'vue';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
 import { ServiceGame } from '@/modules/game/game.service';
 import { Game } from '@/modules/game/game.model';
 import CreateSession from '@/modules/session/create/create-session.vue';
@@ -27,15 +26,11 @@ export default {
     UpdateGame, DeleteGame, ListSession, CreateSession,
   },
   setup() {
-    const store = useStore();
     const route = useRoute();
     const idGame = route.params.id as string;
+    const game = ref<Game | null>(null);
 
-    const game = computed<Game>(() => store.state.moduleGame.games[idGame]);
-
-    if (game.value === undefined) {
-      ServiceGame.loadGame(idGame);
-    }
+    ServiceGame.loadGame(idGame).then((value: Game) => { game.value = value; });
 
     return {
       game,

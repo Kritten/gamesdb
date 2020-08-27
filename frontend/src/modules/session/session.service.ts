@@ -58,7 +58,7 @@ class ServiceSessionClass
     const response = await apolloClient.mutate({
       mutation: mutationCreateSession,
       variables: {
-        session,
+        session: session.prepareForServer(),
       },
     });
 
