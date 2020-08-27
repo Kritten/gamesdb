@@ -4,13 +4,19 @@ import {
   mutationCreateImage,
   mutationDeleteImage,
   mutationUpdateImage,
+  queryPageImage,
 } from '@/modules/image/graphql/image.graphql';
 import { Image } from '@/modules/image/image.model';
-import { store } from '@/modules/app/app.store';
 import { cloneDeep } from 'lodash';
 import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
+import {
+  ServiceCollectionInterface,
+  ServiceCollectionLoadPageParameters,
+} from '@/modules/app/utilities/collection/collection.types';
+import { queue } from '@/queue';
 
-class ServiceImageClass implements ServiceEntityInterface<Image> {
+class ServiceImageClass
+  implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
   useCreate() {
     let image = ref(new Image());
 
@@ -50,7 +56,8 @@ class ServiceImageClass implements ServiceEntityInterface<Image> {
     });
 
     const imageNew = await Image.parseFromServer(response.data.createImage);
-    store.commit('moduleImage/addImage', imageNew);
+
+    queue.notify('createdImage', imageNew);
 
     return imageNew;
   }
@@ -64,7 +71,8 @@ class ServiceImageClass implements ServiceEntityInterface<Image> {
     });
 
     const imageNew = await Image.parseFromServer(response.data.updateImage);
-    store.commit('moduleImage/addImage', imageNew);
+
+    queue.notify('updatedImage', imageNew);
 
     return imageNew;
   }
@@ -77,9 +85,31 @@ class ServiceImageClass implements ServiceEntityInterface<Image> {
       },
     });
 
-    store.commit('moduleImage/deleteImage', image);
+    queue.notify('deletedImage', image);
 
     return response.data.deleteImage;
+  }
+
+  async loadPage({ page, count, sortBy, sortDesc, params }: ServiceCollectionLoadPageParameters) {
+    const response = await apolloClient.query({
+      query: queryPageImage,
+      variables: {
+        page,
+        count,
+        sortBy,
+        sortDesc,
+        ...params,
+      },
+    });
+
+    const entities: Image[] = await Promise.all(
+      response.data.images.items.map((image: Image) => Image.parseFromServer(image)),
+    );
+
+    return {
+      count: response.data.images.count,
+      items: entities,
+    };
   }
 }
 

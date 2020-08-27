@@ -18,7 +18,6 @@
 <script lang="ts">
 import { ServiceGame } from '@/modules/game/game.service';
 import ListItemGame from '@/modules/game/list/list-item-game.vue';
-import { useStore } from 'vuex';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Game } from '@/modules/game/game.model';
 import { useI18n } from 'vue-i18n';
@@ -40,7 +39,6 @@ export default {
     return {
       t,
       collection,
-      store: useStore(),
     };
   },
 };

@@ -2,8 +2,8 @@
   <list-images />
 </template>
 
-<script>
-import ListImages from '@/modules/image/list/list-image';
+<script lang="ts">
+import ListImages from '@/modules/image/list/list-images';
 
 export default {
   name: 'ViewGame',

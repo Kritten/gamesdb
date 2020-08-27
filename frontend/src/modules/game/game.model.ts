@@ -53,7 +53,7 @@ export class Game extends Entity implements GameInterface {
   }
 
   static async parseFromServer(data: EntityInterface): Promise<Game> {
-    const entity: Game = (await super.parseFromServer(data)) as Game;
+    const entity = (await super.parseFromServer(data)) as Game;
 
     if (entity.universes !== undefined) {
       entity.universes = entity.universes.map(

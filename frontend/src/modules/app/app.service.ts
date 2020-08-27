@@ -82,14 +82,6 @@ export class ServiceApp {
         }),
       apolloClient
         .query({
-          query: queryImages,
-        })
-        .then(response => Image.convertFromServerToStore(response.data.images))
-        .then(images => {
-          store.commit('moduleImage/setImages', images);
-        }),
-      apolloClient
-        .query({
           query: queryUniverses,
         })
         .then(response => Universe.convertFromServerToStore(response.data.universes))

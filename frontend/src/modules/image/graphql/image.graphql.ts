@@ -1,11 +1,14 @@
 import gql from 'graphql-tag';
 
-export const queryImages = gql`
-  query {
-    images {
-      id
-      name
-      link
+export const queryPageImage = gql`
+  query images($page: Int!, $count: Int!, $sortBy: String!, $sortDesc: Boolean!) {
+    images(imageData: { page: $page, count: $count, sortBy: $sortBy, sortDesc: $sortDesc }) {
+      count
+      items {
+        id
+        name
+        link
+      }
     }
   }
 `;
