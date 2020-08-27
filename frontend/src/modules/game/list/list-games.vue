@@ -22,6 +22,7 @@ import { useStore } from 'vuex';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Game } from '@/modules/game/game.model';
 import { useI18n } from 'vue-i18n';
+import { queue } from '@/queue';
 
 export default {
   name: 'ListGames',
@@ -29,6 +30,12 @@ export default {
   setup() {
     const { t } = useI18n();
     const collection = useCollection(Game, ServiceGame);
+
+    for (const event of ['createdGame', 'updatedGame']) {
+      queue.listen(event, () => {
+        collection.reset();
+      });
+    }
 
     return {
       t,

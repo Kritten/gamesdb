@@ -7,8 +7,6 @@ import {
   queryPageGame,
 } from '@/modules/game/graphql/game.graphql';
 import { Game } from '@/modules/game/game.model';
-import { Entity } from '@/modules/app/utilities/entity/entity.model';
-import { store } from '@/modules/app/app.store';
 import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import {
   ServiceCollectionInterface,
@@ -74,7 +72,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
 
     const gameNew = await Game.parseFromServer(response.data.updateGame);
 
-    queue.notify('createdGame', gameNew);
+    queue.notify('updatedGame', gameNew);
 
     return gameNew;
   }
