@@ -38,6 +38,7 @@ import { PlaytimeModule } from './modules/playtime/playtime.module';
         database: configService.get<string>('MYSQL_DATABASE'),
         autoLoadEntities: true,
         synchronize: true,
+        timezone: 'Z',
       }),
       inject: [ConfigService],
     }),
