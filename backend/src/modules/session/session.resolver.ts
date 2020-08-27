@@ -39,8 +39,8 @@ export class SessionResolver extends EntityResolver {
 
   @Query(() => Session)
   @UseGuards(GqlAuthGuard)
-  async session(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.sessionService.findOne(id);
+  async session(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.sessionService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Session)
@@ -82,7 +82,7 @@ export class SessionResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async updateSession(@Args('sessionData') sessionData: UpdateSessionInput) {
     const session = new Session();
-    session.id = sessionData.id;
+    session.id = parseInt(sessionData.id, 10);
     await this.handleRelation(
       'players',
       session,
@@ -108,7 +108,7 @@ export class SessionResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteSession(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.sessionService.delete(id);
+  async deleteSession(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.sessionService.delete(parseInt(id, 10));
   }
 }

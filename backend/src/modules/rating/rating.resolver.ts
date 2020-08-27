@@ -26,8 +26,8 @@ export class RatingResolver extends EntityResolver {
 
   @Query(() => Rating)
   @UseGuards(GqlAuthGuard)
-  async rating(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.ratingService.findOne(id);
+  async rating(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.ratingService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Rating)
@@ -45,7 +45,7 @@ export class RatingResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async updateRating(@Args('ratingData') ratingData: UpdateRatingInput) {
     const rating = new Rating();
-    rating.id = ratingData.id;
+    rating.id = parseInt(ratingData.id);
     rating.rating = ratingData.rating;
     await this.handleRelation('game', rating, ratingData, this.gameService);
     await this.handleRelation('player', rating, ratingData, this.playerService);
@@ -55,7 +55,7 @@ export class RatingResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteRating(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.ratingService.delete(id);
+  async deleteRating(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.ratingService.delete(parseInt(id, 10));
   }
 }

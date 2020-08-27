@@ -7,5 +7,5 @@ export class SessionCollectionInput {
   collection: InputCollection;
 
   @Field(() => ID, { nullable: true })
-  game?: number;
+  game?: string;
 }

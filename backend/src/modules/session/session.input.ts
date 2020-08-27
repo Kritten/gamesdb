@@ -9,16 +9,16 @@ class SessionPlaytimeInput {
 @InputType()
 export class SessionInput {
   @Field(() => ID)
-  id?: number;
+  id?: string;
 
   @Field(() => [ID])
-  players?: number[];
+  players?: string[];
 
   @Field(() => [ID])
-  winners?: number[];
+  winners?: string[];
 
   @Field(() => ID)
-  game?: number;
+  game?: string;
 
   @Field(() => [SessionPlaytimeInput])
   playtimes?: SessionPlaytimeInput[];
@@ -27,5 +27,5 @@ export class SessionInput {
 @InputType()
 export class UpdateSessionInput extends PartialType(SessionInput) {
   @Field(() => ID)
-  id: number;
+  id: string;
 }

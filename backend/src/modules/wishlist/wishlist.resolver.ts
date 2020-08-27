@@ -25,7 +25,6 @@ export class WishlistResolver {
   @UseGuards(GqlAuthGuard)
   async createWishlist(@Args('wishlistData') wishlistData: WishlistInput) {
     const wishlist = new Wishlist();
-    wishlist.name = wishlistData.name;
     //TODO relations
     return await this.wishlistService.create(wishlist);
   }
@@ -36,8 +35,7 @@ export class WishlistResolver {
     @Args('wishlistData') wishlistData: UpdateWishlistInput,
   ) {
     const wishlist = new Wishlist();
-    wishlist.id = wishlistData.id;
-    wishlist.name = wishlistData.name;
+    wishlist.id = parseInt(wishlistData.id);
     //TODO relations
     return await this.wishlistService.update(wishlist);
   }

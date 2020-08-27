@@ -24,8 +24,8 @@ export class MoodResolver extends EntityResolver {
 
   @Query(() => Mood)
   @UseGuards(GqlAuthGuard)
-  async mood(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.moodService.findOne(id);
+  async mood(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.moodService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Mood)
@@ -42,7 +42,7 @@ export class MoodResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async updateMood(@Args('moodData') moodData: UpdateMoodInput) {
     const mood = new Mood();
-    mood.id = moodData.id;
+    mood.id = parseInt(moodData.id, 10);
     mood.name = moodData.name;
     await this.handleRelation('games', mood, moodData, this.gameService);
 
@@ -51,7 +51,7 @@ export class MoodResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteMood(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.moodService.delete(id);
+  async deleteMood(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.moodService.delete(parseInt(id, 10));
   }
 }

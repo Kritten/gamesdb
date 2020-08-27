@@ -24,8 +24,8 @@ export class MechanismResolver extends EntityResolver {
 
   @Query(() => Mechanism)
   @UseGuards(GqlAuthGuard)
-  async mechanism(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.mechanismService.findOne(id);
+  async mechanism(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.mechanismService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Mechanism)
@@ -49,7 +49,7 @@ export class MechanismResolver extends EntityResolver {
     @Args('mechanismData') mechanismData: UpdateMechanismInput,
   ) {
     const mechanism = new Mechanism();
-    mechanism.id = mechanismData.id;
+    mechanism.id = parseInt(mechanismData.id, 10);
     mechanism.name = mechanismData.name;
     await this.handleRelation(
       'games',
@@ -63,7 +63,7 @@ export class MechanismResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteMechanism(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.mechanismService.delete(id);
+  async deleteMechanism(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.mechanismService.delete(parseInt(id, 10));
   }
 }

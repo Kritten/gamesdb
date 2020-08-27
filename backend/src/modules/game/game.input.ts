@@ -3,7 +3,7 @@ import { Field, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 @InputType()
 export class GameInput {
   @Field(() => ID)
-  id?: number;
+  id?: string;
 
   name: string;
 
@@ -31,35 +31,35 @@ export class GameInput {
   size?: number;
 
   @Field(() => [ID])
-  universes?: number[];
+  universes?: string[];
 
   @Field(() => [ID])
-  categories?: number[];
+  categories?: string[];
 
   @Field(() => [ID])
-  mechanisms?: number[];
+  mechanisms?: string[];
 
   @Field(() => [ID])
-  moods?: number[];
+  moods?: string[];
 
   @Field(() => [ID])
-  images?: number[];
+  images?: string[];
 
   @Field(() => [ID])
-  ratings?: number[];
+  ratings?: string[];
 
   @Field(() => [ID])
-  playableWith?: number[];
+  playableWith?: string[];
 
   @Field(() => ID)
-  isExpansionOf?: number;
+  isExpansionOf?: string;
 
   @Field(() => [ID])
-  expansions?: number[];
+  expansions?: string[];
 }
 
 @InputType()
 export class UpdateGameInput extends PartialType(GameInput) {
   @Field(() => ID)
-  id: number;
+  id: string;
 }

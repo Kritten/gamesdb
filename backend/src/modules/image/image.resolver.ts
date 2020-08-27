@@ -24,8 +24,8 @@ export class ImageResolver extends EntityResolver {
 
   @Query(() => Image)
   @UseGuards(GqlAuthGuard)
-  async image(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.imageService.findOne(id);
+  async image(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.imageService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Image)
@@ -43,7 +43,7 @@ export class ImageResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async updateImage(@Args('imageData') imageData: UpdateImageInput) {
     const image = new Image();
-    image.id = imageData.id;
+    image.id = parseInt(imageData.id, 10);
     image.name = imageData.name;
     image.link = imageData.link;
     await this.handleRelation('games', image, imageData, this.gameService);
@@ -53,7 +53,7 @@ export class ImageResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteImage(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.imageService.delete(id);
+  async deleteImage(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.imageService.delete(parseInt(id, 10));
   }
 }

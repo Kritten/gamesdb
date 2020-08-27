@@ -36,8 +36,8 @@ export class GameResolver extends EntityResolver {
 
   @Query(() => Game)
   @UseGuards(GqlAuthGuard)
-  async game(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.gameEntityService.findOne(id, {
+  async game(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.gameEntityService.findOne(parseInt(id, 10), {
       // relations: ['ratings.game'],
     });
   }
@@ -102,7 +102,7 @@ export class GameResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async updateGame(@Args('gameData') gameData: UpdateGameInput) {
     const game = new Game();
-    game.id = gameData.id;
+    game.id = parseInt(gameData.id, 10);
     game.name = gameData.name;
     game.description = gameData.description;
     game.description = gameData.description;
@@ -157,7 +157,7 @@ export class GameResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteGame(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.gameEntityService.delete(id);
+  async deleteGame(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.gameEntityService.delete(parseInt(id, 10));
   }
 }

@@ -24,8 +24,8 @@ export class PlaytimeResolver extends EntityResolver {
 
   @Query(() => Playtime)
   @UseGuards(GqlAuthGuard)
-  async playtime(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.playtimeService.findOne(id);
+  async playtime(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.playtimeService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Playtime)
@@ -50,7 +50,7 @@ export class PlaytimeResolver extends EntityResolver {
     @Args('playtimeData') playtimeData: UpdatePlaytimeInput,
   ) {
     const playtime = new Playtime();
-    playtime.id = playtimeData.id;
+    playtime.id = parseInt(playtimeData.id, 10);
     playtime.start = playtimeData.start;
     playtime.end = playtimeData.end;
     await this.handleRelation(
@@ -65,7 +65,7 @@ export class PlaytimeResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deletePlaytime(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.playtimeService.delete(id);
+  async deletePlaytime(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.playtimeService.delete(parseInt(id, 10));
   }
 }

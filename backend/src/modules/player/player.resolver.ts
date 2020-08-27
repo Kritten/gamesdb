@@ -24,8 +24,8 @@ export class PlayerResolver extends EntityResolver {
 
   @Query(() => Player)
   @UseGuards(GqlAuthGuard)
-  async player(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.playerService.findOne(id);
+  async player(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.playerService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Player)
@@ -53,7 +53,7 @@ export class PlayerResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async updatePlayer(@Args('playerData') playerData: UpdatePlayerInput) {
     const player = new Player();
-    player.id = playerData.id;
+    player.id = parseInt(playerData.id, 10);
     player.name = playerData.name;
     await this.handleRelation(
       'sessionsPlayed',
@@ -73,7 +73,7 @@ export class PlayerResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deletePlayer(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.playerService.delete(id);
+  async deletePlayer(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.playerService.delete(parseInt(id, 10));
   }
 }

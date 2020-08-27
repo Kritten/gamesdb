@@ -24,8 +24,8 @@ export class UniverseResolver extends EntityResolver {
 
   @Query(() => Universe)
   @UseGuards(GqlAuthGuard)
-  async universe(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.universeService.findOne(id);
+  async universe(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.universeService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Universe)
@@ -49,7 +49,7 @@ export class UniverseResolver extends EntityResolver {
     @Args('universeData') universeData: UpdateUniverseInput,
   ) {
     const universe = new Universe();
-    universe.id = universeData.id;
+    universe.id = parseInt(universeData.id, 10);
     universe.name = universeData.name;
     await this.handleRelation(
       'games',
@@ -63,7 +63,7 @@ export class UniverseResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteUniverse(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.universeService.delete(id);
+  async deleteUniverse(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.universeService.delete(parseInt(id, 10));
   }
 }

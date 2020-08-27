@@ -24,8 +24,8 @@ export class CategoryResolver extends EntityResolver {
 
   @Query(() => Category)
   @UseGuards(GqlAuthGuard)
-  async category(@Args({ name: 'id', type: () => ID }) id: number) {
-    return this.categoryService.findOne(id);
+  async category(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.categoryService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Category)
@@ -49,7 +49,7 @@ export class CategoryResolver extends EntityResolver {
     @Args('categoryData') categoryData: UpdateCategoryInput,
   ) {
     const category = new Category();
-    category.id = categoryData.id;
+    category.id = parseInt(categoryData.id, 10);
     category.name = categoryData.name;
     await this.handleRelation(
       'games',
@@ -63,7 +63,7 @@ export class CategoryResolver extends EntityResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteCategory(@Args({ name: 'id', type: () => ID }) id: number) {
-    return await this.categoryService.delete(id);
+  async deleteCategory(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.categoryService.delete(parseInt(id, 10));
   }
 }
