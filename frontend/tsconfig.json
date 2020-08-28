@@ -26,13 +26,12 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "empty.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "tests/**/*.ts"
   ]
 }
