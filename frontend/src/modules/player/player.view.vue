@@ -6,7 +6,7 @@
 import ListPlayers from '@/modules/player/list/list-player';
 
 export default {
-  name: 'ViewGame',
+  name: 'ViewPlayer',
   components: { ListPlayers },
 };
 </script>
