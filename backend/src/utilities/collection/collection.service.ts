@@ -2,7 +2,13 @@ import { Injectable, Optional } from '@nestjs/common';
 import { BaseEntity } from '../types';
 import { InputCollection } from './collection.input';
 import { EntityService } from '../entity/entity.service';
-import { FindOneOptions } from 'typeorm/index';
+import { Equal, Like } from 'typeorm/index';
+
+function sleep(ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
 
 @Injectable()
 export class CollectionService<T extends BaseEntity> {
@@ -16,26 +22,37 @@ export class CollectionService<T extends BaseEntity> {
     this.entityClass = cls;
     this.service = service;
   }
-
   async loadPage(data: InputCollection) {
-    const filters: FindOneOptions<BaseEntity> = {};
+    await sleep(10000);
+    const where = [];
     if (data.filters !== undefined) {
-      for (const filter of data.filters) {
+      for (const filter of data.filters.filter(
+        filter => filter.value !== null,
+      )) {
         switch (filter.operator) {
-          default:
-            filters[filter.operator] = [{ [filter.field]: filter.value }];
+          case 'Equal':
+            where.push({
+              [filter.field]: Equal(filter.value),
+            });
             break;
+          case 'Like':
+            where.push({
+              [filter.field]: Like(`%${filter.value}%`),
+            });
+            break;
+          default:
+            throw Error(`Unsupported Operator '${filter.operator}'`);
         }
       }
     }
-
+    console.warn(where, 'where');
     const [items, count] = await this.service.findAndCount({
       take: data.count,
       skip: (data.page - 1) * data.count,
       order: {
         [data.sortBy]: data.sortDesc ? 'DESC' : 'ASC',
       },
-      ...filters,
+      where,
     });
 
     return {

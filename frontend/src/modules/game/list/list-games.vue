@@ -1,5 +1,7 @@
 <template>
+  {{ filters }}
   {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
+  <input v-model="filters[0].value">
   <table>
     <list-item-game
       v-for="game in collection.items.value"
@@ -22,13 +24,17 @@ import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Game } from '@/modules/game/game.model';
 import { useI18n } from 'vue-i18n';
 import { queue } from '@/queue';
+import { ref } from 'vue';
 
 export default {
   name: 'ListGames',
   components: { ListItemGame },
   setup() {
     const { t } = useI18n();
-    const collection = useCollection<Game>(ServiceGame);
+    const filters = ref([{
+      field: 'name', value: null, operator: 'Like',
+    }]);
+    const collection = useCollection<Game>(ServiceGame, { filters: filters.value });
 
     for (const event of ['createdGame', 'updatedGame']) {
       queue.listen(event, () => {
@@ -39,6 +45,7 @@ export default {
     return {
       t,
       collection,
+      filters,
     };
   },
 };

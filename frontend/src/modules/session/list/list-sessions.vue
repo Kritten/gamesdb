@@ -46,7 +46,7 @@ export default {
     const collection = useCollection<Session>(ServiceSession, {
       sortBy: 'id',
       filters: [
-        { field: 'game', value: props.game.id, operator: 'where' },
+        { field: 'game', value: props.game.id, operator: 'Equal' },
       ],
     });
 

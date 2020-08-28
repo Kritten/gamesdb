@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { InputCollection } from '../../../../../../backend/src/utilities/collection/collection.input';
 
@@ -34,6 +34,11 @@ export function useCollection<T>(
         page += 1;
       });
   };
+
+  watch(filters, value => {
+    console.warn(value, 'value');
+    reset();
+  });
 
   const reset = () => {
     items.value = [];

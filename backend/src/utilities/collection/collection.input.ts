@@ -3,7 +3,7 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 @InputType()
 export class InputCollectionFilter {
   field: string;
-  value: string;
+  value?: string;
   operator: string;
 }
 
