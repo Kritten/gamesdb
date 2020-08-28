@@ -11,8 +11,7 @@ import { PlaytimeEntityService } from '../playtime/playtime.entity.service';
 import { SessionCollectionService } from './collection/session.collection.service';
 import { SessionCollectionData } from './collection/session.collectionData';
 import { Playtime } from '../playtime/playtime.entity';
-import { SessionCollectionInput } from './collection/session.collectionInput';
-import { FindOneOptions } from 'typeorm/index';
+import { InputCollection } from '../../utilities/collection/collection.input';
 
 @Resolver(() => Session)
 export class SessionResolver extends EntityResolver {
@@ -28,13 +27,8 @@ export class SessionResolver extends EntityResolver {
 
   @Query(() => SessionCollectionData)
   @UseGuards(GqlAuthGuard)
-  async sessions(@Args('sessionData') data: SessionCollectionInput) {
-    const options: FindOneOptions<Session> = {};
-    if (data.game !== undefined) {
-      options.where = [{ game: data.game }];
-    }
-
-    return this.sessionCollectionService.loadPage(data.collection, options);
+  async sessions(@Args('sessionData') data: InputCollection) {
+    return this.sessionCollectionService.loadPage(data);
   }
 
   @Query(() => Session)
