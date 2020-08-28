@@ -9,11 +9,9 @@ import {
 import { Image } from '@/modules/image/image.model';
 import { cloneDeep } from 'lodash';
 import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import {
-  ServiceCollectionInterface,
-  ServiceCollectionLoadPageParameters,
-} from '@/modules/app/utilities/collection/collection.types';
+import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
+import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
 
 class ServiceImageClass
   implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
@@ -90,7 +88,7 @@ class ServiceImageClass
     return response.data.deleteImage;
   }
 
-  async loadPage({ page, count, sortBy, sortDesc, params }: ServiceCollectionLoadPageParameters) {
+  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
     const response = await apolloClient.query({
       query: queryPageImage,
       variables: {
@@ -98,7 +96,7 @@ class ServiceImageClass
         count,
         sortBy,
         sortDesc,
-        ...params,
+        filters,
       },
     });
 

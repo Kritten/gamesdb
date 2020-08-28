@@ -1,13 +1,7 @@
-export type ServiceCollectionLoadPageParameters = {
-  page: number;
-  count: number;
-  sortBy: string;
-  sortDesc: boolean;
-  params: { [key: string]: any };
-};
+import { InputCollection } from '../../../../../../backend/src/utilities/collection/collection.input';
 
 export type ServiceCollectionLoadPageReturn<T> = Promise<{ count: number; items: T[] }>;
 
 export interface ServiceCollectionInterface<T> {
-  loadPage(data: ServiceCollectionLoadPageParameters): ServiceCollectionLoadPageReturn<T>;
+  loadPage(data: InputCollection): ServiceCollectionLoadPageReturn<T>;
 }

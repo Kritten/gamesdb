@@ -2,11 +2,20 @@ import gql from 'graphql-tag';
 import { fragments } from '@/modules/session/graphql/session.fragments';
 
 export const queryPageSession = gql`
-  query sessions($page: Int!, $count: Int!, $sortBy: String!, $sortDesc: Boolean!, $game: ID) {
+  query sessions(
+    $page: Int!
+    $count: Int!
+    $sortBy: String!
+    $sortDesc: Boolean!
+    $filters: [InputCollectionFilter!]
+  ) {
     sessions(
       sessionData: {
-        collection: { page: $page, count: $count, sortBy: $sortBy, sortDesc: $sortDesc }
-        game: $game
+        page: $page
+        count: $count
+        sortBy: $sortBy
+        sortDesc: $sortDesc
+        filters: $filters
       }
     ) {
       count

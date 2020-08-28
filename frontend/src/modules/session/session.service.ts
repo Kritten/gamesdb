@@ -12,10 +12,8 @@ import { Game } from '@/modules/game/game.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { queue } from '@/queue';
-import {
-  ServiceCollectionInterface,
-  ServiceCollectionLoadPageParameters,
-} from '@/modules/app/utilities/collection/collection.types';
+import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
+import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
 
 class ServiceSessionClass
   implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
@@ -68,7 +66,7 @@ class ServiceSessionClass
 
     return sessionNew;
   }
-  async loadPage({ page, count, sortBy, sortDesc, params }: ServiceCollectionLoadPageParameters) {
+  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
     const response = await apolloClient.query({
       query: queryPageSession,
       variables: {
@@ -76,7 +74,7 @@ class ServiceSessionClass
         count,
         sortBy,
         sortDesc,
-        ...params,
+        filters,
       },
     });
 

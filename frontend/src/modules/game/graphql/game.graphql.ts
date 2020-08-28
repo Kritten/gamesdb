@@ -2,8 +2,22 @@ import gql from 'graphql-tag';
 import { fragments } from '@/modules/game/graphql/game.fragments';
 
 export const queryPageGame = gql`
-  query games($page: Int!, $count: Int!, $sortBy: String!, $sortDesc: Boolean!) {
-    games(gameData: { page: $page, count: $count, sortBy: $sortBy, sortDesc: $sortDesc }) {
+  query games(
+    $page: Int!
+    $count: Int!
+    $sortBy: String!
+    $sortDesc: Boolean!
+    $filters: [InputCollectionFilter!]
+  ) {
+    games(
+      gameData: {
+        page: $page
+        count: $count
+        sortBy: $sortBy
+        sortDesc: $sortDesc
+        filters: $filters
+      }
+    ) {
       count
       items {
         ...game

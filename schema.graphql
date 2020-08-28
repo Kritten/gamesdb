@@ -137,7 +137,7 @@ type Query {
     rating(id: ID!): Rating!
     ratings: [Rating!]!
     session(id: ID!): Session!
-    sessions(sessionData: SessionCollectionInput!): SessionCollectionData!
+    sessions(sessionData: InputCollection!): SessionCollectionData!
     universe(id: ID!): Universe!
     universes: [Universe!]!
     user(id: ID): User!
@@ -221,9 +221,16 @@ input ImageInput {
 
 input InputCollection {
     count: Int!
+    filters: [InputCollectionFilter!]
     page: Int!
     sortBy: String!
     sortDesc: Boolean!
+}
+
+input InputCollectionFilter {
+    field: String!
+    operator: String!
+    value: String!
 }
 
 input MechanismInput {
@@ -256,11 +263,6 @@ input RatingInput {
     id: ID
     player: ID!
     rating: Int!
-}
-
-input SessionCollectionInput {
-    collection: InputCollection!
-    game: ID
 }
 
 input SessionInput {

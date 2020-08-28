@@ -1,6 +1,13 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
+export class InputCollectionFilter {
+  field: string;
+  value: string;
+  operator: string;
+}
+
+@InputType()
 export class InputCollection {
   @Field(() => Int)
   page: number;
@@ -11,4 +18,6 @@ export class InputCollection {
   sortBy: string;
 
   sortDesc: boolean;
+
+  filters?: InputCollectionFilter[];
 }

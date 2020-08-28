@@ -8,13 +8,11 @@ import {
 } from '@/modules/game/graphql/game.graphql';
 import { Game } from '@/modules/game/game.model';
 import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import {
-  ServiceCollectionInterface,
-  ServiceCollectionLoadPageParameters,
-} from '@/modules/app/utilities/collection/collection.types';
+import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
 import { ref } from 'vue';
 import { cloneDeep } from 'lodash';
+import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
   useCreate() {
@@ -88,7 +86,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
     return await Game.parseFromServer(response.data.game);
   }
 
-  async loadPage({ page, count, sortBy, sortDesc, params }: ServiceCollectionLoadPageParameters) {
+  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
     const response = await apolloClient.query({
       query: queryPageGame,
       variables: {
@@ -96,7 +94,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
         count,
         sortBy,
         sortDesc,
-        ...params,
+        filters,
       },
     });
 

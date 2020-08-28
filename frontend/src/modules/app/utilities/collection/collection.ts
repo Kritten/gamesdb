@@ -1,21 +1,16 @@
 import { computed, ref } from 'vue';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
+import { InputCollection } from '../../../../../../backend/src/utilities/collection/collection.input';
 
 export function useCollection<T>(
   service: ServiceCollectionInterface<T>,
   {
     page = 1,
-    countPerPage = 10,
+    count = 10,
     sortBy = 'name',
     sortDesc = false,
-    params = {},
-  }: {
-    page?: number;
-    countPerPage?: number;
-    sortBy?: string;
-    sortDesc?: boolean;
-    params?: { [key: string]: any };
-  } = {},
+    filters = [],
+  }: Partial<InputCollection> = {},
 ) {
   const items = ref<T[]>([]);
   const countItems = ref(-1);
@@ -26,13 +21,13 @@ export function useCollection<T>(
     return service
       .loadPage({
         page,
-        count: countPerPage,
+        count,
         sortBy,
         sortDesc,
-        params,
+        filters,
       })
-      .then(({ count, items: itemsLocal }: { count: number; items: T[] }) => {
-        countItems.value = count;
+      .then(({ count: countLocal, items: itemsLocal }: { count: number; items: T[] }) => {
+        countItems.value = countLocal;
         // @ts-ignore
         items.value = items.value.concat(itemsLocal);
         //TODO add isLoading variable to prevent multiple loadings when pressing button multiple times
