@@ -4,12 +4,6 @@ import { InputCollection } from './collection.input';
 import { EntityService } from '../entity/entity.service';
 import { Equal, Like } from 'typeorm/index';
 
-function sleep(ms) {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms);
-  });
-}
-
 @Injectable()
 export class CollectionService<T extends BaseEntity> {
   private readonly entityClass: { new (): T };
