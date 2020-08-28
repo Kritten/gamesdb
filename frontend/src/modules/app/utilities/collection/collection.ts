@@ -1,6 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { InputCollection } from '../../../../../../backend/src/utilities/collection/collection.input';
+import { debounce } from 'lodash';
 
 export function useCollection<T>(
   service: ServiceCollectionInterface<T>,
@@ -50,7 +51,7 @@ export function useCollection<T>(
   };
 
   watch(filters, value => {
-    reset();
+    resetDebounced();
   });
 
   const reset = () => {
@@ -59,6 +60,10 @@ export function useCollection<T>(
     page = 1;
     loadNextItems();
   };
+
+  const resetDebounced = debounce(() => {
+    reset();
+  }, 500);
 
   loadNextItems();
 
