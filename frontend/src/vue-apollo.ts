@@ -24,8 +24,11 @@ export const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
   link: ApolloLink.from([link, new HttpLink({ uri: httpEndpoint })]),
   defaultOptions: {
-    query: { fetchPolicy: 'network-only' },
+    query: { fetchPolicy: 'no-cache' },
+    mutate: { fetchPolicy: 'no-cache' },
+    watchQuery: { fetchPolicy: 'no-cache' },
   },
+  queryDeduplication: false,
 });
 
 // export const apolloProvider = new VueApollo({
