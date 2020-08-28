@@ -13,12 +13,14 @@ import { UniverseEntityService } from '../universe/universe.entity.service';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { GameCollectionService } from './collection/game.collection.service';
 import { GameCollectionData } from './collection/game.collectionData';
+import { ImageEntityService } from '../image/image.entity.service';
 
 @Resolver(() => Game)
 export class GameResolver extends EntityResolver {
   constructor(
     private gameEntityService: GameEntityService,
     private gameCollectionService: GameCollectionService,
+    private imageEntityService: ImageEntityService,
     private categoryService: CategoryEntityService,
     private universeService: UniverseEntityService,
     private mechanismService: MechanismEntityService,
@@ -93,6 +95,12 @@ export class GameResolver extends EntityResolver {
       gameData,
       this.gameEntityService,
     );
+    await this.handleRelation(
+      'images',
+      game,
+      gameData,
+      this.imageEntityService,
+    );
     await this.handleRelation('sessions', game, gameData, this.sessionService);
 
     return await this.gameEntityService.create(game);
@@ -149,6 +157,12 @@ export class GameResolver extends EntityResolver {
       game,
       gameData,
       this.gameEntityService,
+    );
+    await this.handleRelation(
+      'images',
+      game,
+      gameData,
+      this.imageEntityService,
     );
     await this.handleRelation('sessions', game, gameData, this.sessionService);
 

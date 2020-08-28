@@ -31,6 +31,7 @@ import { Session } from '@/modules/session/session.model';
 import { useI18n } from 'vue-i18n';
 import { Game } from '@/modules/game/game.model';
 import { queue } from '@/queue';
+import { ref } from 'vue';
 
 export default {
   name: 'ListSession',
@@ -43,11 +44,12 @@ export default {
   },
   setup(props) {
     const { t } = useI18n();
+    const filters = ref([{
+      field: 'game', value: props.game.id, operator: 'Equal',
+    }]);
     const collection = useCollection<Session>(ServiceSession, {
       sortBy: 'id',
-      filters: [
-        { field: 'game', value: props.game.id, operator: 'Equal' },
-      ],
+      filters: filters.value,
     });
 
     for (const event of ['createdSession', 'deletedSession']) {

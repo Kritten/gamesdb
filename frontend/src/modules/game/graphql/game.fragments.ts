@@ -27,6 +27,8 @@ export const fragments = {
       }
       images {
         id
+        name
+        link
       }
       playableWith {
         id

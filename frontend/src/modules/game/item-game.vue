@@ -137,19 +137,29 @@
   </div>
   <div>
     <label for="images">{{ t('image.label', 2) }}</label>
-    <select
+    <input
       id="images"
-      v-model="imagesInternal"
-      multiple
+      v-model="filters[0].value"
     >
-      <option
-        v-for="image in store.state.moduleImage.images"
-        :key="image.id"
-        :value="image.id"
+    <div>
+      <div v-for="image in collectionImage.items.value">
+        {{ image.name }} <button
+          type="button"
+          @click="$emit('update:images', [...images, image])"
+        >
+          {{ t('common.add') }}
+        </button>
+      </div>
+    </div>
+    <h3>Hinzugefügte Bilder</h3>
+    <div v-for="image in images">
+      {{ image.name }} <button
+        type="button"
+        @click="$emit('update:images', images.filter(img => img.id !== image.id))"
       >
-        {{ image.name }}
-      </option>
-    </select>
+        {{ t('common.delete') }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -157,6 +167,10 @@
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
+import { ref } from 'vue';
+import { useCollection } from '../app/utilities/collection/collection';
+import { Image } from '../image/image.model';
+import { ServiceImage } from '../image/image.service';
 
 export default {
   name: 'ItemGame',
@@ -222,9 +236,16 @@ export default {
     const { t } = useI18n();
     const store = useStore();
 
+    const filters = ref([{
+      field: 'name', value: null, operator: 'Like',
+    }]);
+    const collectionImage = useCollection<Image>(ServiceImage, { count: 5, filters: filters.value });
+
     return {
       t,
       store,
+      collectionImage,
+      filters,
       nameInternal: useModelWrapper({
         props, emit, name: 'name',
       }),
@@ -263,9 +284,6 @@ export default {
       }),
       moodsInternal: useModelWrapper({
         props, emit, name: 'moods', isEntity: true,
-      }),
-      imagesInternal: useModelWrapper({
-        props, emit, name: 'images', isEntity: true,
       }),
     };
   },

@@ -1,9 +1,9 @@
 <template>
   {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
   <div>
-    <label for="name">{{ t('game.name') }}</label>
+    <label for="nameGame">{{ t('game.name') }}</label>
     <input
-      id="name"
+      id="nameGame"
       v-model="filters[0].value"
     >
   </div>
