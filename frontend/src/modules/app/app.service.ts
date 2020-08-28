@@ -11,8 +11,6 @@ import { queryMoods } from '@/modules/mood/graphql/mood.graphql';
 import { Mood } from '@/modules/mood/mood.model';
 import { queryPlayers } from '@/modules/player/graphql/player.graphql';
 import { Player } from '@/modules/player/player.model';
-import { queryImages } from '@/modules/image/graphql/image.graphql';
-import { Image } from '@/modules/image/image.model';
 import { queryUniverses } from '@/modules/universe/graphql/universe.graphql';
 import { Universe } from '@/modules/universe/universe.model';
 
@@ -25,7 +23,7 @@ export class ServiceApp {
 
       await ServiceApp.setCurrentUser(response.data.user);
 
-      ServiceApp.loadInitialData().then();
+      await ServiceApp.loadInitialData().then();
 
       store.commit('setIsInitialized', true);
 
