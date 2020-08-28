@@ -1,8 +1,22 @@
 import gql from 'graphql-tag';
 
 export const queryPageImage = gql`
-  query images($page: Int!, $count: Int!, $sortBy: String!, $sortDesc: Boolean!) {
-    images(imageData: { page: $page, count: $count, sortBy: $sortBy, sortDesc: $sortDesc }) {
+  query images(
+    $page: Int!
+    $count: Int!
+    $sortBy: String!
+    $sortDesc: Boolean!
+    $filters: [InputCollectionFilter!]
+  ) {
+    images(
+      imageData: {
+        page: $page
+        count: $count
+        sortBy: $sortBy
+        sortDesc: $sortDesc
+        filters: $filters
+      }
+    ) {
       count
       items {
         id
