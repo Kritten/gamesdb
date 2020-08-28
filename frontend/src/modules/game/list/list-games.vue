@@ -1,6 +1,12 @@
 <template>
   {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
-  <input v-model="filters[0].value">
+  <div>
+    <label for="name">{{ t('game.name') }}</label>
+    <input
+      id="name"
+      v-model="filters[0].value"
+    >
+  </div>
   <table>
     <list-item-game
       v-for="game in collection.items.value"
@@ -10,8 +16,8 @@
   </table>
   <button
     v-if="collection.hasNextPage.value"
-    @click="collection.loadNextItems"
     :disabled="collection.isLoading.value === true"
+    @click="collection.loadNextItems"
   >
     Mehr laden
   </button>
