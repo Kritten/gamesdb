@@ -24,7 +24,7 @@ export class RatingResolver extends EntityResolver {
 
   @Query(() => RatingCollectionData)
   @UseGuards(GqlAuthGuard)
-  async ratings(@Args('gameData') data: InputCollection) {
+  async ratings(@Args('ratingData') data: InputCollection) {
     return this.ratingCollectionService.loadPage(data);
   }
 
