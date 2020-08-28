@@ -9,9 +9,9 @@ export function useModelWrapper({
   isEntity = false,
 }: {
   props: { [key: string]: unknown };
-  emit: (name: string, value: unknown) => {};
+  emit: unknown;
   name: string;
-  isEntity: boolean;
+  isEntity?: boolean;
 }) {
   return computed({
     get: () => (isEntity ? props[name].map((entity: Entity) => entity.id) : props[name]),
