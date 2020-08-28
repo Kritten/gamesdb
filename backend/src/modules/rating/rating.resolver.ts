@@ -7,21 +7,25 @@ import { RatingEntityService } from './rating.entity.service';
 import { RatingInput, UpdateRatingInput } from './rating.input';
 import { PlayerEntityService } from '../player/player.entity.service';
 import { GameEntityService } from '../game/game.entity.service';
+import { RatingCollectionData } from './collection/rating.collectionData';
+import { RatingCollectionService } from './collection/rating.collection.service';
+import { InputCollection } from '../../utilities/collection/collection.input';
 
 @Resolver(() => Rating)
 export class RatingResolver extends EntityResolver {
   constructor(
     private ratingService: RatingEntityService,
+    private ratingCollectionService: RatingCollectionService,
     private gameService: GameEntityService,
     private playerService: PlayerEntityService,
   ) {
     super();
   }
 
-  @Query(() => [Rating])
+  @Query(() => RatingCollectionData)
   @UseGuards(GqlAuthGuard)
-  async ratings() {
-    return this.ratingService.find();
+  async ratings(@Args('gameData') data: InputCollection) {
+    return this.ratingCollectionService.loadPage(data);
   }
 
   @Query(() => Rating)

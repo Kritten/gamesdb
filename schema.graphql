@@ -135,7 +135,7 @@ type Query {
     playtime(id: ID!): Playtime!
     playtimes(playtimeData: InputCollection!): PlaytimeCollectionData!
     rating(id: ID!): Rating!
-    ratings: [Rating!]!
+    ratings(gameData: InputCollection!): RatingCollectionData!
     session(id: ID!): Session!
     sessions(sessionData: InputCollection!): SessionCollectionData!
     universe(id: ID!): Universe!
@@ -150,6 +150,11 @@ type Rating {
     id: ID!
     player: Player!
     rating: Int
+}
+
+type RatingCollectionData {
+    count: Int!
+    items: [Rating!]!
 }
 
 type Session {
@@ -230,7 +235,7 @@ input InputCollection {
 input InputCollectionFilter {
     field: String!
     operator: String!
-    value: String!
+    value: String
 }
 
 input MechanismInput {

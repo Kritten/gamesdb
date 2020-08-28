@@ -5,6 +5,7 @@ import { RatingResolver } from './rating.resolver';
 import { RatingEntityService } from './rating.entity.service';
 import { GameModule } from '../game/game.module';
 import { PlayerModule } from '../player/player.module';
+import { RatingCollectionService } from './collection/rating.collection.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { PlayerModule } from '../player/player.module';
     forwardRef(() => GameModule),
     forwardRef(() => PlayerModule),
   ],
-  providers: [RatingResolver, RatingEntityService],
+  providers: [RatingResolver, RatingEntityService, RatingCollectionService],
   exports: [RatingEntityService],
 })
 export class RatingModule {}
