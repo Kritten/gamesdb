@@ -23,7 +23,7 @@ export class CollectionService<T extends BaseEntity> {
     this.service = service;
   }
   async loadPage(data: InputCollection) {
-    await sleep(10000);
+    // await sleep(3000);
     const where = [];
     if (data.filters !== undefined) {
       for (const filter of data.filters.filter(

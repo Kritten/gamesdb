@@ -1,5 +1,4 @@
 <template>
-  {{ filters }}
   {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
   <input v-model="filters[0].value">
   <table>
@@ -12,6 +11,7 @@
   <button
     v-if="collection.hasNextPage.value"
     @click="collection.loadNextItems"
+    :disabled="collection.isLoading.value === true"
   >
     Mehr laden
   </button>

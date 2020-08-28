@@ -14,29 +14,42 @@ export function useCollection<T>(
 ) {
   const items = ref<T[]>([]);
   const countItems = ref(-1);
+  const isLoading = ref(false);
+  let counterRequests = 0;
 
   const hasNextPage = computed(() => countItems.value !== items.value.length);
 
+  const loadNextItemsInternal = async (counter: number) => {
+    isLoading.value = true;
+
+    const response = await service.loadPage({
+      page,
+      count,
+      sortBy,
+      sortDesc,
+      filters,
+    });
+
+    if (counter < counterRequests) {
+      return;
+    }
+
+    countItems.value = response.count;
+    // @ts-ignore
+    items.value = items.value.concat(response.items);
+    page += 1;
+
+    isLoading.value = false;
+
+    return response;
+  };
+
   const loadNextItems = async () => {
-    return service
-      .loadPage({
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-      })
-      .then(({ count: countLocal, items: itemsLocal }: { count: number; items: T[] }) => {
-        countItems.value = countLocal;
-        // @ts-ignore
-        items.value = items.value.concat(itemsLocal);
-        //TODO add isLoading variable to prevent multiple loadings when pressing button multiple times
-        page += 1;
-      });
+    counterRequests += 1;
+    return loadNextItemsInternal(counterRequests);
   };
 
   watch(filters, value => {
-    console.warn(value, 'value');
     reset();
   });
 
@@ -44,15 +57,16 @@ export function useCollection<T>(
     items.value = [];
     countItems.value = -1;
     page = 1;
-    loadNextItems().then();
+    loadNextItems();
   };
 
-  loadNextItems().then();
+  loadNextItems();
 
   return {
     items,
     countItems,
     hasNextPage,
+    isLoading,
     loadNextItems,
     reset,
   };
