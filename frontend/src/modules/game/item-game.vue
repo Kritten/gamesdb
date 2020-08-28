@@ -19,7 +19,7 @@
     <label for="countPlayersMin">{{ t('game.countPlayersMin') }}</label>
     <input
       id="countPlayersMin"
-      v-model="countPlayersMinInternal"
+      v-model.number="countPlayersMinInternal"
       type="number"
     >
   </div>
@@ -27,7 +27,7 @@
     <label for="countPlayersMax">{{ t('game.countPlayersMax') }}</label>
     <input
       id="countPlayersMax"
-      v-model="countPlayersMaxInternal"
+      v-model.number="countPlayersMaxInternal"
       type="number"
     >
   </div>
@@ -35,7 +35,7 @@
     <label for="minutesPlaytimeMin">{{ t('game.minutesPlaytimeMin') }}</label>
     <input
       id="minutesPlaytimeMin"
-      v-model="minutesPlaytimeMinInternal"
+      v-model.number="minutesPlaytimeMinInternal"
       type="number"
     >
   </div>
@@ -43,7 +43,7 @@
     <label for="minutesPlaytimeMax">{{ t('game.minutesPlaytimeMax') }}</label>
     <input
       id="minutesPlaytimeMax"
-      v-model="minutesPlaytimeMaxInternal"
+      v-model.number="minutesPlaytimeMaxInternal"
       type="number"
     >
   </div>
@@ -59,7 +59,7 @@
     <label for="complexity">{{ t('game.complexity') }}</label>
     <input
       id="complexity"
-      v-model="complexityInternal"
+      v-model.number="complexityInternal"
       type="number"
     >
   </div>
@@ -67,7 +67,7 @@
     <label for="size">{{ t('game.size') }}</label>
     <input
       id="size"
-      v-model="sizeInternal"
+      v-model.number="sizeInternal"
       type="number"
     >
   </div>
