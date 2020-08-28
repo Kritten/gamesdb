@@ -1,5 +1,6 @@
 {
   "common": {
+    "select": "Auswählen",
     "add": "Hinzufügen",
     "create": "Anlegen",
     "edit": "Bearbeiten",
@@ -23,15 +24,7 @@
     "minutesPlaytimeMax": "Spielzeit (max)",
     "isCoop": "Koop",
     "complexity": "Schwierigkeit",
-    "size": "Größe",
-    "categories": "Beschreibung",
-    "mechanisms": "Beschreibung",
-    "moods": "Beschreibung",
-    "images": "Beschreibung",
-    "playableWith": "Beschreibung",
-    "isExpansionOf": "Beschreibung",
-    "expansions": "Beschreibung",
-    "ratings": "Beschreibung"
+    "size": "Größe"
   },
   "category": {
     "label": "Kategorie | Kategorien"
@@ -56,6 +49,9 @@
   },
   "session": {
     "label": "Session | Sessions"
+  },
+  "rating": {
+    "label": "Bewertung | Bewertungen"
   },
   "playtime": {
     "label": "Spielzeit | Spielzeiten",

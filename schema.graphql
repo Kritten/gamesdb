@@ -135,7 +135,7 @@ type Query {
     playtime(id: ID!): Playtime!
     playtimes(playtimeData: InputCollection!): PlaytimeCollectionData!
     rating(id: ID!): Rating!
-    ratings(gameData: InputCollection!): RatingCollectionData!
+    ratings(ratingData: InputCollection!): RatingCollectionData!
     session(id: ID!): Session!
     sessions(sessionData: InputCollection!): SessionCollectionData!
     universe(id: ID!): Universe!

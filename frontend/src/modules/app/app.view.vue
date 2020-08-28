@@ -58,6 +58,10 @@ export default {
         label: t('image.label', 2),
         name: 'images',
       },
+      {
+        label: t('rating.label', 2),
+        name: 'ratings',
+      },
     ];
 
     return {

@@ -22,7 +22,7 @@ export default {
     const deleteRating = ServiceRating.useDelete();
 
     const confirmDelete = () => {
-      const confirmed = confirm(`Bewertung '${context.rating.name}' löschen?`);
+      const confirmed = confirm(`Bewertung von ${context.rating.player.name} löschen?`);
 
       if (confirmed) {
         deleteRating.delete(context.rating);

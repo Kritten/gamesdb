@@ -1,13 +1,19 @@
 <template>
   <tr>
     <td>
-      {{ rating.name }}
+      {{ rating.rating }}
+    </td>
+    <td>
+      {{ rating.player.name }}
+    </td>
+    <td>
+      {{ rating.game.name }}
     </td>
     <td>
       <delete-rating :rating="rating" />
     </td>
     <td>
-      <update-rating :rating="rating" />
+<!--      <update-rating :rating="rating" />-->
     </td>
   </tr>
 </template>

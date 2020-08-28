@@ -7,21 +7,40 @@ export function useModelWrapper({
   emit,
   name = 'modelValue',
   isEntity = false,
+  entities = {},
 }: {
   props: { [key: string]: unknown };
   emit: unknown;
   name: string;
   isEntity?: boolean;
+  entities?: {};
 }) {
   return computed({
-    get: () => (isEntity ? props[name].map((entity: Entity) => entity.id) : props[name]),
-    set: value =>
-      isEntity
-        ? emit(
+    get: () => {
+      if (isEntity === true) {
+        if (Array.isArray(props[name])) {
+          return props[name].map((entity: Entity) => entity.id);
+        } else {
+          return props[name]?.id;
+        }
+      } else {
+        return props[name];
+      }
+    },
+    set: value => {
+      if (isEntity === true) {
+        if (Array.isArray(value)) {
+          emit(
             `update:${name}`,
             value.map((val: ID) => ({ id: val })),
-          )
-        : emit(`update:${name}`, value),
+          );
+        } else {
+          emit(`update:${name}`, entities[value]);
+        }
+      } else {
+        emit(`update:${name}`, value);
+      }
+    },
   });
 }
 

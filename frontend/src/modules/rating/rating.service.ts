@@ -4,77 +4,111 @@ import {
   mutationCreateRating,
   mutationDeleteRating,
   mutationUpdateRating,
+  queryPageRatings,
 } from '@/modules/rating/graphql/rating.graphql';
 import { Rating } from '@/modules/rating/rating.model';
-import { store } from '@/modules/app/app.store';
 import { cloneDeep } from 'lodash';
+import { ServiceCollectionInterface } from '../app/utilities/collection/collection.types';
+import { ServiceEntityInterface } from '../app/utilities/entity/entity.types';
+import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
+import { queue } from '../../queue';
 
-export class ServiceRating {
-  static useCreate() {
+class ServiceRatingClass
+  implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
+  useCreate() {
     let rating = ref(new Rating());
 
     return {
-      rating,
+      entity: rating,
       create: async () => {
-        await ServiceRating.create(rating.value);
+        const ratingNew = await this.create(rating.value);
         rating.value = new Rating();
+        return ratingNew;
       },
     };
   }
 
-  static useUpdate(ratingPassed: Rating) {
+  useUpdate(ratingPassed: Rating) {
     let rating = ref(cloneDeep(ratingPassed));
 
     return {
-      rating,
+      entity: rating,
       update: async () => {
-        rating.value = cloneDeep(await ServiceRating.update(rating.value));
+        rating.value = cloneDeep(await this.update(rating.value));
       },
     };
   }
 
-  static useDelete() {
+  useDelete() {
     return {
-      delete: (rating: Rating) => ServiceRating.delete(rating),
+      delete: (rating: Rating) => this.delete(rating),
     };
   }
 
-  static async create(rating: Rating) {
+  async create(rating: Rating) {
     const response = await apolloClient.mutate({
       mutation: mutationCreateRating,
       variables: {
-        rating,
+        rating: rating.prepareForServer(),
       },
     });
 
     const ratingNew = await Rating.parseFromServer(response.data.createRating);
-    store.commit('moduleRating/addRating', ratingNew);
+
+    queue.notify('createdRating', ratingNew);
 
     return ratingNew;
   }
 
-  static async update(rating: Rating) {
+  async update(rating: Rating) {
     const response = await apolloClient.mutate({
       mutation: mutationUpdateRating,
       variables: {
-        rating,
+        rating: rating.prepareForServer(),
       },
     });
 
     const ratingNew = await Rating.parseFromServer(response.data.updateRating);
-    store.commit('moduleRating/addRating', ratingNew);
+
+    queue.notify('updatedRating', ratingNew);
 
     return ratingNew;
   }
 
-  static async delete(rating: Rating) {
-    await apolloClient.mutate({
+  async delete(rating: Rating) {
+    const response = await apolloClient.mutate({
       mutation: mutationDeleteRating,
       variables: {
         id: rating.id,
       },
     });
 
-    store.commit('moduleRating/deleteRating', rating);
+    queue.notify('deletedRating', rating);
+
+    return response.data.deleteRating;
+  }
+
+  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
+    const response = await apolloClient.query({
+      query: queryPageRatings,
+      variables: {
+        page,
+        count,
+        sortBy,
+        sortDesc,
+        filters,
+      },
+    });
+
+    const entities: Rating[] = await Promise.all(
+      response.data.ratings.items.map((rating: Rating) => Rating.parseFromServer(rating)),
+    );
+
+    return {
+      count: response.data.ratings.count,
+      items: entities,
+    };
   }
 }
+
+export const ServiceRating = new ServiceRatingClass();
