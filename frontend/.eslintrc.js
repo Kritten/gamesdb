@@ -15,7 +15,7 @@ module.exports = {
       'always',
       {
         ts: 'never',
-        vue: 'never',
+        vue: 'always',
       },
     ],
   },
