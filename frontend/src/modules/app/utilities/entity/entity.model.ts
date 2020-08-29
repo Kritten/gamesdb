@@ -9,15 +9,15 @@ export class Entity implements EntityInterface {
 
   static async convertFromServerToStore<T>(
     data: EntityInterface[],
-  ): Promise<{ [key: number]: Entity }> {
+  ): Promise<{ [key: string]: Entity }> {
     const entities: Entity[] = await Promise.all(
       data.map((item: EntityInterface) => this.parseFromServer(item)),
     );
 
     return entities.reduce((obj, entity) => {
-      obj[entity.id as number] = entity;
+      obj[entity.id as ID] = entity;
       return obj;
-    }, {} as { [key: number]: Entity });
+    }, {} as { [key: string]: Entity });
   }
 
   static async parseFromServer(data: EntityInterface): Promise<Entity> {

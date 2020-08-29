@@ -18,5 +18,6 @@ module.exports = {
         vue: 'always',
       },
     ],
+    'import/prefer-default-export': 'off',
   },
 };

@@ -1,16 +1,18 @@
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
 
 interface StateInterface {
-  mechanisms: Mechanism[] | null;
+  mechanisms: { [key: string]: Mechanism };
 }
+
+const state: StateInterface = {
+  mechanisms: {},
+};
 
 export const moduleMechanism = {
   namespaced: true,
-  state: {
-    mechanisms: null,
-  },
+  state,
   mutations: {
-    setMechanisms(state: StateInterface, mechanisms: Mechanism[]) {
+    setMechanisms(state: StateInterface, mechanisms: { [key: string]: Mechanism }) {
       state.mechanisms = mechanisms;
     },
     addMechanism(state: StateInterface, mechanism: Mechanism) {

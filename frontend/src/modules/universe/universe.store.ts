@@ -1,16 +1,18 @@
 import { Universe } from '@/modules/universe/universe.model';
 
 interface StateInterface {
-  universes: Universe[] | null;
+  universes: { [key: string]: Universe };
 }
+
+const state: StateInterface = {
+  universes: {},
+};
 
 export const moduleUniverse = {
   namespaced: true,
-  state: {
-    universes: null,
-  },
+  state,
   mutations: {
-    setUniverses(state: StateInterface, universes: Universe[]) {
+    setUniverses(state: StateInterface, universes: { [key: string]: Universe }) {
       state.universes = universes;
     },
     addUniverse(state: StateInterface, universe: Universe) {

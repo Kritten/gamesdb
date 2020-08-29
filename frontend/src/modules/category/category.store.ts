@@ -1,16 +1,18 @@
 import { Category } from '@/modules/category/category.model';
 
 interface StateInterface {
-  categories: Category[] | null;
+  categories: { [key: string]: Category };
 }
+
+const state: StateInterface = {
+  categories: {},
+};
 
 export const moduleCategory = {
   namespaced: true,
-  state: {
-    categories: null,
-  },
+  state,
   mutations: {
-    setCategories(state: StateInterface, categories: Category[]) {
+    setCategories(state: StateInterface, categories: { [key: string]: Category }) {
       state.categories = categories;
     },
     addCategory(state: StateInterface, category: Category) {

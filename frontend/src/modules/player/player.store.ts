@@ -1,16 +1,18 @@
 import { Player } from '@/modules/player/player.model';
 
 interface StateInterface {
-  players: Player[] | null;
+  players: { [key: string]: Player };
 }
+
+const state: StateInterface = {
+  players: {},
+};
 
 export const modulePlayer = {
   namespaced: true,
-  state: {
-    players: null,
-  },
+  state,
   mutations: {
-    setPlayers(state: StateInterface, players: Player[]) {
+    setPlayers(state: StateInterface, players: { [key: string]: Player }) {
       state.players = players;
     },
     addPlayer(state: StateInterface, player: Player) {

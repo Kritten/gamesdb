@@ -20,9 +20,10 @@
 
 <script lang="ts">
 import { Session } from '@/modules/session/session.model';
-import DeleteSession from '@/modules/session/delete/delete-session';
+import DeleteSession from '@/modules/session/delete/delete-session.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListItemSession',
   components: { DeleteSession },
   props: {
@@ -31,7 +32,7 @@ export default {
       type: Session,
     },
   },
-};
+});
 </script>
 
 <style scoped>

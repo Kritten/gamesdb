@@ -5,6 +5,7 @@ import { Session } from '@/modules/session/session.model';
 import {
   mutationCreateSession,
   mutationDeleteSession,
+  mutationUpdateSession,
   queryPageSession,
 } from '@/modules/session/graphql/session.graphql';
 import { Playtime } from '@/modules/playtime/playtime.model';
@@ -14,6 +15,7 @@ import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entit
 import { queue } from '@/queue';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
+import { cloneDeep } from 'lodash';
 
 class ServiceSessionClass
   implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
@@ -46,6 +48,17 @@ class ServiceSessionClass
     };
   }
 
+  useUpdate(sessionPassed: Session) {
+    let session = ref(cloneDeep(sessionPassed));
+
+    return {
+      entity: session,
+      update: async () => {
+        session.value = cloneDeep(await this.update(session.value));
+      },
+    };
+  }
+
   useDelete() {
     return {
       delete: (session: Session) => this.delete(session),
@@ -66,6 +79,22 @@ class ServiceSessionClass
 
     return sessionNew;
   }
+
+  async update(session: Session) {
+    const response = await apolloClient.mutate({
+      mutation: mutationUpdateSession,
+      variables: {
+        session: session.prepareForServer(),
+      },
+    });
+
+    const sessionNew = await Session.parseFromServer(response.data.updateSession);
+
+    queue.notify('updatedSession', sessionNew);
+
+    return sessionNew;
+  }
+
   async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
     const response = await apolloClient.query({
       query: queryPageSession,

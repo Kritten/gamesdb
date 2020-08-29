@@ -49,7 +49,7 @@ class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
       },
     });
 
-    const universeNew = await Universe.parseFromServer(response.data.createUniverse);
+    const universeNew = (await Universe.parseFromServer(response.data.createUniverse)) as Universe;
     store.commit('moduleUniverse/addUniverse', universeNew);
 
     return universeNew;
@@ -63,7 +63,7 @@ class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
       },
     });
 
-    const universeNew = await Universe.parseFromServer(response.data.updateUniverse);
+    const universeNew = (await Universe.parseFromServer(response.data.updateUniverse)) as Universe;
     store.commit('moduleUniverse/addUniverse', universeNew);
 
     return universeNew;

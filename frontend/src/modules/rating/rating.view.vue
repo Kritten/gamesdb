@@ -2,14 +2,14 @@
   <list-ratings />
 </template>
 
-<script>
+<script lang="ts">
+import ListRatings from '@/modules/rating/list/list-ratings.vue';
+import { defineComponent } from 'vue';
 
-import ListRatings from '@/modules/rating/list/list-ratings';
-
-export default {
+export default defineComponent({
   name: 'ViewRating',
   components: { ListRatings },
-};
+});
 </script>
 
 <style scoped></style>

@@ -3,12 +3,13 @@
 </template>
 
 <script lang="ts">
-import ListImages from '@/modules/image/list/list-images';
+import ListImages from '@/modules/image/list/list-images.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ViewGame',
   components: { ListImages },
-};
+});
 </script>
 
 <style scoped></style>

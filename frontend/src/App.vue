@@ -5,11 +5,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceApp } from '@/modules/app/app.service';
 import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   setup() {
     ServiceApp.initialize();
     const store = useStore();
@@ -17,5 +18,5 @@ export default {
       store,
     };
   },
-};
+});
 </script>

@@ -1,6 +1,5 @@
 import { computed } from 'vue';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
-import { ID } from '@/modules/app/utilities/entity/entity.types';
 
 export function useModelWrapper({
   props,
@@ -9,19 +8,19 @@ export function useModelWrapper({
   isEntity = false,
   entities = {},
 }: {
-  props: { [key: string]: unknown };
-  emit: unknown;
+  props: { [key: string]: Entity | Entity[] | unknown };
+  emit: (event: string, ...args: any[]) => void;
   name: string;
   isEntity?: boolean;
-  entities?: {};
+  entities?: { [key: string]: unknown };
 }) {
   return computed({
     get: () => {
       if (isEntity === true) {
         if (Array.isArray(props[name])) {
-          return props[name].map((entity: Entity) => entity.id);
+          return (props[name] as Entity[]).map((entity: Entity) => entity.id);
         } else {
-          return props[name]?.id;
+          return (props[name] as Entity)?.id;
         }
       } else {
         return props[name];
@@ -32,10 +31,10 @@ export function useModelWrapper({
         if (Array.isArray(value)) {
           emit(
             `update:${name}`,
-            value.map((val: ID) => ({ id: val })),
+            value.map((val: string) => ({ id: val })),
           );
         } else {
-          emit(`update:${name}`, entities[value]);
+          emit(`update:${name}`, entities[value as string]);
         }
       } else {
         emit(`update:${name}`, value);

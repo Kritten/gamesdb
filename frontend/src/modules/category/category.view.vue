@@ -2,13 +2,14 @@
   <list-categories />
 </template>
 
-<script>
+<script lang="ts">
 import ListCategories from '@/modules/category/list/list-category';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ViewGame',
   components: { ListCategories },
-};
+});
 </script>
 
 <style scoped></style>

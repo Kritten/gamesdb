@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
+import { ref, defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { ServiceGame } from '@/modules/game/game.service';
 import { Game } from '@/modules/game/game.model';
@@ -20,7 +20,7 @@ import ListSession from '@/modules/session/list/list-sessions.vue';
 import DeleteGame from '@/modules/game/delete/delete-game.vue';
 import UpdateGame from '@/modules/game/update/update-game.vue';
 
-export default {
+export default defineComponent({
   name: 'ViewGame',
   components: {
     UpdateGame, DeleteGame, ListSession, CreateSession,
@@ -36,7 +36,7 @@ export default {
       game,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

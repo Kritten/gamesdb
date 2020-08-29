@@ -2,13 +2,14 @@
   <list-moods />
 </template>
 
-<script>
-import ListMoods from '@/modules/mood/list/list-mood';
+<script lang="ts">
+import ListMoods from '@/modules/mood/list/list-mood.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ViewGame',
   components: { ListMoods },
-};
+});
 </script>
 
 <style scoped></style>

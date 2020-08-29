@@ -17,15 +17,16 @@
 </template>
 
 <script lang="ts">
-import CreateImage from '@/modules/image/create/create-image';
-import ListItemImage from '@/modules/image/list/list-item-image';
+import CreateImage from '@/modules/image/create/create-image.vue';
+import ListItemImage from '@/modules/image/list/list-item-image.vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Image } from '@/modules/image/image.model';
 import { ServiceImage } from '@/modules/image/image.service';
 import { useI18n } from 'vue-i18n';
 import { queue } from '@/queue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListImages',
   components: { ListItemImage, CreateImage },
   setup() {
@@ -43,7 +44,7 @@ export default {
       collection,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

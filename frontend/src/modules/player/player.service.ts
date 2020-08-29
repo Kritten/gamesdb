@@ -49,7 +49,7 @@ export class ServicePlayerClass implements ServiceEntityInterface<Player> {
       },
     });
 
-    const playerNew = await Player.parseFromServer(response.data.createPlayer);
+    const playerNew = (await Player.parseFromServer(response.data.createPlayer)) as Player;
     store.commit('modulePlayer/addPlayer', playerNew);
 
     return playerNew;
@@ -63,7 +63,7 @@ export class ServicePlayerClass implements ServiceEntityInterface<Player> {
       },
     });
 
-    const playerNew = await Player.parseFromServer(response.data.updatePlayer);
+    const playerNew = (await Player.parseFromServer(response.data.updatePlayer)) as Player;
     store.commit('modulePlayer/addPlayer', playerNew);
 
     return playerNew;

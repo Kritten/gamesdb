@@ -3,9 +3,9 @@
   <h2>Ratings</h2>
   <table>
     <tr>
-      <th>{{t('rating.label')}}</th>
-      <th>{{t('player.label')}}</th>
-      <th>{{t('game.label')}}</th>
+      <th>{{ t('rating.label') }}</th>
+      <th>{{ t('player.label') }}</th>
+      <th>{{ t('game.label') }}</th>
     </tr>
     <list-item-rating
       v-for="rating in collection.items.value"
@@ -16,16 +16,16 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
-import CreateRating from '@/modules/rating/create/create-rating';
-import ListItemRating from '@/modules/rating/list/list-item-rating';
+import { defineComponent, ref } from 'vue';
+import CreateRating from '@/modules/rating/create/create-rating.vue';
+import ListItemRating from '@/modules/rating/list/list-item-rating.vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { useI18n } from 'vue-i18n';
 import { Rating } from '@/modules/rating/rating.model';
 import { ServiceRating } from '@/modules/rating/rating.service';
 import { queue } from '@/queue';
 
-export default {
+export default defineComponent({
   name: 'ListRatings',
   components: { ListItemRating, CreateRating },
   setup() {
@@ -45,7 +45,7 @@ export default {
       collection,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

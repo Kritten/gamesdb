@@ -37,8 +37,9 @@
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ItemSession',
   props: {
     players: {
@@ -65,7 +66,7 @@ export default {
       }),
     };
   },
-};
+});
 </script>
 
 <style scoped>

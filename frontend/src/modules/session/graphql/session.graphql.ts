@@ -47,6 +47,17 @@ export const mutationCreateSession = gql`
   ${fragments.session}
 `;
 /**
+ * Update
+ */
+export const mutationUpdateSession = gql`
+  mutation updateGame($session: UpdateSessionInput!) {
+    updateSession(sessionData: $session) {
+      ...session
+    }
+  }
+  ${fragments.session}
+`;
+/**
  * Delete
  */
 export const mutationDeleteSession = gql`

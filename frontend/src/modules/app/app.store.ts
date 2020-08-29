@@ -9,6 +9,18 @@ import { moduleUniverse } from '@/modules/universe/universe.store';
 import { moduleGame } from '@/modules/game/game.store';
 import { moduleSession } from '@/modules/session/session.store';
 
+interface State {
+  isInitialized: boolean;
+  user?: User;
+  messagesSnackbar: [];
+}
+
+const state: State = {
+  isInitialized: false,
+  user: undefined,
+  messagesSnackbar: [],
+};
+
 export const store = createStore({
   modules: {
     moduleCategory,
@@ -20,11 +32,7 @@ export const store = createStore({
     moduleGame,
     moduleSession,
   },
-  state: {
-    isInitialized: false,
-    user: null,
-    messagesSnackbar: [],
-  },
+  state,
   mutations: {
     setIsInitialized(state, value: boolean) {
       state.isInitialized = value;
@@ -32,9 +40,9 @@ export const store = createStore({
     setUser(state, value: User) {
       state.user = value;
     },
-    addSnackbar(state, data) {
-      Vue.set(state.messagesSnackbar, state.messagesSnackbar.length, data);
-    },
+    // addSnackbar(state, data) {
+    //   state.messagesSnackbar.push(data);
+    // },
   },
   actions: {
     setUser({ commit }, value: User) {

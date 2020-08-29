@@ -2,13 +2,14 @@
   <list-players />
 </template>
 
-<script>
-import ListPlayers from '@/modules/player/list/list-player';
+<script lang="ts">
+import ListPlayers from '@/modules/player/list/list-player.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ViewPlayer',
   components: { ListPlayers },
-};
+});
 </script>
 
 <style scoped></style>

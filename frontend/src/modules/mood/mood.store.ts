@@ -1,16 +1,18 @@
 import { Mood } from '@/modules/mood/mood.model';
 
 interface StateInterface {
-  moods: Mood[] | null;
+  moods: { [key: string]: Mood };
 }
+
+const state: StateInterface = {
+  moods: {},
+};
 
 export const moduleMood = {
   namespaced: true,
-  state: {
-    moods: null,
-  },
+  state,
   mutations: {
-    setMoods(state: StateInterface, moods: Mood[]) {
+    setMoods(state: StateInterface, moods: { [key: string]: Mood }) {
       state.moods = moods;
     },
     addMood(state: StateInterface, mood: Mood) {

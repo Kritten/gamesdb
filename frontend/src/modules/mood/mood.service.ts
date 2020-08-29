@@ -49,7 +49,7 @@ class ServiceMoodClass implements ServiceEntityInterface<Mood> {
       },
     });
 
-    const moodNew = await Mood.parseFromServer(response.data.createMood);
+    const moodNew = (await Mood.parseFromServer(response.data.createMood)) as Mood;
     store.commit('moduleMood/addMood', moodNew);
 
     return moodNew;
@@ -63,7 +63,7 @@ class ServiceMoodClass implements ServiceEntityInterface<Mood> {
       },
     });
 
-    const moodNew = await Mood.parseFromServer(response.data.updateMood);
+    const moodNew = (await Mood.parseFromServer(response.data.updateMood)) as Mood;
     store.commit('moduleMood/addMood', moodNew);
 
     return moodNew;

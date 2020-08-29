@@ -1,19 +1,19 @@
-import { RouteConfig, createRouter, createWebHistory } from 'vue-router';
-import Login from '@/modules/app/login/login';
-import ViewApp from '@/modules/app/app.view';
-import ViewDashboard from '@/modules/app/dashboard/dashboard.view';
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
+import Login from '@/modules/app/login/login.vue';
+import ViewApp from '@/modules/app/app.view.vue';
+import ViewDashboard from '@/modules/app/dashboard/dashboard.view.vue';
 import ViewGames from '@/modules/game/views/games.view.vue';
 import ViewGame from '@/modules/game/views/game.view.vue';
-import ViewCategory from '@/modules/category/category.view';
-import ViewMechanism from '@/modules/mechanism/mechanism.view';
-import ViewMood from '@/modules/mood/mood.view';
-import ViewPlayer from '@/modules/player/player.view';
-import ViewImage from '@/modules/image/image.view';
-import ViewUniverse from '@/modules/universe/universe.view';
-import ViewRating from '@/modules/rating/rating.view';
+import ViewCategory from '@/modules/category/category.view.vue';
+import ViewMechanism from '@/modules/mechanism/mechanism.view.vue';
+import ViewMood from '@/modules/mood/mood.view.vue';
+import ViewPlayer from '@/modules/player/player.view.vue';
+import ViewImage from '@/modules/image/image.view.vue';
+import ViewUniverse from '@/modules/universe/universe.view.vue';
+import ViewRating from '@/modules/rating/rating.view.vue';
 import { queue } from '@/queue';
 
-const routes: Array<RouteConfig> = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
@@ -76,7 +76,7 @@ const routes: Array<RouteConfig> = [
     ],
   },
 ];
-
+// @ts-ignore
 export const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
@@ -84,8 +84,10 @@ export const router = createRouter({
 
 queue.listen('graphqlError', () => {
   if (router.currentRoute.value.name !== 'login') {
-    router.push({
-      name: 'login',
-    });
+    router
+      .push({
+        name: 'login',
+      })
+      .then();
   }
 });

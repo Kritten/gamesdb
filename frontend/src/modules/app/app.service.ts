@@ -1,8 +1,6 @@
 import { apolloClient } from '@/vue-apollo';
 import { queryUserCurrent } from '@/modules/user/graphql/user.graphql';
 import { User } from '@/modules/user/user.model';
-import { store } from '@/modules/app/app.store';
-import { router } from '@/modules/app/app.router';
 import { queryCategories } from '@/modules/category/graphql/category.graphql';
 import { Category } from '@/modules/category/category.model';
 import { queryMechanisms } from '@/modules/mechanism/graphql/mechanism.graphql';
@@ -13,38 +11,43 @@ import { queryPlayers } from '@/modules/player/graphql/player.graphql';
 import { Player } from '@/modules/player/player.model';
 import { queryUniverses } from '@/modules/universe/graphql/universe.graphql';
 import { Universe } from '@/modules/universe/universe.model';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { UserInterface } from '@/modules/user/user.types';
 
-export class ServiceApp {
-  static async initialize() {
+class ServiceAppClass {
+  async initialize() {
     try {
       const response = await apolloClient.query({
         query: queryUserCurrent,
       });
 
-      await ServiceApp.setCurrentUser(response.data.user);
+      await this.setCurrentUser(response.data.user);
 
-      await ServiceApp.loadInitialData().then();
+      await this.loadInitialData().then();
 
-      store.commit('setIsInitialized', true);
+      useStore().commit('setIsInitialized', true);
 
-      if (router.currentRoute.value.name === 'login') {
-        router.push({
-          name: 'dashboard',
-        });
+      if (useRouter().currentRoute.value.name === 'login') {
+        useRouter()
+          .push({
+            name: 'dashboard',
+          })
+          .then();
       }
     } catch (e) {}
 
-    store.commit('setIsInitialized', true);
+    useStore().commit('setIsInitialized', true);
   }
   /**
    * Set current user
    */
-  static async setCurrentUser(data: {}) {
+  async setCurrentUser(data: UserInterface) {
     const user = new User(data);
-    await store.dispatch('setUser', user);
+    await useStore().dispatch('setUser', user);
   }
 
-  static async loadInitialData() {
+  async loadInitialData() {
     await Promise.all([
       apolloClient
         .query({
@@ -52,7 +55,7 @@ export class ServiceApp {
         })
         .then(response => Category.convertFromServerToStore(response.data.categories))
         .then(categories => {
-          store.commit('moduleCategory/setCategories', categories);
+          useStore().commit('moduleCategory/setCategories', categories);
         }),
       apolloClient
         .query({
@@ -60,7 +63,7 @@ export class ServiceApp {
         })
         .then(response => Mechanism.convertFromServerToStore(response.data.mechanisms))
         .then(mechanisms => {
-          store.commit('moduleMechanism/setMechanisms', mechanisms);
+          useStore().commit('moduleMechanism/setMechanisms', mechanisms);
         }),
       apolloClient
         .query({
@@ -68,7 +71,7 @@ export class ServiceApp {
         })
         .then(response => Mood.convertFromServerToStore(response.data.moods))
         .then(moods => {
-          store.commit('moduleMood/setMoods', moods);
+          useStore().commit('moduleMood/setMoods', moods);
         }),
       apolloClient
         .query({
@@ -76,7 +79,7 @@ export class ServiceApp {
         })
         .then(response => Player.convertFromServerToStore(response.data.players))
         .then(players => {
-          store.commit('modulePlayer/setPlayers', players);
+          useStore().commit('modulePlayer/setPlayers', players);
         }),
       apolloClient
         .query({
@@ -84,8 +87,10 @@ export class ServiceApp {
         })
         .then(response => Universe.convertFromServerToStore(response.data.universes))
         .then(universes => {
-          store.commit('moduleUniverse/setUniverses', universes);
+          useStore().commit('moduleUniverse/setUniverses', universes);
         }),
     ]);
   }
 }
+
+export const ServiceApp = new ServiceAppClass();

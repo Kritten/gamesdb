@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import CreatePlayer from '@/modules/player/create/create-player';
 import ListItemPlayer from '@/modules/player/list/list-item-player';
 
-export default {
+export default defineComponent({
   name: 'ListPlayers',
   components: { ListItemPlayer, CreatePlayer },
   setup() {
@@ -27,7 +27,7 @@ export default {
       players,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

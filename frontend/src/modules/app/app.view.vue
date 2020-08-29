@@ -10,7 +10,7 @@
       </li>
     </router-link>
   </ul>
-  <template v-if="store.state.user !== null">
+  <template v-if="store.state.user !== undefined">
     <router-view />
   </template>
 </template>
@@ -18,8 +18,9 @@
 <script>
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ViewApp',
   setup() {
     const { t } = useI18n();
@@ -70,7 +71,7 @@ export default {
       routes,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

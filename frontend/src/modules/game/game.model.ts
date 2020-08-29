@@ -6,9 +6,9 @@ import { Mechanism } from '@/modules/mechanism/mechanism.model';
 import { Mood } from '@/modules/mood/mood.model';
 import { Image } from '@/modules/image/image.model';
 import { Rating } from '@/modules/rating/rating.model';
-import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import { store } from '@/modules/app/app.store';
+import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
+import { useStore } from 'vuex';
 
 export class Game extends Entity implements GameInterface {
   name: string;
@@ -57,24 +57,24 @@ export class Game extends Entity implements GameInterface {
 
     if (entity.universes !== undefined) {
       entity.universes = entity.universes.map(
-        universe => store.state.moduleUniverse.universes[universe.id],
+        universe => useStore().state.moduleUniverse.universes[universe.id as ID],
       );
     }
 
     if (entity.categories !== undefined) {
       entity.categories = entity.categories.map(
-        category => store.state.moduleCategory.categories[category.id],
+        category => useStore().state.moduleCategory.categories[category.id as ID],
       );
     }
 
     if (entity.mechanisms !== undefined) {
       entity.mechanisms = entity.mechanisms.map(
-        mechanism => store.state.moduleMechanism.mechanisms[mechanism.id],
+        mechanism => useStore().state.moduleMechanism.mechanisms[mechanism.id as ID],
       );
     }
 
     if (entity.moods !== undefined) {
-      entity.moods = entity.moods.map(mood => store.state.moduleMood.moods[mood.id]);
+      entity.moods = entity.moods.map(mood => useStore().state.moduleMood.moods[mood.id as ID]);
     }
 
     return entity;

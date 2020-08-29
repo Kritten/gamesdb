@@ -167,12 +167,12 @@
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Image } from '../image/image.model';
 import { ServiceImage } from '../image/image.service';
 
-export default {
+export default defineComponent({
   name: 'ItemGame',
   props: {
     name: {
@@ -237,7 +237,8 @@ export default {
     const store = useStore();
 
     const filters = ref([{
-      field: 'name', value: null, operator: 'Like',
+      // TODO funktioniert das heir noch nachdem value:null auf value:undefined umgestellt wurde?
+      field: 'name', value: undefined, operator: 'Like',
     }]);
     const collectionImage = useCollection<Image>(ServiceImage, { count: 5, filters: filters.value });
 
@@ -287,7 +288,7 @@ export default {
       }),
     };
   },
-};
+});
 </script>
 
 <style scoped>

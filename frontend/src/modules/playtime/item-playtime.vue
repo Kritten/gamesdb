@@ -14,8 +14,9 @@ import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
 import DatetimePicker from '@/modules/app/base/datetime-picker.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ItemPlaytime',
   components: { DatetimePicker },
   props: {
@@ -43,7 +44,7 @@ export default {
       }),
     };
   },
-};
+});
 </script>
 
 <style scoped>

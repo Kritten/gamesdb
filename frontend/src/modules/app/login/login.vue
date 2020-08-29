@@ -2,11 +2,18 @@
   <form @submit.prevent="loginService.login">
     <div>
       <label for="name">{{ t('login.name') }}</label>
-      <input id="name" v-model="loginService.username.value" />
+      <input
+        id="name"
+        v-model="loginService.username.value"
+      >
     </div>
     <div>
       <label for="password">{{ t('login.password') }}</label>
-      <input type="password" id="password" v-model="loginService.password.value" />
+      <input
+        id="password"
+        v-model="loginService.password.value"
+        type="password"
+      >
     </div>
     <div>
       <button type="submit">
@@ -20,8 +27,9 @@
 import { useI18n } from 'vue-i18n';
 import { ServiceLogin } from '@/modules/app/login/login.service';
 import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'Login',
   setup() {
     const { t } = useI18n();
@@ -33,7 +41,7 @@ export default {
       store: useStore(),
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

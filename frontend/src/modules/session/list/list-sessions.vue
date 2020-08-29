@@ -25,15 +25,15 @@
 <script lang="ts">
 import { useStore } from 'vuex';
 import { ServiceSession } from '@/modules/session/session.service';
-import ListItemSession from '@/modules/session/list/list-item-session';
+import ListItemSession from '@/modules/session/list/list-item-session.vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Session } from '@/modules/session/session.model';
 import { useI18n } from 'vue-i18n';
 import { Game } from '@/modules/game/game.model';
 import { queue } from '@/queue';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListSession',
   components: { ListItemSession },
   props: {
@@ -64,7 +64,7 @@ export default {
       store: useStore(),
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

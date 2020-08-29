@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Game } from '../game/game.model';
@@ -58,7 +58,7 @@ import { Player } from '../player/player.model';
 import { useModelWrapper } from '../app/utilities/helpers';
 import { ServiceGame } from '../game/game.service';
 
-export default {
+export default defineComponent({
   name: 'ItemRating',
   props: {
     rating: {
@@ -79,7 +79,8 @@ export default {
     const store = useStore();
 
     const filtersGame = ref([{
-      field: 'name', value: null, operator: 'Like',
+      // TODO funktioniert das heir noch nachdem value:null auf value:undefined umgestellt wurde?
+      field: 'name', value: undefined, operator: 'Like',
     }]);
     const collectionGame = useCollection<Game>(ServiceGame, { count: 5, filters: filtersGame.value });
 
@@ -96,7 +97,7 @@ export default {
       }),
     };
   },
-};
+});
 </script>
 
 <style scoped>

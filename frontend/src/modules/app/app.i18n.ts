@@ -15,5 +15,6 @@ function loadLocaleMessages(): LocaleMessages {
 
 export const i18n = createI18n({
   locale: 'de',
+  // @ts-ignore
   messages: loadLocaleMessages(),
 });

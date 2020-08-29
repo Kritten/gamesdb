@@ -30,15 +30,16 @@ import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Game } from '@/modules/game/game.model';
 import { useI18n } from 'vue-i18n';
 import { queue } from '@/queue';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListGames',
   components: { ListItemGame },
   setup() {
     const { t } = useI18n();
     const filters = ref([{
-      field: 'name', value: null, operator: 'Like',
+      // TODO funktioniert das heir noch nachdem value:null auf value:undefined umgestellt wurde?
+      field: 'name', value: undefined, operator: 'Like',
     }]);
     const collection = useCollection<Game>(ServiceGame, { filters: filters.value });
 
@@ -54,7 +55,7 @@ export default {
       filters,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

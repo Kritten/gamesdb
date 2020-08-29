@@ -11,7 +11,7 @@ import { cloneDeep } from 'lodash';
 import { ServiceCollectionInterface } from '../app/utilities/collection/collection.types';
 import { ServiceEntityInterface } from '../app/utilities/entity/entity.types';
 import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
-import { queue } from '../../queue';
+import { queue } from '@/queue';
 
 class ServiceRatingClass
   implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {

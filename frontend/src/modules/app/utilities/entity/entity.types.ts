@@ -1,6 +1,6 @@
 import { Ref } from 'vue';
 
-export type ID = number | string;
+export type ID = string;
 
 export interface EntityInterface {
   id?: ID;

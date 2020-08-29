@@ -49,7 +49,7 @@ class ServiceCategoryClass implements ServiceEntityInterface<Category> {
       },
     });
 
-    const categoryNew = await Category.parseFromServer(response.data.createCategory);
+    const categoryNew = (await Category.parseFromServer(response.data.createCategory)) as Category;
     store.commit('moduleCategory/addCategory', categoryNew);
 
     return categoryNew;
@@ -63,7 +63,7 @@ class ServiceCategoryClass implements ServiceEntityInterface<Category> {
       },
     });
 
-    const categoryNew = await Category.parseFromServer(response.data.updateCategory);
+    const categoryNew = (await Category.parseFromServer(response.data.updateCategory)) as Category;
     store.commit('moduleCategory/addCategory', categoryNew);
 
     return categoryNew;

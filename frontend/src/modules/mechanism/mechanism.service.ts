@@ -49,7 +49,9 @@ class ServiceMechanismClass implements ServiceEntityInterface<Mechanism> {
       },
     });
 
-    const mechanismNew = await Mechanism.parseFromServer(response.data.createMechanism);
+    const mechanismNew = (await Mechanism.parseFromServer(
+      response.data.createMechanism,
+    )) as Mechanism;
     store.commit('moduleMechanism/addMechanism', mechanismNew);
 
     return mechanismNew;
@@ -63,7 +65,9 @@ class ServiceMechanismClass implements ServiceEntityInterface<Mechanism> {
       },
     });
 
-    const mechanismNew = await Mechanism.parseFromServer(response.data.updateMechanism);
+    const mechanismNew = (await Mechanism.parseFromServer(
+      response.data.updateMechanism,
+    )) as Mechanism;
     store.commit('moduleMechanism/addMechanism', mechanismNew);
 
     return mechanismNew;
