@@ -38,7 +38,6 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
     const filters = ref([{
-      // TODO funktioniert das heir noch nachdem value:null auf value:undefined umgestellt wurde?
       field: 'name', value: undefined, operator: 'Like',
     }]);
     const collection = useCollection<Game>(ServiceGame, { filters: filters.value });

@@ -79,7 +79,6 @@ export default defineComponent({
     const store = useStore();
 
     const filtersGame = ref([{
-      // TODO funktioniert das heir noch nachdem value:null auf value:undefined umgestellt wurde?
       field: 'name', value: undefined, operator: 'Like',
     }]);
     const collectionGame = useCollection<Game>(ServiceGame, { count: 5, filters: filtersGame.value });

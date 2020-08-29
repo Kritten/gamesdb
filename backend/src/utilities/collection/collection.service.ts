@@ -21,7 +21,7 @@ export class CollectionService<T extends BaseEntity> {
     const where = [];
     if (data.filters !== undefined) {
       for (const filter of data.filters.filter(
-        filter => filter.value !== null,
+        filter => filter.value !== undefined,
       )) {
         switch (filter.operator) {
           case 'Equal':

@@ -237,7 +237,6 @@ export default defineComponent({
     const store = useStore();
 
     const filters = ref([{
-      // TODO funktioniert das heir noch nachdem value:null auf value:undefined umgestellt wurde?
       field: 'name', value: undefined, operator: 'Like',
     }]);
     const collectionImage = useCollection<Image>(ServiceImage, { count: 5, filters: filters.value });
