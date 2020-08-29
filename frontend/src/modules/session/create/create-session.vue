@@ -36,16 +36,17 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ServiceSession } from '@/modules/session/session.service';
 import { useStore } from 'vuex';
-import DatetimePicker from '@/modules/app/base/datetime-picker';
+import DatetimePicker from '@/modules/app/base/datetime-picker.vue';
 import { Game } from '@/modules/game/game.model';
-import ItemSession from '@/modules/session/item-session';
-import ItemPlaytime from '@/modules/playtime/item-playtime';
+import ItemSession from '@/modules/session/item-session.vue';
+import ItemPlaytime from '@/modules/playtime/item-playtime.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'CreateSession',
   components: { ItemPlaytime, ItemSession, DatetimePicker },
   props: {
@@ -65,7 +66,7 @@ export default {
       createSession,
     };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -4,12 +4,13 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ServiceGame } from '@/modules/game/game.service';
 import { Game } from '@/modules/game/game.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DeleteGame',
   props: {
     game: {
@@ -34,7 +35,7 @@ export default {
       confirmDelete,
     };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -15,11 +15,12 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceMood } from '@/modules/mood/mood.service';
 import { useI18n } from 'vue-i18n';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'CreateMood',
   setup() {
     const { t } = useI18n();
@@ -30,7 +31,7 @@ export default {
       createMood,
     };
   },
-};
+});
 </script>
 
 <style scoped>

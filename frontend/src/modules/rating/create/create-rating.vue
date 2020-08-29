@@ -13,12 +13,13 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceRating } from '@/modules/rating/rating.service';
 import { useI18n } from 'vue-i18n';
-import ItemRating from '@/modules/rating/item-rating';
+import ItemRating from '@/modules/rating/item-rating.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'CreateRating',
   components: { ItemRating },
   setup() {
@@ -30,7 +31,7 @@ export default {
       createRating,
     };
   },
-};
+});
 </script>
 
 <style scoped>

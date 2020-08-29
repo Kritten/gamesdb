@@ -4,12 +4,13 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { ServicePlayer } from '@/modules/player/player.service';
 import { useI18n } from 'vue-i18n';
 import { Player } from '@/modules/player/player.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DeletePlayer',
   props: {
     player: {
@@ -35,7 +36,7 @@ export default {
       confirmDelete,
     };
   },
-};
+});
 </script>
 
 <style scoped>

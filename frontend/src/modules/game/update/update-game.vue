@@ -24,13 +24,14 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { useI18n } from 'vue-i18n';
-import ItemGame from '@/modules/game/item-game';
+import ItemGame from '@/modules/game/item-game.vue';
 import { ServiceGame } from '@/modules/game/game.service';
 import { Game } from '@/modules/game/game.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'UpdateGame',
   components: { ItemGame },
   props: {
@@ -48,7 +49,7 @@ export default {
       updateGame,
     };
   },
-};
+});
 </script>
 
 <style scoped>

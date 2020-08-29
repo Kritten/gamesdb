@@ -4,12 +4,14 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceRating } from '@/modules/rating/rating.service';
 import { useI18n } from 'vue-i18n';
 import { Rating } from '@/modules/rating/rating.model';
+import { defineComponent } from 'vue';
+import { Player } from '@/modules/player/player.model';
 
-export default {
+export default defineComponent({
   name: 'DeleteRating',
   props: {
     rating: {
@@ -22,7 +24,7 @@ export default {
     const deleteRating = ServiceRating.useDelete();
 
     const confirmDelete = () => {
-      const confirmed = confirm(`Bewertung von ${context.rating.player.name} löschen?`);
+      const confirmed = confirm(`Bewertung von ${(context.rating.player as Player).name} löschen?`);
 
       if (confirmed) {
         deleteRating.delete(context.rating);
@@ -35,7 +37,7 @@ export default {
       confirmDelete,
     };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -13,17 +13,18 @@
       <delete-rating :rating="rating" />
     </td>
     <td>
-<!--      <update-rating :rating="rating" />-->
+      <!--      <update-rating :rating="rating" />-->
     </td>
   </tr>
 </template>
 
-<script>
-import DeleteRating from '@/modules/rating/delete/delete-rating';
+<script lang="ts">
+import DeleteRating from '@/modules/rating/delete/delete-rating.vue';
 import { Rating } from '@/modules/rating/rating.model';
-import UpdateRating from '@/modules/rating/update/update-rating';
+import UpdateRating from '@/modules/rating/update/update-rating.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListItemRating',
   components: { UpdateRating, DeleteRating },
   props: {
@@ -32,7 +33,7 @@ export default {
       type: Rating,
     },
   },
-};
+});
 </script>
 
 <style scoped>

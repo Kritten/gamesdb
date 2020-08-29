@@ -4,12 +4,13 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceMechanism } from '@/modules/mechanism/mechanism.service';
 import { useI18n } from 'vue-i18n';
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DeleteMechanism',
   props: {
     mechanism: {
@@ -35,7 +36,7 @@ export default {
       confirmDelete,
     };
   },
-};
+});
 </script>
 
 <style scoped>

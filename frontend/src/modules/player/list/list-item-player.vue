@@ -12,12 +12,13 @@
   </tr>
 </template>
 
-<script>
-import DeletePlayer from '@/modules/player/delete/delete-player';
+<script lang="ts">
+import DeletePlayer from '@/modules/player/delete/delete-player.vue';
 import { Player } from '@/modules/player/player.model';
-import UpdatePlayer from '@/modules/player/update/update-player';
+import UpdatePlayer from '@/modules/player/update/update-player.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListItemPlayer',
   components: { UpdatePlayer, DeletePlayer },
   props: {
@@ -26,7 +27,7 @@ export default {
       type: Player,
     },
   },
-};
+});
 </script>
 
 <style scoped>

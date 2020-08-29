@@ -15,11 +15,12 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServicePlayer } from '@/modules/player/player.service';
 import { useI18n } from 'vue-i18n';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'CreatePlayer',
   setup() {
     const { t } = useI18n();
@@ -30,7 +31,7 @@ export default {
       createPlayer,
     };
   },
-};
+});
 </script>
 
 <style scoped>

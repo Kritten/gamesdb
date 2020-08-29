@@ -15,12 +15,13 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceRating } from '@/modules/rating/rating.service';
 import { useI18n } from 'vue-i18n';
 import { Rating } from '@/modules/rating/rating.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'UpdateRating',
   props: {
     rating: {
@@ -37,7 +38,7 @@ export default {
       updateRating,
     };
   },
-};
+});
 </script>
 
 <style scoped>

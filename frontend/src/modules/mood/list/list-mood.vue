@@ -9,13 +9,13 @@
   </table>
 </template>
 
-<script>
-import { computed } from 'vue';
+<script lang="ts">
+import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import CreateMood from '@/modules/mood/create/create-mood';
-import ListItemMood from '@/modules/mood/list/list-item-mood';
+import CreateMood from '@/modules/mood/create/create-mood.vue';
+import ListItemMood from '@/modules/mood/list/list-item-mood.vue';
 
-export default {
+export default defineComponent({
   name: 'ListMoods',
   components: { ListItemMood, CreateMood },
   setup() {
@@ -27,7 +27,7 @@ export default {
       moods,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

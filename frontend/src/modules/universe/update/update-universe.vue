@@ -15,12 +15,13 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceUniverse } from '@/modules/universe/universe.service';
 import { useI18n } from 'vue-i18n';
 import { Universe } from '@/modules/universe/universe.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'UpdateUniverse',
   props: {
     universe: {
@@ -37,7 +38,7 @@ export default {
       updateUniverse,
     };
   },
-};
+});
 </script>
 
 <style scoped>

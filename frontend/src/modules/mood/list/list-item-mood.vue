@@ -12,12 +12,13 @@
   </tr>
 </template>
 
-<script>
-import DeleteMood from '@/modules/mood/delete/delete-mood';
+<script lang="ts">
+import DeleteMood from '@/modules/mood/delete/delete-mood.vue';
 import { Mood } from '@/modules/mood/mood.model';
-import UpdateMood from '@/modules/mood/update/update-mood';
+import UpdateMood from '@/modules/mood/update/update-mood.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListItemMood',
   components: { UpdateMood, DeleteMood },
   props: {
@@ -26,7 +27,7 @@ export default {
       type: Mood,
     },
   },
-};
+});
 </script>
 
 <style scoped>

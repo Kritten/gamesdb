@@ -4,12 +4,13 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceImage } from '@/modules/image/image.service';
 import { useI18n } from 'vue-i18n';
 import { Image } from '@/modules/image/image.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DeleteImage',
   props: {
     image: {
@@ -35,9 +36,7 @@ export default {
       confirmDelete,
     };
   },
-};
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

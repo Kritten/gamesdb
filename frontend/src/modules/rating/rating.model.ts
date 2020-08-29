@@ -3,7 +3,7 @@ import { RatingInterface } from '@/modules/rating/rating.types';
 import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
 import { EntityInterface, ID } from '../app/utilities/entity/entity.types';
-import { useStore } from 'vuex';
+import { store } from '@/modules/app/app.store';
 
 export class Rating extends Entity implements RatingInterface {
   rating?: number;
@@ -21,7 +21,8 @@ export class Rating extends Entity implements RatingInterface {
     const entity = (await super.parseFromServer(data)) as Rating;
 
     if (entity.player !== undefined) {
-      entity.player = useStore().state.modulePlayer.players[entity.id as ID];
+      // @ts-ignore
+      entity.player = store.state.modulePlayer.players[entity.id as ID];
     }
 
     return entity;

@@ -15,12 +15,13 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceCategory } from '@/modules/category/category.service';
 import { useI18n } from 'vue-i18n';
 import { Category } from '@/modules/category/category.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'UpdateCategory',
   props: {
     category: {
@@ -37,7 +38,7 @@ export default {
       updateCategory,
     };
   },
-};
+});
 </script>
 
 <style scoped>

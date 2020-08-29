@@ -4,12 +4,13 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceMood } from '@/modules/mood/mood.service';
 import { useI18n } from 'vue-i18n';
 import { Mood } from '@/modules/mood/mood.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DeleteMood',
   props: {
     mood: {
@@ -35,7 +36,7 @@ export default {
       confirmDelete,
     };
   },
-};
+});
 </script>
 
 <style scoped>

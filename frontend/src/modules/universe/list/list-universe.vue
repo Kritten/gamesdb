@@ -9,13 +9,13 @@
   </table>
 </template>
 
-<script>
-import { computed } from 'vue';
+<script lang="ts">
+import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import CreateUniverse from '@/modules/universe/create/create-universe';
-import ListItemUniverse from '@/modules/universe/list/list-item-universe';
+import CreateUniverse from '@/modules/universe/create/create-universe.vue';
+import ListItemUniverse from '@/modules/universe/list/list-item-universe.vue';
 
-export default {
+export default defineComponent({
   name: 'ListUniverses',
   components: { ListItemUniverse, CreateUniverse },
   setup() {
@@ -27,7 +27,7 @@ export default {
       universes,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

@@ -23,7 +23,7 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ServiceLogin } from '@/modules/app/login/login.service';
 import { useStore } from 'vuex';

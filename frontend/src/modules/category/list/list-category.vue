@@ -9,13 +9,13 @@
   </table>
 </template>
 
-<script>
-import { computed } from 'vue';
+<script lang="ts">
+import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import CreateCategory from '@/modules/category/create/create-category';
-import ListItemCategory from '@/modules/category/list/list-item-category';
+import CreateCategory from '@/modules/category/create/create-category.vue';
+import ListItemCategory from '@/modules/category/list/list-item-category.vue';
 
-export default {
+export default defineComponent({
   name: 'ListCategories',
   components: { ListItemCategory, CreateCategory },
   setup() {
@@ -27,7 +27,7 @@ export default {
       categories,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

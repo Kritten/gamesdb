@@ -9,13 +9,13 @@
   </table>
 </template>
 
-<script>
-import { computed } from 'vue';
+<script lang="ts">
+import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import CreateMechanism from '@/modules/mechanism/create/create-mechanism';
-import ListItemMechanism from '@/modules/mechanism/list/list-item-mechanism';
+import CreateMechanism from '@/modules/mechanism/create/create-mechanism.vue';
+import ListItemMechanism from '@/modules/mechanism/list/list-item-mechanism.vue';
 
-export default {
+export default defineComponent({
   name: 'ListMechanisms',
   components: { ListItemMechanism, CreateMechanism },
   setup() {
@@ -27,7 +27,7 @@ export default {
       mechanisms,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

@@ -5,10 +5,10 @@
   >
 </template>
 
-<script>
-import { computed } from 'vue';
+<script lang="ts">
+import { computed, defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DatetimePicker',
   props: {
     modelValue: {
@@ -16,9 +16,10 @@ export default {
       required: true,
     },
   },
-  setup(context, { emit }) {
+  setup(props, { emit }) {
     const valueInternal = computed({
-      get: () => context.modelValue.toISOString().substring(0, 16),
+      // @ts-ignore
+      get: () => props.modelValue.toISOString().substring(0, 16),
       set: (value) => emit('update:modelValue', new Date(value)),
     });
 
@@ -26,7 +27,7 @@ export default {
       valueInternal,
     };
   },
-};
+});
 </script>
 
 <style scoped>

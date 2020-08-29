@@ -15,11 +15,12 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceCategory } from '@/modules/category/category.service';
 import { useI18n } from 'vue-i18n';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'CreateCategory',
   setup() {
     const { t } = useI18n();
@@ -30,7 +31,7 @@ export default {
       createCategory,
     };
   },
-};
+});
 </script>
 
 <style scoped>

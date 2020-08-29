@@ -12,12 +12,13 @@
   </tr>
 </template>
 
-<script>
-import DeleteUniverse from '@/modules/universe/delete/delete-universe';
+<script lang="ts">
+import DeleteUniverse from '@/modules/universe/delete/delete-universe.vue';
 import { Universe } from '@/modules/universe/universe.model';
-import UpdateUniverse from '@/modules/universe/update/update-universe';
+import UpdateUniverse from '@/modules/universe/update/update-universe.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListItemUniverse',
   components: { UpdateUniverse, DeleteUniverse },
   props: {
@@ -26,7 +27,7 @@ export default {
       type: Universe,
     },
   },
-};
+});
 </script>
 
 <style scoped>

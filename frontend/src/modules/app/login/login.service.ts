@@ -1,6 +1,6 @@
 import { reactive, toRefs } from 'vue';
 import { ServiceApp } from '@/modules/app/app.service';
-import { useRouter } from 'vue-router';
+import { router } from '@/modules/app/app.router';
 
 export class ServiceLogin {
   static useLogin() {
@@ -26,7 +26,7 @@ export class ServiceLogin {
       if (response.ok) {
         await ServiceApp.setCurrentUser(await response.json());
 
-        await useRouter().push({
+        await router.push({
           name: 'dashboard',
         });
       }

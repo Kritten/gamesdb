@@ -12,12 +12,13 @@
   </tr>
 </template>
 
-<script>
-import DeleteMechanism from '@/modules/mechanism/delete/delete-mechanism';
+<script lang="ts">
+import DeleteMechanism from '@/modules/mechanism/delete/delete-mechanism.vue';
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
-import UpdateMechanism from '@/modules/mechanism/update/update-mechanism';
+import UpdateMechanism from '@/modules/mechanism/update/update-mechanism.vue';
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   name: 'ListItemMechanism',
   components: { UpdateMechanism, DeleteMechanism },
   props: {
@@ -26,7 +27,7 @@ export default {
       type: Mechanism,
     },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -4,12 +4,13 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ServiceSession } from '@/modules/session/session.service';
 import { Session } from '@/modules/session/session.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DeleteSession',
   props: {
     session: {
@@ -34,7 +35,7 @@ export default {
       confirmDelete,
     };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -12,12 +12,13 @@
   </tr>
 </template>
 
-<script>
-import DeleteCategory from '@/modules/category/delete/delete-category';
+<script lang="ts">
+import DeleteCategory from '@/modules/category/delete/delete-category.vue';
 import { Category } from '@/modules/category/category.model';
-import UpdateCategory from '@/modules/category/update/update-category';
+import UpdateCategory from '@/modules/category/update/update-category.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListItemCategory',
   components: { UpdateCategory, DeleteCategory },
   props: {
@@ -26,7 +27,7 @@ export default {
       type: Category,
     },
   },
-};
+});
 </script>
 
 <style scoped>

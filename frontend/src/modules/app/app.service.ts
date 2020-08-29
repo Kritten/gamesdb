@@ -11,9 +11,9 @@ import { queryPlayers } from '@/modules/player/graphql/player.graphql';
 import { Player } from '@/modules/player/player.model';
 import { queryUniverses } from '@/modules/universe/graphql/universe.graphql';
 import { Universe } from '@/modules/universe/universe.model';
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 import { UserInterface } from '@/modules/user/user.types';
+import { store } from '@/modules/app/app.store';
+import { router } from '@/modules/app/app.router';
 
 class ServiceAppClass {
   async initialize() {
@@ -26,10 +26,10 @@ class ServiceAppClass {
 
       await this.loadInitialData().then();
 
-      useStore().commit('setIsInitialized', true);
+      store.commit('setIsInitialized', true);
 
-      if (useRouter().currentRoute.value.name === 'login') {
-        useRouter()
+      if (router.currentRoute.value.name === 'login') {
+        router
           .push({
             name: 'dashboard',
           })
@@ -37,14 +37,14 @@ class ServiceAppClass {
       }
     } catch (e) {}
 
-    useStore().commit('setIsInitialized', true);
+    store.commit('setIsInitialized', true);
   }
   /**
    * Set current user
    */
   async setCurrentUser(data: UserInterface) {
     const user = new User(data);
-    await useStore().dispatch('setUser', user);
+    await store.dispatch('setUser', user);
   }
 
   async loadInitialData() {
@@ -55,7 +55,7 @@ class ServiceAppClass {
         })
         .then(response => Category.convertFromServerToStore(response.data.categories))
         .then(categories => {
-          useStore().commit('moduleCategory/setCategories', categories);
+          store.commit('moduleCategory/setCategories', categories);
         }),
       apolloClient
         .query({
@@ -63,7 +63,7 @@ class ServiceAppClass {
         })
         .then(response => Mechanism.convertFromServerToStore(response.data.mechanisms))
         .then(mechanisms => {
-          useStore().commit('moduleMechanism/setMechanisms', mechanisms);
+          store.commit('moduleMechanism/setMechanisms', mechanisms);
         }),
       apolloClient
         .query({
@@ -71,7 +71,7 @@ class ServiceAppClass {
         })
         .then(response => Mood.convertFromServerToStore(response.data.moods))
         .then(moods => {
-          useStore().commit('moduleMood/setMoods', moods);
+          store.commit('moduleMood/setMoods', moods);
         }),
       apolloClient
         .query({
@@ -79,7 +79,7 @@ class ServiceAppClass {
         })
         .then(response => Player.convertFromServerToStore(response.data.players))
         .then(players => {
-          useStore().commit('modulePlayer/setPlayers', players);
+          store.commit('modulePlayer/setPlayers', players);
         }),
       apolloClient
         .query({
@@ -87,7 +87,7 @@ class ServiceAppClass {
         })
         .then(response => Universe.convertFromServerToStore(response.data.universes))
         .then(universes => {
-          useStore().commit('moduleUniverse/setUniverses', universes);
+          store.commit('moduleUniverse/setUniverses', universes);
         }),
     ]);
   }

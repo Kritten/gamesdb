@@ -19,11 +19,12 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceImage } from '@/modules/image/image.service';
 import { useI18n } from 'vue-i18n';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'CreateImage',
   setup() {
     const { t } = useI18n();
@@ -34,7 +35,7 @@ export default {
       createImage,
     };
   },
-};
+});
 </script>
 
 <style scoped>

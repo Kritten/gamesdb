@@ -4,12 +4,13 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceUniverse } from '@/modules/universe/universe.service';
 import { useI18n } from 'vue-i18n';
 import { Universe } from '@/modules/universe/universe.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DeleteUniverse',
   props: {
     universe: {
@@ -35,7 +36,7 @@ export default {
       confirmDelete,
     };
   },
-};
+});
 </script>
 
 <style scoped>

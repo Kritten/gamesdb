@@ -19,12 +19,13 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceImage } from '@/modules/image/image.service';
 import { useI18n } from 'vue-i18n';
 import { Image } from '@/modules/image/image.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'UpdateImage',
   props: {
     image: {
@@ -41,7 +42,7 @@ export default {
       updateImage,
     };
   },
-};
+});
 </script>
 
 <style scoped>

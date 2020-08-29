@@ -14,10 +14,11 @@
   </tr>
 </template>
 
-<script>
+<script lang="ts">
 import { Game } from '@/modules/game/game.model';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListItemGame',
   props: {
     game: {
@@ -25,7 +26,7 @@ export default {
       type: Game,
     },
   },
-};
+});
 </script>
 
 <style scoped>

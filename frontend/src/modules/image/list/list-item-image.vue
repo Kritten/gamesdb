@@ -18,12 +18,13 @@
   </tr>
 </template>
 
-<script>
-import DeleteImage from '@/modules/image/delete/delete-image';
+<script lang="ts">
+import DeleteImage from '@/modules/image/delete/delete-image.vue';
 import { Image } from '@/modules/image/image.model';
-import UpdateImage from '@/modules/image/update/update-image';
+import UpdateImage from '@/modules/image/update/update-image.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ListItemImage',
   components: { UpdateImage, DeleteImage },
   props: {
@@ -32,7 +33,7 @@ export default {
       type: Image,
     },
   },
-};
+});
 </script>
 
 <style scoped>

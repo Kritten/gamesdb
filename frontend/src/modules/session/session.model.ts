@@ -6,7 +6,7 @@ import { Playtime } from '@/modules/playtime/playtime.model';
 import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
 import { ServiceGame } from '@/modules/game/game.service';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
-import { useStore } from 'vuex';
+import { store } from '@/modules/app/app.store';
 
 export class Session extends Entity implements SessionInterface {
   game: Game;
@@ -27,13 +27,15 @@ export class Session extends Entity implements SessionInterface {
 
     if (entity.players !== undefined) {
       entity.players = entity.players.map(
-        player => useStore().state.modulePlayer.players[player.id as ID],
+        // @ts-ignore
+        player => store.state.modulePlayer.players[player.id as ID],
       );
     }
 
     if (entity.winners !== undefined) {
       entity.winners = entity.winners.map(
-        winners => useStore().state.modulePlayer.players[winners.id as ID],
+        // @ts-ignore
+        winners => store.state.modulePlayer.players[winners.id as ID],
       );
     }
 

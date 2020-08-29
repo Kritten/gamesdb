@@ -15,11 +15,12 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { ServiceMechanism } from '@/modules/mechanism/mechanism.service';
 import { useI18n } from 'vue-i18n';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'CreateMechanism',
   setup() {
     const { t } = useI18n();
@@ -30,7 +31,7 @@ export default {
       createMechanism,
     };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import ListCategories from '@/modules/category/list/list-category';
+import ListCategories from '@/modules/category/list/list-category.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({

@@ -9,11 +9,11 @@
   </table>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import CreatePlayer from '@/modules/player/create/create-player';
-import ListItemPlayer from '@/modules/player/list/list-item-player';
+import CreatePlayer from '@/modules/player/create/create-player.vue';
+import ListItemPlayer from '@/modules/player/list/list-item-player.vue';
 
 export default defineComponent({
   name: 'ListPlayers',
