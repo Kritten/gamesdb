@@ -31,6 +31,12 @@ jobs:
       - run: pwd
       - run: git status -uno --porcelain
       - run: git checkout package-lock.json
+      - uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: cd /var/www/virtual/kritten/projects/gamesdb/frontend/ && rm -rf dist_tmp/ && mkdir dist_tmp
+          host: reinmuth.uberspace.de
+          username: ${{ secrets.UBERSPACE_NAME }}
+          password: ${{ secrets.UBERSPACE_PASSWORD }}
       - uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
           ftp-server: sftp://reinmuth.uberspace.de:22/var/www/virtual/kritten/projects/gamesdb/frontend/dist_tmp
