@@ -7,6 +7,7 @@ import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types
 import { ServiceGame } from '@/modules/game/game.service';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 import { store } from '@/modules/app/app.store';
+import { PlaytimeInterface } from '@/modules/playtime/playtime.types';
 
 export class Session extends Entity implements SessionInterface {
   game: Game;
@@ -53,7 +54,16 @@ export class Session extends Entity implements SessionInterface {
     data.game = this.game.id;
     data.players = this.players.map(player => player.id);
     data.winners = this.winners.map(winner => winner.id);
-    data.playtimes = this.playtimes;
+    data.playtimes = this.playtimes.map(playtime => {
+      const result: PlaytimeInterface = {};
+      if (playtime.id !== undefined) {
+        result.id = playtime.id;
+      }
+      result.start = playtime.start;
+      result.end = playtime.end;
+
+      return result;
+    });
 
     return data;
   }

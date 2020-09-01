@@ -50,7 +50,7 @@ export const mutationCreateSession = gql`
  * Update
  */
 export const mutationUpdateSession = gql`
-  mutation updateGame($session: UpdateSessionInput!) {
+  mutation updateSession($session: UpdateSessionInput!) {
     updateSession(sessionData: $session) {
       ...session
     }

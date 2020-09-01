@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { apolloClient } from '@/vue-apollo';
 import { store } from '@/modules/app/app.store';
 import { Session } from '@/modules/session/session.model';
@@ -19,27 +19,28 @@ import { cloneDeep } from 'lodash';
 
 class ServiceSessionClass
   implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
+  private static playtimeAdd(session: Ref<Session>, playtimeNew: Ref<Playtime>) {
+    session.value.playtimes.push(playtimeNew.value);
+    playtimeNew.value = new Playtime();
+  }
+
+  private playtimeRemove(session: Ref<Session>, playtime: Playtime) {
+    session.value.playtimes = session.value.playtimes.filter(
+      (playtimeCurrent: Playtime) =>
+        !(playtimeCurrent.start === playtime.start && playtimeCurrent.end === playtime.end),
+    );
+  }
+
   useCreate(game: Game) {
     const session = ref(new Session({ game }));
 
     const playtimeNew = ref(new Playtime());
 
-    const playtimeAdd = () => {
-      session.value.playtimes.push(playtimeNew.value);
-      playtimeNew.value = new Playtime();
-    };
-    const playtimeRemove = (playtime: Playtime) => {
-      session.value.playtimes = session.value.playtimes.filter(
-        playtimeCurrent =>
-          !(playtimeCurrent.start === playtime.start && playtimeCurrent.end === playtime.end),
-      );
-    };
-
     return {
       entity: session,
       playtimeNew,
-      playtimeAdd,
-      playtimeRemove,
+      playtimeAdd: () => ServiceSessionClass.playtimeAdd(session, playtimeNew),
+      playtimeRemove: (playtime: Playtime) => this.playtimeRemove(session, playtime),
       create: async () => {
         const sessionNew = await this.create(session.value);
         session.value = new Session({ game });
@@ -51,8 +52,13 @@ class ServiceSessionClass
   useUpdate(sessionPassed: Session) {
     let session = ref(cloneDeep(sessionPassed));
 
+    const playtimeNew = ref(new Playtime());
+
     return {
       entity: session,
+      playtimeNew,
+      playtimeAdd: () => ServiceSessionClass.playtimeAdd(session, playtimeNew),
+      playtimeRemove: (playtime: Playtime) => this.playtimeRemove(session, playtime),
       update: async () => {
         session.value = cloneDeep(await this.update(session.value));
       },

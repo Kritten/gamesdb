@@ -15,17 +15,21 @@
     <td>
       <delete-session :session="session" />
     </td>
+    <td>
+      <update-session :session="session" />
+    </td>
   </tr>
 </template>
 
 <script lang="ts">
 import { Session } from '@/modules/session/session.model';
 import DeleteSession from '@/modules/session/delete/delete-session.vue';
+import UpdateSession from '@/modules/session/update/update-session.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ListItemSession',
-  components: { DeleteSession },
+  components: { UpdateSession, DeleteSession },
   props: {
     session: {
       required: true,
