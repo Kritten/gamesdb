@@ -21,6 +21,7 @@ type Game {
     id: ID!
     images: [Image!]!
     isCoop: Boolean
+    isDigital: Boolean!
     isExpansionOf: Game
     mechanisms: [Mechanism!]!
     minutesPlaytimeMax: Int
@@ -206,6 +207,7 @@ input GameInput {
     id: ID
     images: [ID!]
     isCoop: Boolean
+    isDigital: Boolean
     isExpansionOf: ID
     mechanisms: [ID!]
     minutesPlaytimeMax: Int
@@ -308,6 +310,7 @@ input UpdateGameInput {
     id: ID!
     images: [ID!]
     isCoop: Boolean
+    isDigital: Boolean
     isExpansionOf: ID
     mechanisms: [ID!]
     minutesPlaytimeMax: Int

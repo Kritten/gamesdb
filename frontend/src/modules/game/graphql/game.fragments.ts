@@ -11,6 +11,7 @@ export const fragments = {
       minutesPlaytimeMin
       minutesPlaytimeMax
       isCoop
+      isDigital
       complexity
       size
       universes {

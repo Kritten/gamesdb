@@ -23,6 +23,8 @@ export class GameInput {
 
   isCoop?: boolean;
 
+  isDigital?: boolean;
+
   @Field(() => Int)
   complexity?: number;
 

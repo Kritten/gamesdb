@@ -71,6 +71,12 @@ export class Game {
   isCoop?: boolean;
 
   @Column({
+    type: 'boolean',
+    default: false,
+  })
+  isDigital: boolean;
+
+  @Column({
     type: 'tinyint',
     nullable: true,
   })

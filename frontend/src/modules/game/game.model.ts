@@ -18,6 +18,7 @@ export class Game extends Entity implements GameInterface {
   minutesPlaytimeMin: number;
   minutesPlaytimeMax: number;
   isCoop: boolean;
+  isDigital: boolean;
   complexity: number;
   size: number;
   universes: Universe[];
@@ -39,6 +40,7 @@ export class Game extends Entity implements GameInterface {
     this.minutesPlaytimeMin = setDefaultIfNullOrUndefined<number>(data.minutesPlaytimeMin, 0);
     this.minutesPlaytimeMax = setDefaultIfNullOrUndefined<number>(data.minutesPlaytimeMax, 0);
     this.isCoop = setDefaultIfNullOrUndefined<boolean>(data.isCoop, false);
+    this.isDigital = setDefaultIfNullOrUndefined<boolean>(data.isDigital, false);
     this.complexity = setDefaultIfNullOrUndefined<number>(data.complexity, 0);
     this.size = setDefaultIfNullOrUndefined<number>(data.size, 0);
     this.universes = setDefaultIfNullOrUndefined<Universe[]>(data.universes, []);
@@ -94,6 +96,7 @@ export class Game extends Entity implements GameInterface {
     data.minutesPlaytimeMin = this.minutesPlaytimeMin;
     data.minutesPlaytimeMax = this.minutesPlaytimeMax;
     data.isCoop = this.isCoop;
+    data.isDigital = this.isDigital;
     data.complexity = this.complexity;
     data.size = this.size;
     data.universes = this.universes.map(universe => universe.id);

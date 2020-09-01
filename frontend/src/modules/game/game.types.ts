@@ -15,6 +15,7 @@ export interface GameInterface extends EntityInterface {
   minutesPlaytimeMin?: number;
   minutesPlaytimeMax?: number;
   isCoop?: boolean;
+  isDigital?: boolean;
   complexity?: number;
   size?: number;
   universes?: Universe[];

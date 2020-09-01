@@ -56,6 +56,14 @@
     >
   </div>
   <div>
+    <label for="isDigital">{{ t('game.isDigital') }}</label>
+    <input
+      id="isDigital"
+      v-model="isDigitalInternal"
+      type="checkbox"
+    >
+  </div>
+  <div>
     <label for="complexity">{{ t('game.complexity') }}</label>
     <input
       id="complexity"
@@ -203,6 +211,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    isDigital: {
+      type: Boolean,
+      required: true,
+    },
     complexity: {
       type: Number,
       required: true,
@@ -266,6 +278,9 @@ export default defineComponent({
       }),
       isCoopInternal: useModelWrapper({
         props, emit, name: 'isCoop',
+      }),
+      isDigitalInternal: useModelWrapper({
+        props, emit, name: 'isDigital',
       }),
       complexityInternal: useModelWrapper({
         props, emit, name: 'complexity',

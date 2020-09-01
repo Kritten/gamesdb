@@ -8,6 +8,7 @@
       v-model:minutesPlaytimeMin="createGame.entity.value.minutesPlaytimeMin"
       v-model:minutesPlaytimeMax="createGame.entity.value.minutesPlaytimeMax"
       v-model:isCoop="createGame.entity.value.isCoop"
+      v-model:isDigital="createGame.entity.value.isDigital"
       v-model:complexity="createGame.entity.value.complexity"
       v-model:size="createGame.entity.value.size"
       v-model:universes="createGame.entity.value.universes"

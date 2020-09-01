@@ -23,6 +23,7 @@
     "minutesPlaytimeMin": "Spielzeit (min)",
     "minutesPlaytimeMax": "Spielzeit (max)",
     "isCoop": "Koop",
+    "isDigital": "Digital",
     "complexity": "Schwierigkeit",
     "size": "Größe"
   },

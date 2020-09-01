@@ -56,6 +56,7 @@ export class GameResolver extends EntityResolver {
     game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
     game.minutesPlaytimeMax = gameData.minutesPlaytimeMax;
     game.isCoop = gameData.isCoop;
+    game.isDigital = gameData.isDigital;
     game.complexity = gameData.complexity;
     game.size = gameData.size;
     await this.handleRelation(
@@ -119,6 +120,7 @@ export class GameResolver extends EntityResolver {
     game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
     game.minutesPlaytimeMax = gameData.minutesPlaytimeMax;
     game.isCoop = gameData.isCoop;
+    game.isDigital = gameData.isDigital;
     game.complexity = gameData.complexity;
     game.size = gameData.size;
     await this.handleRelation(
