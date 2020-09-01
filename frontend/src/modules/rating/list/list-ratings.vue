@@ -1,6 +1,8 @@
 <template>
   <create-rating />
-  <h2>Ratings</h2>
+  <h2>
+    {{ collection.countItems.value }} {{ t('rating.label', collection.countItems.value) }}
+  </h2>
   <table>
     <tr>
       <th>{{ t('rating.label') }}</th>
@@ -13,6 +15,12 @@
       :rating="rating"
     />
   </table>
+  <button
+    v-if="collection.hasNextPage.value"
+    @click="collection.loadNextItems"
+  >
+    Mehr laden
+  </button>
 </template>
 
 <script lang="ts">
