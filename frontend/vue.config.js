@@ -10,6 +10,7 @@ module.exports = {
       short_name: 'GamesDB',
       theme_color: '#424242',
       background_color: '#424242',
+      start_url: './',
       display: 'standalone',
       icons: [
         {
