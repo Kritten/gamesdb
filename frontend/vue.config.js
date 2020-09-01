@@ -30,9 +30,9 @@ module.exports = {
     iconPaths: {
       favicon16: 'favicon.ico',
       favicon32: null,
-      appleTouchIcon: null,
+      appleTouchIcon: 'img/icons/pwa-192x192.png',
       maskIcon: null,
-      msTileImage: null,
+      msTileImage: 'img/icons/pwa-512x512.png',
     },
   },
 };
