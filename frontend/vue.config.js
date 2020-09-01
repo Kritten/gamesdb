@@ -28,7 +28,7 @@ module.exports = {
       ],
     },
     iconPaths: {
-      favicon16: 'img/icons/favicon.ico',
+      favicon16: 'favicon.ico',
       favicon32: null,
       appleTouchIcon: null,
       maskIcon: null,
