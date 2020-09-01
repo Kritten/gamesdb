@@ -22,7 +22,7 @@ export class Rating extends Entity implements RatingInterface {
 
     if (entity.player !== undefined) {
       // @ts-ignore
-      entity.player = store.state.modulePlayer.players[entity.id as ID];
+      entity.player = store.state.modulePlayer.players[entity.player.id as ID];
     }
 
     return entity;
