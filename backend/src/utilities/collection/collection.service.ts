@@ -39,7 +39,6 @@ export class CollectionService<T extends BaseEntity> {
         }
       }
     }
-    console.warn(where, 'where');
     const [items, count] = await this.service.findAndCount({
       take: data.count,
       skip: (data.page - 1) * data.count,

@@ -2,6 +2,7 @@ import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 
 @InputType()
 class SessionPlaytimeInput {
+  id?: string;
   start: Date;
   end: Date;
 }

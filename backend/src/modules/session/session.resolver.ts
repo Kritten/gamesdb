@@ -89,15 +89,53 @@ export class SessionResolver extends EntityResolver {
       sessionData,
       this.playerService,
     );
-    await this.handleRelation(
-      'playtimes',
-      session,
-      sessionData,
-      this.playtimeService,
-    );
     await this.handleRelation('game', session, sessionData, this.gameService);
 
-    return await this.sessionService.update(session);
+    const sessionUpdated = (await this.sessionService.update(
+      session,
+    )) as Session;
+
+    /**
+     * Handling playtimes
+     */
+    // Delete deleted playtimes
+    const setKeptPlaytimes = sessionData.playtimes.reduce((set, value) => {
+      if (value.id !== undefined) {
+        set.add(parseInt(value.id, 10));
+      }
+      return set;
+    }, new Set<number>());
+
+    const playtimesToBeDeleted = sessionUpdated.playtimes.filter(
+      playtime => !setKeptPlaytimes.has(playtime.id),
+    );
+
+    if (playtimesToBeDeleted.length > 0) {
+      await this.playtimeService.delete(
+        playtimesToBeDeleted.map(playtime => playtime.id),
+      );
+    }
+
+    // Add new playtimes
+    await this.playtimeService.create(
+      sessionData.playtimes
+        .filter(playtime => playtime.id === undefined)
+        .map(playtimeData => {
+          const playtime = new Playtime();
+          playtime.session = session;
+          playtime.start = playtimeData.start;
+          playtime.end = playtimeData.end;
+          return playtime;
+        }),
+    );
+
+    sessionUpdated.playtimes = await this.playtimeService.find({
+      where: {
+        session: sessionUpdated,
+      },
+    });
+
+    return sessionUpdated;
   }
 
   @Mutation(() => Boolean)

@@ -280,6 +280,7 @@ input SessionInput {
 
 input SessionPlaytimeInput {
     end: DateTime!
+    id: String
     start: DateTime!
 }
 

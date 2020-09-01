@@ -1,17 +1,20 @@
-import { Entity, getManager } from 'typeorm/index';
+import { Entity, getManager } from 'typeorm';
 import { Injectable, NotFoundException, Optional } from '@nestjs/common';
 import { merge } from 'lodash';
 import { BaseEntity } from '../types';
 import { cloneDeep } from 'lodash';
+import { FindConditions } from 'typeorm/find-options/FindConditions';
+import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
+import { ObjectType } from 'typeorm/common/ObjectType';
 
 @Injectable()
 export class EntityService<T extends BaseEntity> {
-  private readonly entityClass: { new (): T };
+  private readonly entityClass: ObjectType<T>;
   private readonly _optionsDefaultPassed: {};
 
   constructor(
-    @Optional() cls: { new (): T },
-    @Optional() options?: { relations: string[] },
+    @Optional() cls: ObjectType<T>,
+    @Optional() options?: FindManyOptions<T> | FindConditions<T>,
   ) {
     this.entityClass = cls;
     this._optionsDefaultPassed = options;
@@ -21,7 +24,7 @@ export class EntityService<T extends BaseEntity> {
     return cloneDeep(this._optionsDefaultPassed);
   }
 
-  async findOne(id: number, options: {} = {}): Promise<T> {
+  async findOne(id: number, options: FindManyOptions<T> = {}): Promise<T> {
     const result = await getManager().findOne(
       this.entityClass,
       id,
@@ -35,14 +38,14 @@ export class EntityService<T extends BaseEntity> {
     return result;
   }
 
-  async find(options: {} = {}): Promise<T[]> {
+  async find(options: FindManyOptions<T> = {}): Promise<T[]> {
     return await getManager().find(
       this.entityClass,
       merge(this.optionsDefault, options),
     );
   }
 
-  async findAndCount(options: {} = {}): Promise<[T[], number]> {
+  async findAndCount(options: FindManyOptions<T> = {}): Promise<[T[], number]> {
     return await getManager().findAndCount(
       this.entityClass,
       merge(this.optionsDefault, options),
