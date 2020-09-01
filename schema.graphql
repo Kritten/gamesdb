@@ -159,6 +159,7 @@ type RatingCollectionData {
 }
 
 type Session {
+    comment: String
     game: Game
     id: ID!
     isChallenge: Boolean!
@@ -274,6 +275,7 @@ input RatingInput {
 }
 
 input SessionInput {
+    comment: String
     game: ID
     id: ID
     isChallenge: Boolean
@@ -363,6 +365,7 @@ input UpdateRatingInput {
 }
 
 input UpdateSessionInput {
+    comment: String
     game: ID
     id: ID!
     isChallenge: Boolean

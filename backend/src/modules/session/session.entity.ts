@@ -20,6 +20,12 @@ export class Session {
   id: number;
 
   @Column({
+    type: 'text',
+    nullable: true,
+  })
+  comment?: string;
+
+  @Column({
     type: 'boolean',
     default: false,
   })

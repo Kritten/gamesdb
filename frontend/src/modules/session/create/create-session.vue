@@ -1,6 +1,7 @@
 <template>
   <form @submit.prevent="createSession.create">
     <item-session
+      v-model:comment="createSession.entity.value.comment"
       v-model:is-challenge="createSession.entity.value.isChallenge"
       v-model:players="createSession.entity.value.players"
       v-model:winners="createSession.entity.value.winners"

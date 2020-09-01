@@ -8,6 +8,13 @@
     >
   </div>
   <div>
+    <label for="comment">{{ t('session.comment') }}</label>
+    <textarea
+      id="comment"
+      v-model="commentInternal"
+    ></textarea>
+  </div>
+  <div>
     <label for="players">{{ t('player.label', 2) }}</label>
     <select
       id="players"
@@ -50,6 +57,10 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'ItemSession',
   props: {
+    comment: {
+      validator: (value) => typeof value === 'string' || value === null,
+      required: true,
+    },
     isChallenge: {
       type: Boolean,
       required: true,
@@ -75,6 +86,9 @@ export default defineComponent({
       }),
       winnersInternal: useModelWrapper({
         props, emit, name: 'winners', isEntity: true,
+      }),
+      commentInternal: useModelWrapper({
+        props, emit, name: 'comment',
       }),
       isChallengeInternal: useModelWrapper({
         props, emit, name: 'isChallenge',

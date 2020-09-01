@@ -50,6 +50,7 @@
   },
   "session": {
     "label": "Session | Sessions",
+    "comment": "Kommentar",
     "isChallenge": "Herausforderung"
   },
   "rating": {

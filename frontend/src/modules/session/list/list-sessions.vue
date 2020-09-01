@@ -7,6 +7,7 @@
       <th>Spieler</th>
       <th>Gewinner</th>
       <th>Spielzeiten</th>
+      <th>{{ t('session.comment') }}</th>
       <th />
     </tr>
     <list-item-session

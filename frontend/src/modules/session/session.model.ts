@@ -10,6 +10,7 @@ import { store } from '@/modules/app/app.store';
 import { PlaytimeInterface } from '@/modules/playtime/playtime.types';
 
 export class Session extends Entity implements SessionInterface {
+  comment?: string | null;
   isChallenge: boolean;
   game: Game;
   players: Player[];
@@ -18,6 +19,7 @@ export class Session extends Entity implements SessionInterface {
 
   constructor(data: SessionInterface) {
     super(data);
+    this.comment = setDefaultIfNullOrUndefined<string | null>(data.comment, null);
     this.isChallenge = data.isChallenge;
     this.game = data.game;
     this.players = setDefaultIfNullOrUndefined<Player[]>(data.players, []);
@@ -54,6 +56,7 @@ export class Session extends Entity implements SessionInterface {
     const data = super.prepareForServer();
 
     data.game = this.game.id;
+    data.comment = this.comment;
     data.isChallenge = this.isChallenge;
     data.players = this.players.map(player => player.id);
     data.winners = this.winners.map(winner => winner.id);

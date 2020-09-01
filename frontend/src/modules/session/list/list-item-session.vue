@@ -16,6 +16,9 @@
       {{ session.playtimes.map(playtime => `${playtime.start} - ${playtime.end}`).join(', ') }}
     </td>
     <td>
+      {{ session.comment }}
+    </td>
+    <td>
       <delete-session :session="session" />
     </td>
     <td>
