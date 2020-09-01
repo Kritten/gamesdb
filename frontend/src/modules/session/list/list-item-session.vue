@@ -4,6 +4,9 @@
       {{ session.id }}
     </td>
     <td>
+      {{ session.isChallenge }}
+    </td>
+    <td>
       {{ session.players.map(player => player.name).join(', ') }}
     </td>
     <td>

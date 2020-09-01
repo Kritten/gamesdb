@@ -41,6 +41,8 @@ export class SessionResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async createSession(@Args('sessionData') sessionData: SessionInput) {
     const session = new Session();
+    session.isChallenge = sessionData.isChallenge;
+
     await this.handleRelation(
       'players',
       session,
@@ -76,6 +78,8 @@ export class SessionResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async updateSession(@Args('sessionData') sessionData: UpdateSessionInput) {
     const session = new Session();
+    session.isChallenge = sessionData.isChallenge;
+
     session.id = parseInt(sessionData.id, 10);
     await this.handleRelation(
       'players',

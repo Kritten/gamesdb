@@ -5,6 +5,7 @@ import {
   JoinTable,
   ManyToOne,
   OneToMany,
+  Column,
 } from 'typeorm';
 import { Player } from '../player/player.entity';
 import { Game } from '../game/game.entity';
@@ -17,6 +18,12 @@ export class Session {
   @PrimaryGeneratedColumn()
   @Field(() => ID)
   id: number;
+
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  isChallenge: boolean;
 
   @ManyToMany(
     () => Player,

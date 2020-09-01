@@ -160,6 +160,7 @@ type RatingCollectionData {
 type Session {
     game: Game
     id: ID!
+    isChallenge: Boolean!
     players: [Player!]!
     playtimes: [Playtime!]!
     winners: [Player!]!
@@ -273,6 +274,7 @@ input RatingInput {
 input SessionInput {
     game: ID
     id: ID
+    isChallenge: Boolean
     players: [ID!]
     playtimes: [SessionPlaytimeInput!]
     winners: [ID!]
@@ -360,6 +362,7 @@ input UpdateRatingInput {
 input UpdateSessionInput {
     game: ID
     id: ID!
+    isChallenge: Boolean
     players: [ID!]
     playtimes: [SessionPlaytimeInput!]
     winners: [ID!]

@@ -1,5 +1,13 @@
 <template>
   <div>
+    <label for="isChallenge">{{ t('session.isChallenge') }}</label>
+    <input
+      id="isChallenge"
+      v-model="isChallengeInternal"
+      type="checkbox"
+    >
+  </div>
+  <div>
     <label for="players">{{ t('player.label', 2) }}</label>
     <select
       id="players"
@@ -42,6 +50,10 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'ItemSession',
   props: {
+    isChallenge: {
+      type: Boolean,
+      required: true,
+    },
     players: {
       type: Array,
       required: true,
@@ -63,6 +75,9 @@ export default defineComponent({
       }),
       winnersInternal: useModelWrapper({
         props, emit, name: 'winners', isEntity: true,
+      }),
+      isChallengeInternal: useModelWrapper({
+        props, emit, name: 'isChallenge',
       }),
     };
   },

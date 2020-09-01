@@ -32,7 +32,7 @@ class ServiceSessionClass
   }
 
   useCreate(game: Game) {
-    const session = ref(new Session({ game }));
+    const session = ref(new Session({ game, isChallenge: false }));
 
     const playtimeNew = ref(new Playtime());
 
@@ -43,7 +43,7 @@ class ServiceSessionClass
       playtimeRemove: (playtime: Playtime) => this.playtimeRemove(session, playtime),
       create: async () => {
         const sessionNew = await this.create(session.value);
-        session.value = new Session({ game });
+        session.value = new Session({ game, isChallenge: false });
         return sessionNew;
       },
     };

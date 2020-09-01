@@ -5,6 +5,7 @@ import { Game } from '@/modules/game/game.model';
 
 export interface SessionInterface extends EntityInterface {
   game: Game;
+  isChallenge: boolean;
   players?: Player[];
   winners?: Player[];
   playtimes?: Playtime[];

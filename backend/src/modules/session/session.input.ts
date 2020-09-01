@@ -12,6 +12,8 @@ export class SessionInput {
   @Field(() => ID)
   id?: string;
 
+  isChallenge?: boolean;
+
   @Field(() => [ID])
   players?: string[];
 

@@ -4,6 +4,7 @@ export const fragments = {
   session: gql`
     fragment session on Session {
       id
+      isChallenge
       players {
         id
       }

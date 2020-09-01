@@ -21,7 +21,6 @@ export class GameInput {
   @Field(() => Int)
   minutesPlaytimeMax?: number;
 
-  @Field()
   isCoop?: boolean;
 
   @Field(() => Int)

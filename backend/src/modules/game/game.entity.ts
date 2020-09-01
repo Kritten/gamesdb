@@ -66,7 +66,7 @@ export class Game {
 
   @Column({
     type: 'boolean',
-    nullable: true,
+    default: false,
   })
   isCoop?: boolean;
 

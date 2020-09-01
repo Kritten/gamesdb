@@ -3,6 +3,7 @@
   <table border="1">
     <tr>
       <th>ID</th>
+      <th>{{ t('session.isChallenge') }}</th>
       <th>Spieler</th>
       <th>Gewinner</th>
       <th>Spielzeiten</th>

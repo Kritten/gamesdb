@@ -48,7 +48,8 @@
     "label": "Universum | Universen"
   },
   "session": {
-    "label": "Session | Sessions"
+    "label": "Session | Sessions",
+    "isChallenge": "Herausforderung"
   },
   "rating": {
     "label": "Bewertung | Bewertungen"
