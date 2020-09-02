@@ -38,7 +38,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
     const filters = ref([{
-      field: 'name', value: undefined, operator: 'Like',
+      field: 'name', value: undefined, operator: 'like',
     }]);
     const collection = useCollection<Game>(ServiceGame, { filters: filters.value });
 

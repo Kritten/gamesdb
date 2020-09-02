@@ -249,7 +249,7 @@ export default defineComponent({
     const store = useStore();
 
     const filters = ref([{
-      field: 'name', value: undefined, operator: 'Like',
+      field: 'name', value: undefined, operator: 'like',
     }]);
     const collectionImage = useCollection<Image>(ServiceImage, { count: 5, filters: filters.value });
 
