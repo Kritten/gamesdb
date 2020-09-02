@@ -3,24 +3,23 @@ import { Injectable, NotFoundException, Optional } from '@nestjs/common';
 import { merge } from 'lodash';
 import { BaseEntity } from '../types';
 import { cloneDeep } from 'lodash';
-import { FindConditions } from 'typeorm/find-options/FindConditions';
 import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { ObjectType } from 'typeorm/common/ObjectType';
 
 @Injectable()
 export class EntityService<T extends BaseEntity> {
   private readonly entityClass: ObjectType<T>;
-  private readonly _optionsDefaultPassed: {};
+  private readonly _optionsDefaultPassed: FindManyOptions<T>;
 
   constructor(
     @Optional() cls: ObjectType<T>,
-    @Optional() options?: FindManyOptions<T> | FindConditions<T>,
+    @Optional() options?: FindManyOptions<T>,
   ) {
     this.entityClass = cls;
     this._optionsDefaultPassed = options;
   }
 
-  private get optionsDefault() {
+  public get optionsDefault() {
     return cloneDeep(this._optionsDefaultPassed);
   }
 
