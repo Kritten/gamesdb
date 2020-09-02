@@ -239,7 +239,10 @@ input InputCollection {
 input InputCollectionFilter {
     field: String!
     operator: String!
-    value: String
+    valueBoolean: Boolean
+    valueFloat: Float
+    valueInt: Int
+    valueString: String
 }
 
 input MechanismInput {

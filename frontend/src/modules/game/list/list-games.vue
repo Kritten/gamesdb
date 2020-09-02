@@ -35,11 +35,29 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'ListGames',
   components: { ListItemGame },
+  props: {
+    digitalOnly: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    analogOnly: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
   setup() {
     const { t } = useI18n();
-    const filters = ref([{
-      field: 'name', value: undefined, operator: 'like',
-    }]);
+    const filters = ref([
+      {
+        field: 'name', valueString: undefined, operator: 'like',
+      }, {
+        field: 'isDigital',
+        valueBoolean: false,
+        operator: '=',
+      },
+    ]);
     const collection = useCollection<Game>(ServiceGame, { filters: filters.value });
 
     for (const event of ['createdGame', 'updatedGame']) {

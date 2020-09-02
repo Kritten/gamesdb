@@ -47,7 +47,7 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n();
     const filters = ref([{
-      field: 'game', value: props.game.id, operator: '=',
+      field: 'game', valueString: props.game.id, operator: '=',
     }]);
     const collection = useCollection<Session>(ServiceSession, {
       sortBy: 'id',

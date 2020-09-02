@@ -1,9 +1,14 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, Float, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class InputCollectionFilter {
   field: string;
-  value?: string;
+  @Field(() => Int)
+  valueInt?: number;
+  @Field(() => Float)
+  valueFloat?: number;
+  valueBoolean?: boolean;
+  valueString?: string;
   operator: string;
 }
 

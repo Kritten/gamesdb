@@ -26,10 +26,25 @@ export class CollectionService<T extends BaseEntity> {
   private where(query: SelectQueryBuilder<T>, data: InputCollection) {
     if (data.filters !== undefined) {
       for (const filter of data.filters.filter(
-        filter => filter.value !== undefined,
+        filter =>
+          filter.valueString !== undefined ||
+          filter.valueBoolean !== undefined ||
+          filter.valueInt !== undefined ||
+          filter.valueFloat !== undefined,
       )) {
+        let value;
+        if (filter.valueBoolean !== undefined) {
+          value = filter.valueBoolean;
+        } else if (filter.valueFloat !== undefined) {
+          value = filter.valueFloat;
+        } else if (filter.valueInt !== undefined) {
+          value = filter.valueInt;
+        } else if (filter.valueString !== undefined) {
+          value = filter.valueString;
+        }
+
         const valueFormatted =
-          filter.operator !== 'like' ? filter.value : `%${filter.value}%`;
+          filter.operator !== 'like' ? value : `%${value}%`;
 
         query.where(`entity.${filter.field} ${filter.operator} :value`, {
           value: valueFormatted,
@@ -47,7 +62,7 @@ export class CollectionService<T extends BaseEntity> {
   private orderBy(query: SelectQueryBuilder<T>, data: InputCollection) {
     if (data.sortBy.includes('.')) {
       const [table, aggregation] = data.sortBy.split('.');
-      console.warn(aggregation, 'aggregation');
+
       query.addSelect(
         subQuery =>
           subQuery
@@ -71,10 +86,6 @@ export class CollectionService<T extends BaseEntity> {
   }
 
   async loadPage(data: InputCollection) {
-    console.group(this.service);
-    console.warn(data, 'data');
-    // console.log(this.entityClass, 'this.entityClass');
-
     const query = await getConnection().createQueryBuilder(
       this.entityClass as ObjectType<T>,
       'entity',
@@ -91,9 +102,6 @@ export class CollectionService<T extends BaseEntity> {
     // console.warn(query.getSql());
 
     const [items, count] = await query.getManyAndCount();
-
-    console.warn(items, 'items');
-    console.groupEnd();
     return {
       items,
       count,
