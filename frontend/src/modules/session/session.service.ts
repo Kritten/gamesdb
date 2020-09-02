@@ -31,6 +31,21 @@ class ServiceSessionClass
     );
   }
 
+  async getSessionLast() {
+    const { items } = await this.loadPage({
+      count: 1,
+      page: 1,
+      sortBy: 'playtime.MAX(start)',
+      sortDesc: true,
+    });
+
+    if (items.length > 0) {
+      return items[0];
+    } else {
+      return null;
+    }
+  }
+
   useCreate(game: Game) {
     const session = ref(new Session({ game, isChallenge: false }));
 

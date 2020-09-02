@@ -49,6 +49,10 @@ export class Session extends Entity implements SessionInterface {
       entity.game = await ServiceGame.loadGame(idGame as ID);
     }
 
+    entity.playtimes = await Promise.all(
+      entity.playtimes.map(playtime => Playtime.parseFromServer(playtime)),
+    );
+
     return entity;
   }
 
