@@ -1,4 +1,4 @@
-import { InputCollection } from '../../../../../../backend/src/utilities/collection/collection.input';
+import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 
 export type ServiceCollectionLoadPageReturn<T> = Promise<{ count: number; items: T[] }>;
 

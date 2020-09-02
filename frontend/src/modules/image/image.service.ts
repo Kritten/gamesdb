@@ -11,7 +11,7 @@ import { cloneDeep } from 'lodash';
 import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
-import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
+import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 
 class ServiceImageClass
   implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {

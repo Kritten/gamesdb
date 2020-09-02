@@ -16,6 +16,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@backend/*": [
+        "../backend/*"
       ]
     },
     "lib": [
@@ -25,6 +28,9 @@
       "scripthost"
     ]
   },
+  "references": [{
+    "path": "../backend"
+  }],
   "include": [
     "src/**/*.ts",
     "src/**/*.vue",

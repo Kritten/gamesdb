@@ -12,7 +12,7 @@ import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/c
 import { queue } from '@/queue';
 import { ref } from 'vue';
 import { cloneDeep } from 'lodash';
-import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
+import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
   useCreate() {

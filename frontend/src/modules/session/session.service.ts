@@ -14,7 +14,7 @@ import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { queue } from '@/queue';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
-import { InputCollection } from '../../../../backend/src/utilities/collection/collection.input';
+import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { cloneDeep } from 'lodash';
 
 class ServiceSessionClass

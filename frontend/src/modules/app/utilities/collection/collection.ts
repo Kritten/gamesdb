@@ -1,6 +1,6 @@
 import { computed, ref, watch } from 'vue';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
-import { InputCollection } from '../../../../../../backend/src/utilities/collection/collection.input';
+import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { debounce } from 'lodash';
 
 export function useCollection<T>(
