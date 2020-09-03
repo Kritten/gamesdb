@@ -16,6 +16,7 @@ import { queue } from '@/queue';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { cloneDeep } from 'lodash';
+import { compareAsc } from 'date-fns';
 
 class ServiceSessionClass
   implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
@@ -31,19 +32,50 @@ class ServiceSessionClass
     );
   }
 
-  async getSessionLast() {
-    const { items } = await this.loadPage({
+  useLastSession({
+    analogOnly = false,
+    digitalOnly = false,
+  }: {
+    analogOnly?: boolean;
+    digitalOnly?: boolean;
+  } = {}) {
+    const session = ref<Session>();
+    const lastDate = ref<Date>();
+
+    const filters = [];
+    if (analogOnly) {
+      filters.push({
+        field: 'game.isDigital',
+        valueBoolean: false,
+        operator: '=',
+      });
+    } else if (digitalOnly) {
+      filters.push({
+        field: 'game.isDigital',
+        valueBoolean: true,
+        operator: '=',
+      });
+    }
+
+    this.loadPage({
       count: 1,
       page: 1,
       sortBy: 'playtime.MAX(start)',
       sortDesc: true,
+      filters,
+    }).then(async ({ items }) => {
+      if (items.length > 0) {
+        session.value = items[0];
+        lastDate.value = session.value.playtimes.map(playtime => playtime.end).sort(compareAsc)[
+          session.value.playtimes.length - 1
+        ];
+      }
     });
 
-    if (items.length > 0) {
-      return items[0];
-    } else {
-      return null;
-    }
+    return {
+      session,
+      lastDate,
+    };
   }
 
   useCreate(game: Game) {

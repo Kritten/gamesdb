@@ -46,9 +46,15 @@ export class CollectionService<T extends BaseEntity> {
         const valueFormatted =
           filter.operator !== 'like' ? value : `%${value}%`;
 
-        query.where(`entity.${filter.field} ${filter.operator} :value`, {
-          value: valueFormatted,
-        });
+        if (filter.field.includes('.')) {
+          query.where(`${filter.field} ${filter.operator} :value`, {
+            value: valueFormatted,
+          });
+        } else {
+          query.where(`entity.${filter.field} ${filter.operator} :value`, {
+            value: valueFormatted,
+          });
+        }
       }
     }
   }
