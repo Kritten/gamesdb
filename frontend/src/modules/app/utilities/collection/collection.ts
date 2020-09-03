@@ -8,7 +8,7 @@ export function useCollection<T>(
   {
     page = 1,
     count = 10,
-    sortBy = 'name',
+    sortBy = 'entity.name',
     sortDesc = false,
     filters = [],
   }: Partial<InputCollection> = {},

@@ -79,7 +79,7 @@ export default defineComponent({
     const store = useStore();
 
     const filtersGame = ref([{
-      field: 'name', value: undefined, operator: 'Like',
+      field: 'name', valueString: undefined, operator: 'like',
     }]);
     const collectionGame = useCollection<Game>(ServiceGame, { count: 5, filters: filtersGame.value });
 

@@ -50,7 +50,7 @@ export default defineComponent({
       field: 'game', valueString: props.game.id, operator: '=',
     }]);
     const collection = useCollection<Session>(ServiceSession, {
-      sortBy: 'id',
+      sortBy: 'entity.id',
       filters: filters.value,
     });
 
