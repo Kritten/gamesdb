@@ -4,7 +4,7 @@
     <label for="nameGame">{{ t('game.name') }}</label>
     <input
       id="nameGame"
-      v-model="filters[0].value"
+      v-model="filters[0].valueString"
     >
   </div>
   <table>
