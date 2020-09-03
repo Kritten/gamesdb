@@ -3,6 +3,7 @@ import Login from '@/modules/app/login/login.vue';
 import ViewApp from '@/modules/app/app.view.vue';
 import ViewDashboard from '@/modules/app/dashboard/dashboard.view.vue';
 import ViewGames from '@/modules/game/views/games.view.vue';
+import ViewGamesDigital from '@/modules/game/views/gamesDigital.view.vue';
 import ViewGame from '@/modules/game/views/game.view.vue';
 import ViewCategory from '@/modules/category/category.view.vue';
 import ViewMechanism from '@/modules/mechanism/mechanism.view.vue';
@@ -32,6 +33,11 @@ const routes: RouteRecordRaw[] = [
         path: 'games',
         name: 'games',
         component: ViewGames,
+      },
+      {
+        path: 'gamesDigital',
+        name: 'gamesDigital',
+        component: ViewGamesDigital,
       },
       {
         path: 'games/:id',

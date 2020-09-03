@@ -36,6 +36,10 @@ export default defineComponent({
         name: 'games',
       },
       {
+        label: t('game.digital.label', 2),
+        name: 'gamesDigital',
+      },
+      {
         label: t('category.label', 2),
         name: 'categories',
       },

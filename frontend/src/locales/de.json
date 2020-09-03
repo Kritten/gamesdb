@@ -25,7 +25,10 @@
     "isCoop": "Koop",
     "isDigital": "Digital",
     "complexity": "Schwierigkeit",
-    "size": "Größe"
+    "size": "Größe",
+    "digital": {
+      "label": "Digitales Spiel | Digitale Spiele"
+    }
   },
   "category": {
     "label": "Kategorie | Kategorien"

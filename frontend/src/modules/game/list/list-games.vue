@@ -31,6 +31,7 @@ import { Game } from '@/modules/game/game.model';
 import { useI18n } from 'vue-i18n';
 import { queue } from '@/queue';
 import { defineComponent, ref } from 'vue';
+import { InputCollectionFilter } from '@backend/src/utilities/collection/collection.input';
 
 export default defineComponent({
   name: 'ListGames',
@@ -47,17 +48,32 @@ export default defineComponent({
       default: false,
     },
   },
-  setup() {
+  setup(props) {
     const { t } = useI18n();
-    const filters = ref([
+    const filters = ref<InputCollectionFilter[]>([
       {
         field: 'name', valueString: undefined, operator: 'like',
-      }, {
-        field: 'isDigital',
-        valueBoolean: false,
-        operator: '=',
       },
     ]);
+
+    if (props.digitalOnly) {
+      filters.value.push(
+        {
+          field: 'isDigital',
+          valueBoolean: true,
+          operator: '=',
+        },
+      );
+    } else if (props.analogOnly) {
+      filters.value.push(
+        {
+          field: 'isDigital',
+          valueBoolean: false,
+          operator: '=',
+        },
+      );
+    }
+
     const collection = useCollection<Game>(ServiceGame, { filters: filters.value });
 
     for (const event of ['createdGame', 'updatedGame']) {
