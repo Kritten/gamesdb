@@ -25,7 +25,7 @@ export class MyCommands {
   async createUser(name: string, password: string): Promise<void> {
     await this.userService.create(
       getManager().create(User, {
-        name,
+        name: name.toLowerCase(),
         password,
       }),
     );
