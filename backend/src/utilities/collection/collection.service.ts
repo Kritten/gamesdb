@@ -25,13 +25,9 @@ export class CollectionService<T extends BaseEntity> {
 
   private where(query: SelectQueryBuilder<T>, data: InputCollection) {
     if (data.filters !== undefined) {
-      for (const filter of data.filters.filter(
-        filter =>
-          filter.valueString !== undefined ||
-          filter.valueBoolean !== undefined ||
-          filter.valueInt !== undefined ||
-          filter.valueFloat !== undefined,
-      )) {
+      for (let i = 0; i < data.filters.length; i++) {
+        const filter = data.filters[i];
+
         let value;
         if (filter.valueBoolean !== undefined) {
           value = filter.valueBoolean;
@@ -43,17 +39,29 @@ export class CollectionService<T extends BaseEntity> {
           value = filter.valueString;
         }
 
+        if (value === undefined) {
+          continue;
+        }
+
         const valueFormatted =
           filter.operator !== 'like' ? value : `%${value}%`;
 
+        let nameFunctionWhere = 'where';
+        if (i > 0) {
+          nameFunctionWhere = 'andWhere';
+        }
+
         if (filter.field.includes('.')) {
-          query.where(`${filter.field} ${filter.operator} :value`, {
-            value: valueFormatted,
+          query[nameFunctionWhere](`${filter.field} ${filter.operator} :${i}`, {
+            [i]: valueFormatted,
           });
         } else {
-          query.where(`entity.${filter.field} ${filter.operator} :value`, {
-            value: valueFormatted,
-          });
+          query[nameFunctionWhere](
+            `entity.${filter.field} ${filter.operator} :${i}`,
+            {
+              [i]: valueFormatted,
+            },
+          );
         }
       }
     }
