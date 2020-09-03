@@ -13,6 +13,7 @@ import { queue } from '@/queue';
 import { ref } from 'vue';
 import { cloneDeep } from 'lodash';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
+import { store } from '@/modules/app/app.store';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
   useCreate() {
@@ -55,6 +56,8 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
 
     const gameNew = await Game.parseFromServer(response.data.createGame);
 
+    store.commit('moduleGame/addGame', gameNew);
+
     queue.notify('createdGame', gameNew);
 
     return gameNew;
@@ -70,20 +73,31 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
 
     const gameNew = await Game.parseFromServer(response.data.updateGame);
 
+    store.commit('moduleGame/addGame', gameNew);
+
     queue.notify('updatedGame', gameNew);
 
     return gameNew;
   }
 
-  async loadGame(id: ID) {
-    const response = await apolloClient.query({
-      query: queryGame,
-      variables: {
-        id,
-      },
-    });
+  async getOrLoadGame(id: ID) {
+    // @ts-ignore
+    let game: Game = store.state.moduleGame.games[id];
 
-    return await Game.parseFromServer(response.data.game);
+    if (game === undefined) {
+      const response = await apolloClient.query({
+        query: queryGame,
+        variables: {
+          id,
+        },
+      });
+
+      game = await Game.parseFromServer(response.data.game);
+
+      store.commit('moduleGame/addGame', game);
+    }
+
+    return game;
   }
 
   async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
@@ -102,6 +116,14 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
       response.data.games.items.map((game: Game) => Game.parseFromServer(game)),
     );
 
+    store.commit(
+      'moduleGame/addGames',
+      entities.reduce((obj, entity) => {
+        obj[entity.id as ID] = entity;
+        return obj;
+      }, {} as { [key: string]: Game }),
+    );
+
     return {
       count: response.data.games.count,
       items: entities,
@@ -117,6 +139,8 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
     });
 
     queue.notify('deletedGame', game);
+
+    store.commit('moduleGame/deleteGame', game);
 
     return response.data.deleteGame;
   }

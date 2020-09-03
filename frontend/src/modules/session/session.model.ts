@@ -46,7 +46,7 @@ export class Session extends Entity implements SessionInterface {
 
     if (entity.game !== undefined) {
       const idGame = entity.game.id;
-      entity.game = await ServiceGame.loadGame(idGame as ID);
+      entity.game = await ServiceGame.getOrLoadGame(idGame as ID);
     }
 
     entity.playtimes = await Promise.all(

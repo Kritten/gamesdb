@@ -30,7 +30,7 @@ export default defineComponent({
     const idGame = route.params.id as string;
     const game = ref<Game | null>(null);
 
-    ServiceGame.loadGame(idGame).then((value: Game) => { game.value = value; });
+    ServiceGame.getOrLoadGame(idGame).then((value: Game) => { game.value = value; });
 
     return {
       game,
