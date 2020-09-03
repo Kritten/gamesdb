@@ -13,7 +13,15 @@
       {{ session.winners.map(player => player.name).join(', ') }}
     </td>
     <td>
-      {{ session.playtimes.map(playtime => `${playtime.start} - ${playtime.end}`).join(', ') }}
+      <div
+        v-for="(playtime, index) in session.playtimes"
+        :key="index"
+      >
+        <display-playtime
+          :start="playtime.start"
+          :end="playtime.end"
+        />
+      </div>
     </td>
     <td>
       {{ session.comment }}
@@ -31,11 +39,14 @@
 import { Session } from '@/modules/session/session.model';
 import DeleteSession from '@/modules/session/delete/delete-session.vue';
 import UpdateSession from '@/modules/session/update/update-session.vue';
+import DisplayPlaytime from '@/modules/playtime/display-playtime.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ListItemSession',
-  components: { UpdateSession, DeleteSession },
+  components: {
+    UpdateSession, DeleteSession, DisplayPlaytime,
+  },
   props: {
     session: {
       required: true,

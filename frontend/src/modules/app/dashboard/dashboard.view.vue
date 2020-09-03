@@ -2,23 +2,29 @@
   <h2>Zuletzt gespielt:</h2>
   <template v-if="lastSessionAnalog.session.value !== undefined">
     {{ lastSessionAnalog.session.value.game.name }} am
-    <base-date :value="lastSessionAnalog.lastDate.value" />
+    <base-date-time
+      :value="lastSessionAnalog.lastDate.value"
+      date-only
+    />
   </template>
   <h2>Zuletzt gezockt:</h2>
   <template v-if="lastSessionDigital.session.value !== undefined">
     {{ lastSessionDigital.session.value.game.name }} am
-    <base-date :value="lastSessionDigital.lastDate.value" />
+    <base-date-time
+      :value="lastSessionDigital.lastDate.value"
+      date-only
+    />
   </template>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { ServiceSession } from '@/modules/session/session.service';
-import BaseDate from '@/modules/app/base/base-date.vue';
+import BaseDateTime from '@/modules/app/base/base-date-time.vue';
 
 export default defineComponent({
   name: 'ViewDashboard',
-  components: { BaseDate },
+  components: { BaseDateTime },
   setup() {
     const lastSessionAnalog = ServiceSession.useLastSession({ analogOnly: true });
     const lastSessionDigital = ServiceSession.useLastSession({ digitalOnly: true });

@@ -20,8 +20,14 @@
           {{ t('playtime.label') }} {{ t('common.create') }}
         </button>
       </div>
-      <div v-for="playtime in updateSession.entity.value.playtimes">
-        <span>{{ playtime.start }} - {{ playtime.end }}</span>
+      <div
+        v-for="(playtime, index) in updateSession.entity.value.playtimes"
+        :key="index"
+      >
+        <display-playtime
+          :start="playtime.start"
+          :end="playtime.end"
+        />
         <button
           type="button"
           @click="updateSession.playtimeRemove(playtime)"
@@ -43,12 +49,13 @@ import { useI18n } from 'vue-i18n';
 import { Session } from '@/modules/session/session.model';
 import ItemSession from '@/modules/session/item-session.vue';
 import ItemPlaytime from '@/modules/playtime/item-playtime.vue';
+import DisplayPlaytime from '@/modules/playtime/display-playtime.vue';
 import { ServiceSession } from '@/modules/session/session.service';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'UpdateSession',
-  components: { ItemSession, ItemPlaytime },
+  components: { ItemSession, ItemPlaytime, DisplayPlaytime },
   props: {
     session: {
       required: true,
