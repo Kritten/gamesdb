@@ -28,9 +28,9 @@
       "scripthost"
     ]
   },
-  "references": [{
-    "path": "../backend"
-  }],
+//  "references": [{
+//    "path": "../backend"
+//  }],
   "include": [
     "src/**/*.ts",
     "src/**/*.vue",
