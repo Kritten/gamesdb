@@ -33,7 +33,7 @@
     <label for="game">{{ t('game.label', 2) }}</label>
     <input
       id="game"
-      v-model="filtersGame[0].value"
+      v-model="filtersGame[0].valueString"
     >
     <div>
       <div v-for="gameLocal in collectionGame.items.value">

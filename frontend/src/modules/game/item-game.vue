@@ -147,7 +147,7 @@
     <label for="images">{{ t('image.label', 2) }}</label>
     <input
       id="images"
-      v-model="filters[0].value"
+      v-model="filters[0].valueString"
     >
     <div>
       <div v-for="image in collectionImage.items.value">
