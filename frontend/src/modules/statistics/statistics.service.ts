@@ -13,20 +13,18 @@ class ServiceStatisticsClass {
       digitalOnly?: boolean;
     };
 
-    if (filters !== undefined) {
-      if (analogOnly) {
-        filters.push({
-          field: 'isDigital',
-          valueBoolean: false,
-          operator: '=',
-        });
-      } else if (digitalOnly) {
-        filters.push({
-          field: 'isDigital',
-          valueBoolean: true,
-          operator: '=',
-        });
-      }
+    if (analogOnly) {
+      filters.push({
+        field: 'isDigital',
+        valueBoolean: false,
+        operator: '=',
+      });
+    } else if (digitalOnly) {
+      filters.push({
+        field: 'isDigital',
+        valueBoolean: true,
+        operator: '=',
+      });
     }
 
     const response = await apolloClient.query({

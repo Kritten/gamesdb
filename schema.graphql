@@ -242,7 +242,7 @@ input ImageInput {
 
 input InputCollection {
     count: Int!
-    filters: [InputCollectionFilter!]
+    filters: [InputCollectionFilter!]!
     page: Int!
     sortBy: String!
     sortDesc: Boolean!

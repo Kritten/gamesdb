@@ -7,7 +7,7 @@ export const queryPageRatings = gql`
     $count: Int!
     $sortBy: String!
     $sortDesc: Boolean!
-    $filters: [InputCollectionFilter!]
+    $filters: [InputCollectionFilter!]!
   ) {
     ratings(
       ratingData: {

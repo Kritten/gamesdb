@@ -24,45 +24,42 @@ export class CollectionService<T extends BaseEntity> {
   }
 
   where(query: SelectQueryBuilder<T>, data: InputCollection) {
-    if (data.filters !== undefined) {
-      for (let i = 0; i < data.filters.length; i++) {
-        const filter = data.filters[i];
+    for (let i = 0; i < data.filters.length; i++) {
+      const filter = data.filters[i];
 
-        let value;
-        if (filter.valueBoolean !== undefined) {
-          value = filter.valueBoolean;
-        } else if (filter.valueFloat !== undefined) {
-          value = filter.valueFloat;
-        } else if (filter.valueInt !== undefined) {
-          value = filter.valueInt;
-        } else if (filter.valueString !== undefined) {
-          value = filter.valueString;
-        }
+      let value;
+      if (filter.valueBoolean !== undefined) {
+        value = filter.valueBoolean;
+      } else if (filter.valueFloat !== undefined) {
+        value = filter.valueFloat;
+      } else if (filter.valueInt !== undefined) {
+        value = filter.valueInt;
+      } else if (filter.valueString !== undefined) {
+        value = filter.valueString;
+      }
 
-        if (value === undefined) {
-          continue;
-        }
+      if (value === undefined) {
+        continue;
+      }
 
-        const valueFormatted =
-          filter.operator !== 'like' ? value : `%${value}%`;
+      const valueFormatted = filter.operator !== 'like' ? value : `%${value}%`;
 
-        let nameFunctionWhere = 'where';
-        if (i > 0) {
-          nameFunctionWhere = 'andWhere';
-        }
+      let nameFunctionWhere = 'where';
+      if (i > 0) {
+        nameFunctionWhere = 'andWhere';
+      }
 
-        if (filter.field.includes('.')) {
-          query[nameFunctionWhere](`${filter.field} ${filter.operator} :${i}`, {
+      if (filter.field.includes('.')) {
+        query[nameFunctionWhere](`${filter.field} ${filter.operator} :${i}`, {
+          [i]: valueFormatted,
+        });
+      } else {
+        query[nameFunctionWhere](
+          `entity.${filter.field} ${filter.operator} :${i}`,
+          {
             [i]: valueFormatted,
-          });
-        } else {
-          query[nameFunctionWhere](
-            `entity.${filter.field} ${filter.operator} :${i}`,
-            {
-              [i]: valueFormatted,
-            },
-          );
-        }
+          },
+        );
       }
     }
   }

@@ -24,5 +24,5 @@ export class InputCollection {
 
   sortDesc: boolean;
 
-  filters?: InputCollectionFilter[];
+  filters: InputCollectionFilter[];
 }

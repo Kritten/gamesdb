@@ -6,7 +6,7 @@ export const queryPageImage = gql`
     $count: Int!
     $sortBy: String!
     $sortDesc: Boolean!
-    $filters: [InputCollectionFilter!]
+    $filters: [InputCollectionFilter!]!
   ) {
     images(
       imageData: {

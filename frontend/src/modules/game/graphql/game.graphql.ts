@@ -7,7 +7,7 @@ export const queryPageGame = gql`
     $count: Int!
     $sortBy: String!
     $sortDesc: Boolean!
-    $filters: [InputCollectionFilter!]
+    $filters: [InputCollectionFilter!]!
   ) {
     games(
       gameData: {
