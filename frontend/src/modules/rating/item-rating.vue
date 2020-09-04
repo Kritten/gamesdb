@@ -52,6 +52,7 @@
 import { useI18n } from 'vue-i18n';
 import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
+import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
@@ -78,9 +79,11 @@ export default defineComponent({
     const { t } = useI18n();
     const store = useStore();
 
-    const filtersGame = ref([{
-      field: 'name', valueString: undefined, operator: 'like',
-    }]);
+    const filtersGame = ref<ServiceCollectionFilters>({
+      name: {
+        field: 'name', valueString: undefined, operator: 'like',
+      },
+    });
     const collectionGame = useCollection<Game>(ServiceGame.loadPage, { count: 5, filters: filtersGame.value });
 
     return {

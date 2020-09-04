@@ -32,13 +32,14 @@ import { useI18n } from 'vue-i18n';
 import { Rating } from '@/modules/rating/rating.model';
 import { ServiceRating } from '@/modules/rating/rating.service';
 import { queue } from '@/queue';
+import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 
 export default defineComponent({
   name: 'ListRatings',
   components: { ListItemRating, CreateRating },
   setup() {
     const { t } = useI18n();
-    const filters = ref([]);
+    const filters = ref<ServiceCollectionFilters>({});
     const collection = useCollection<Rating>(ServiceRating.loadPage, { sortBy: 'entity.id', filters: filters.value });
 
     for (const event of ['createdRating', 'updatedRating', 'deletedRating']) {

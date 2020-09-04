@@ -1,6 +1,8 @@
 import { computed, ref, watch } from 'vue';
-import { ServiceCollectionLoadPageType } from '@/modules/app/utilities/collection/collection.types';
-import { InputCollection } from '@backend/src/utilities/collection/collection.input';
+import {
+  InputCollectionData,
+  ServiceCollectionLoadPageType,
+} from '@/modules/app/utilities/collection/collection.types';
 import { debounce } from 'lodash';
 
 export function useCollection<T>(
@@ -10,8 +12,8 @@ export function useCollection<T>(
     count = 10,
     sortBy = 'entity.name',
     sortDesc = false,
-    filters = [],
-  }: Partial<InputCollection> = {},
+    filters = ref({}).value,
+  }: Partial<InputCollectionData> = {},
   payload?: unknown,
 ) {
   const items = ref<T[]>([]);
@@ -30,7 +32,7 @@ export function useCollection<T>(
         count,
         sortBy,
         sortDesc,
-        filters,
+        filters: Object.values(filters),
       },
       payload,
     );

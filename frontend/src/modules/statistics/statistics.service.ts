@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { apolloClient } from '@/vue-apollo';
 import { queryStatisticsGamesCountPlayed } from '@/modules/statistics/graphql/statistics.graphql';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';

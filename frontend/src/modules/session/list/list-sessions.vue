@@ -34,6 +34,7 @@ import { useI18n } from 'vue-i18n';
 import { Game } from '@/modules/game/game.model';
 import { queue } from '@/queue';
 import { defineComponent, ref } from 'vue';
+import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 
 export default defineComponent({
   name: 'ListSession',
@@ -46,9 +47,11 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n();
-    const filters = ref([{
-      field: 'game', valueString: props.game.id, operator: '=',
-    }]);
+    const filters = ref<ServiceCollectionFilters>({
+      game: {
+        field: 'game', valueString: props.game.id, operator: '=',
+      },
+    });
     const collection = useCollection<Session>(ServiceSession.loadPage, {
       sortBy: 'entity.id',
       filters: filters.value,
