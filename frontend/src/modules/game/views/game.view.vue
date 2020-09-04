@@ -2,9 +2,16 @@
   <template v-if="game !== null">
     <h1>{{ game.name }}</h1>
     <p>{{ game.description }}</p>
-    <update-game :game="game" />
+
+    <details>
+      <summary>Spiel bearbeiten</summary>
+      <update-game :game="game" />
+    </details>
     <h2>Sessions</h2>
-    <create-session :game="game" />
+    <details>
+      <summary>Session anlegen</summary>
+      <create-session :game="game" />
+    </details>
     <list-session :game="game" />
     <delete-game :game="game" />
   </template>
