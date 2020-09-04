@@ -11,6 +11,12 @@ type Category {
     name: String!
 }
 
+type Foo {
+    countPlayed: Int!
+    id: ID!
+    name: String!
+}
+
 type Game {
     categories: [Category!]!
     complexity: Int
@@ -139,6 +145,7 @@ type Query {
     ratings(ratingData: InputCollection!): RatingCollectionData!
     session(id: ID!): Session!
     sessions(sessionData: InputCollection!): SessionCollectionData!
+    statisticsGamesCountPlayed(statisticsData: InputCollection!): StatisticsCollectionData!
     universe(id: ID!): Universe!
     universes: [Universe!]!
     user(id: ID): User!
@@ -171,6 +178,11 @@ type Session {
 type SessionCollectionData {
     count: Int!
     items: [Session!]!
+}
+
+type StatisticsCollectionData {
+    count: Int!
+    items: [Foo!]!
 }
 
 type Universe {

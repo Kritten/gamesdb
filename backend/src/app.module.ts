@@ -19,6 +19,8 @@ import { ConsoleModule } from 'nestjs-console';
 import { MyCommands } from './commands';
 import { ImageModule } from './modules/image/image.module';
 import { PlaytimeModule } from './modules/playtime/playtime.module';
+import { StatisticsModule } from './modules/statistics/statistics.module';
+import { CollectionModule } from './utilities/collection/collection.module';
 
 @Module({
   imports: [
@@ -39,6 +41,7 @@ import { PlaytimeModule } from './modules/playtime/playtime.module';
         autoLoadEntities: true,
         synchronize: true,
         timezone: 'Z',
+        bigNumberStrings: false,
       }),
       inject: [ConfigService],
     }),
@@ -63,6 +66,8 @@ import { PlaytimeModule } from './modules/playtime/playtime.module';
     RatingModule,
     ImageModule,
     PlaytimeModule,
+    StatisticsModule,
+    CollectionModule,
   ],
   controllers: [AppController],
   providers: [AppService, MyCommands],

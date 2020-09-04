@@ -23,7 +23,7 @@ export class CollectionService<T extends BaseEntity> {
       : this.service.optionsDefault.relations;
   }
 
-  private where(query: SelectQueryBuilder<T>, data: InputCollection) {
+  where(query: SelectQueryBuilder<T>, data: InputCollection) {
     if (data.filters !== undefined) {
       for (let i = 0; i < data.filters.length; i++) {
         const filter = data.filters[i];
@@ -73,8 +73,9 @@ export class CollectionService<T extends BaseEntity> {
     }
   }
 
-  private orderBy(query: SelectQueryBuilder<T>, data: InputCollection) {
-    if (data.sortBy.includes('.')) {
+  orderBy(query: SelectQueryBuilder<T>, data: InputCollection) {
+    // TODO: support multiple orderbys
+    if (data.sortBy.includes('.') && !data.sortBy.startsWith('entity.')) {
       const [table, aggregation] = data.sortBy.split('.');
 
       query.addSelect(
@@ -87,11 +88,11 @@ export class CollectionService<T extends BaseEntity> {
       );
       query.orderBy('kritten', data.sortDesc ? 'DESC' : 'ASC');
     } else {
-      query.orderBy(`entity.${data.sortBy}`, data.sortDesc ? 'DESC' : 'ASC');
+      query.orderBy(`${data.sortBy}`, data.sortDesc ? 'DESC' : 'ASC');
     }
   }
 
-  private paginate(query: SelectQueryBuilder<T>, data: InputCollection) {
+  paginate(query: SelectQueryBuilder<T>, data: InputCollection) {
     query.take(data.count);
     query.skip((data.page - 1) * data.count);
     // TODO: create new requests for relations
