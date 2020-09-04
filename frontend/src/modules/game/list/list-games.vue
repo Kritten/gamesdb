@@ -74,7 +74,7 @@ export default defineComponent({
       );
     }
 
-    const collection = useCollection<Game>(ServiceGame, { filters: filters.value });
+    const collection = useCollection<Game>(ServiceGame.loadPage, { filters: filters.value });
 
     for (const event of ['createdGame', 'updatedGame']) {
       queue.listen(event, () => {

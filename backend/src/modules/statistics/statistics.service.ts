@@ -8,9 +8,7 @@ export class StatisticsService {
   constructor(
     @Inject('CollectionService')
     private collectionService: CollectionService<any>,
-  ) {
-    console.warn(collectionService, 'collectionService');
-  }
+  ) {}
 
   async gamesCountPlayed(data: InputCollection) {
     const query = await getConnection()
@@ -27,7 +25,7 @@ export class StatisticsService {
     );
 
     this.collectionService.where(query, data);
-    // query.orderBy(`countPlayed`, 'DESC');
+
     this.collectionService.orderBy(query, data);
 
     const count = query.getCount();
@@ -35,6 +33,7 @@ export class StatisticsService {
     this.collectionService.paginate(query, data);
 
     const items = await query.getRawMany();
+
     return {
       items: items.map(item => ({
         id: item.entity_id,

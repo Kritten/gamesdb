@@ -1,10 +1,10 @@
 import { computed, ref, watch } from 'vue';
-import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
+import { ServiceCollectionLoadPageType } from '@/modules/app/utilities/collection/collection.types';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { debounce } from 'lodash';
 
 export function useCollection<T>(
-  service: ServiceCollectionInterface<T>,
+  loadPage: ServiceCollectionLoadPageType<T>,
   {
     page = 1,
     count = 10,
@@ -12,6 +12,7 @@ export function useCollection<T>(
     sortDesc = false,
     filters = [],
   }: Partial<InputCollection> = {},
+  payload?: unknown,
 ) {
   const items = ref<T[]>([]);
   const countItems = ref(-1);
@@ -23,13 +24,16 @@ export function useCollection<T>(
   const loadNextItemsInternal = async (counter: number) => {
     isLoading.value = true;
 
-    const response = await service.loadPage({
-      page,
-      count,
-      sortBy,
-      sortDesc,
-      filters,
-    });
+    const response = await loadPage(
+      {
+        page,
+        count,
+        sortBy,
+        sortDesc,
+        filters,
+      },
+      payload,
+    );
 
     if (counter < counterRequests) {
       return;

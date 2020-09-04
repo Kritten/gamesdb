@@ -49,7 +49,7 @@ export default defineComponent({
     const filters = ref([{
       field: 'game', valueString: props.game.id, operator: '=',
     }]);
-    const collection = useCollection<Session>(ServiceSession, {
+    const collection = useCollection<Session>(ServiceSession.loadPage, {
       sortBy: 'entity.id',
       filters: filters.value,
     });

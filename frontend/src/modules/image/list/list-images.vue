@@ -31,7 +31,7 @@ export default defineComponent({
   components: { ListItemImage, CreateImage },
   setup() {
     const { t } = useI18n();
-    const collection = useCollection<Image>(ServiceImage);
+    const collection = useCollection<Image>(ServiceImage.loadPage);
 
     for (const event of ['createdImage', 'updatedImage', 'deletedImage']) {
       queue.listen(event, () => {

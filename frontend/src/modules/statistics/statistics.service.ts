@@ -1,48 +1,49 @@
 import { ref } from 'vue';
 import { apolloClient } from '@/vue-apollo';
 import { queryStatisticsGamesCountPlayed } from '@/modules/statistics/graphql/statistics.graphql';
+import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 
 class ServiceStatisticsClass {
-  useGamesCountPlayed({
-    analogOnly = false,
-    digitalOnly = false,
-  }: {
-    analogOnly?: boolean;
-    digitalOnly?: boolean;
-  } = {}) {
-    const statistics = ref([]);
+  async loadPageStatisticsGamesCountPlayed(
+    { page, count, sortBy, sortDesc, filters }: InputCollection,
+    payload: unknown = {},
+  ) {
+    const { analogOnly = false, digitalOnly = false } = payload as {
+      analogOnly?: boolean;
+      digitalOnly?: boolean;
+    };
 
-    const filters = [];
-    if (analogOnly) {
-      filters.push({
-        field: 'isDigital',
-        valueBoolean: false,
-        operator: '=',
-      });
-    } else if (digitalOnly) {
-      filters.push({
-        field: 'isDigital',
-        valueBoolean: true,
-        operator: '=',
-      });
+    if (filters !== undefined) {
+      if (analogOnly) {
+        filters.push({
+          field: 'isDigital',
+          valueBoolean: false,
+          operator: '=',
+        });
+      } else if (digitalOnly) {
+        filters.push({
+          field: 'isDigital',
+          valueBoolean: true,
+          operator: '=',
+        });
+      }
     }
 
-    apolloClient
-      .query({
-        query: queryStatisticsGamesCountPlayed,
-        variables: {
-          page: 1,
-          count: 10,
-          sortBy: 'countPlayed',
-          sortDesc: true,
-          filters,
-        },
-      })
-      .then(data => {
-        statistics.value = data.data.statisticsGamesCountPlayed;
-      });
+    const response = await apolloClient.query({
+      query: queryStatisticsGamesCountPlayed,
+      variables: {
+        page,
+        count,
+        sortBy,
+        sortDesc,
+        filters,
+      },
+    });
 
-    return { statistics };
+    return {
+      count: response.data.statisticsGamesCountPlayed.count,
+      items: response.data.statisticsGamesCountPlayed.items,
+    };
   }
 }
 

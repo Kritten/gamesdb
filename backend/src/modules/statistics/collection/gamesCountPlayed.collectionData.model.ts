@@ -2,11 +2,10 @@ import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { CollectionData } from '../../../utilities/collection/collection.types';
 
 @ObjectType()
-export class Foo {
+export class GamesCountPlayedItem {
   @Field(() => ID)
   id: number;
 
-  @Field(() => String)
   name: string;
 
   @Field(() => Int)
@@ -14,7 +13,6 @@ export class Foo {
 }
 
 @ObjectType()
-export class StatisticsCollectionData extends CollectionData {
-  @Field(() => [Foo])
-  items: Foo[];
+export class GamesCountPlayedCollectionDataModel extends CollectionData {
+  items: GamesCountPlayedItem[];
 }
