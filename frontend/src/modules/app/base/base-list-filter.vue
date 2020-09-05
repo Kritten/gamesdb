@@ -20,31 +20,31 @@
       </template>
       <template v-else-if="type === 'boolean'">
         <label>
-          {{ t(`${i18nPrefix}.filters.${name}.undefined`) }}
-          <input
-            v-model="value"
-            :name="name"
-            :value="undefined"
-            type="radio"
-          >
-        </label>
-        <label>
-          {{ t(`${i18nPrefix}.filters.${name}.true`) }}
           <input
             v-model="value"
             :name="name"
             :value="true"
             type="radio"
           >
+          {{ t(`${i18nPrefix}.filters.${name}.true`) }}
         </label>
         <label>
-          {{ t(`${i18nPrefix}.filters.${name}.false`) }}
           <input
             v-model="value"
             :name="name"
             :value="false"
             type="radio"
           >
+          {{ t(`${i18nPrefix}.filters.${name}.false`) }}
+        </label>
+        <label>
+          <input
+            v-model="value"
+            :name="name"
+            :value="undefined"
+            type="radio"
+          >
+          {{ t(`${i18nPrefix}.filters.${name}.undefined`) }}
         </label>
       </template>
     </slot>
