@@ -1,26 +1,52 @@
 <template>
   <div>
     <slot>
-      <label>
-        {{ t(`${i18nPrefix}.filters.${name}`) }}
-        <template v-if="type === 'string'">
+      <template v-if="type === 'string'">
+        <label>
+          {{ t(`${i18nPrefix}.filters.${name}`) }}
           <input
             v-model="value"
           >
-        </template>
-        <template v-else-if="type === 'number'">
+        </label>
+      </template>
+      <template v-else-if="type === 'int' || type === 'float'">
+        <label>
+          {{ t(`${i18nPrefix}.filters.${name}`) }}
           <input
             v-model.number="value"
             type="number"
           >
-        </template>
-        <template v-else-if="type === 'boolean'">
+        </label>
+      </template>
+      <template v-else-if="type === 'boolean'">
+        <label>
+          {{ t(`${i18nPrefix}.filters.${name}.undefined`) }}
           <input
             v-model="value"
-            type="checkbox"
+            :name="name"
+            :value="undefined"
+            type="radio"
           >
-        </template>
-      </label>
+        </label>
+        <label>
+          {{ t(`${i18nPrefix}.filters.${name}.true`) }}
+          <input
+            v-model="value"
+            :name="name"
+            :value="true"
+            type="radio"
+          >
+        </label>
+        <label>
+          {{ t(`${i18nPrefix}.filters.${name}.false`) }}
+          <input
+            v-model="value"
+            :name="name"
+            :value="false"
+            type="radio"
+          >
+        </label>
+      </template>
     </slot>
   </div>
 </template>
@@ -44,11 +70,16 @@ export default defineComponent({
     },
     type: {
       required: true,
-      validator: (value): boolean => value === 'string' || value === 'number' || value === 'boolean',
+      validator: (value) => value === 'string' || value === 'int' || value === 'float' || value === 'boolean',
     },
     i18nPrefix: {
       required: true,
       type: String,
+    },
+    operator: {
+      required: false,
+      validator: (value) => value === 'like' || value === '=' || value === '>' || value === '<' || value === '>=' || value === '<=',
+      default: undefined,
     },
   },
   emits: ['update-filter'],
@@ -64,8 +95,12 @@ export default defineComponent({
         nameValueField = 'valueString';
         operator = 'like';
         break;
-      case 'number':
-        nameValueField = 'valueNumber';
+      case 'int':
+        nameValueField = 'valueInt';
+        operator = '=';
+        break;
+      case 'float':
+        nameValueField = 'valueFloat';
         operator = '=';
         break;
       case 'boolean':
@@ -75,6 +110,12 @@ export default defineComponent({
       default:
         // @ts-ignore
         throw Error(`Unknown filter type ${props.type}`);
+    }
+
+    // @ts-ignore
+    if (props.operator !== undefined) {
+      // @ts-ignore
+      operator = props.operator;
     }
 
     const emitValue = (valueNew: unknown) => {
@@ -97,6 +138,12 @@ export default defineComponent({
         return filter === undefined ? '' : filter[nameValueField];
       },
       set(valueNew) {
+        if (typeof valueNew === 'string') {
+          if (valueNew.trim() === '') {
+            valueNew = undefined;
+          }
+        }
+        console.warn(valueNew, 'valueNew');
         emitValue(valueNew);
       },
     });

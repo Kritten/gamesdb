@@ -1,17 +1,11 @@
 <template>
-  {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
-  <div>
-    <!--    <label for="nameGame">{{ t('game.name') }}</label>-->
-    <!--    <input-->
-    <!--      id="nameGame"-->
-    <!--      v-model="filters.name.valueString"-->
-    <!--    >-->
-  </div>
   <list-filters-game
     v-model="filters"
     @reset="resetFilters"
     @update-filter="updateFilter"
   />
+  <hr>
+  {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
   <table>
     <list-item-game
       v-for="game in collection.items.value"

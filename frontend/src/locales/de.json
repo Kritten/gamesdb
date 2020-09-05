@@ -31,7 +31,12 @@
     },
     "filters": {
       "name": "@:game.name",
-      "isCoop": "Koop"
+      "isCoop": {
+        "true": "Koop",
+        "false": "Kompetetiv",
+        "undefined": "egal"
+      },
+      "countPlayersMin": "@:player.label"
     }
   },
   "category": {

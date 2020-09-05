@@ -16,6 +16,14 @@
     <base-list-filter
       :filters="filters"
       :i18n-prefix="i18nPrefix"
+      name="countPlayersMin"
+      type="int"
+      operator=">="
+      @update-filter="$emit('update-filter', $event)"
+    />
+    <base-list-filter
+      :filters="filters"
+      :i18n-prefix="i18nPrefix"
       name="isCoop"
       type="boolean"
       @update-filter="$emit('update-filter', $event)"
