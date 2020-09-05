@@ -150,6 +150,7 @@ export default defineComponent({
         if (typeof valueNew === 'string') {
           if (valueNew.trim() === '') {
             emitValue(undefined);
+            return;
           }
         }
         emitValue(valueNew);
