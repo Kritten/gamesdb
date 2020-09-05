@@ -59,21 +59,13 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n();
 
-    const filtersInitial: ServiceCollectionFilters = {};
-
-    if (props.digitalOnly) {
-      filtersInitial.isDigital = {
+    const filtersInitial: ServiceCollectionFilters = {
+      isDigital: {
         field: 'isDigital',
-        valueBoolean: true,
+        valueBoolean: props.digitalOnly,
         operator: '=',
-      };
-    } else if (props.analogOnly) {
-      filtersInitial.isDigital = {
-        field: 'isDigital',
-        valueBoolean: false,
-        operator: '=',
-      };
-    }
+      },
+    };
 
     const filters = ref<ServiceCollectionFilters>(cloneDeep(filtersInitial));
 
@@ -85,11 +77,7 @@ export default defineComponent({
       });
     }
 
-    const resetFilters = async () => {
-      filters.value = cloneDeep(filtersInitial);
-
-      collection.reset();
-
+    const resetDebounced = async () => {
       /**
        * wait two ticks so that all debounced methods has started
        */
@@ -99,27 +87,23 @@ export default defineComponent({
       collection.resetDebounced.cancel();
     };
 
+    const resetFilters = async () => {
+      filters.value = cloneDeep(filtersInitial);
+
+      collection.reset();
+
+      await resetDebounced();
+    };
+
     /**
      * prevent initial fetch
      */
-    nextTick()
-      .then(() => nextTick())
-      .then(() => collection.resetDebounced.cancel());
+    resetDebounced();
 
     const updateFilter = ({ name, filter }: { name: string; filter: InputCollectionFilter }) => {
-      console.log(filter.valueString);
       filters.value[name] = filter;
       collection.resetDebounced();
     };
-
-    // watch(
-    //   filters,
-    //   value => {
-    //     console.warn('CALLED WATCH FILTERS, check if used');
-    //     resetDebounced();
-    //   },
-    //   { deep: true },
-    // );
 
     return {
       t,
