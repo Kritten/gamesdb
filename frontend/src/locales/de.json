@@ -28,6 +28,10 @@
     "size": "Größe",
     "digital": {
       "label": "Digitales Spiel | Digitale Spiele"
+    },
+    "filters": {
+      "name": "@:game.name",
+      "isCoop": "Koop"
     }
   },
   "category": {
