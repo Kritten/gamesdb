@@ -16,9 +16,15 @@
     <base-list-filter
       :filters="filters"
       :i18n-prefix="i18nPrefix"
-      name="countPlayersMin"
+      name="countPlayers"
+      :filter-inputs="[{
+        name: 'countPlayersMin',
+        operator: '<=',
+      },{
+        name: 'countPlayersMax',
+        operator: '>=',
+      }]"
       type="int"
-      operator=">="
       @update-filter="$emit('update-filter', $event)"
     />
     <base-list-filter

@@ -19,6 +19,9 @@
         </label>
       </template>
       <template v-else-if="type === 'boolean'">
+        <div>
+          {{ t(`${i18nPrefix}.filters.${name}`) }}
+        </div>
         <label>
           <input
             v-model="value"
@@ -26,7 +29,7 @@
             :value="true"
             type="radio"
           >
-          {{ t(`${i18nPrefix}.filters.${name}.true`) }}
+          {{ t('common.yes') }}
         </label>
         <label>
           <input
@@ -35,7 +38,7 @@
             :value="false"
             type="radio"
           >
-          {{ t(`${i18nPrefix}.filters.${name}.false`) }}
+          {{ t('common.no') }}
         </label>
         <label>
           <input
@@ -44,7 +47,7 @@
             :value="undefined"
             type="radio"
           >
-          {{ t(`${i18nPrefix}.filters.${name}.undefined`) }}
+          {{ t('common.undefined') }}
         </label>
       </template>
     </slot>
@@ -76,9 +79,9 @@ export default defineComponent({
       required: true,
       type: String,
     },
-    operator: {
+    filterInputs: {
       required: false,
-      validator: (value) => value === 'like' || value === '=' || value === '>' || value === '<' || value === '>=' || value === '<=',
+      type: Array,
       default: undefined,
     },
   },
@@ -87,25 +90,27 @@ export default defineComponent({
     const { t } = useI18n();
 
     let nameValueField: string;
-    let operator: string;
+    // @ts-ignore
+    let nameField: string[] = [props.name];
+    let operator: string[] = [];
 
     // @ts-ignore
     switch (props.type) {
       case 'string':
         nameValueField = 'valueString';
-        operator = 'like';
+        operator.push('like');
         break;
       case 'int':
         nameValueField = 'valueInt';
-        operator = '=';
+        operator.push('=');
         break;
       case 'float':
         nameValueField = 'valueFloat';
-        operator = '=';
+        operator.push('=');
         break;
       case 'boolean':
         nameValueField = 'valueBoolean';
-        operator = '=';
+        operator.push('=');
         break;
       default:
         // @ts-ignore
@@ -113,37 +118,40 @@ export default defineComponent({
     }
 
     // @ts-ignore
-    if (props.operator !== undefined) {
+    if (props.filterInputs !== undefined) {
       // @ts-ignore
-      operator = props.operator;
+      nameField = props.filterInputs.map((filter) => filter.name);
+      // @ts-ignore
+      operator = props.filterInputs.map((filter) => filter.operator);
     }
 
     const emitValue = (valueNew: unknown) => {
-      emit('update-filter', {
-        // @ts-ignore
-        name: props.name,
-        filter: {
+      const payload: {[key:string]: {}} = {};
+
+      for (let i = 0; i < operator.length; i += 1) {
+        payload[nameField[i]] = {
           // @ts-ignore
-          field: props.name,
+          field: nameField[i],
           [nameValueField]: valueNew,
-          operator,
-        },
-      });
+          operator: operator[i],
+        };
+      }
+
+      emit('update-filter', payload);
     };
 
     const value = computed({
       get() {
         // @ts-ignore
-        const filter = props.filters[props.name];
+        const filter = props.filters[nameField[0]];
         return filter === undefined ? '' : filter[nameValueField];
       },
       set(valueNew) {
         if (typeof valueNew === 'string') {
           if (valueNew.trim() === '') {
-            valueNew = undefined;
+            emitValue(undefined);
           }
         }
-        console.warn(valueNew, 'valueNew');
         emitValue(valueNew);
       },
     });
@@ -151,9 +159,9 @@ export default defineComponent({
      * Execute everytime the current filter changes to check if it has to be initialized
      */
     // @ts-ignore
-    watch(() => props.filters[props.name], () => {
+    watch(() => props.filters[nameField[0]], () => {
       // @ts-ignore
-      if (props.filters[props.name] === undefined) {
+      if (props.filters[nameField[0]] === undefined) {
         nextTick(() => {
           emitValue(undefined);
         });

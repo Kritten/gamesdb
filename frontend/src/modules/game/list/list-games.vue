@@ -1,4 +1,7 @@
 <template>
+<!--  <div v-for="filter in filters">-->
+<!--    {{filter}}-->
+<!--  </div>-->
   <list-filters-game
     v-model="filters"
     @reset="resetFilters"
@@ -94,8 +97,9 @@ export default defineComponent({
      */
     resetDebounced();
 
-    const updateFilter = ({ name, filter }: { name: string; filter: InputCollectionFilter }) => {
-      filters.value[name] = filter;
+    const updateFilter = (data: { name: string; filter: InputCollectionFilter }) => {
+      filters.value = Object.assign(filters.value, data);
+      // TODO: send type of filter, and decide if resetDebounce or reset
       collection.resetDebounced();
     };
 

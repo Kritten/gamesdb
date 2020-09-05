@@ -4,7 +4,10 @@
     "add": "Hinzufügen",
     "create": "Anlegen",
     "edit": "Bearbeiten",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "yes": "Ja",
+    "no": "Nein",
+    "undefined": "Egal"
   },
   "login": {
     "name": "Name",
@@ -31,12 +34,8 @@
     },
     "filters": {
       "name": "@:game.name",
-      "isCoop": {
-        "true": "Koop",
-        "false": "Kompetetiv",
-        "undefined": "egal"
-      },
-      "countPlayersMin": "@:player.label"
+      "isCoop": "@:game.isCoop",
+      "countPlayers": "@:player.label"
     }
   },
   "category": {
