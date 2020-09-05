@@ -54,7 +54,7 @@ export default defineComponent({
     });
     const collection = useCollection<Session>(ServiceSession.loadPage, {
       sortBy: 'entity.id',
-      filters: filters.value,
+      filters,
     });
 
     for (const event of ['createdSession', 'deletedSession']) {

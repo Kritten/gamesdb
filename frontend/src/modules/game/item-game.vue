@@ -254,7 +254,7 @@ export default defineComponent({
         field: 'name', valueString: undefined, operator: 'like',
       },
     });
-    const collectionImage = useCollection<Image>(ServiceImage.loadPage, { count: 5, filters: filters.value });
+    const collectionImage = useCollection<Image>(ServiceImage.loadPage, { count: 5, filters });
 
     return {
       t,

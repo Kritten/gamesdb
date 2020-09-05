@@ -33,7 +33,7 @@
     <label for="game">{{ t('game.label', 2) }}</label>
     <input
       id="game"
-      v-model="filtersGame[0].valueString"
+      v-model="filtersGame.name.valueString"
     >
     <div>
       <div v-for="gameLocal in collectionGame.items.value">
@@ -84,7 +84,7 @@ export default defineComponent({
         field: 'name', valueString: undefined, operator: 'like',
       },
     });
-    const collectionGame = useCollection<Game>(ServiceGame.loadPage, { count: 5, filters: filtersGame.value });
+    const collectionGame = useCollection<Game>(ServiceGame.loadPage, { count: 5, filters: filtersGame });
 
     return {
       t,

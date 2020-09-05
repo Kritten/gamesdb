@@ -40,7 +40,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
     const filters = ref<ServiceCollectionFilters>({});
-    const collection = useCollection<Rating>(ServiceRating.loadPage, { sortBy: 'entity.id', filters: filters.value });
+    const collection = useCollection<Rating>(ServiceRating.loadPage, { sortBy: 'entity.id', filters });
 
     for (const event of ['createdRating', 'updatedRating', 'deletedRating']) {
       queue.listen(event, () => {

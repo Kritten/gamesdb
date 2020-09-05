@@ -46,8 +46,10 @@ export default defineComponent({
         sortDesc: true,
       },
       {
-        analogOnly: props.analogOnly,
-        digitalOnly: props.digitalOnly,
+        payload: {
+          analogOnly: props.analogOnly,
+          digitalOnly: props.digitalOnly,
+        },
       },
     );
 

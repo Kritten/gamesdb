@@ -1,6 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import {
   InputCollectionData,
+  ServiceCollectionFilters,
   ServiceCollectionLoadPageType,
 } from '@/modules/app/utilities/collection/collection.types';
 import { debounce } from 'lodash';
@@ -12,9 +13,17 @@ export function useCollection<T>(
     count = 10,
     sortBy = 'entity.name',
     sortDesc = false,
-    filters = ref({}).value,
+    filters = ref<ServiceCollectionFilters>({}),
   }: Partial<InputCollectionData> = {},
-  payload?: unknown,
+  {
+    payload,
+    immediate = true,
+    watchFilters = true,
+  }: {
+    payload?: unknown;
+    immediate?: boolean;
+    watchFilters?: boolean;
+  } = {},
 ) {
   const items = ref<T[]>([]);
   const countItems = ref(-1);
@@ -32,7 +41,7 @@ export function useCollection<T>(
         count,
         sortBy,
         sortDesc,
-        filters: Object.values(filters),
+        filters: Object.values(filters.value),
       },
       payload,
     );
@@ -56,9 +65,16 @@ export function useCollection<T>(
     return loadNextItemsInternal(counterRequests);
   };
 
-  watch(filters, value => {
-    resetDebounced();
-  });
+  if (watchFilters) {
+    watch(
+      filters,
+      value => {
+        console.warn('CALLED WATCH FILTERS, check if used');
+        resetDebounced();
+      },
+      { deep: true },
+    );
+  }
 
   const reset = () => {
     items.value = [];
@@ -71,7 +87,9 @@ export function useCollection<T>(
     reset();
   }, 500);
 
-  loadNextItems();
+  if (immediate) {
+    loadNextItems();
+  }
 
   return {
     items,
@@ -80,5 +98,6 @@ export function useCollection<T>(
     isLoading,
     loadNextItems,
     reset,
+    resetDebounced,
   };
 }
