@@ -4,6 +4,7 @@ import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { GamesCountPlayedCollectionDataModel } from './collection/gamesCountPlayed.collectionData.model';
 import { StatisticsService } from './statistics.service';
+import { GamesTimePlayedCollectionDataModel } from './collection/gamesTimePlayed.collectionData.model';
 
 @Resolver()
 export class StatisticsResolver {
@@ -15,5 +16,13 @@ export class StatisticsResolver {
     @Args('statisticsData') data: InputCollection,
   ) {
     return this.statisticsService.gamesCountPlayed(data);
+  }
+
+  @Query(() => GamesTimePlayedCollectionDataModel)
+  @UseGuards(GqlAuthGuard)
+  async statisticsGamesTimePlayed(
+    @Args('statisticsData') data: InputCollection,
+  ) {
+    return this.statisticsService.gamesTimePlayed(data);
   }
 }

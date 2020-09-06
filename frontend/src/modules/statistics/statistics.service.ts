@@ -1,5 +1,8 @@
 import { apolloClient } from '@/vue-apollo';
-import { queryStatisticsGamesCountPlayed } from '@/modules/statistics/graphql/statistics.graphql';
+import {
+  queryStatisticsGamesCountPlayed,
+  queryStatisticsGamesTimePlayed,
+} from '@/modules/statistics/graphql/statistics.graphql';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 
 class ServiceStatisticsClass {
@@ -40,6 +43,46 @@ class ServiceStatisticsClass {
     return {
       count: response.data.statisticsGamesCountPlayed.count,
       items: response.data.statisticsGamesCountPlayed.items,
+    };
+  }
+
+  async loadPageStatisticsGamesTimePlayed(
+    { page, count, sortBy, sortDesc, filters }: InputCollection,
+    payload: unknown = {},
+  ) {
+    const { analogOnly = false, digitalOnly = false } = payload as {
+      analogOnly?: boolean;
+      digitalOnly?: boolean;
+    };
+
+    if (analogOnly) {
+      filters.push({
+        field: 'isDigital',
+        valueBoolean: false,
+        operator: '=',
+      });
+    } else if (digitalOnly) {
+      filters.push({
+        field: 'isDigital',
+        valueBoolean: true,
+        operator: '=',
+      });
+    }
+
+    const response = await apolloClient.query({
+      query: queryStatisticsGamesTimePlayed,
+      variables: {
+        page,
+        count,
+        sortBy,
+        sortDesc,
+        filters,
+      },
+    });
+
+    return {
+      count: response.data.statisticsGamesTimePlayed.count,
+      items: response.data.statisticsGamesTimePlayed.items,
     };
   }
 }

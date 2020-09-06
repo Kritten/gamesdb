@@ -51,6 +51,17 @@ type GamesCountPlayedItem {
     name: String!
 }
 
+type GamesTimePlayedCollectionDataModel {
+    count: Int!
+    items: [GamesTimePlayedItem!]!
+}
+
+type GamesTimePlayedItem {
+    id: ID!
+    name: String!
+    timePlayed: Int!
+}
+
 type Image {
     games: [Game!]!
     id: ID!
@@ -151,6 +162,7 @@ type Query {
     session(id: ID!): Session!
     sessions(sessionData: InputCollection!): SessionCollectionData!
     statisticsGamesCountPlayed(statisticsData: InputCollection!): GamesCountPlayedCollectionDataModel!
+    statisticsGamesTimePlayed(statisticsData: InputCollection!): GamesTimePlayedCollectionDataModel!
     universe(id: ID!): Universe!
     universes: [Universe!]!
     user(id: ID): User!

@@ -26,3 +26,30 @@ export const queryStatisticsGamesCountPlayed = gql`
     }
   }
 `;
+
+export const queryStatisticsGamesTimePlayed = gql`
+  query statisticsGamesTimePlayed(
+    $page: Int!
+    $count: Int!
+    $sortBy: String!
+    $sortDesc: Boolean!
+    $filters: [InputCollectionFilter!]!
+  ) {
+    statisticsGamesTimePlayed(
+      statisticsData: {
+        page: $page
+        count: $count
+        sortBy: $sortBy
+        sortDesc: $sortDesc
+        filters: $filters
+      }
+    ) {
+      count
+      items {
+        id
+        name
+        timePlayed
+      }
+    }
+  }
+`;
