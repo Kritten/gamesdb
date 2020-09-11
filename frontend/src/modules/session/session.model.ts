@@ -8,11 +8,13 @@ import { ServiceGame } from '@/modules/game/game.service';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 import { store } from '@/modules/app/app.store';
 import { PlaytimeInterface } from '@/modules/playtime/playtime.types';
+import { isEqual } from 'date-fns';
 
 export class Session extends Entity implements SessionInterface {
   comment?: string | null;
   isChallenge: boolean;
-  game: Game;
+  isVirtual: boolean;
+  game?: Game;
   players: Player[];
   winners: Player[];
   playtimes: Playtime[];
@@ -20,11 +22,33 @@ export class Session extends Entity implements SessionInterface {
   constructor(data: SessionInterface) {
     super(data);
     this.comment = setDefaultIfNullOrUndefined<string | null>(data.comment, null);
-    this.isChallenge = data.isChallenge;
+    this.isChallenge = setDefaultIfNullOrUndefined<boolean>(data.isChallenge, false);
+    this.isVirtual = setDefaultIfNullOrUndefined<boolean>(data.isVirtual, false);
     this.game = data.game;
     this.players = setDefaultIfNullOrUndefined<Player[]>(data.players, []);
     this.winners = setDefaultIfNullOrUndefined<Player[]>(data.winners, []);
     this.playtimes = setDefaultIfNullOrUndefined<Playtime[]>(data.playtimes, []);
+  }
+
+  get currentPlaytime() {
+    return this.playtimes.find(playtime => isEqual(playtime.start, playtime.end));
+  }
+
+  stop() {
+    const indexCurrentPlaytime = this.playtimes.findIndex(playtime =>
+      isEqual(playtime.start, playtime.end),
+    );
+
+    if (indexCurrentPlaytime > -1) {
+      const currentPlaytime = this.playtimes[indexCurrentPlaytime];
+      this.playtimes.splice(indexCurrentPlaytime, 1);
+      currentPlaytime.end = new Date();
+      delete currentPlaytime.id;
+      this.playtimes.push(currentPlaytime);
+      return true;
+    }
+
+    return false;
   }
 
   static async parseFromServer(data: EntityInterface): Promise<Session> {
@@ -59,9 +83,13 @@ export class Session extends Entity implements SessionInterface {
   prepareForServer() {
     const data = super.prepareForServer();
 
+    if (this.game === undefined) {
+      throw Error('Session has to have a game');
+    }
     data.game = this.game.id;
     data.comment = this.comment;
     data.isChallenge = this.isChallenge;
+    data.isVirtual = this.isVirtual;
     data.players = this.players.map(player => player.id);
     data.winners = this.winners.map(winner => winner.id);
     data.playtimes = this.playtimes.map(playtime => {

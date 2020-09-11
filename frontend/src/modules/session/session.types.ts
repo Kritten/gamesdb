@@ -4,9 +4,10 @@ import { Player } from '@/modules/player/player.model';
 import { Game } from '@/modules/game/game.model';
 
 export interface SessionInterface extends EntityInterface {
-  game: Game;
+  game?: Game;
   comment?: string | null;
-  isChallenge: boolean;
+  isChallenge?: boolean;
+  isVirtual?: boolean;
   players?: Player[];
   winners?: Player[];
   playtimes?: Playtime[];

@@ -43,6 +43,7 @@ export class SessionResolver extends EntityResolver {
     const session = new Session();
     session.comment = sessionData.comment;
     session.isChallenge = sessionData.isChallenge;
+    session.isVirtual = sessionData.isVirtual;
 
     await this.handleRelation(
       'players',
@@ -81,6 +82,7 @@ export class SessionResolver extends EntityResolver {
     const session = new Session();
     session.comment = sessionData.comment;
     session.isChallenge = sessionData.isChallenge;
+    session.isVirtual = sessionData.isVirtual;
 
     session.id = parseInt(sessionData.id, 10);
     await this.handleRelation(

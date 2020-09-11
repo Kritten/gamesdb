@@ -31,6 +31,12 @@ export class Session {
   })
   isChallenge: boolean;
 
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  isVirtual: boolean;
+
   @ManyToMany(
     () => Player,
     player => player.sessionsPlayed,

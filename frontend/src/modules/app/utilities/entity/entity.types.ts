@@ -12,7 +12,7 @@ export interface ServiceEntityInterface<T> {
     ...args: unknown[]
   ): {
     entity: Ref<T>;
-    create(entity: T): Promise<T>;
+    create(...args: unknown[]): Promise<T>;
   };
   create(entity: T): Promise<T>;
 

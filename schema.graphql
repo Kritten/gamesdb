@@ -187,6 +187,7 @@ type Session {
     game: Game
     id: ID!
     isChallenge: Boolean!
+    isVirtual: Boolean!
     players: [Player!]!
     playtimes: [Playtime!]!
     winners: [Player!]!
@@ -306,6 +307,7 @@ input SessionInput {
     game: ID
     id: ID
     isChallenge: Boolean
+    isVirtual: Boolean
     players: [ID!]
     playtimes: [SessionPlaytimeInput!]
     winners: [ID!]
@@ -396,6 +398,7 @@ input UpdateSessionInput {
     game: ID
     id: ID!
     isChallenge: Boolean
+    isVirtual: Boolean
     players: [ID!]
     playtimes: [SessionPlaytimeInput!]
     winners: [ID!]

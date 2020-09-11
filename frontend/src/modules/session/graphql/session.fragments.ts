@@ -6,6 +6,7 @@ export const fragments = {
       id
       comment
       isChallenge
+      isVirtual
       players {
         id
       }

@@ -9,7 +9,6 @@ import {
   queryPageSession,
 } from '@/modules/session/graphql/session.graphql';
 import { Playtime } from '@/modules/playtime/playtime.model';
-import { Game } from '@/modules/game/game.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { queue } from '@/queue';
@@ -17,6 +16,7 @@ import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/c
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { cloneDeep } from 'lodash';
 import { compareAsc } from 'date-fns';
+import { Game } from '@/modules/game/game.model';
 
 class ServiceSessionClass
   implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
@@ -78,8 +78,8 @@ class ServiceSessionClass
     };
   }
 
-  useCreate(game: Game) {
-    const session = ref(new Session({ game, isChallenge: false }));
+  useCreate() {
+    const session = ref(new Session({ isChallenge: false }));
 
     const playtimeNew = ref(new Playtime());
 
@@ -88,9 +88,13 @@ class ServiceSessionClass
       playtimeNew,
       playtimeAdd: () => ServiceSessionClass.playtimeAdd(session, playtimeNew),
       playtimeRemove: (playtime: Playtime) => this.playtimeRemove(session, playtime),
-      create: async () => {
+      create: async (game: Game) => {
+        if (game !== undefined) {
+          session.value.game = game;
+        }
+
         const sessionNew = await this.create(session.value);
-        session.value = new Session({ game, isChallenge: false });
+        session.value = new Session({ isChallenge: false });
         return sessionNew;
       },
     };
@@ -118,7 +122,53 @@ class ServiceSessionClass
     };
   }
 
-  async create(session: Session) {
+  useTrackSession() {
+    return {
+      start: async (session: Ref<Session>, game: Game) => {
+        if (game !== undefined) {
+          session.value.game = game;
+        }
+
+        if (session.value.game === undefined) return;
+
+        session.value.isVirtual = true;
+        const dateCurrent = new Date();
+        session.value.playtimes.push(
+          new Playtime({
+            start: dateCurrent,
+            end: dateCurrent,
+          }),
+        );
+
+        const sessionNew = await this.create(session.value, { event: 'startedSession' });
+        session.value = new Session({ isChallenge: false });
+        return sessionNew;
+      },
+      pause: async (session: Session) => {
+        session.stop();
+        await this.update(session);
+      },
+      continue: async (session: Session) => {
+        const dateCurrent = new Date();
+        session.playtimes.push(
+          new Playtime({
+            start: dateCurrent,
+            end: dateCurrent,
+          }),
+        );
+        await this.update(session);
+      },
+      stop: async (session: Session) => {
+        session.stop();
+        session.isVirtual = false;
+        await this.update(session);
+
+        queue.notify('stoppedSession', session);
+      },
+    };
+  }
+
+  async create(session: Session, { event = 'createdSession' }: { event?: string } = {}) {
     const response = await apolloClient.mutate({
       mutation: mutationCreateSession,
       variables: {
@@ -128,7 +178,7 @@ class ServiceSessionClass
 
     const sessionNew = await Session.parseFromServer(response.data.createSession);
 
-    queue.notify('createdSession', sessionNew);
+    queue.notify(event, sessionNew);
 
     return sessionNew;
   }

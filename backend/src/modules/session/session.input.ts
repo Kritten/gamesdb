@@ -16,6 +16,8 @@ export class SessionInput {
 
   isChallenge?: boolean;
 
+  isVirtual?: boolean;
+
   @Field(() => [ID])
   players?: string[];
 

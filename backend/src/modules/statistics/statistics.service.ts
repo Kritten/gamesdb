@@ -20,7 +20,8 @@ export class StatisticsService {
         subQuery
           .select('Count(*)', 'count')
           .from('session', 'session')
-          .where(`session.gameId = entity.id`),
+          .where(`session.gameId = entity.id`)
+          .andWhere('session.isVirtual = false'),
       'countPlayed',
     );
 
@@ -57,7 +58,8 @@ export class StatisticsService {
       .createQueryBuilder()
       .select(`COALESCE(SUM((${queryPlaytime.getQuery()})), 0)`)
       .from('session', 'session')
-      .where('session.gameId = entity.id');
+      .where('session.gameId = entity.id')
+      .andWhere('session.isVirtual = false');
 
     const query = await getConnection()
       .createQueryBuilder()
