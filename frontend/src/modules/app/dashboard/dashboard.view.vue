@@ -1,7 +1,10 @@
 <template>
-  <create-session />
+  <details>
+    <summary>Session erstellen</summary>
+    <create-session />
+  </details>
   <hr>
-  <list-sessions-virtual></list-sessions-virtual>
+  <list-sessions-virtual />
   <hr>
 
   <h2>Zuletzt gespielt</h2>

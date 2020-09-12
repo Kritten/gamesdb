@@ -61,6 +61,9 @@
   },
   "session": {
     "label": "Session | Sessions",
+    "virtual": {
+      "label": "Virtuelle Session | Virtuelle Sessions"
+    },
     "comment": "Kommentar",
     "isChallenge": "Herausforderung"
   },

@@ -1,5 +1,5 @@
 <template>
-  {{ collection.countItems.value }} {{ t('session.label', collection.countItems.value) }}
+  {{ collection.countItems.value }} {{ t('session.virtual.label', collection.countItems.value) }}
   <ul>
     <li
       v-for="session in collection.items.value"
