@@ -19,10 +19,12 @@ export function useCollection<T>(
     payload,
     immediate = true,
     watchFilters = true,
+    prependValues = false,
   }: {
     payload?: unknown;
     immediate?: boolean;
     watchFilters?: boolean;
+    prependValues?: boolean;
   } = {},
 ) {
   const items = ref<T[]>([]);
@@ -51,8 +53,13 @@ export function useCollection<T>(
     }
 
     countItems.value = response.count;
-    // @ts-ignore
-    items.value = items.value.concat(response.items);
+    if (prependValues) {
+      // @ts-ignore
+      items.value = response.items.concat(items.value);
+    } else {
+      // @ts-ignore
+      items.value = items.value.concat(response.items);
+    }
     page += 1;
 
     isLoading.value = false;

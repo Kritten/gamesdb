@@ -5,6 +5,7 @@ import { InputCollection } from '../../utilities/collection/collection.input';
 import { GamesCountPlayedCollectionDataModel } from './collection/gamesCountPlayed.collectionData.model';
 import { StatisticsService } from './statistics.service';
 import { GamesTimePlayedCollectionDataModel } from './collection/gamesTimePlayed.collectionData.model';
+import { GraphCollectionDataModel } from './collection/graph.collectionData.model';
 
 @Resolver()
 export class StatisticsResolver {
@@ -24,5 +25,13 @@ export class StatisticsResolver {
     @Args('statisticsData') data: InputCollection,
   ) {
     return this.statisticsService.gamesTimePlayed(data);
+  }
+
+  @Query(() => GraphCollectionDataModel)
+  @UseGuards(GqlAuthGuard)
+  async statisticsPlaytimesGroupedByDaytime(
+    @Args('statisticsData') data: InputCollection,
+  ) {
+    return this.statisticsService.playtimesGroupedByDaytime(data);
   }
 }

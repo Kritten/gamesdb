@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 export const queryPageImage = gql`
   query images(
     $page: Int!
-    $count: Int!
+    $count: Int
     $sortBy: String!
     $sortDesc: Boolean!
     $filters: [InputCollectionFilter!]!

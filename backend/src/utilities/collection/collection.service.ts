@@ -36,6 +36,8 @@ export class CollectionService<T extends BaseEntity> {
         value = filter.valueInt;
       } else if (filter.valueString !== undefined) {
         value = filter.valueString;
+      } else if (filter.valueDate !== undefined) {
+        value = filter.valueDate;
       }
 
       if (value === undefined) {
@@ -90,8 +92,10 @@ export class CollectionService<T extends BaseEntity> {
   }
 
   paginate(query: SelectQueryBuilder<T>, data: InputCollection) {
-    query.take(data.count);
-    query.skip((data.page - 1) * data.count);
+    if (data.count !== undefined) {
+      query.take(data.count);
+      query.skip((data.page - 1) * data.count);
+    }
     // TODO: create new requests for relations
     // query.limit(data.count);
     // query.offset((data.page - 1) * data.count);

@@ -4,7 +4,7 @@ import { fragments } from './rating.fragments';
 export const queryPageRatings = gql`
   query ratings(
     $page: Int!
-    $count: Int!
+    $count: Int
     $sortBy: String!
     $sortDesc: Boolean!
     $filters: [InputCollectionFilter!]!

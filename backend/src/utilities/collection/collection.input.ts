@@ -9,6 +9,7 @@ export class InputCollectionFilter {
   valueFloat?: number;
   valueBoolean?: boolean;
   valueString?: string;
+  valueDate?: Date;
   operator: string;
 }
 
@@ -17,8 +18,8 @@ export class InputCollection {
   @Field(() => Int)
   page: number;
 
-  @Field(() => Int)
-  count: number;
+  @Field(() => Int, { nullable: true })
+  count?: number;
 
   sortBy: string;
 

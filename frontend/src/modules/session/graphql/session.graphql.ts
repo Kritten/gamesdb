@@ -4,7 +4,7 @@ import { fragments } from '@/modules/session/graphql/session.fragments';
 export const queryPageSession = gql`
   query sessions(
     $page: Int!
-    $count: Int!
+    $count: Int
     $sortBy: String!
     $sortDesc: Boolean!
     $filters: [InputCollectionFilter!]!

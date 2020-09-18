@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 export const queryStatisticsGamesCountPlayed = gql`
   query statisticsGamesCountPlayed(
     $page: Int!
-    $count: Int!
+    $count: Int
     $sortBy: String!
     $sortDesc: Boolean!
     $filters: [InputCollectionFilter!]!
@@ -30,7 +30,7 @@ export const queryStatisticsGamesCountPlayed = gql`
 export const queryStatisticsGamesTimePlayed = gql`
   query statisticsGamesTimePlayed(
     $page: Int!
-    $count: Int!
+    $count: Int
     $sortBy: String!
     $sortDesc: Boolean!
     $filters: [InputCollectionFilter!]!
@@ -49,6 +49,31 @@ export const queryStatisticsGamesTimePlayed = gql`
         id
         name
         timePlayed
+      }
+    }
+  }
+`;
+
+export const QueryStatisticsPlaytimesGroupedByDaytime = gql`
+  query statisticsPlaytimesGroupedByDaytime(
+    $page: Int!
+    $count: Int
+    $sortBy: String!
+    $sortDesc: Boolean!
+    $filters: [InputCollectionFilter!]!
+  ) {
+    statisticsPlaytimesGroupedByDaytime(
+      statisticsData: {
+        page: $page
+        count: $count
+        sortBy: $sortBy
+        sortDesc: $sortDesc
+        filters: $filters
+      }
+    ) {
+      count
+      items {
+        data
       }
     }
   }

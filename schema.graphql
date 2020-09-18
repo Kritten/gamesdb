@@ -62,6 +62,15 @@ type GamesTimePlayedItem {
     timePlayed: Int!
 }
 
+type GraphCollectionDataModel {
+    count: Int!
+    items: [GraphItem!]!
+}
+
+type GraphItem {
+    data: [Int!]!
+}
+
 type Image {
     games: [Game!]!
     id: ID!
@@ -163,6 +172,7 @@ type Query {
     sessions(sessionData: InputCollection!): SessionCollectionData!
     statisticsGamesCountPlayed(statisticsData: InputCollection!): GamesCountPlayedCollectionDataModel!
     statisticsGamesTimePlayed(statisticsData: InputCollection!): GamesTimePlayedCollectionDataModel!
+    statisticsPlaytimesGroupedByDaytime(statisticsData: InputCollection!): GraphCollectionDataModel!
     universe(id: ID!): Universe!
     universes: [Universe!]!
     user(id: ID): User!
@@ -254,7 +264,7 @@ input ImageInput {
 }
 
 input InputCollection {
-    count: Int!
+    count: Int
     filters: [InputCollectionFilter!]!
     page: Int!
     sortBy: String!
@@ -265,6 +275,7 @@ input InputCollectionFilter {
     field: String!
     operator: String!
     valueBoolean: Boolean
+    valueDate: DateTime
     valueFloat: Float
     valueInt: Int
     valueString: String

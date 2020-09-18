@@ -4,7 +4,7 @@ import { fragments } from '@/modules/game/graphql/game.fragments';
 export const queryPageGame = gql`
   query games(
     $page: Int!
-    $count: Int!
+    $count: Int
     $sortBy: String!
     $sortDesc: Boolean!
     $filters: [InputCollectionFilter!]!
