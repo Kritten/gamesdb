@@ -5,6 +5,7 @@
       <input
         id="name"
         v-model="loginService.username.value"
+        autofocus
       >
     </div>
     <div>
