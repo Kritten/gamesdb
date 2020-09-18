@@ -1,5 +1,4 @@
 <template>
-  {{ collectionStatisticsPlaytimesPerDay.items.value.length }}
   <button
     :disabled="collectionStatisticsPlaytimesPerDay.isLoading.value === true"
     @click="collectionStatisticsPlaytimesPerDay.loadNextItems"
@@ -19,6 +18,9 @@
       }"
     />
   </div>
+  <div
+    style="clear: both"
+  />
 </template>
 
 <script lang="ts">
@@ -44,18 +46,19 @@ export default defineComponent({
   setup(props) {
     const filters = ref<ServiceCollectionFilters>({});
 
-    // if (props.analogOnly || props.digitalOnly) {
-    //   filters.value.isDigital = {
-    //     field: 'game.isDigital',
-    //     valueBoolean: props.digitalOnly,
-    //     operator: '=',
-    //   };
-    // }
+    if (props.analogOnly || props.digitalOnly) {
+      filters.value.isDigital = {
+        field: 'game.isDigital',
+        valueBoolean: props.digitalOnly,
+        operator: '=',
+      };
+    }
 
     const collectionStatisticsPlaytimesPerDay = useCollection(
       ServiceStatistics.loadPageStatisticsPlaytimesPerDay,
       {
         filters,
+        leftJoins: ['game|session.gameId = game.id'],
       },
       {
         payload: {

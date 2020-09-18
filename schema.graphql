@@ -266,6 +266,7 @@ input ImageInput {
 input InputCollection {
     count: Int
     filters: [InputCollectionFilter!]!
+    leftJoins: [String!] = []
     page: Int!
     sortBy: String!
     sortDesc: Boolean!

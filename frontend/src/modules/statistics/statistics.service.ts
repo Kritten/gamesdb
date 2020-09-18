@@ -103,7 +103,7 @@ class ServiceStatisticsClass {
   }
 
   loadPageStatisticsPlaytimesPerDay = async (
-    { page, count, sortBy, sortDesc, filters }: InputCollection,
+    { page, count, sortBy, sortDesc, filters, leftJoins }: InputCollection,
     payload: unknown = {},
   ) => {
     const { endInitial, analogOnly = false, digitalOnly = false } = payload as {
@@ -147,6 +147,7 @@ class ServiceStatisticsClass {
       sortDesc: true,
       count: undefined,
       filters: filtersPlaytimes,
+      leftJoins,
     });
 
     const result = this.processPlaytimes(collectionPlaytimes.items);

@@ -70,6 +70,10 @@ export class CollectionService<T extends BaseEntity> {
     for (const relation of this.getRelations()) {
       query.leftJoinAndSelect(`entity.${relation}`, relation);
     }
+    for (const join of data.leftJoins) {
+      const [table, comparison] = join.split('|');
+      query.leftJoin(table, table, comparison);
+    }
   }
 
   orderBy(query: SelectQueryBuilder<T>, data: InputCollection) {
@@ -115,7 +119,7 @@ export class CollectionService<T extends BaseEntity> {
 
     this.paginate(query, data);
 
-    // console.warn(query.getSql());
+    console.warn(query.getSql());
 
     const [items, count] = await query.getManyAndCount();
     return {

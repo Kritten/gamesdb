@@ -8,7 +8,10 @@
   <hr>
 
   <h2>Spielzeit pro Tag</h2>
+  <h3>Analoge Spiele</h3>
   <playtimes-per-day analog-only />
+  <h3>Digitale Spiele</h3>
+  <playtimes-per-day digital-only />
 
   <h2>Zuletzt gespielt</h2>
   <last-session analog-only />

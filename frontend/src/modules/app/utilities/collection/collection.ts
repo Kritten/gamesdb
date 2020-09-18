@@ -14,6 +14,7 @@ export function useCollection<T>(
     sortBy = 'entity.name',
     sortDesc = false,
     filters = ref<ServiceCollectionFilters>({}),
+    leftJoins = [],
   }: Partial<InputCollectionData> = {},
   {
     payload,
@@ -44,6 +45,7 @@ export function useCollection<T>(
         sortBy,
         sortDesc,
         filters: Object.values(filters.value),
+        leftJoins,
       },
       payload,
     );

@@ -8,6 +8,7 @@ export const queryPagePlaytime = gql`
     $sortBy: String!
     $sortDesc: Boolean!
     $filters: [InputCollectionFilter!]!
+    $leftJoins: [String!]
   ) {
     playtimes(
       playtimeData: {
@@ -16,6 +17,7 @@ export const queryPagePlaytime = gql`
         sortBy: $sortBy
         sortDesc: $sortDesc
         filters: $filters
+        leftJoins: $leftJoins
       }
     ) {
       count

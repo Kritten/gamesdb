@@ -5,7 +5,7 @@ import { Playtime } from './playtime.model';
 import { queryPagePlaytime } from '@/modules/playtime/graphql/playtime.graphql';
 
 class ServicePlaytimeClass implements ServiceCollectionInterface<Playtime> {
-  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
+  async loadPage({ page, count, sortBy, sortDesc, filters, leftJoins }: InputCollection) {
     const response = await apolloClient.query({
       query: queryPagePlaytime,
       variables: {
@@ -14,6 +14,7 @@ class ServicePlaytimeClass implements ServiceCollectionInterface<Playtime> {
         sortBy,
         sortDesc,
         filters,
+        leftJoins,
       },
     });
 

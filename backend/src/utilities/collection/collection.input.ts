@@ -26,4 +26,7 @@ export class InputCollection {
   sortDesc: boolean;
 
   filters: InputCollectionFilter[];
+
+  @Field(() => [String], { defaultValue: [] })
+  leftJoins?: string[];
 }
