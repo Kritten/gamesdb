@@ -120,9 +120,6 @@ class ServiceStatisticsClass {
       end = subSeconds(startOfDay(addMonths(start, 1)), 1);
     }
 
-    console.log(start.toISOString(), 'start');
-    console.log(end.toISOString(), 'end');
-
     const filtersPlaytimes = [
       ...filters,
       {
@@ -136,10 +133,6 @@ class ServiceStatisticsClass {
         operator: page === 1 ? '<=' : '<=',
       },
     ];
-
-    await new Promise(resolve => {
-      setTimeout(resolve, 1000);
-    });
 
     const collectionPlaytimes = await ServicePlaytime.loadPage({
       page: 1,
@@ -181,8 +174,6 @@ class ServiceStatisticsClass {
     }
 
     const days: { [key: string]: Playtime[] } = {};
-
-    console.log(playtimesRaw[0], 'playtimesRaw[0]');
 
     for (let i = 0; i < playtimesRaw.length; i++) {
       const playtime = playtimesRaw[i];

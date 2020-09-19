@@ -5,29 +5,60 @@
   >
     Mehr laden
   </button>
-  <div
-    v-for="day in collectionStatisticsPlaytimesPerDay.items.value"
-    :key="day.date"
-  >
-    <div
-      style="float:left"
-      class="box"
-      :title="day.date"
-      :style="{
-        backgroundColor: calculateBackgroundColor(day.seconds),
-      }"
-    />
+  <div class="wrapper-playtimes-per-day">
+    <div class="labels-day">
+      <div>Montag</div>
+      <div />
+      <div>Mittwoch</div>
+      <div />
+      <div>Freitag</div>
+      <div />
+      <div>Sonntag</div>
+    </div>
+    <div>
+      <div class="labels-month">
+        <span
+          v-for="label in labelsMonth"
+          :key="label.day.date"
+          style="position: absolute"
+          :style="{left: `${label.index * 21}px`}"
+        >{{ label.monthFormatted }}</span>
+      </div>
+      <div class="boxes">
+        <div
+          v-for="(week, index) in weeks"
+          :key="week[0].date"
+          :class="{firstWeek: index === 0}"
+        >
+          <template
+            v-for="day in week"
+            :key="day.date"
+          >
+            <div
+              class="box"
+              :title="day.date"
+              :style="{
+                backgroundColor: calculateBackgroundColor(day.seconds),
+              }"
+              :class="{'first-of-month': day.isFirstDayOfMonth === true}"
+            />
+          </template>
+        </div>
+      </div>
+    </div>
   </div>
-  <div
-    style="clear: both"
-  />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
+import {
+  format,
+  getDaysInMonth, isMonday, parse,
+} from 'date-fns';
+import { chunk } from 'lodash';
 
 export default defineComponent({
   name: 'PlaytimesPerDay',
@@ -70,6 +101,59 @@ export default defineComponent({
       },
     );
 
+    const weeks = computed(() => {
+      const days = collectionStatisticsPlaytimesPerDay.items.value;
+
+      if (days.length === 0) {
+        return [];
+      }
+
+      let numberOfDays = 0;
+      while (numberOfDays < days.length) {
+        days[numberOfDays].isFirstDayOfMonth = true;
+        numberOfDays += getDaysInMonth(parse(days[numberOfDays].date, 'yyyy-MM-dd HH:mm:ss', 0));
+      }
+
+      let indexStartOfWeek = 0;
+      while (indexStartOfWeek < days.length) {
+        const day = days[indexStartOfWeek];
+        const date = parse(day.date, 'yyyy-MM-dd HH:mm:ss', 0);
+        if (isMonday(date)) {
+          break;
+        }
+
+        indexStartOfWeek += 1;
+      }
+
+      const itemsPreMonday = days.slice(0, indexStartOfWeek);
+      const items = days.slice(indexStartOfWeek);
+
+      const itemsChunked = chunk(items, 7);
+
+      if (itemsPreMonday.length > 0) {
+        return [itemsPreMonday].concat(itemsChunked);
+      }
+      return itemsChunked;
+    });
+
+    const labelsMonth = computed(() => {
+      const result = [];
+
+      for (let i = 0; i < weeks.value.length; i += 1) {
+        const week = weeks.value[i];
+        const weekDay = week.find((day) => day.isFirstDayOfMonth === true);
+        if (weekDay !== undefined) {
+          result.push({
+            index: i,
+            day: weekDay,
+            monthFormatted: format(parse(weekDay.date, 'yyyy-MM-dd HH:mm:ss', 0), 'MMM'),
+          });
+        }
+      }
+
+      return result;
+    });
+
     const ratioMapping = ['#ffffff', '#ced9cc', '#9eb49a', '#70906c', '#436d3f', '#104c15'];
 
     const calculateBackgroundColor = (seconds: number) => {
@@ -98,16 +182,52 @@ export default defineComponent({
     return {
       collectionStatisticsPlaytimesPerDay,
       calculateBackgroundColor,
+      weeks,
+      labelsMonth,
     };
   },
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$dimension-box: 15px;
+$margin-box: 2px;
+$border-box: 1px;
+$computed-height: $dimension-box + $margin-box + 2 * $border-box;
+
+.wrapper-playtimes-per-day {
+  display: flex;
+
+  .labels-day {
+    margin-top: $computed-height + 10px;
+
+    div {
+      height: $computed-height;
+    }
+  }
+
+  .labels-month {
+    position: relative;
+    height: $computed-height + 10px;
+  }
+
+  .boxes {
+    display: flex;
+  }
+
+  .firstWeek {
+    align-self: flex-end;
+  }
+}
+
 .box {
-  height: 15px;
-  width: 15px;
-  margin: 2px;
-  border: 1px solid black
+  height: $dimension-box;
+  width: $dimension-box;
+  margin: $margin-box;
+  border: $border-box solid rgba(0,0,0, 0.2);
+
+  &.first-of-month {
+    border-color: black;
+  }
 }
 </style>
