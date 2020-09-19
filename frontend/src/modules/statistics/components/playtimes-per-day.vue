@@ -1,10 +1,4 @@
 <template>
-  <button
-    :disabled="collectionStatisticsPlaytimesPerDay.isLoading.value === true"
-    @click="collectionStatisticsPlaytimesPerDay.loadNextItems"
-  >
-    Mehr laden
-  </button>
   <div class="wrapper-playtimes-per-day">
     <div class="labels-day">
       <div>Montag</div>
@@ -45,6 +39,27 @@
           </template>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button
+      :disabled="collectionStatisticsPlaytimesPerDay.isLoading.value === true"
+      @click="collectionStatisticsPlaytimesPerDay.loadNextItems"
+    >
+      Mehr laden
+    </button>
+    <div class="legend">
+      <div>Weniger</div>
+      <div
+        v-for="color in ratioMapping"
+        :key="color"
+        class="box"
+        :style="{
+        backgroundColor: color,
+      }"
+      />
+      <div>Mehr</div>
     </div>
   </div>
 </template>
@@ -184,6 +199,7 @@ export default defineComponent({
       calculateBackgroundColor,
       weeks,
       labelsMonth,
+      ratioMapping,
     };
   },
 });
@@ -228,6 +244,28 @@ $computed-height: $dimension-box + $margin-box + 2 * $border-box;
 
   &.first-of-month {
     border-color: black;
+  }
+}
+
+.controls {
+  display: flex;
+  margin-top: 10px;
+
+  button {
+    padding: 2px 6px;
+    margin: 0;
+  }
+
+  .legend {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+
+    .box {
+      height: $dimension-box * 0.5;
+      width: $dimension-box * 0.5;
+    }
   }
 }
 </style>
