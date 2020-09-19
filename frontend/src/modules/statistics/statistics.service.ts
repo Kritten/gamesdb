@@ -1,5 +1,6 @@
 import { apolloClient } from '@/vue-apollo';
 import {
+  queryStatisticsGamesBestRated,
   queryStatisticsGamesCountPlayed,
   queryStatisticsGamesTimePlayed,
 } from '@/modules/statistics/graphql/statistics.graphql';
@@ -99,6 +100,46 @@ class ServiceStatisticsClass {
     return {
       count: response.data.statisticsGamesTimePlayed.count,
       items: response.data.statisticsGamesTimePlayed.items,
+    };
+  }
+
+  async loadPageStatisticsGamesBestRated(
+    { page, count, sortBy, sortDesc, filters }: InputCollection,
+    payload: unknown = {},
+  ) {
+    const { analogOnly = false, digitalOnly = false } = payload as {
+      analogOnly?: boolean;
+      digitalOnly?: boolean;
+    };
+
+    if (analogOnly) {
+      filters.push({
+        field: 'isDigital',
+        valueBoolean: false,
+        operator: '=',
+      });
+    } else if (digitalOnly) {
+      filters.push({
+        field: 'isDigital',
+        valueBoolean: true,
+        operator: '=',
+      });
+    }
+
+    const response = await apolloClient.query({
+      query: queryStatisticsGamesBestRated,
+      variables: {
+        page,
+        count,
+        sortBy,
+        sortDesc,
+        filters,
+      },
+    });
+
+    return {
+      count: response.data.statisticsGamesBestRated.count,
+      items: response.data.statisticsGamesBestRated.items,
     };
   }
 

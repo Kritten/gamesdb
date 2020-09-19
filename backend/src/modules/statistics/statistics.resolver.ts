@@ -6,6 +6,7 @@ import { GamesCountPlayedCollectionDataModel } from './collection/gamesCountPlay
 import { StatisticsService } from './statistics.service';
 import { GamesTimePlayedCollectionDataModel } from './collection/gamesTimePlayed.collectionData.model';
 import { GraphCollectionDataModel } from './collection/graph.collectionData.model';
+import { GamesBestRatedCollectionDataModel } from './collection/gamesBestRated.collectionData.model';
 
 @Resolver()
 export class StatisticsResolver {
@@ -25,6 +26,14 @@ export class StatisticsResolver {
     @Args('statisticsData') data: InputCollection,
   ) {
     return this.statisticsService.gamesTimePlayed(data);
+  }
+
+  @Query(() => GamesBestRatedCollectionDataModel)
+  @UseGuards(GqlAuthGuard)
+  async statisticsGamesBestRated(
+    @Args('statisticsData') data: InputCollection,
+  ) {
+    return this.statisticsService.gamesBestRated(data);
   }
 
   @Query(() => GraphCollectionDataModel)

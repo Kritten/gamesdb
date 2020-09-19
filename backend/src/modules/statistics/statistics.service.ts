@@ -88,6 +88,40 @@ export class StatisticsService {
     };
   }
 
+  async gamesBestRated(data: InputCollection) {
+    const query = await getConnection()
+      .createQueryBuilder(Game, 'entity')
+      .select([
+        'entity.id',
+        'entity.name',
+        'Avg(rating.rating) as rating',
+        'Count(rating.id) as count',
+      ]);
+
+    query.leftJoin('rating', 'rating', `entity.id = rating.gameId`);
+    query.groupBy('entity.id');
+
+    this.collectionService.where(query, data);
+
+    this.collectionService.orderBy(query, data);
+
+    const count = query.getCount();
+
+    this.collectionService.paginate(query, data, false);
+
+    const items = await query.getRawMany();
+
+    return {
+      items: items.map(item => ({
+        id: item.entity_id,
+        name: item.entity_name,
+        rating: item.rating,
+        count: item.count,
+      })),
+      count,
+    };
+  }
+
   async playtimesGroupedByDaytime(data: InputCollection) {
     console.log(data, 'data');
     let where = '';
@@ -155,7 +189,7 @@ export class StatisticsService {
     // const count = query.getCount();
 
     // this.collectionService.paginate(query, data);
-    console.log(query.getSql(), 'query');
+    // console.log(query.getSql(), 'query');
     const items = await query.getRawMany();
     console.log(items, 'items');
     // return {

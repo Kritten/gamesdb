@@ -40,6 +40,18 @@ type GameCollectionData {
     items: [Game!]!
 }
 
+type GamesBestRatedCollectionDataModel {
+    count: Int!
+    items: [GamesBestRatedItem!]!
+}
+
+type GamesBestRatedItem {
+    count: Int!
+    id: ID!
+    name: String!
+    rating: Float
+}
+
 type GamesCountPlayedCollectionDataModel {
     count: Int!
     items: [GamesCountPlayedItem!]!
@@ -170,6 +182,7 @@ type Query {
     ratings(ratingData: InputCollection!): RatingCollectionData!
     session(id: ID!): Session!
     sessions(sessionData: InputCollection!): SessionCollectionData!
+    statisticsGamesBestRated(statisticsData: InputCollection!): GamesBestRatedCollectionDataModel!
     statisticsGamesCountPlayed(statisticsData: InputCollection!): GamesCountPlayedCollectionDataModel!
     statisticsGamesTimePlayed(statisticsData: InputCollection!): GamesTimePlayedCollectionDataModel!
     statisticsPlaytimesGroupedByDaytime(statisticsData: InputCollection!): GraphCollectionDataModel!

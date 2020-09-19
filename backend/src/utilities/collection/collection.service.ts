@@ -95,14 +95,21 @@ export class CollectionService<T extends BaseEntity> {
     }
   }
 
-  paginate(query: SelectQueryBuilder<T>, data: InputCollection) {
+  paginate(
+    query: SelectQueryBuilder<T>,
+    data: InputCollection,
+    useTakeAndSkip = true,
+  ) {
     if (data.count !== undefined) {
-      query.take(data.count);
-      query.skip((data.page - 1) * data.count);
+      if (useTakeAndSkip) {
+        query.take(data.count);
+        query.skip((data.page - 1) * data.count);
+      } else {
+        // TODO: create new requests for relations
+        query.limit(data.count);
+        query.offset((data.page - 1) * data.count);
+      }
     }
-    // TODO: create new requests for relations
-    // query.limit(data.count);
-    // query.offset((data.page - 1) * data.count);
   }
 
   async loadPage(data: InputCollection) {
@@ -119,7 +126,7 @@ export class CollectionService<T extends BaseEntity> {
 
     this.paginate(query, data);
 
-    console.warn(query.getSql());
+    // console.warn(query.getSql());
 
     const [items, count] = await query.getManyAndCount();
     return {

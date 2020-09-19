@@ -54,6 +54,34 @@ export const queryStatisticsGamesTimePlayed = gql`
   }
 `;
 
+export const queryStatisticsGamesBestRated = gql`
+  query statisticsGamesBestRated(
+    $page: Int!
+    $count: Int
+    $sortBy: String!
+    $sortDesc: Boolean!
+    $filters: [InputCollectionFilter!]!
+  ) {
+    statisticsGamesBestRated(
+      statisticsData: {
+        page: $page
+        count: $count
+        sortBy: $sortBy
+        sortDesc: $sortDesc
+        filters: $filters
+      }
+    ) {
+      count
+      items {
+        id
+        name
+        rating
+        count
+      }
+    }
+  }
+`;
+
 export const QueryStatisticsPlaytimesGroupedByDaytime = gql`
   query statisticsPlaytimesGroupedByDaytime(
     $page: Int!
