@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue';
+import { computed, Ref, ref, watch } from 'vue';
 import {
   InputCollectionData,
   ServiceCollectionFilters,
@@ -21,26 +21,51 @@ export function useCollection<T>(
     immediate = true,
     watchFilters = true,
     prependValues = false,
+    hasNextPage: hasNextPagePassed,
   }: {
     payload?: unknown;
     immediate?: boolean;
     watchFilters?: boolean;
     prependValues?: boolean;
+    hasNextPage?: ({
+      items,
+      countItems,
+      inputCollectionData,
+    }: {
+      items: Ref<T[]>;
+      countItems: Ref<number>;
+      inputCollectionData: { page: Ref<number> };
+    }) => boolean;
   } = {},
 ) {
   const items = ref<T[]>([]);
   const countItems = ref(-1);
   const isLoading = ref(false);
+  const pageRef = ref<number>(page);
   let counterRequests = 0;
 
-  const hasNextPage = computed(() => countItems.value !== items.value.length);
+  let hasNextPage;
+  if (hasNextPagePassed !== undefined) {
+    hasNextPage = computed(() =>
+      hasNextPagePassed({
+        // @ts-ignore
+        items,
+        countItems,
+        inputCollectionData: {
+          page: pageRef,
+        },
+      }),
+    );
+  } else {
+    hasNextPage = computed(() => countItems.value !== items.value.length);
+  }
 
   const loadNextItemsInternal = async (counter: number) => {
     isLoading.value = true;
 
     const response = await loadPage(
       {
-        page,
+        page: pageRef.value,
         count,
         sortBy,
         sortDesc,
@@ -62,7 +87,7 @@ export function useCollection<T>(
       // @ts-ignore
       items.value = items.value.concat(response.items);
     }
-    page += 1;
+    pageRef.value += 1;
 
     isLoading.value = false;
 
@@ -88,7 +113,7 @@ export function useCollection<T>(
   const reset = () => {
     items.value = [];
     countItems.value = -1;
-    page = 1;
+    pageRef.value = 1;
     loadNextItems();
   };
 

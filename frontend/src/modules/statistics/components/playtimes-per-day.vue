@@ -44,6 +44,7 @@
 
   <div class="controls">
     <button
+      v-if="collectionStatisticsPlaytimesPerDay.hasNextPage.value === true"
       :disabled="collectionStatisticsPlaytimesPerDay.isLoading.value === true"
       @click="collectionStatisticsPlaytimesPerDay.loadNextItems"
     >
@@ -56,8 +57,8 @@
         :key="color"
         class="box"
         :style="{
-        backgroundColor: color,
-      }"
+          backgroundColor: color,
+        }"
       />
       <div>Mehr</div>
     </div>
@@ -71,7 +72,7 @@ import { ServiceStatistics } from '@/modules/statistics/statistics.service';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import {
   format,
-  getDaysInMonth, isMonday, parse,
+  getDaysInMonth, isAfter, isMonday, parse, parseISO, startOfMonth, subMonths,
 } from 'date-fns';
 import { chunk } from 'lodash';
 
@@ -100,19 +101,28 @@ export default defineComponent({
       };
     }
 
+    const endInitial = new Date();
+    const startOfDataCollection = props.digitalOnly ? parseISO('2020-07-01') : parseISO('2020-06-01');
+
     const collectionStatisticsPlaytimesPerDay = useCollection(
       ServiceStatistics.loadPageStatisticsPlaytimesPerDay,
       {
+        page: 1,
         filters,
         leftJoins: ['game|session.gameId = game.id'],
       },
       {
         payload: {
-          endInitial: new Date(),
+          endInitial,
           analogOnly: props.analogOnly,
           digitalOnly: props.digitalOnly,
         },
         prependValues: true,
+        // has next page until 2020-06-01 is reached (start of data collection)
+        hasNextPage: ({ inputCollectionData }) => isAfter(
+          startOfMonth(subMonths(endInitial, inputCollectionData.page.value)),
+          startOfDataCollection,
+        ),
       },
     );
 
@@ -125,6 +135,7 @@ export default defineComponent({
 
       let numberOfDays = 0;
       while (numberOfDays < days.length) {
+        // @ts-ignore
         days[numberOfDays].isFirstDayOfMonth = true;
         numberOfDays += getDaysInMonth(parse(days[numberOfDays].date, 'yyyy-MM-dd HH:mm:ss', 0));
       }
@@ -156,6 +167,7 @@ export default defineComponent({
 
       for (let i = 0; i < weeks.value.length; i += 1) {
         const week = weeks.value[i];
+        // @ts-ignore
         const weekDay = week.find((day) => day.isFirstDayOfMonth === true);
         if (weekDay !== undefined) {
           result.push({
