@@ -262,6 +262,7 @@ $computed-height: $dimension-box + $margin-box + 2 * $border-box;
 .controls {
   display: flex;
   margin-top: 10px;
+  min-height: 22px;
 
   button {
     padding: 2px 6px;
