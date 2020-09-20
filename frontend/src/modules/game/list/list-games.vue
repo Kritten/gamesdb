@@ -7,6 +7,11 @@
     @reset="resetFilters"
     @update-filter="updateFilter"
   />
+  <base-list-sort
+    v-model:sort-by="sortBy"
+    v-model:order-by="orderBy"
+    :options-sort-by="['name', 'countPlayersMin']"
+  />
   <hr>
   {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
   <table>
@@ -29,6 +34,7 @@
 import { ServiceGame } from '@/modules/game/game.service';
 import ListItemGame from '@/modules/game/list/list-item-game.vue';
 import ListFiltersGame from '@/modules/game/list/list-filters-game.vue';
+import BaseListSort from '@/modules/app/base/base-list-sort.vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Game } from '@/modules/game/game.model';
 import { useI18n } from 'vue-i18n';
@@ -40,7 +46,7 @@ import { cloneDeep } from 'lodash';
 
 export default defineComponent({
   name: 'ListGames',
-  components: { ListItemGame, ListFiltersGame },
+  components: { ListItemGame, ListFiltersGame, BaseListSort },
   props: {
     digitalOnly: {
       type: Boolean,
@@ -65,6 +71,8 @@ export default defineComponent({
     };
 
     const filters = ref<ServiceCollectionFilters>(cloneDeep(filtersInitial));
+    const sortBy = ref<string[]>(['name']);
+    const orderBy = ref<boolean[]>([true]);
 
     const collection = useCollection<Game>(ServiceGame.loadPage, { inputCollectionData: { filters }, watchFilters: false });
 
@@ -107,6 +115,8 @@ export default defineComponent({
       t,
       collection,
       filters,
+      sortBy,
+      orderBy,
       resetFilters,
       updateFilter,
     };
