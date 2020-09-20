@@ -13,10 +13,10 @@
         {{ option }}
       </option>
     </select>
-    <label for="orderByNew">Absteigend</label>
+    <label for="sortDescNew">Absteigend</label>
     <select
-      id="orderByNew"
-      v-model="orderByNew"
+      id="sortDescNew"
+      v-model="sortDescNew"
     >
       <option
         v-for="(option, index) in [true, false]"
@@ -35,7 +35,7 @@
       v-for="(data, index) in sortBy"
       :key="index"
     >
-      {{ data }} {{ orderBy[index] }} <button @click="removeSortBy(index)">
+      {{ data }} {{ sortDesc[index] }} <button @click="removeSortBy(index)">
         Löschen
       </button>
     </div>
@@ -52,7 +52,7 @@ export default defineComponent({
       type: Array,
       required: true,
     },
-    orderBy: {
+    sortDesc: {
       type: Array,
       required: true,
     },
@@ -61,24 +61,24 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['update:sortBy', 'update:orderBy'],
+  emits: ['update:sortBy', 'update:sortDesc'],
   setup(props, { emit }) {
     const sortByNew = ref<string>(props.optionsSortBy[0] as string);
-    const orderByNew = ref<boolean>(true);
+    const sortDescNew = ref<boolean>(true);
 
     const addSortBy = () => {
       emit('update:sortBy', [...props.sortBy, sortByNew.value]);
-      emit('update:orderBy', [...props.orderBy, orderByNew.value]);
+      emit('update:sortDesc', [...props.sortDesc, sortDescNew.value]);
     };
 
     const removeSortBy = (index: number) => {
       emit('update:sortBy', props.sortBy.filter((item, indexItem) => indexItem !== index));
-      emit('update:orderBy', props.orderBy.filter((item, indexItem) => indexItem !== index));
+      emit('update:sortDesc', props.sortDesc.filter((item, indexItem) => indexItem !== index));
     };
 
     return {
       sortByNew,
-      orderByNew,
+      sortDescNew,
       addSortBy,
       removeSortBy,
     };

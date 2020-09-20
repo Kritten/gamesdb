@@ -9,7 +9,7 @@
   />
   <base-list-sort
     v-model:sort-by="sortBy"
-    v-model:order-by="orderBy"
+    v-model:sort-desc="sortDesc"
     :options-sort-by="['name', 'countPlayersMin']"
   />
   <hr>
@@ -72,7 +72,7 @@ export default defineComponent({
 
     const filters = ref<ServiceCollectionFilters>(cloneDeep(filtersInitial));
     const sortBy = ref<string[]>(['name']);
-    const orderBy = ref<boolean[]>([true]);
+    const sortDesc = ref<boolean[]>([true]);
 
     const collection = useCollection<Game>(ServiceGame.loadPage, { inputCollectionData: { filters }, watchFilters: false });
 
@@ -116,7 +116,7 @@ export default defineComponent({
       collection,
       filters,
       sortBy,
-      orderBy,
+      sortDesc,
       resetFilters,
       updateFilter,
     };
