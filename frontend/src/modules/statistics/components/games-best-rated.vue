@@ -48,8 +48,8 @@ export default defineComponent({
       ServiceStatistics.loadPageStatisticsGamesBestRated,
       {
         inputCollectionData: {
-          sortBy: 'rating',
-          sortDesc: true,
+          sortBy: ['rating'],
+          sortDesc: [true],
         },
         payload: {
           analogOnly: props.analogOnly,

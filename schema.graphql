@@ -281,8 +281,8 @@ input InputCollection {
     filters: [InputCollectionFilter!]!
     leftJoins: [String!] = []
     page: Int!
-    sortBy: String!
-    sortDesc: Boolean!
+    sortBy: [String!]!
+    sortDesc: [Boolean!]!
 }
 
 input InputCollectionFilter {

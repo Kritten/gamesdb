@@ -78,20 +78,25 @@ export class CollectionService<T extends BaseEntity> {
 
   orderBy(query: SelectQueryBuilder<T>, data: InputCollection) {
     // TODO: support multiple orderbys
-    if (data.sortBy.includes('.') && !data.sortBy.startsWith('entity.')) {
-      const [table, aggregation] = data.sortBy.split('.');
+    for (let i = 0; i < data.sortBy.length; i++) {
+      const sortBy = data.sortBy[i];
+      const sortDesc = data.sortDesc[i];
 
-      query.addSelect(
-        subQuery =>
-          subQuery
-            .select(aggregation, 'foo')
-            .from(table, table)
-            .where(`${table}.sessionId = entity.id`),
-        'kritten',
-      );
-      query.orderBy('kritten', data.sortDesc ? 'DESC' : 'ASC');
-    } else {
-      query.orderBy(`${data.sortBy}`, data.sortDesc ? 'DESC' : 'ASC');
+      if (sortBy.includes('.') && !sortBy.startsWith('entity.')) {
+        const [table, aggregation] = sortBy.split('.');
+
+        query.addSelect(
+          subQuery =>
+            subQuery
+              .select(aggregation, 'foo')
+              .from(table, table)
+              .where(`${table}.sessionId = entity.id`),
+          'kritten',
+        );
+        query.orderBy('kritten', sortDesc ? 'DESC' : 'ASC');
+      } else {
+        query.orderBy(`${sortBy}`, sortDesc ? 'DESC' : 'ASC');
+      }
     }
   }
 

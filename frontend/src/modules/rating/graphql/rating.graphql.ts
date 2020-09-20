@@ -5,8 +5,8 @@ export const queryPageRatings = gql`
   query ratings(
     $page: Int!
     $count: Int
-    $sortBy: String!
-    $sortDesc: Boolean!
+    $sortBy: [String!]!
+    $sortDesc: [Boolean!]!
     $filters: [InputCollectionFilter!]!
   ) {
     ratings(

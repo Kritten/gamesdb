@@ -4,8 +4,8 @@ export const queryStatisticsGamesCountPlayed = gql`
   query statisticsGamesCountPlayed(
     $page: Int!
     $count: Int
-    $sortBy: String!
-    $sortDesc: Boolean!
+    $sortBy: [String!]!
+    $sortDesc: [Boolean!]!
     $filters: [InputCollectionFilter!]!
   ) {
     statisticsGamesCountPlayed(
@@ -31,8 +31,8 @@ export const queryStatisticsGamesTimePlayed = gql`
   query statisticsGamesTimePlayed(
     $page: Int!
     $count: Int
-    $sortBy: String!
-    $sortDesc: Boolean!
+    $sortBy: [String!]!
+    $sortDesc: [Boolean!]!
     $filters: [InputCollectionFilter!]!
   ) {
     statisticsGamesTimePlayed(
@@ -58,8 +58,8 @@ export const queryStatisticsGamesBestRated = gql`
   query statisticsGamesBestRated(
     $page: Int!
     $count: Int
-    $sortBy: String!
-    $sortDesc: Boolean!
+    $sortBy: [String!]!
+    $sortDesc: [Boolean!]!
     $filters: [InputCollectionFilter!]!
   ) {
     statisticsGamesBestRated(
@@ -86,8 +86,8 @@ export const QueryStatisticsPlaytimesGroupedByDaytime = gql`
   query statisticsPlaytimesGroupedByDaytime(
     $page: Int!
     $count: Int
-    $sortBy: String!
-    $sortDesc: Boolean!
+    $sortBy: [String!]!
+    $sortDesc: [Boolean!]!
     $filters: [InputCollectionFilter!]!
   ) {
     statisticsPlaytimesGroupedByDaytime(

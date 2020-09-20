@@ -60,7 +60,7 @@ export default defineComponent({
     });
     const collection = useCollection<Session>(ServiceSession.loadPage, {
       inputCollectionData: {
-        sortBy: 'entity.id',
+        sortBy: ['entity.id'],
         filters,
       },
     });

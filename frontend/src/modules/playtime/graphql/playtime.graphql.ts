@@ -5,8 +5,8 @@ export const queryPagePlaytime = gql`
   query playtimes(
     $page: Int!
     $count: Int
-    $sortBy: String!
-    $sortDesc: Boolean!
+    $sortBy: [String!]!
+    $sortDesc: [Boolean!]!
     $filters: [InputCollectionFilter!]!
     $leftJoins: [String!]
   ) {

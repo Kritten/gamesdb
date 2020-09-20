@@ -177,8 +177,8 @@ class ServiceStatisticsClass {
 
     const collectionPlaytimes = await ServicePlaytime.loadPage({
       page: 1,
-      sortBy: 'entity.start',
-      sortDesc: true,
+      sortBy: ['entity.start'],
+      sortDesc: [true],
       count: undefined,
       filters: filtersPlaytimes,
       leftJoins,

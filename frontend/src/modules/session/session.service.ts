@@ -60,8 +60,8 @@ class ServiceSessionClass
     this.loadPage({
       count: 1,
       page: 1,
-      sortBy: 'playtime.MAX(start)',
-      sortDesc: true,
+      sortBy: ['playtime.MAX(start)'],
+      sortDesc: [true],
       filters,
     }).then(async ({ items }) => {
       if (items.length > 0) {

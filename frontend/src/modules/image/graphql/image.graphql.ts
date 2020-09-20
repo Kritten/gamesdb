@@ -4,8 +4,8 @@ export const queryPageImage = gql`
   query images(
     $page: Int!
     $count: Int
-    $sortBy: String!
-    $sortDesc: Boolean!
+    $sortBy: [String!]!
+    $sortDesc: [Boolean!]!
     $filters: [InputCollectionFilter!]!
   ) {
     images(

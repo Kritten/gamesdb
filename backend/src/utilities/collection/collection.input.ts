@@ -21,9 +21,9 @@ export class InputCollection {
   @Field(() => Int, { nullable: true })
   count?: number;
 
-  sortBy: string;
+  sortBy: string[];
 
-  sortDesc: boolean;
+  sortDesc: boolean[];
 
   filters: InputCollectionFilter[];
 

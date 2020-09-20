@@ -43,8 +43,8 @@ export default defineComponent({
       ServiceStatistics.loadPageStatisticsGamesCountPlayed,
       {
         inputCollectionData: {
-          sortBy: 'countPlayed',
-          sortDesc: true,
+          sortBy: ['countPlayed'],
+          sortDesc: [true],
         },
         payload: {
           analogOnly: props.analogOnly,
