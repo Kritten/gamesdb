@@ -8,8 +8,11 @@ export type ServiceCollectionLoadPageReturn<T> = Promise<{ count: number; items:
 
 export type ServiceCollectionFilters = { [key: string]: InputCollectionFilter };
 
-export interface InputCollectionData extends Omit<InputCollection, 'filters'> {
+export interface InputCollectionData
+  extends Omit<InputCollection, 'filters' | 'sortBy' | 'sortDesc'> {
   filters: Ref<ServiceCollectionFilters>;
+  sortBy: Ref<string[]>;
+  sortDesc: Ref<boolean[]>;
 }
 
 export type ServiceCollectionLoadPageType<T> = (

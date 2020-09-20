@@ -57,7 +57,7 @@ export default defineComponent({
     });
     const collection = useCollection<Session>(ServiceSession.loadPage, {
       inputCollectionData: {
-        sortBy: ['entity.id'],
+        sortBy: ref(['entity.id']),
         filters,
       },
     });

@@ -7,10 +7,11 @@
     @reset="resetFilters"
     @update-filter="updateFilter"
   />
+  <hr>
   <base-list-sort
     v-model:sort-by="sortBy"
     v-model:sort-desc="sortDesc"
-    :options-sort-by="['name', 'countPlayersMin']"
+    :options-sort-by="optionsSortBy"
   />
   <hr>
   {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
@@ -71,10 +72,13 @@ export default defineComponent({
     };
 
     const filters = ref<ServiceCollectionFilters>(cloneDeep(filtersInitial));
-    const sortBy = ref<string[]>(['name']);
-    const sortDesc = ref<boolean[]>([true]);
+    const sortBy = ref<string[]>(['entity.name']);
+    const sortDesc = ref<boolean[]>([false]);
 
-    const collection = useCollection<Game>(ServiceGame.loadPage, { inputCollectionData: { filters }, watchFilters: false });
+    const collection = useCollection<Game>(ServiceGame.loadPage, {
+      inputCollectionData: { sortBy, sortDesc, filters },
+      watchFilters: false,
+    });
 
     for (const event of ['createdGame', 'updatedGame']) {
       queue.listen(event, () => {
@@ -111,12 +115,25 @@ export default defineComponent({
       collection.resetDebounced();
     };
 
+    const optionsSortBy = [
+      { field: 'entity.name', name: 'name' },
+      { field: 'entity.description', name: 'description' },
+      { field: 'entity.countPlayersMin', name: 'countPlayersMin' },
+      { field: 'entity.countPlayersMax', name: 'countPlayersMax' },
+      { field: 'entity.minutesPlaytimeMin', name: 'minutesPlaytimeMin' },
+      { field: 'entity.minutesPlaytimeMax', name: 'minutesPlaytimeMax' },
+      { field: 'entity.size', name: 'size' },
+      { field: 'entity.complexity', name: 'complexity' },
+      { field: 'entity.isCoop', name: 'isCoop' },
+    ];
+
     return {
       t,
       collection,
       filters,
       sortBy,
       sortDesc,
+      optionsSortBy,
       resetFilters,
       updateFilter,
     };

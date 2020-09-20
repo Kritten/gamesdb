@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, ref} from 'vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { GamesCountPlayedItem } from '@backend/src/modules/statistics/collection/gamesCountPlayed.collectionData.model';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
@@ -43,8 +43,8 @@ export default defineComponent({
       ServiceStatistics.loadPageStatisticsGamesCountPlayed,
       {
         inputCollectionData: {
-          sortBy: ['countPlayed'],
-          sortDesc: [true],
+          sortBy: ref(['countPlayed']),
+          sortDesc: ref([true]),
         },
         payload: {
           analogOnly: props.analogOnly,

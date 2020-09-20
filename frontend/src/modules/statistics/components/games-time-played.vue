@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, ref} from 'vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { GamesTimePlayedItem } from '@backend/src/modules/statistics/collection/gamesTimePlayed.collectionData.model';
 import BaseDisplayDuration from '@/modules/app/base/base-display-duration.vue';
@@ -45,8 +45,8 @@ export default defineComponent({
       ServiceStatistics.loadPageStatisticsGamesTimePlayed,
       {
         inputCollectionData: {
-          sortBy: ['timePlayed'],
-          sortDesc: [true],
+          sortBy: ref(['timePlayed']),
+          sortDesc: ref([true]),
         },
         payload: {
           analogOnly: props.analogOnly,

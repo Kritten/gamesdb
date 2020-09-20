@@ -48,8 +48,8 @@ export function useCollection<T>(
   const {
     page = 1,
     count = 10,
-    sortBy = ['entity.name'],
-    sortDesc = [false],
+    sortBy = ref(['entity.name']),
+    sortDesc = ref([false]),
     filters = ref<ServiceCollectionFilters>({}),
     leftJoins = [],
   } = inputCollectionData;
@@ -58,8 +58,8 @@ export function useCollection<T>(
   const countItems = ref(-1);
   const isLoading = ref(false);
   const pageRef = ref<number>(page);
-  const sortByRef = ref<string[]>(sortBy);
-  const orderByRef = ref<boolean[]>(sortDesc);
+  // const sortByRef = ref<string[]>(sortBy);
+  // const orderByRef = ref<boolean[]>(sortDesc);
   let counterRequests = 0;
 
   let hasNextPage;
@@ -84,8 +84,8 @@ export function useCollection<T>(
       {
         page: pageRef.value,
         count,
-        sortBy: sortByRef.value,
-        sortDesc: orderByRef.value,
+        sortBy: sortBy.value,
+        sortDesc: sortDesc.value,
         filters: Object.values(filters.value),
         leftJoins,
       },
@@ -126,6 +126,14 @@ export function useCollection<T>(
       { deep: true },
     );
   }
+
+  watch(
+    sortBy,
+    value => {
+      reset();
+    },
+    { deep: true },
+  );
 
   const reset = () => {
     items.value = [];

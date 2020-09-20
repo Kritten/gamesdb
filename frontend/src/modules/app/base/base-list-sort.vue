@@ -6,11 +6,11 @@
       v-model="sortByNew"
     >
       <option
-        v-for="(option, index) in optionsSortBy"
-        :key="index"
-        :value="option"
+        v-for="option in optionsSortBy"
+        :key="option.field"
+        :value="option.field"
       >
-        {{ option }}
+        {{ option.name }}
       </option>
     </select>
     <label for="sortDescNew">Absteigend</label>
@@ -63,7 +63,8 @@ export default defineComponent({
   },
   emits: ['update:sortBy', 'update:sortDesc'],
   setup(props, { emit }) {
-    const sortByNew = ref<string>(props.optionsSortBy[0] as string);
+    // @ts-ignore
+    const sortByNew = ref<string>(props.optionsSortBy[0].field);
     const sortDescNew = ref<boolean>(true);
 
     const addSortBy = () => {

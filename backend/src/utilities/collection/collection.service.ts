@@ -82,6 +82,11 @@ export class CollectionService<T extends BaseEntity> {
       const sortBy = data.sortBy[i];
       const sortDesc = data.sortDesc[i];
 
+      let nameFunctionOrderBy = 'orderBy';
+      if (i > 0) {
+        nameFunctionOrderBy = 'addOrderBy';
+      }
+
       if (sortBy.includes('.') && !sortBy.startsWith('entity.')) {
         const [table, aggregation] = sortBy.split('.');
 
@@ -93,9 +98,9 @@ export class CollectionService<T extends BaseEntity> {
               .where(`${table}.sessionId = entity.id`),
           'kritten',
         );
-        query.orderBy('kritten', sortDesc ? 'DESC' : 'ASC');
+        query[nameFunctionOrderBy]('kritten', sortDesc ? 'DESC' : 'ASC');
       } else {
-        query.orderBy(`${sortBy}`, sortDesc ? 'DESC' : 'ASC');
+        query[nameFunctionOrderBy](`${sortBy}`, sortDesc ? 'DESC' : 'ASC');
       }
     }
   }

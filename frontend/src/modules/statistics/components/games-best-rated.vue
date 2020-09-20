@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, ref} from 'vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
 import { GamesBestRatedItem } from '@backend/src/modules/statistics/collection/gamesBestRated.collectionData.model';
@@ -48,8 +48,8 @@ export default defineComponent({
       ServiceStatistics.loadPageStatisticsGamesBestRated,
       {
         inputCollectionData: {
-          sortBy: ['rating'],
-          sortDesc: [true],
+          sortBy: ref(['rating']),
+          sortDesc: ref([true]),
         },
         payload: {
           analogOnly: props.analogOnly,
