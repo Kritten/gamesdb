@@ -6,23 +6,28 @@ import {
 } from '@/modules/app/utilities/collection/collection.types';
 import { debounce } from 'lodash';
 
+/**
+ * Used for paginated data loading
+ * @param {function(data: InputCollection, payload: unknown): Object} loadPage - requests and returns the data
+ * @param {Object} data
+ * @param {Partial<InputCollectionData>} data.inputCollectionData
+ * @param {unknown} data.payload
+ * @param {boolean} data.immediate
+ * @param {boolean} data.watchFilters
+ * @param {boolean} data.prependValues
+ * @param {function(): boolean} data.hasNextPage
+ */
 export function useCollection<T>(
   loadPage: ServiceCollectionLoadPageType<T>,
   {
-    page = 1,
-    count = 10,
-    sortBy = 'entity.name',
-    sortDesc = false,
-    filters = ref<ServiceCollectionFilters>({}),
-    leftJoins = [],
-  }: Partial<InputCollectionData> = {},
-  {
+    inputCollectionData = {},
     payload,
     immediate = true,
     watchFilters = true,
     prependValues = false,
     hasNextPage: hasNextPagePassed,
   }: {
+    inputCollectionData?: Partial<InputCollectionData>;
     payload?: unknown;
     immediate?: boolean;
     watchFilters?: boolean;
@@ -30,14 +35,25 @@ export function useCollection<T>(
     hasNextPage?: ({
       items,
       countItems,
-      inputCollectionData,
+      page,
+      isLoading,
     }: {
       items: Ref<T[]>;
       countItems: Ref<number>;
-      inputCollectionData: { page: Ref<number> };
+      page: Ref<number>;
+      isLoading: Ref<boolean>;
     }) => boolean;
   } = {},
 ) {
+  const {
+    page = 1,
+    count = 10,
+    sortBy = 'entity.name',
+    sortDesc = false,
+    filters = ref<ServiceCollectionFilters>({}),
+    leftJoins = [],
+  } = inputCollectionData;
+
   const items = ref<T[]>([]);
   const countItems = ref(-1);
   const isLoading = ref(false);
@@ -51,9 +67,8 @@ export function useCollection<T>(
         // @ts-ignore
         items,
         countItems,
-        inputCollectionData: {
-          page: pageRef,
-        },
+        page: pageRef,
+        isLoading,
       }),
     );
   } else {

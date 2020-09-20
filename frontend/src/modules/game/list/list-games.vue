@@ -1,7 +1,7 @@
 <template>
-<!--  <div v-for="filter in filters">-->
-<!--    {{filter}}-->
-<!--  </div>-->
+  <!--  <div v-for="filter in filters">-->
+  <!--    {{filter}}-->
+  <!--  </div>-->
   <list-filters-game
     v-model="filters"
     @reset="resetFilters"
@@ -66,7 +66,7 @@ export default defineComponent({
 
     const filters = ref<ServiceCollectionFilters>(cloneDeep(filtersInitial));
 
-    const collection = useCollection<Game>(ServiceGame.loadPage, { filters }, { watchFilters: false });
+    const collection = useCollection<Game>(ServiceGame.loadPage, { inputCollectionData: { filters }, watchFilters: false });
 
     for (const event of ['createdGame', 'updatedGame']) {
       queue.listen(event, () => {

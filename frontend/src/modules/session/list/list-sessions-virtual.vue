@@ -59,8 +59,10 @@ export default defineComponent({
       },
     });
     const collection = useCollection<Session>(ServiceSession.loadPage, {
-      sortBy: 'entity.id',
-      filters,
+      inputCollectionData: {
+        sortBy: 'entity.id',
+        filters,
+      },
     });
 
     const useTrackSession = ServiceSession.useTrackSession();

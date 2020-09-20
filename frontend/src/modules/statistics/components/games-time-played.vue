@@ -44,10 +44,10 @@ export default defineComponent({
     const collectionStatisticsGamesTimePlayed = useCollection<GamesTimePlayedItem>(
       ServiceStatistics.loadPageStatisticsGamesTimePlayed,
       {
-        sortBy: 'timePlayed',
-        sortDesc: true,
-      },
-      {
+        inputCollectionData: {
+          sortBy: 'timePlayed',
+          sortDesc: true,
+        },
         payload: {
           analogOnly: props.analogOnly,
           digitalOnly: props.digitalOnly,

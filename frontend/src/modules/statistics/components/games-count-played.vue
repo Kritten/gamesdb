@@ -42,10 +42,10 @@ export default defineComponent({
     const collectionStatisticsGamesCountPlayed = useCollection<GamesCountPlayedItem>(
       ServiceStatistics.loadPageStatisticsGamesCountPlayed,
       {
-        sortBy: 'countPlayed',
-        sortDesc: true,
-      },
-      {
+        inputCollectionData: {
+          sortBy: 'countPlayed',
+          sortDesc: true,
+        },
         payload: {
           analogOnly: props.analogOnly,
           digitalOnly: props.digitalOnly,

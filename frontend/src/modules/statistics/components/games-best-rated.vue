@@ -5,8 +5,12 @@
       :key="index"
     >
       <td>{{ data.name }}</td>
-      <td v-if="data.rating !== null">{{ data.rating.toFixed(2) }} ({{ data.count}})</td>
-      <td v-else>-</td>
+      <td v-if="data.rating !== null">
+        {{ data.rating.toFixed(2) }} ({{ data.count }})
+      </td>
+      <td v-else>
+        -
+      </td>
     </tr>
   </table>
 
@@ -43,10 +47,10 @@ export default defineComponent({
     const collectionStatisticsGamesBestRated = useCollection<GamesBestRatedItem>(
       ServiceStatistics.loadPageStatisticsGamesBestRated,
       {
-        sortBy: 'rating',
-        sortDesc: true,
-      },
-      {
+        inputCollectionData: {
+          sortBy: 'rating',
+          sortDesc: true,
+        },
         payload: {
           analogOnly: props.analogOnly,
           digitalOnly: props.digitalOnly,

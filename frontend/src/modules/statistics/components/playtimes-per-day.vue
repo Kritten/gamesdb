@@ -107,11 +107,10 @@ export default defineComponent({
     const collectionStatisticsPlaytimesPerDay = useCollection(
       ServiceStatistics.loadPageStatisticsPlaytimesPerDay,
       {
-        page: 1,
-        filters,
-        leftJoins: ['game|session.gameId = game.id'],
-      },
-      {
+        inputCollectionData: {
+          filters,
+          leftJoins: ['game|session.gameId = game.id'],
+        },
         payload: {
           endInitial,
           analogOnly: props.analogOnly,
@@ -119,8 +118,8 @@ export default defineComponent({
         },
         prependValues: true,
         // has next page until 2020-06-01 is reached (start of data collection)
-        hasNextPage: ({ inputCollectionData }) => isAfter(
-          startOfMonth(subMonths(endInitial, inputCollectionData.page.value)),
+        hasNextPage: ({ page }) => isAfter(
+          startOfMonth(subMonths(endInitial, page.value)),
           startOfDataCollection,
         ),
       },

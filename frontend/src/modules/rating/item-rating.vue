@@ -84,7 +84,7 @@ export default defineComponent({
         field: 'name', valueString: undefined, operator: 'like',
       },
     });
-    const collectionGame = useCollection<Game>(ServiceGame.loadPage, { count: 5, filters: filtersGame });
+    const collectionGame = useCollection<Game>(ServiceGame.loadPage, { inputCollectionData: { count: 5, filters: filtersGame } });
 
     return {
       t,
