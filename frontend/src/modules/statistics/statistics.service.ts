@@ -21,126 +21,100 @@ import {
   subMonths,
   subSeconds,
 } from 'date-fns';
+import { loadPageBase } from '@/modules/app/utilities/collection/collection';
+import { GamesCountPlayedItem } from '@backend/src/modules/statistics/collection/gamesCountPlayed.collectionData.model';
+import { GamesTimePlayedItem } from '@backend/src/modules/statistics/collection/gamesTimePlayed.collectionData.model';
+import { GamesBestRatedItem } from '@backend/src/modules/statistics/collection/gamesBestRated.collectionData.model';
 
 class ServiceStatisticsClass {
-  async loadPageStatisticsGamesCountPlayed(
-    { page, count, sortBy, sortDesc, filters }: InputCollection,
-    payload: unknown = {},
-  ) {
+  async loadPageStatisticsGamesCountPlayed(data: InputCollection, payload: unknown = {}) {
     const { analogOnly = false, digitalOnly = false } = payload as {
       analogOnly?: boolean;
       digitalOnly?: boolean;
     };
 
     if (analogOnly) {
-      filters.push({
+      data.filters.push({
         field: 'isDigital',
         valueBoolean: false,
         operator: '=',
       });
     } else if (digitalOnly) {
-      filters.push({
+      data.filters.push({
         field: 'isDigital',
         valueBoolean: true,
         operator: '=',
       });
     }
 
-    const response = await apolloClient.query({
+    return loadPageBase<GamesCountPlayedItem>({
+      data,
       query: queryStatisticsGamesCountPlayed,
-      variables: {
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-      },
+      parseResult: async response => ({
+        count: response.data.statisticsGamesCountPlayed.count,
+        items: response.data.statisticsGamesCountPlayed.items,
+      }),
     });
-
-    return {
-      count: response.data.statisticsGamesCountPlayed.count,
-      items: response.data.statisticsGamesCountPlayed.items,
-    };
   }
 
-  async loadPageStatisticsGamesTimePlayed(
-    { page, count, sortBy, sortDesc, filters }: InputCollection,
-    payload: unknown = {},
-  ) {
+  async loadPageStatisticsGamesTimePlayed(data: InputCollection, payload: unknown = {}) {
     const { analogOnly = false, digitalOnly = false } = payload as {
       analogOnly?: boolean;
       digitalOnly?: boolean;
     };
 
     if (analogOnly) {
-      filters.push({
+      data.filters.push({
         field: 'isDigital',
         valueBoolean: false,
         operator: '=',
       });
     } else if (digitalOnly) {
-      filters.push({
+      data.filters.push({
         field: 'isDigital',
         valueBoolean: true,
         operator: '=',
       });
     }
 
-    const response = await apolloClient.query({
+    return loadPageBase<GamesTimePlayedItem>({
+      data,
       query: queryStatisticsGamesTimePlayed,
-      variables: {
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-      },
+      parseResult: async response => ({
+        count: response.data.statisticsGamesTimePlayed.count,
+        items: response.data.statisticsGamesTimePlayed.items,
+      }),
     });
-
-    return {
-      count: response.data.statisticsGamesTimePlayed.count,
-      items: response.data.statisticsGamesTimePlayed.items,
-    };
   }
 
-  async loadPageStatisticsGamesBestRated(
-    { page, count, sortBy, sortDesc, filters }: InputCollection,
-    payload: unknown = {},
-  ) {
+  async loadPageStatisticsGamesBestRated(data: InputCollection, payload: unknown = {}) {
     const { analogOnly = false, digitalOnly = false } = payload as {
       analogOnly?: boolean;
       digitalOnly?: boolean;
     };
 
     if (analogOnly) {
-      filters.push({
+      data.filters.push({
         field: 'isDigital',
         valueBoolean: false,
         operator: '=',
       });
     } else if (digitalOnly) {
-      filters.push({
+      data.filters.push({
         field: 'isDigital',
         valueBoolean: true,
         operator: '=',
       });
     }
 
-    const response = await apolloClient.query({
+    return loadPageBase<GamesBestRatedItem>({
+      data,
       query: queryStatisticsGamesBestRated,
-      variables: {
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-      },
+      parseResult: async response => ({
+        count: response.data.statisticsGamesBestRated.count,
+        items: response.data.statisticsGamesBestRated.items,
+      }),
     });
-
-    return {
-      count: response.data.statisticsGamesBestRated.count,
-      items: response.data.statisticsGamesBestRated.items,
-    };
   }
 
   loadPageStatisticsPlaytimesPerDay = async (

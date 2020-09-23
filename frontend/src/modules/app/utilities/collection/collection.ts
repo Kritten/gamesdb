@@ -5,6 +5,10 @@ import {
   ServiceCollectionLoadPageType,
 } from '@/modules/app/utilities/collection/collection.types';
 import { debounce } from 'lodash';
+import { apolloClient } from '@/vue-apollo';
+import { InputCollection } from '@backend/src/utilities/collection/collection.input';
+import { DocumentNode } from 'graphql';
+import { ApolloQueryResult } from '@apollo/client';
 
 /**
  * Used for paginated data loading
@@ -158,5 +162,33 @@ export function useCollection<T>(
     loadNextItems,
     reset,
     resetDebounced,
+  };
+}
+
+export async function loadPageBase<T>({
+  data,
+  query,
+  parseResult,
+  after,
+}: {
+  data: InputCollection;
+  query: DocumentNode;
+  parseResult: (response: ApolloQueryResult<any>) => Promise<{ items: T[]; count: number }>;
+  after?: ({ items, count }: { items: T[]; count: number }) => void;
+}) {
+  const response = await apolloClient.query({
+    query,
+    variables: data,
+  });
+
+  const { items, count: countItems } = await parseResult(response);
+
+  if (after !== undefined) {
+    after({ items, count: countItems });
+  }
+
+  return {
+    count: countItems,
+    items,
   };
 }

@@ -17,6 +17,7 @@ import { InputCollection } from '@backend/src/utilities/collection/collection.in
 import { cloneDeep } from 'lodash';
 import { compareAsc } from 'date-fns';
 import { Game } from '@/modules/game/game.model';
+import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 
 class ServiceSessionClass
   implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
@@ -198,34 +199,25 @@ class ServiceSessionClass
     return sessionNew;
   }
 
-  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
-    const response = await apolloClient.query({
+  async loadPage(data: InputCollection) {
+    return loadPageBase<Session>({
+      data,
       query: queryPageSession,
-      variables: {
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-      },
+      parseResult: async response => ({
+        items: await Promise.all(
+          response.data.sessions.items.map((session: Session) => Session.parseFromServer(session)),
+        ),
+        count: response.data.sessions.count,
+      }),
+      after: ({ items }) =>
+        store.commit(
+          'moduleSession/setSessionsIfNotExisting',
+          items.reduce((obj, entity) => {
+            obj[entity.id as ID] = entity;
+            return obj;
+          }, {} as Partial<{ [key in ID]: Entity }>),
+        ),
     });
-
-    const entities: Session[] = await Promise.all(
-      response.data.sessions.items.map((session: Session) => Session.parseFromServer(session)),
-    );
-
-    store.commit(
-      'moduleSession/setSessionsIfNotExisting',
-      entities.reduce((obj, entity) => {
-        obj[entity.id as ID] = entity;
-        return obj;
-      }, {} as Partial<{ [key in ID]: Entity }>),
-    );
-
-    return {
-      count: response.data.sessions.count,
-      items: entities,
-    };
   }
 
   async delete(session: Session) {

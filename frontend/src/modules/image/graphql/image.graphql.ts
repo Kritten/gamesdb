@@ -7,6 +7,7 @@ export const queryPageImage = gql`
     $sortBy: [String!]!
     $sortDesc: [Boolean!]!
     $filters: [InputCollectionFilter!]!
+    $leftJoins: [String!]
   ) {
     images(
       imageData: {
@@ -15,6 +16,7 @@ export const queryPageImage = gql`
         sortBy: $sortBy
         sortDesc: $sortDesc
         filters: $filters
+        leftJoins: $leftJoins
       }
     ) {
       count

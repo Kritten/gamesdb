@@ -14,6 +14,7 @@ import { ref } from 'vue';
 import { cloneDeep } from 'lodash';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { store } from '@/modules/app/app.store';
+import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
   useCreate() {
@@ -100,34 +101,25 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
     return game;
   }
 
-  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
-    const response = await apolloClient.query({
+  async loadPage(data: InputCollection) {
+    return loadPageBase<Game>({
+      data,
       query: queryPageGame,
-      variables: {
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-      },
+      parseResult: async response => ({
+        items: await Promise.all(
+          response.data.games.items.map((game: Game) => Game.parseFromServer(game)),
+        ),
+        count: response.data.games.count,
+      }),
+      after: ({ items }) =>
+        store.commit(
+          'moduleGame/addGames',
+          items.reduce((obj, entity) => {
+            obj[entity.id as ID] = entity;
+            return obj;
+          }, {} as { [key: string]: Game }),
+        ),
     });
-
-    const entities: Game[] = await Promise.all(
-      response.data.games.items.map((game: Game) => Game.parseFromServer(game)),
-    );
-
-    store.commit(
-      'moduleGame/addGames',
-      entities.reduce((obj, entity) => {
-        obj[entity.id as ID] = entity;
-        return obj;
-      }, {} as { [key: string]: Game }),
-    );
-
-    return {
-      count: response.data.games.count,
-      items: entities,
-    };
   }
 
   async delete(game: Game) {

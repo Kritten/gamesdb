@@ -12,6 +12,7 @@ import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.ty
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
+import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 
 class ServiceImageClass
   implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
@@ -88,26 +89,17 @@ class ServiceImageClass
     return response.data.deleteImage;
   }
 
-  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
-    const response = await apolloClient.query({
+  async loadPage(data: InputCollection) {
+    return loadPageBase<Image>({
+      data,
       query: queryPageImage,
-      variables: {
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-      },
+      parseResult: async response => ({
+        items: await Promise.all(
+          response.data.images.items.map((image: Image) => Image.parseFromServer(image)),
+        ),
+        count: response.data.images.count,
+      }),
     });
-
-    const entities: Image[] = await Promise.all(
-      response.data.images.items.map((image: Image) => Image.parseFromServer(image)),
-    );
-
-    return {
-      count: response.data.images.count,
-      items: entities,
-    };
   }
 }
 

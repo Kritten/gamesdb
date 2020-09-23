@@ -12,6 +12,7 @@ import { ServiceCollectionInterface } from '../app/utilities/collection/collecti
 import { ServiceEntityInterface } from '../app/utilities/entity/entity.types';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { queue } from '@/queue';
+import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 
 class ServiceRatingClass
   implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
@@ -88,26 +89,17 @@ class ServiceRatingClass
     return response.data.deleteRating;
   }
 
-  async loadPage({ page, count, sortBy, sortDesc, filters }: InputCollection) {
-    const response = await apolloClient.query({
+  async loadPage(data: InputCollection) {
+    return loadPageBase<Rating>({
+      data,
       query: queryPageRatings,
-      variables: {
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-      },
+      parseResult: async response => ({
+        items: await Promise.all(
+          response.data.ratings.items.map((rating: Rating) => Rating.parseFromServer(rating)),
+        ),
+        count: response.data.ratings.count,
+      }),
     });
-
-    const entities: Rating[] = await Promise.all(
-      response.data.ratings.items.map((rating: Rating) => Rating.parseFromServer(rating)),
-    );
-
-    return {
-      count: response.data.ratings.count,
-      items: entities,
-    };
   }
 }
 

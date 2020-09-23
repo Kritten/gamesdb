@@ -1,31 +1,23 @@
-import { apolloClient } from '@/vue-apollo';
 import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { Playtime } from './playtime.model';
+import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import { queryPagePlaytime } from '@/modules/playtime/graphql/playtime.graphql';
 
 class ServicePlaytimeClass implements ServiceCollectionInterface<Playtime> {
-  async loadPage({ page, count, sortBy, sortDesc, filters, leftJoins }: InputCollection) {
-    const response = await apolloClient.query({
+  async loadPage(data: InputCollection) {
+    return loadPageBase<Playtime>({
+      data,
       query: queryPagePlaytime,
-      variables: {
-        page,
-        count,
-        sortBy,
-        sortDesc,
-        filters,
-        leftJoins,
-      },
+      parseResult: async response => ({
+        items: await Promise.all(
+          response.data.playtimes.items.map((playtime: Playtime) =>
+            Playtime.parseFromServer(playtime),
+          ),
+        ),
+        count: response.data.playtimes.count,
+      }),
     });
-
-    const entities: Playtime[] = await Promise.all(
-      response.data.playtimes.items.map((playtime: Playtime) => Playtime.parseFromServer(playtime)),
-    );
-
-    return {
-      count: response.data.playtimes.count,
-      items: entities,
-    };
   }
 }
 
