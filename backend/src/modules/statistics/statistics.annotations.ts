@@ -1,4 +1,8 @@
-export const annotationsStatistics = {
+import { SelectQueryBuilder } from 'typeorm';
+
+export const annotationsStatistics: {
+  [key: string]: (query: SelectQueryBuilder<unknown>) => void;
+} = {
   rating(query) {
     query.addSelect([
       'Avg(rating.rating) as rating',
@@ -8,15 +12,22 @@ export const annotationsStatistics = {
     query.addGroupBy('entity.id');
   },
   countPlayed(query) {
-    query.addSelect(
-      subQuery =>
-        subQuery
-          .select('Count(*)', 'count')
-          .from('session', 'session')
-          .where(`session.gameId = entity.id`)
-          .andWhere('session.isVirtual = false'),
-      'countPlayed',
+    query.addSelect(['Count(*) as countPlayed']);
+    query.leftJoin(
+      'session',
+      'session',
+      'session.gameId = entity.id && session.isVirtual = false',
     );
+    query.addGroupBy('entity.id');
+    // query.addSelect(
+    //   subQuery =>
+    //     subQuery
+    //       .select('Count(*)', 'count')
+    //       .from('session', 'session')
+    //       .where(`session.gameId = entity.id`)
+    //       .andWhere('session.isVirtual = false'),
+    //   'countPlayed',
+    // );
   },
   timePlayed(query) {
     const queryPlaytime = query.connection

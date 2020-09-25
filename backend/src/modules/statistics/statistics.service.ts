@@ -25,7 +25,7 @@ export class StatisticsService {
 
     const count = query.getCount();
 
-    this.collectionService.paginate(query, data);
+    this.collectionService.paginate(query, data, false);
 
     const items = await query.getRawMany();
 
