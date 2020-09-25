@@ -4,6 +4,7 @@ import { InputCollection } from '../../utilities/collection/collection.input';
 import { CollectionService } from '../../utilities/collection/collection.service';
 import { Inject } from '@nestjs/common';
 import { Playtime } from '../playtime/playtime.entity';
+import { annotationsStatistics } from './statistics.annotations';
 
 export class StatisticsService {
   constructor(
@@ -16,15 +17,7 @@ export class StatisticsService {
       .createQueryBuilder(Game, 'entity')
       .select(['entity.id', 'entity.name']);
 
-    query.addSelect(
-      subQuery =>
-        subQuery
-          .select('Count(*)', 'count')
-          .from('session', 'session')
-          .where(`session.gameId = entity.id`)
-          .andWhere('session.isVirtual = false'),
-      'countPlayed',
-    );
+    annotationsStatistics.countPlayed(query);
 
     this.collectionService.where(query, data);
 
@@ -47,26 +40,11 @@ export class StatisticsService {
   }
 
   async gamesTimePlayed(data: InputCollection) {
-    const queryPlaytime = await getConnection()
-      .createQueryBuilder()
-      .select(
-        'COALESCE(SUM(TIMESTAMPDIFF(SECOND, playtime.start, playtime.end)), 0)',
-      )
-      .from('playtime', 'playtime')
-      .where('playtime.sessionId = session.id');
-
-    const querySession = await getConnection()
-      .createQueryBuilder()
-      .select(`COALESCE(SUM((${queryPlaytime.getQuery()})), 0)`)
-      .from('session', 'session')
-      .where('session.gameId = entity.id')
-      .andWhere('session.isVirtual = false');
-
     const query = await getConnection()
       .createQueryBuilder()
-      .select(['entity.id', 'entity.name'])
       .from(Game, 'entity')
-      .addSelect(`(${querySession.getQuery()})`, 'timePlayed');
+      .select(['entity.id', 'entity.name']);
+    annotationsStatistics.timePlayed(query);
 
     this.collectionService.where(query, data);
 
@@ -91,15 +69,9 @@ export class StatisticsService {
   async gamesBestRated(data: InputCollection) {
     const query = await getConnection()
       .createQueryBuilder(Game, 'entity')
-      .select([
-        'entity.id',
-        'entity.name',
-        'Avg(rating.rating) as rating',
-        'Count(rating.id) as count',
-      ]);
+      .select(['entity.id', 'entity.name']);
 
-    query.leftJoin('rating', 'rating', `entity.id = rating.gameId`);
-    query.groupBy('entity.id');
+    annotationsStatistics.rating(query);
 
     this.collectionService.where(query, data);
 

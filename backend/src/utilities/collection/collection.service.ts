@@ -3,6 +3,11 @@ import { BaseEntity } from '../types';
 import { InputCollection } from './collection.input';
 import { EntityService } from '../entity/entity.service';
 import { getConnection, ObjectType, SelectQueryBuilder } from 'typeorm';
+import { annotationsStatistics } from '../../modules/statistics/statistics.annotations';
+
+const regexComputedField = new RegExp(
+  /^(?<sortBy>[a-zA-Z.]+):(?<name>[a-zA-Z]+)$/,
+);
 
 @Injectable()
 export class CollectionService<T extends BaseEntity> {
@@ -77,10 +82,16 @@ export class CollectionService<T extends BaseEntity> {
   }
 
   orderBy(query: SelectQueryBuilder<T>, data: InputCollection) {
-    // TODO: support multiple orderbys
     for (let i = 0; i < data.sortBy.length; i++) {
-      const sortBy = data.sortBy[i];
+      let sortBy = data.sortBy[i];
       const sortDesc = data.sortDesc[i];
+
+      const match = sortBy.match(regexComputedField);
+
+      if (match !== null) {
+        sortBy = match.groups.sortBy;
+        annotationsStatistics[match.groups.name](query);
+      }
 
       let nameFunctionOrderBy = 'orderBy';
       if (i > 0) {

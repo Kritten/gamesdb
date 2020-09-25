@@ -125,6 +125,9 @@ export default defineComponent({
       { field: 'entity.size', name: 'size' },
       { field: 'entity.complexity', name: 'complexity' },
       { field: 'entity.isCoop', name: 'isCoop' },
+      { field: 'rating:rating', name: 'rating' },
+      { field: 'countPlayed:countPlayed', name: 'countPlayed' },
+      { field: 'timePlayed:timePlayed', name: 'timePlayed' },
     ];
 
     return {
