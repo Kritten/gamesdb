@@ -12,7 +12,7 @@ export const annotationsStatistics: {
     query.addGroupBy('entity.id');
   },
   countPlayed(query) {
-    query.addSelect(['Count(*) as countPlayed']);
+    query.addSelect(['Count(session.id) as countPlayed']);
     query.leftJoin(
       'session',
       'session',
