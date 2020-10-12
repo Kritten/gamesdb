@@ -99,17 +99,24 @@ export class CollectionService<T extends BaseEntity> {
       }
 
       if (sortBy.includes('.') && !sortBy.startsWith('entity.')) {
-        const [table, aggregation] = sortBy.split('.');
-
-        query.addSelect(
-          subQuery =>
-            subQuery
-              .select(aggregation, 'foo')
-              .from(table, table)
-              .where(`${table}.sessionId = entity.id`),
-          'kritten',
-        );
-        query[nameFunctionOrderBy]('kritten', sortDesc ? 'DESC' : 'ASC');
+        if (sortBy.startsWith('aggregation:')) {
+          const [table, aggregation] = sortBy.slice(12).split('.');
+          query.addSelect(
+            subQuery =>
+              subQuery
+                .select(aggregation, 'foo')
+                .from(table, table)
+                .where(`${table}.sessionId = entity.id`),
+            'kritten',
+          );
+          query[nameFunctionOrderBy]('kritten', sortDesc ? 'DESC' : 'ASC');
+        } else if (sortBy.startsWith('relation:')) {
+          const [entity, field] = sortBy.slice(9).split('.');
+          query[nameFunctionOrderBy](
+            `${entity}.${field}`,
+            sortDesc ? 'DESC' : 'ASC',
+          );
+        }
       } else {
         query[nameFunctionOrderBy](`${sortBy}`, sortDesc ? 'DESC' : 'ASC');
       }

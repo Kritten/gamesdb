@@ -61,7 +61,7 @@ class ServiceSessionClass
     this.loadPage({
       count: 1,
       page: 1,
-      sortBy: ['playtime.MAX(start)'],
+      sortBy: ['aggregation:playtime.MAX(start)'],
       sortDesc: [true],
       filters,
     }).then(async ({ items }) => {
