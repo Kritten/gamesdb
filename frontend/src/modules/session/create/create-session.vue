@@ -44,10 +44,14 @@
         v-for="(playtime, index) in createSession.entity.value.playtimes"
         :key="index"
       >
-        <display-playtime
-          :start="playtime.start"
-          :end="playtime.end"
+        <item-playtime
+          v-model:start="playtime.start"
+          v-model:end="playtime.end"
         />
+<!--        <display-playtime-->
+<!--          :start="playtime.start"-->
+<!--          :end="playtime.end"-->
+<!--        />-->
         <button
           type="button"
           @click="createSession.playtimeRemove(playtime)"

@@ -24,10 +24,15 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    compact: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
-    const formatDate = 'PPP';
-    const formatTime = 'ppp';
+    const formatDate = props.compact === true ? 'dd.MM.yyyy' : 'PPP';
+    const formatTime = props.compact === true ? 'HH:mm:ss' : 'ppp';
     // const formatDate = 'dd.MM.yyyy';
     // const formatTime = 'HH:mm:ss';
 

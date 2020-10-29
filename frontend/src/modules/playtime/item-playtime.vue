@@ -1,10 +1,20 @@
 <template>
   <div>
-    <label>{{ t('playtime.start') }}</label>
+    <label>{{ t('playtime.start') }}
+      <small>(<base-date-time
+        :value="startInternal"
+        :compact="true"
+      />)</small>
+    </label>
     <datetime-picker v-model="startInternal" />
   </div>
   <div>
-    <label>{{ t('playtime.end') }}</label>
+    <label>{{ t('playtime.end') }}
+      <small>(<base-date-time
+        :value="endInternal"
+        :compact="true"
+      />)</small>
+    </label>
     <datetime-picker v-model="endInternal" />
   </div>
 </template>
@@ -14,11 +24,12 @@ import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
 import DatetimePicker from '@/modules/app/base/datetime-picker.vue';
+import BaseDateTime from '@/modules/app/base/base-date-time.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ItemPlaytime',
-  components: { DatetimePicker },
+  components: { DatetimePicker, BaseDateTime },
   props: {
     start: {
       type: Date,

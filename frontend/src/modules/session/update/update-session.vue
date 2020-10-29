@@ -24,18 +24,22 @@
         v-for="(playtime, index) in updateSession.entity.value.playtimes"
         :key="index"
       >
-        <display-playtime
-          :start="playtime.start"
-          :end="playtime.end"
-        />
-        <button
-          type="button"
-          @click="updateSession.playtimeRemove(playtime)"
-        >
-          {{ t('playtime.label') }} {{ t('common.delete') }}
-        </button>
+        <template v-if="!updateSession.entity.value.isVirtual || !isEqual(playtime.start, playtime.end)">
+          <hr>
+          <item-playtime
+            v-model:start="playtime.start"
+            v-model:end="playtime.end"
+          />
+          <button
+            type="button"
+            @click="updateSession.playtimeRemove(playtime)"
+          >
+            {{ t('playtime.label') }} {{ t('common.delete') }}
+          </button>
+        </template>
       </div>
     </div>
+    <hr>
     <div>
       <button type="submit">
         {{ t('common.edit') }}
@@ -52,6 +56,7 @@ import ItemPlaytime from '@/modules/playtime/item-playtime.vue';
 import DisplayPlaytime from '@/modules/playtime/display-playtime.vue';
 import { ServiceSession } from '@/modules/session/session.service';
 import { defineComponent } from 'vue';
+import { isEqual } from 'date-fns';
 
 export default defineComponent({
   name: 'UpdateSession',
@@ -69,6 +74,7 @@ export default defineComponent({
     return {
       t,
       updateSession,
+      isEqual,
     };
   },
 });

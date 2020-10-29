@@ -147,7 +147,7 @@ class ServiceSessionClass
       },
       pause: async (session: Session) => {
         session.stop();
-        await this.update(session);
+        await this.update(session, { event: 'pausedSession' });
       },
       continue: async (session: Session) => {
         const dateCurrent = new Date();
@@ -157,14 +157,12 @@ class ServiceSessionClass
             end: dateCurrent,
           }),
         );
-        await this.update(session);
+        await this.update(session, { event: 'continuedSession' });
       },
       stop: async (session: Session) => {
         session.stop();
         session.isVirtual = false;
-        await this.update(session);
-
-        queue.notify('stoppedSession', session);
+        await this.update(session, { event: 'stoppedSession' });
       },
     };
   }
@@ -184,7 +182,7 @@ class ServiceSessionClass
     return sessionNew;
   }
 
-  async update(session: Session) {
+  async update(session: Session, { event = 'updatedSession' }: { event?: string } = {}) {
     const response = await apolloClient.mutate({
       mutation: mutationUpdateSession,
       variables: {
@@ -194,7 +192,7 @@ class ServiceSessionClass
 
     const sessionNew = await Session.parseFromServer(response.data.updateSession);
 
-    queue.notify('updatedSession', sessionNew);
+    queue.notify(event, sessionNew);
 
     return sessionNew;
   }

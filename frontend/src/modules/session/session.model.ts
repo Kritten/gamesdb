@@ -30,7 +30,7 @@ export class Session extends Entity implements SessionInterface {
     this.playtimes = setDefaultIfNullOrUndefined<Playtime[]>(data.playtimes, []);
   }
 
-  get currentPlaytime() {
+  get currentPlaytime(): Playtime | undefined {
     return this.playtimes.find(playtime => isEqual(playtime.start, playtime.end));
   }
 

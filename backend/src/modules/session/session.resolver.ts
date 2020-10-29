@@ -80,11 +80,11 @@ export class SessionResolver extends EntityResolver {
   @UseGuards(GqlAuthGuard)
   async updateSession(@Args('sessionData') sessionData: UpdateSessionInput) {
     const session = new Session();
+    session.id = parseInt(sessionData.id, 10);
     session.comment = sessionData.comment;
     session.isChallenge = sessionData.isChallenge;
     session.isVirtual = sessionData.isVirtual;
 
-    session.id = parseInt(sessionData.id, 10);
     await this.handleRelation(
       'players',
       session,
@@ -130,6 +130,20 @@ export class SessionResolver extends EntityResolver {
         .filter(playtime => playtime.id === undefined)
         .map(playtimeData => {
           const playtime = new Playtime();
+          playtime.session = session;
+          playtime.start = playtimeData.start;
+          playtime.end = playtimeData.end;
+          return playtime;
+        }),
+    );
+
+    // Update existing playtimes
+    await this.playtimeService.update(
+      sessionData.playtimes
+        .filter(playtime => playtime.id !== undefined)
+        .map(playtimeData => {
+          const playtime = new Playtime();
+          playtime.id = parseInt(playtimeData.id, 10);
           playtime.session = session;
           playtime.start = playtimeData.start;
           playtime.end = playtimeData.end;

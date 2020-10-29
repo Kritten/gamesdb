@@ -1,34 +1,61 @@
 <template>
   {{ collection.countItems.value }} {{ t('session.virtual.label', collection.countItems.value) }}
-  <ul>
-    <li
-      v-for="session in collection.items.value"
-      :key="session.id"
-      :session="session"
-    >
-      {{ session.game.name }}
-      <button
-        v-if="session.currentPlaytime !== undefined"
-        type="button"
-        @click="useTrackSession.pause(session)"
+  <table>
+    <thead>
+      <tr>
+        <th>{{ t('game.label') }}</th>
+        <th>{{ t('session.label') }}</th>
+        <th>{{ t('playtime.label') }}</th>
+        <th />
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="session in collection.items.value"
+        :key="session.id"
+        :session="session"
       >
-        Session Pausieren
-      </button>
-      <button
-        v-if="session.currentPlaytime === undefined"
-        type="button"
-        @click="useTrackSession.continue(session)"
-      >
-        Session Fortsetzen
-      </button>
-      <button
-        type="button"
-        @click="useTrackSession.stop(session)"
-      >
-        Session Beenden
-      </button>
-    </li>
-  </ul>
+        <td>
+          {{ session.game.name }}
+        </td>
+        <td>
+          <details>
+            <summary>{{ t('session.label') }}</summary>
+            <update-session :session="session" />
+          </details>
+        </td>
+        <td>
+          <span
+            v-if="session.currentPlaytime !== undefined"
+          >
+            {{ formatDistanceToNowStrict(session.currentPlaytime.start, {locale: de, includeSeconds: true }) }}
+          </span>
+        </td>
+        <td>
+          <button
+            v-if="session.currentPlaytime !== undefined"
+            type="button"
+            @click="useTrackSession.pause(session)"
+          >
+            Session Pausieren
+          </button>
+          <button
+            v-if="session.currentPlaytime === undefined"
+            type="button"
+            @click="useTrackSession.continue(session)"
+          >
+            Session Fortsetzen
+          </button>
+          <button
+            type="button"
+            @click="useTrackSession.stop(session)"
+          >
+            Session Beenden
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <button
     v-if="collection.hasNextPage.value"
     @click="collection.loadNextItems"
@@ -46,9 +73,13 @@ import { useI18n } from 'vue-i18n';
 import { queue } from '@/queue';
 import { defineComponent, ref } from 'vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
+import UpdateSession from '@/modules/session/update/update-session.vue';
+import { formatDistanceToNowStrict } from 'date-fns';
+import { de } from 'date-fns/locale';
 
 export default defineComponent({
   name: 'ListSessionsVirtual',
+  components: { UpdateSession },
   props: {
   },
   setup() {
@@ -67,7 +98,7 @@ export default defineComponent({
 
     const useTrackSession = ServiceSession.useTrackSession();
 
-    for (const event of ['startedSession', 'stoppedSession']) {
+    for (const event of ['startedSession', 'continuedSession', 'pausedSession', 'stoppedSession']) {
       queue.listen(event, () => {
         collection.reset();
       });
@@ -78,6 +109,8 @@ export default defineComponent({
       collection,
       store: useStore(),
       useTrackSession,
+      formatDistanceToNowStrict,
+      de,
     };
   },
 });
