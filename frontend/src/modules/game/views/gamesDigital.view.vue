@@ -1,7 +1,7 @@
 <template>
-  <h1>Spiele</h1>
+  <h1>{{ t('game.digital.label', 2) }}</h1>
   <details>
-    <summary>{{ t('game.label') }} anlegen</summary>
+    <summary>{{ t('game.digital.label') }} {{ t('common.create') }}</summary>
     <create-game />
   </details>
   <list-games digital-only />
