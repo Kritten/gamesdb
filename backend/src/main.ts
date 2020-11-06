@@ -27,7 +27,11 @@ async function bootstrap() {
       secret: configService.get<string>('SECRET'),
       resave: false,
       saveUninitialized: false,
+      rolling: true,
       store: sessionStore,
+      cookie: {
+        maxAge: 2628000000, // one month
+      },
     }),
   );
   app.use(passport.initialize());
