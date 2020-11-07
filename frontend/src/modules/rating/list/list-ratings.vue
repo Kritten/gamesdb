@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, nextTick, ref} from 'vue';
+import { defineComponent, nextTick, ref } from 'vue';
 import CreateRating from '@/modules/rating/create/create-rating.vue';
 import ListItemRating from '@/modules/rating/list/list-item-rating.vue';
 import ListFiltersRating from '@/modules/rating/list/list-filters-rating.vue';
@@ -51,12 +51,14 @@ import { Rating } from '@/modules/rating/rating.model';
 import { ServiceRating } from '@/modules/rating/rating.service';
 import { queue } from '@/queue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
-import {cloneDeep} from "lodash";
-import {InputCollectionFilter} from "@backend/src/utilities/collection/collection.input";
+import { cloneDeep } from 'lodash';
+import { InputCollectionFilter } from '@backend/src/utilities/collection/collection.input';
 
 export default defineComponent({
   name: 'ListRatings',
-  components: { ListItemRating, CreateRating, ListFiltersRating, BaseListSort },
+  components: {
+    ListItemRating, CreateRating, ListFiltersRating, BaseListSort,
+  },
   setup() {
     const { t } = useI18n();
     const filters = ref<ServiceCollectionFilters>({});
@@ -78,7 +80,7 @@ export default defineComponent({
         sortDesc,
         filters,
       },
-      //todo: was macht das hier?
+      // todo: was macht das hier?
       watchFilters: false,
     });
 

@@ -8,14 +8,14 @@
   <div>
     <base-list-filter
       :filters="filters"
-      :i18n-prefix="i18nPrefix"
+      label="game.filters.name"
       name="game.name"
       type="string"
       @update-filter="$emit('update-filter', $event)"
     />
     <base-list-filter
       :filters="filters"
-      :i18n-prefix="i18nPrefix"
+      label="player.filters.name"
       name="player.name"
       type="string"
       @update-filter="$emit('update-filter', $event)"

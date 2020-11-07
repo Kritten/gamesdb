@@ -8,14 +8,14 @@
   <div>
     <base-list-filter
       :filters="filters"
-      :i18n-prefix="i18nPrefix"
+      label="game.filters.name"
       name="name"
       type="string"
       @update-filter="$emit('update-filter', $event)"
     />
     <base-list-filter
       :filters="filters"
-      :i18n-prefix="i18nPrefix"
+      label="game.filters.countPlayers"
       name="countPlayers"
       :filter-inputs="[{
         name: 'countPlayersMin',
@@ -29,7 +29,7 @@
     />
     <base-list-filter
       :filters="filters"
-      :i18n-prefix="i18nPrefix"
+      label="game.filters.isCoop"
       name="isCoop"
       type="boolean"
       @update-filter="$emit('update-filter', $event)"

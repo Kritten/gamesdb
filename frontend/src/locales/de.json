@@ -33,9 +33,9 @@
       "label": "Digitales Spiel | Digitale Spiele"
     },
     "filters": {
-      "name": "@:game.name",
+      "name": "Spielname",
       "isCoop": "@:game.isCoop",
-      "countPlayers": "@:player.label"
+      "countPlayers": "Spieleranzahl"
     }
   },
   "category": {
@@ -48,7 +48,10 @@
     "label": "Stimmung | Stimmungen"
   },
   "player": {
-    "label": "Spieler | Spieler"
+    "label": "Spieler | Spieler",
+    "filters": {
+      "name": "Spielername"
+    }
   },
   "winner": {
     "label": "Gewinner | Gewinner"

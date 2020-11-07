@@ -3,7 +3,7 @@
     <slot>
       <template v-if="type === 'string'">
         <label>
-          {{ t(`${i18nPrefix}.filters.${name}`) }}
+          {{ t(label) }}
           <input
             v-model="value"
           >
@@ -11,7 +11,7 @@
       </template>
       <template v-else-if="type === 'int' || type === 'float'">
         <label>
-          {{ t(`${i18nPrefix}.filters.${name}`) }}
+          {{ t(label) }}
           <input
             v-model.number="value"
             type="number"
@@ -20,7 +20,7 @@
       </template>
       <template v-else-if="type === 'boolean'">
         <div>
-          {{ t(`${i18nPrefix}.filters.${name}`) }}
+          {{ t(label) }}
         </div>
         <label>
           <input
@@ -75,7 +75,7 @@ export default defineComponent({
       required: true,
       validator: (value) => value === 'string' || value === 'int' || value === 'float' || value === 'boolean',
     },
-    i18nPrefix: {
+    label: {
       required: true,
       type: String,
     },
