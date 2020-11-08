@@ -1,10 +1,4 @@
 <template>
-  <router-link
-    :to="{ name: 'login' }"
-  >
-    {{ t('common.login') }}
-  </router-link>
-
   <h1>{{ t('wishlist.label') }}</h1>
 </template>
 

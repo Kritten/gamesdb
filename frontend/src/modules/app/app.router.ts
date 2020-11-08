@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
       // redirect the user to the wishlist if he is not logged in, otherwise to the dashboard
       waitForUser((user: User | null) => {
         if (user === null) {
-          router.push({ name: 'wishlist' });
+          router.push({ name: 'login' });
         } else {
           router.push({ name: 'dashboard' });
         }
