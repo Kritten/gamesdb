@@ -35,7 +35,9 @@ class ServiceAppClass {
           })
           .then();
       }
-    } catch (e) {}
+    } catch (e) {
+      await this.setCurrentUser(null);
+    }
 
     store.commit('setIsInitialized', true);
   }
@@ -43,8 +45,13 @@ class ServiceAppClass {
   /**
    * Set current user
    */
-  async setCurrentUser(data: UserInterface) {
-    const user = new User(data);
+  async setCurrentUser(data: UserInterface | null) {
+    let user: User | null = null;
+
+    if (data !== null) {
+      user = new User(data);
+    }
+
     await store.dispatch('setUser', user);
   }
 

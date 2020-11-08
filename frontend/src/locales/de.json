@@ -7,7 +7,9 @@
     "delete": "Löschen",
     "yes": "Ja",
     "no": "Nein",
-    "undefined": "Egal"
+    "undefined": "Egal",
+    "login": "Login",
+    "logout": "Logout"
   },
   "login": {
     "name": "Name",
@@ -77,5 +79,8 @@
     "label": "Spielzeit | Spielzeiten",
     "start": "Anfang",
     "end": "Ende"
+  },
+  "wishlist": {
+    "label": "Wunschliste | Wunschlisten"
   }
 }

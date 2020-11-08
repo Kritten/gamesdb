@@ -43,7 +43,7 @@ class ServiceLoginClass {
 
         router
           .push({
-            name: 'login',
+            name: 'home',
           })
           .then();
       }

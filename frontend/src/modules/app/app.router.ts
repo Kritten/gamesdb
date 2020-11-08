@@ -12,17 +12,76 @@ import ViewPlayer from '@/modules/player/player.view.vue';
 import ViewImage from '@/modules/image/image.view.vue';
 import ViewUniverse from '@/modules/universe/universe.view.vue';
 import ViewRating from '@/modules/rating/rating.view.vue';
+import ViewWishlist from '@/modules/wishlist/wishlist.view.vue';
 import { queue } from '@/queue';
+import { store, UserState } from '@/modules/app/app.store';
+import { watch } from 'vue';
+import { User } from '@/modules/user/user.model';
+import { ServiceApp } from '@/modules/app/app.service';
+
+const waitForUser = (callback: (user: UserState) => void) => {
+  if (store.state.user === undefined) {
+    const stopHandle = watch(
+      () => store.state.user,
+      (user: UserState | undefined) => {
+        stopHandle();
+
+        callback(user as UserState);
+      },
+    );
+  } else {
+    callback(store.state.user);
+  }
+};
 
 const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    name: 'home',
+    component: {},
+    beforeEnter: (to, from, next) => {
+      // redirect the user to the wishlist if he is not logged in, otherwise to the dashboard
+      waitForUser((user: User | null) => {
+        if (user === null) {
+          router.push({ name: 'wishlist' });
+        } else {
+          router.push({ name: 'dashboard' });
+        }
+      });
+    },
+  },
   {
     path: '/login',
     name: 'login',
     component: Login,
+    beforeEnter: (to, from, next) => {
+      // redirect the user to the dashboard if he is already logged in
+      if (store.state.user !== undefined && store.state.user !== null) {
+        router.push({ name: 'dashboard' });
+        return;
+      }
+      next();
+    },
+  },
+  {
+    path: '/wishlist',
+    name: 'wishlist',
+    component: ViewWishlist,
   },
   {
     path: '/',
+    name: 'authenticated',
     component: ViewApp,
+    beforeEnter: (to, from, next) => {
+      // redirect the user to home if he is not logged in
+      waitForUser((user: User | null) => {
+        if (user === null) {
+          router.push({ name: 'home' });
+        } else {
+          next();
+        }
+      });
+    },
     children: [
       {
         path: '',
@@ -89,11 +148,13 @@ export const router = createRouter({
 });
 
 queue.listen('graphqlError', () => {
-  if (router.currentRoute.value.name !== 'login') {
-    router
-      .push({
-        name: 'login',
-      })
-      .then();
-  }
+  ServiceApp.setCurrentUser(null).then(() => {
+    if (router.currentRoute.value.matched[0]?.name === 'authenticated') {
+      router
+        .push({
+          name: 'login',
+        })
+        .then();
+    }
+  });
 });
