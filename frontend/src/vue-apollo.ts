@@ -12,7 +12,6 @@ const httpEndpoint =
 
 const link = onError(({ graphQLErrors, networkError }) => {
   console.warn(graphQLErrors, 'graphQLErrors');
-  console.warn(networkError, 'networkError');
   if (graphQLErrors !== undefined && graphQLErrors[0].message === 'Forbidden resource') {
     queue.notify('graphqlError');
   }

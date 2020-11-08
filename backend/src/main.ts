@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import passport from 'passport';
-// import * as session from 'express-session';
 import session from 'express-session';
 import { ConfigService } from '@nestjs/config';
 import MySQLStore from 'express-mysql-session';

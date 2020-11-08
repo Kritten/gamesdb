@@ -39,6 +39,7 @@ class ServiceAppClass {
 
     store.commit('setIsInitialized', true);
   }
+
   /**
    * Set current user
    */

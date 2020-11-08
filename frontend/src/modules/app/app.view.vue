@@ -1,4 +1,8 @@
 <template>
+  <a
+    href="#"
+    @click="logoutService.logout"
+  >{{ t('common.logout') }}</a>
   <ul>
     <router-link
       v-for="route in routes"
@@ -19,12 +23,14 @@
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { defineComponent } from 'vue';
+import { ServiceLogin } from '@/modules/app/login/login.service';
 
 export default defineComponent({
   name: 'ViewApp',
   setup() {
     const { t } = useI18n();
     const store = useStore();
+    const logoutService = ServiceLogin.useLogout();
 
     const routes = [
       {
@@ -73,6 +79,7 @@ export default defineComponent({
       t,
       store,
       routes,
+      logoutService,
     };
   },
 });

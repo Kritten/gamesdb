@@ -1,8 +1,9 @@
 import { reactive, toRefs } from 'vue';
 import { ServiceApp } from '@/modules/app/app.service';
+import { router } from '@/modules/app/app.router';
 
-export class ServiceLogin {
-  static useLogin() {
+class ServiceLoginClass {
+  useLogin() {
     const data = reactive({
       username: null,
       password: null,
@@ -32,4 +33,26 @@ export class ServiceLogin {
       login,
     };
   }
+
+  useLogout() {
+    const logout = async () => {
+      const response = await fetch(`${process.env.VUE_APP_API_ENDPOINT}/logout`);
+
+      if (response.ok) {
+        await ServiceApp.setCurrentUser(null);
+
+        router
+          .push({
+            name: 'login',
+          })
+          .then();
+      }
+    };
+
+    return {
+      logout,
+    };
+  }
 }
+
+export const ServiceLogin = new ServiceLoginClass();
