@@ -1,4 +1,9 @@
 <template>
+  <router-link
+    :to="{ name: 'wishlist' }"
+  >
+    {{ t('wishlist.label') }}
+  </router-link>
   <form @submit.prevent="loginService.login">
     <div>
       <label for="name">{{ t('login.name') }}</label>
