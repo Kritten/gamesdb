@@ -40,7 +40,9 @@
     "filters": {
       "name": "Spielname",
       "isCoop": "@:game.isCoop",
-      "countPlayers": "Spieleranzahl"
+      "countPlayers": "Spieleranzahl",
+      "minutesPlaytimeMin": "Spielzeit (min)",
+      "minutesPlaytimeMax": "Spielzeit (max)"
     }
   },
   "category": {

@@ -34,6 +34,28 @@
       type="boolean"
       @update-filter="$emit('update-filter', $event)"
     />
+    <base-list-filter
+      :filters="filters"
+      label="game.filters.minutesPlaytimeMin"
+      name="minutesPlaytimeMin"
+      :filter-inputs="[{
+        name: 'minutesPlaytimeMin',
+        operator: '>=',
+      }]"
+      type="int"
+      @update-filter="$emit('update-filter', $event)"
+    />
+    <base-list-filter
+      :filters="filters"
+      label="game.filters.minutesPlaytimeMax"
+      name="minutesPlaytimeMax"
+      :filter-inputs="[{
+        name: 'minutesPlaytimeMax',
+        operator: '<=',
+      }]"
+      type="int"
+      @update-filter="$emit('update-filter', $event)"
+    />
   </div>
 </template>
 
