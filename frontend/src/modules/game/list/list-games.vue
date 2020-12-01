@@ -14,6 +14,8 @@
     :options-sort-by="optionsSortBy"
   />
   <hr>
+  <random-game :filters="filters" />
+  <hr>
   {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
   <table>
     <list-item-game
@@ -44,10 +46,13 @@ import { defineComponent, ref, nextTick } from 'vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { InputCollectionFilter } from '@backend/src/utilities/collection/collection.input';
 import { cloneDeep } from 'lodash';
+import RandomGame from '@/modules/game/random-game.vue';
 
 export default defineComponent({
   name: 'ListGames',
-  components: { ListItemGame, ListFiltersGame, BaseListSort },
+  components: {
+    RandomGame, ListItemGame, ListFiltersGame, BaseListSort,
+  },
   props: {
     digitalOnly: {
       type: Boolean,

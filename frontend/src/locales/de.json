@@ -34,6 +34,9 @@
     "digital": {
       "label": "Digitales Spiel | Digitale Spiele"
     },
+    "random": {
+      "select": "Zufälliges Spiel auswählen"
+    },
     "filters": {
       "name": "Spielname",
       "isCoop": "@:game.isCoop",

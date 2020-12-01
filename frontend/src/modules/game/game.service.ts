@@ -8,13 +8,18 @@ import {
 } from '@/modules/game/graphql/game.graphql';
 import { Game } from '@/modules/game/game.model';
 import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
+import {
+  ServiceCollectionFilters,
+  ServiceCollectionInterface,
+} from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { cloneDeep } from 'lodash';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { store } from '@/modules/app/app.store';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
+import type { InputCollectionFilter } from '@backend/dist/utilities/collection/collection.input';
+import { router } from '@/modules/app/app.router';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
   useCreate() {
@@ -31,7 +36,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
   }
 
   useUpdate(gamePassed: Game) {
-    let game = ref(cloneDeep(gamePassed));
+    const game = ref(cloneDeep(gamePassed));
 
     return {
       entity: game,
@@ -44,6 +49,31 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
   useDelete() {
     return {
       delete: (game: Game) => this.delete(game),
+    };
+  }
+
+  useRandomGame({ filters }: { filters: ServiceCollectionFilters }) {
+    return {
+      select: async () => {
+        const games = await this.loadPage({
+          count: 1,
+          filters: Object.values(filters),
+          page: 1,
+          sortBy: ['RAND()'],
+          sortDesc: [],
+        });
+
+        const game = games.items[0];
+
+        if (game !== undefined) {
+          router.push({
+            name: 'game',
+            params: {
+              id: game.id as string,
+            },
+          });
+        }
+      },
     };
   }
 
@@ -105,20 +135,19 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
     return loadPageBase<Game>({
       data,
       query: queryPageGame,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         items: await Promise.all(
           response.data.games.items.map((game: Game) => Game.parseFromServer(game)),
         ),
         count: response.data.games.count,
       }),
-      after: ({ items }) =>
-        store.commit(
-          'moduleGame/addGames',
-          items.reduce((obj, entity) => {
-            obj[entity.id as ID] = entity;
-            return obj;
-          }, {} as { [key: string]: Game }),
-        ),
+      after: ({ items }) => store.commit(
+        'moduleGame/addGames',
+        items.reduce((obj, entity) => {
+          obj[entity.id as ID] = entity;
+          return obj;
+        }, {} as { [key: string]: Game }),
+      ),
     });
   }
 
