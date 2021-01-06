@@ -13,7 +13,7 @@ export class EntityService<T extends BaseEntity> {
 
   constructor(
     @Optional() cls: ObjectType<T>,
-    @Optional() options?: FindManyOptions<T>,
+    @Optional() options: FindManyOptions<T> = {},
   ) {
     this.entityClass = cls;
     this._optionsDefaultPassed = options;

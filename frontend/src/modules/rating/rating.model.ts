@@ -1,13 +1,15 @@
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { RatingInterface } from '@/modules/rating/rating.types';
+import { store } from '@/modules/app/app.store';
 import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
 import { EntityInterface, ID } from '../app/utilities/entity/entity.types';
-import { store } from '@/modules/app/app.store';
 
 export class Rating extends Entity implements RatingInterface {
   rating?: number;
+
   player?: Player;
+
   game?: Game;
 
   constructor(data: RatingInterface = {}) {

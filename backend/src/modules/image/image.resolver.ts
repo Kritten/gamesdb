@@ -9,6 +9,7 @@ import { Image } from './image.entity';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { ImageCollectionService } from './collection/image.collection.service';
 import { ImageCollectionData } from './collection/image.collectionData';
+import { WishlistEntityService } from '../wishlist/wishlist.entity.service';
 
 @Resolver(() => Image)
 export class ImageResolver extends EntityResolver {
@@ -16,6 +17,7 @@ export class ImageResolver extends EntityResolver {
     private imageService: ImageEntityService,
     private imageCollectionService: ImageCollectionService,
     private gameService: GameEntityService,
+    private wishlistService: WishlistEntityService,
   ) {
     super();
   }
@@ -39,6 +41,12 @@ export class ImageResolver extends EntityResolver {
     image.name = imageData.name;
     image.link = imageData.link;
     await this.handleRelation('games', image, imageData, this.gameService);
+    await this.handleRelation(
+      'wishlists',
+      image,
+      imageData,
+      this.wishlistService,
+    );
 
     return await this.imageService.create(image);
   }
@@ -51,6 +59,12 @@ export class ImageResolver extends EntityResolver {
     image.name = imageData.name;
     image.link = imageData.link;
     await this.handleRelation('games', image, imageData, this.gameService);
+    await this.handleRelation(
+      'wishlists',
+      image,
+      imageData,
+      this.wishlistService,
+    );
 
     return await this.imageService.update(image);
   }

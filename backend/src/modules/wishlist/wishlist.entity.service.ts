@@ -3,6 +3,8 @@ import { EntityService } from '../../utilities/entity/entity.service';
 
 export class WishlistEntityService extends EntityService<Wishlist> {
   constructor() {
-    super(Wishlist);
+    super(Wishlist, {
+      relations: ['images'],
+    });
   }
 }

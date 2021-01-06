@@ -88,6 +88,7 @@ type Image {
     id: ID!
     link: String!
     name: String!
+    wishlists: [Wishlist!]!
 }
 
 type ImageCollectionData {
@@ -129,7 +130,7 @@ type Mutation {
     deleteRating(id: ID!): Boolean!
     deleteSession(id: ID!): Boolean!
     deleteUniverse(id: ID!): Boolean!
-    deleteWishlist(id: Int!): Boolean!
+    deleteWishlist(id: ID!): Boolean!
     updateCategory(categoryData: UpdateCategoryInput!): Category!
     updateGame(gameData: UpdateGameInput!): Game!
     updateImage(imageData: UpdateImageInput!): Image!
@@ -189,8 +190,8 @@ type Query {
     universe(id: ID!): Universe!
     universes: [Universe!]!
     user(id: ID): User!
-    wishlist(id: Int!): Wishlist!
-    wishlists: [Wishlist!]!
+    wishlist(id: ID!): Wishlist!
+    wishlists(wishlistData: InputCollection!): WishlistCollectionData!
 }
 
 type Rating {
@@ -235,9 +236,16 @@ type User {
 
 type Wishlist {
     id: ID!
+    images: [Image!]!
     link: String!
     name: String!
     price: Int!
+    taken: Boolean
+}
+
+type WishlistCollectionData {
+    count: Int!
+    items: [Wishlist!]!
 }
 
 input CategoryInput {
@@ -274,6 +282,7 @@ input ImageInput {
     id: ID
     link: String!
     name: String!
+    wishlists: [ID!]
 }
 
 input InputCollection {
@@ -384,6 +393,7 @@ input UpdateImageInput {
     id: ID!
     link: String
     name: String
+    wishlists: [ID!]
 }
 
 input UpdateMechanismInput {
@@ -437,10 +447,20 @@ input UpdateUniverseInput {
 
 input UpdateWishlistInput {
     id: ID!
+    images: [ID!]
+    link: String
+    name: String
+    price: Int
+    taken: Boolean
 }
 
 input WishlistInput {
     id: ID
+    images: [ID!]
+    link: String!
+    name: String!
+    price: Int!
+    taken: Boolean
 }
 
 

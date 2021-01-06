@@ -1,9 +1,23 @@
-import { Field, InputType, ID, PartialType } from '@nestjs/graphql';
+import { Field, InputType, ID, PartialType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class WishlistInput {
   @Field(() => ID)
   id?: string;
+
+  @Field(() => String)
+  name: string;
+
+  @Field(() => Int)
+  price: number;
+
+  taken?: boolean;
+
+  @Field(() => String)
+  link: string;
+
+  @Field(() => [ID])
+  images?: string[];
 }
 
 @InputType()

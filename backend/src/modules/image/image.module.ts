@@ -5,9 +5,14 @@ import { Image } from './image.entity';
 import { ImageResolver } from './image.resolver';
 import { ImageEntityService } from './image.entity.service';
 import { ImageCollectionService } from './collection/image.collection.service';
+import { WishlistModule } from '../wishlist/wishlist.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Image]), forwardRef(() => GameModule)],
+  imports: [
+    TypeOrmModule.forFeature([Image]),
+    forwardRef(() => GameModule),
+    forwardRef(() => WishlistModule),
+  ],
   providers: [ImageResolver, ImageEntityService, ImageCollectionService],
   exports: [ImageEntityService],
 })

@@ -12,23 +12,41 @@ import { store } from '@/modules/app/app.store';
 
 export class Game extends Entity implements GameInterface {
   name: string;
+
   description: string;
+
   countPlayersMin: number;
+
   countPlayersMax: number;
+
   minutesPlaytimeMin: number;
+
   minutesPlaytimeMax: number;
+
   isCoop: boolean;
+
   isDigital: boolean;
+
   complexity: number;
+
   size: number;
+
   universes: Universe[];
+
   categories: Category[];
+
   mechanisms: Mechanism[];
+
   moods: Mood[];
+
   images: Image[];
+
   playableWith: Game[];
+
   isExpansionOf: Game | null;
+
   expansions: Game[];
+
   ratings: Rating[];
 
   constructor(data: GameInterface = {}) {

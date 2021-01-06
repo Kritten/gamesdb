@@ -1,5 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  Int,
+  ObjectType,
+} from '@nestjs/graphql';
+import { Image } from '../image/image.entity';
 
 @Entity()
 @ObjectType()
@@ -22,7 +35,21 @@ export class Wishlist {
   price: number;
 
   @Column({
+    type: 'boolean',
+    default: false,
+  })
+  taken?: boolean;
+
+  @Column({
     type: 'text',
   })
   link: string;
+
+  @ManyToMany(
+    () => Image,
+    image => image.wishlists,
+  )
+  @JoinTable()
+  @Field(() => [Image], { defaultValue: [] })
+  images: Image[];
 }

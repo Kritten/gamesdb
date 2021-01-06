@@ -13,6 +13,7 @@ import ViewImage from '@/modules/image/image.view.vue';
 import ViewUniverse from '@/modules/universe/universe.view.vue';
 import ViewRating from '@/modules/rating/rating.view.vue';
 import ViewWishlist from '@/modules/wishlist/wishlist.view.vue';
+import ViewDisplayWishlist from '@/modules/wishlist/display-wishlist.view.vue';
 import { queue } from '@/queue';
 import { store, UserState } from '@/modules/app/app.store';
 import { watch } from 'vue';
@@ -65,8 +66,8 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/wishlist',
-    name: 'wishlist',
-    component: ViewWishlist,
+    name: 'display-wishlist',
+    component: ViewDisplayWishlist,
   },
   {
     path: '/',
@@ -137,6 +138,11 @@ const routes: RouteRecordRaw[] = [
         path: 'ratings',
         name: 'ratings',
         component: ViewRating,
+      },
+      {
+        path: '/wishlist-edit',
+        name: 'wishlist',
+        component: ViewWishlist,
       },
     ],
   },

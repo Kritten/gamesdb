@@ -73,6 +73,10 @@ export default defineComponent({
         label: t('rating.label', 2),
         name: 'ratings',
       },
+      {
+        label: t('wishlist.label'),
+        name: 'wishlist',
+      },
     ];
 
     return {

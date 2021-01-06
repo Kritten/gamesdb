@@ -11,6 +11,9 @@ export class ImageInput {
 
   @Field(() => [ID])
   games?: string[];
+
+  @Field(() => [ID])
+  wishlists?: string[];
 }
 
 @InputType()

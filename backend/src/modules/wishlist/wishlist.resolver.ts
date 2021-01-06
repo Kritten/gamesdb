@@ -1,31 +1,53 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Wishlist } from './wishlist.entity';
 import { WishlistEntityService } from './wishlist.entity.service';
 import { WishlistInput, UpdateWishlistInput } from './wishlist.input';
+import { EntityResolver } from '../../utilities/entity/entity.resolver';
+import { WishlistCollectionService } from './collection/rating.collection.service';
+import { InputCollection } from '../../utilities/collection/collection.input';
+import { WishlistCollectionData } from './collection/rating.collectionData';
+import { ImageEntityService } from '../image/image.entity.service';
 
 @Resolver(() => Wishlist)
-export class WishlistResolver {
-  constructor(private wishlistService: WishlistEntityService) {}
+export class WishlistResolver extends EntityResolver {
+  constructor(
+    private wishlistService: WishlistEntityService,
+    private wishlistCollectionService: WishlistCollectionService,
+    private imageEntityService: ImageEntityService,
+  ) {
+    super();
+  }
 
-  @Query(() => [Wishlist])
+  @Query(() => WishlistCollectionData)
   @UseGuards(GqlAuthGuard)
-  async wishlists() {
-    return this.wishlistService.find();
+  async wishlists(@Args('wishlistData') data: InputCollection) {
+    return this.wishlistCollectionService.loadPage(data);
   }
 
   @Query(() => Wishlist)
   @UseGuards(GqlAuthGuard)
-  async wishlist(@Args({ name: 'id', type: () => Int }) id: number) {
-    return this.wishlistService.findOne(id);
+  async wishlist(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.wishlistService.findOne(parseInt(id, 10));
   }
 
   @Mutation(() => Wishlist)
   @UseGuards(GqlAuthGuard)
   async createWishlist(@Args('wishlistData') wishlistData: WishlistInput) {
     const wishlist = new Wishlist();
-    //TODO relations
+
+    wishlist.name = wishlistData.name;
+    wishlist.price = wishlistData.price;
+    wishlist.taken = wishlistData.taken;
+    wishlist.link = wishlistData.link;
+    await this.handleRelation(
+      'images',
+      wishlist,
+      wishlistData,
+      this.imageEntityService,
+    );
+
     return await this.wishlistService.create(wishlist);
   }
 
@@ -35,14 +57,25 @@ export class WishlistResolver {
     @Args('wishlistData') wishlistData: UpdateWishlistInput,
   ) {
     const wishlist = new Wishlist();
+
     wishlist.id = parseInt(wishlistData.id);
-    //TODO relations
+    wishlist.name = wishlistData.name;
+    wishlist.price = wishlistData.price;
+    wishlist.taken = wishlistData.taken;
+    wishlist.link = wishlistData.link;
+    await this.handleRelation(
+      'images',
+      wishlist,
+      wishlistData,
+      this.imageEntityService,
+    );
+
     return await this.wishlistService.update(wishlist);
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteWishlist(@Args({ name: 'id', type: () => Int }) id: number) {
-    return await this.wishlistService.delete(id);
+  async deleteWishlist(@Args({ name: 'id', type: () => ID }) id: string) {
+    return await this.wishlistService.delete(parseInt(id, 10));
   }
 }
