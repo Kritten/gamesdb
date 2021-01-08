@@ -1,28 +1,25 @@
 <template>
   <tr>
     <td>
-      {{ wishlist.rating }}
-    </td>
-    <td>
-      {{ wishlist.player.name }}
-    </td>
-    <td>
-      {{ wishlist.game.name }}
-    </td>
-    <td>
-      <delete-wishlist :wishlist="wishlist" />
-    </td>
-    <td>
-      <!--      <update-rating :rating="rating" />-->
+      <router-link :to="{name: 'wishlist-item', params: {id: wishlist.id}}">
+        {{ wishlist.name }}
+      </router-link>
     </td>
   </tr>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { Wishlist } from '@/modules/wishlist/wishlist.model';
 
 export default defineComponent({
   name: 'ListWishlistItem',
+  props: {
+    wishlist: {
+      required: true,
+      type: Wishlist,
+    },
+  },
 });
 </script>
 

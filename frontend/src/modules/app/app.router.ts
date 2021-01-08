@@ -12,8 +12,9 @@ import ViewPlayer from '@/modules/player/player.view.vue';
 import ViewImage from '@/modules/image/image.view.vue';
 import ViewUniverse from '@/modules/universe/universe.view.vue';
 import ViewRating from '@/modules/rating/rating.view.vue';
-import ViewWishlist from '@/modules/wishlist/wishlist.view.vue';
-import ViewDisplayWishlist from '@/modules/wishlist/display-wishlist.view.vue';
+import ViewWishlist from '@/modules/wishlist/views/wishlist.view.vue';
+import ViewWishlistItem from '@/modules/wishlist/views/wishlist-item.view.vue';
+import ViewDisplayWishlist from '@/modules/wishlist/views/display-wishlist.view.vue';
 import { queue } from '@/queue';
 import { store, UserState } from '@/modules/app/app.store';
 import { watch } from 'vue';
@@ -143,6 +144,11 @@ const routes: RouteRecordRaw[] = [
         path: '/wishlist-edit',
         name: 'wishlist',
         component: ViewWishlist,
+      },
+      {
+        path: '/wishlist-edit/:id',
+        name: 'wishlist-item',
+        component: ViewWishlistItem,
       },
     ],
   },

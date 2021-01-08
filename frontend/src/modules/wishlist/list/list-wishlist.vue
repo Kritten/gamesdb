@@ -5,32 +5,30 @@
     </summary>
     <create-wishlist />
   </details>
-  <!--  <list-wishlist-filters-->
-  <!--    v-model="filters"-->
-  <!--    @reset="resetFilters"-->
-  <!--    @update-filter="updateFilter"-->
-  <!--  />-->
-  <!--  <hr>-->
-  <!--  <base-list-sort-->
-  <!--    v-model:sort-by="sortBy"-->
-  <!--    v-model:sort-desc="sortDesc"-->
-  <!--    :options-sort-by="optionsSortBy"-->
-  <!--  />-->
-  <!--  <h2>-->
-  <!--    {{ collection.countItems.value }} {{ t('wishlist.label', collection.countItems.value) }}-->
-  <!--  </h2>-->
-  <!--  <table>-->
-  <!--    <tr>-->
-  <!--      <th>{{ t('wishlist.label') }}</th>-->
-  <!--      <th>{{ t('player.label') }}</th>-->
-  <!--      <th>{{ t('game.label') }}</th>-->
-  <!--    </tr>-->
-  <!--    <list-wishlist-item-->
-  <!--      v-for="wishlist in collection.items.value"-->
-  <!--      :key="wishlist.id"-->
-  <!--      :wishlist="wishlist"-->
-  <!--    />-->
-  <!--  </table>-->
+  <list-wishlist-filters
+    v-model="filters"
+    @reset="resetFilters"
+    @update-filter="updateFilter"
+  />
+  <hr>
+  <base-list-sort
+    v-model:sort-by="sortBy"
+    v-model:sort-desc="sortDesc"
+    :options-sort-by="optionsSortBy"
+  />
+  <h2>
+    {{ collection.countItems.value }} {{ t('wishlist.label', collection.countItems.value) }}
+  </h2>
+  <table>
+    <tr>
+      <th>{{ t('wishlist.label') }}</th>
+    </tr>
+    <list-wishlist-item
+      v-for="wishlist in collection.items.value"
+      :key="wishlist.id"
+      :wishlist="wishlist"
+    />
+  </table>
   <button
     v-if="collection.hasNextPage.value"
     @click="collection.loadNextItems"
@@ -52,16 +50,19 @@ import { cloneDeep } from 'lodash';
 import { InputCollectionFilter } from '@backend/src/utilities/collection/collection.input';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
-import CreateWishlist from "@/modules/wishlist/create/create-wishlist.vue";
+import CreateWishlist from '@/modules/wishlist/create/create-wishlist.vue';
 
 export default defineComponent({
   name: 'ListWishlist',
-  components: {CreateWishlist, ListWishlistFilters, BaseListSort, ListWishlistItem },
+  components: {
+    CreateWishlist, ListWishlistFilters, BaseListSort, ListWishlistItem,
+  },
   setup() {
     const { t } = useI18n();
     const filters = ref<ServiceCollectionFilters>({});
 
     const optionsSortBy: {field: string, name: string}[] = [
+      { field: 'entity.name', name: 'name' },
     ];
 
     const filtersInitial: ServiceCollectionFilters = {};
