@@ -1,31 +1,24 @@
 <template>
   <div>
-    <label for="sortByNew">Sortieren nach</label>
-    <select
-      id="sortByNew"
+    <base-input-select
       v-model="sortByNew"
-    >
-      <option
-        v-for="option in optionsSortBy"
-        :key="option.field"
-        :value="option.field"
-      >
-        {{ option.name }}
-      </option>
-    </select>
-    <label for="sortDescNew">Absteigend</label>
-    <select
-      id="sortDescNew"
+      :options="{
+        label: 'Sortieren nach',
+        items: optionsSortByPrepared,
+      }"
+    />
+
+    <base-input-select
       v-model="sortDescNew"
-    >
-      <option
-        v-for="(option, index) in [true, false]"
-        :key="index"
-        :value="option"
-      >
-        {{ option }}
-      </option>
-    </select>
+      :options="{
+        label: 'Absteigend',
+        items: [
+          {key: true, text: true},
+          {key: false, text: false},
+        ],
+      }"
+    />
+
     <button @click="addSortBy">
       Hinzufügen
     </button>
@@ -43,10 +36,12 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue';
+import { ref, defineComponent, computed } from 'vue';
+import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 
 export default defineComponent({
   name: 'BaseListSort',
+  components: { BaseInputSelect },
   props: {
     sortBy: {
       type: Array,
@@ -69,7 +64,8 @@ export default defineComponent({
 
     const addSortBy = () => {
       emit('update:sortBy', [...props.sortBy, sortByNew.value]);
-      emit('update:sortDesc', [...props.sortDesc, sortDescNew.value]);
+      // @ts-ignore
+      emit('update:sortDesc', [...props.sortDesc, sortDescNew.value === 'true']);
     };
 
     const removeSortBy = (index: number) => {
@@ -82,6 +78,8 @@ export default defineComponent({
       sortDescNew,
       addSortBy,
       removeSortBy,
+      // @ts-ignore
+      optionsSortByPrepared: computed(() => props.optionsSortBy.map((value) => ({ key: value.field, text: value.name }))),
     };
   },
 });

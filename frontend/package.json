@@ -11,6 +11,8 @@
   "dependencies": {
     "@apollo/client": "^3.2.0",
     "@vue/cli": "^4.5.6",
+    "@vuelidate/core": "^2.0.0-alpha.8",
+    "@vuelidate/validators": "^2.0.0-alpha.5",
     "core-js": "^3.6.5",
     "date-fns": "^2.16.1",
     "date-fns-tz": "^1.0.10",

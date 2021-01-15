@@ -2,53 +2,29 @@
   <div>
     <slot>
       <template v-if="type === 'string'">
-        <label>
-          {{ t(label) }}
-          <input
-            v-model="value"
-          >
-        </label>
+        <base-input-text
+          v-model="value"
+          :options="{
+            label: t(label),
+          }"
+        />
       </template>
       <template v-else-if="type === 'int' || type === 'float'">
-        <label>
-          {{ t(label) }}
-          <input
-            v-model.number="value"
-            type="number"
-          >
-        </label>
+        <base-input-number
+          v-model="value"
+          :options="{
+            label: t(label),
+          }"
+        />
       </template>
       <template v-else-if="type === 'boolean'">
-        <div>
-          {{ t(label) }}
-        </div>
-        <label>
-          <input
-            v-model="value"
-            :name="name"
-            :value="true"
-            type="radio"
-          >
-          {{ t('common.yes') }}
-        </label>
-        <label>
-          <input
-            v-model="value"
-            :name="name"
-            :value="false"
-            type="radio"
-          >
-          {{ t('common.no') }}
-        </label>
-        <label>
-          <input
-            v-model="value"
-            :name="name"
-            :value="undefined"
-            type="radio"
-          >
-          {{ t('common.undefined') }}
-        </label>
+        <base-input-boolean
+          v-model="value"
+          :can-be-undefined="true"
+          :options="{
+            label: t(label),
+          }"
+        />
       </template>
     </slot>
   </div>
@@ -59,9 +35,14 @@ import {
   defineComponent, watch, nextTick, computed,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
+import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
+import { useId } from '@/modules/app/utilities/helpers';
+import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
+import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 
 export default defineComponent({
   name: 'BaseListFilter',
+  components: { BaseInputBoolean, BaseInputNumber, BaseInputText },
   props: {
     filters: {
       required: true,
@@ -144,7 +125,7 @@ export default defineComponent({
       get() {
         // @ts-ignore
         const filter = props.filters[nameField[0]];
-        return filter === undefined ? '' : filter[nameValueField];
+        return filter === undefined ? undefined : filter[nameValueField];
       },
       set(valueNew) {
         if (typeof valueNew === 'string') {
@@ -169,7 +150,11 @@ export default defineComponent({
       }
     }, { deep: true, immediate: true });
 
-    return { t, value };
+    return {
+      t,
+      value,
+      useId: useId(),
+    };
   },
 });
 </script>

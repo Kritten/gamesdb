@@ -1,33 +1,35 @@
 <template>
   <div>
-    <label for="name">{{ t('wishlist.name') }}</label>
-    <input
-      id="name"
+    <base-input-text
       v-model="nameInternal"
-    >
+      :options="{
+        label: t('wishlist.name'),
+      }"
+    />
   </div>
   <div>
-    <label for="price">{{ t('wishlist.price') }}</label>
-    <input
-      id="price"
-      v-model.number="priceInternal"
-      type="number"
-    >
+    <base-input-number
+      v-model="priceInternal"
+      :options="{
+        label: t('wishlist.price'),
+      }"
+    />
   </div>
   <div>
-    <label for="taken">{{ t('wishlist.taken') }}</label>
-    <input
-      id="taken"
+    <base-input-boolean
       v-model="takenInternal"
-      type="checkbox"
-    >
+      :options="{
+        label: t('wishlist.taken'),
+      }"
+    />
   </div>
   <div>
-    <label for="link">{{ t('wishlist.link') }}</label>
-    <input
-      id="link"
+    <base-input-text
       v-model="linkInternal"
-    >
+      :options="{
+        label: t('wishlist.link'),
+      }"
+    />
   </div>
 </template>
 
@@ -38,11 +40,15 @@ import { useStore } from 'vuex';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
+import { useModelWrapper } from '@/modules/app/utilities/helpers';
+import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
+import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
+import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import { useCollection } from '../app/utilities/collection/collection';
-import {useModelWrapper} from "@/modules/app/utilities/helpers";
 
 export default defineComponent({
   name: 'ItemWishlist',
+  components: { BaseInputBoolean, BaseInputNumber, BaseInputText },
   props: {
     name: {
       type: String,
