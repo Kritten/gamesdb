@@ -1,10 +1,15 @@
 <template>
-  <template v-if="wishlist !== null">
-    <h1>{{ wishlist.name }}</h1>
+  <template v-if="wishlistItem !== null">
+    <h1>{{ wishlistItem.name }}</h1>
     <ul>
-      <li>{{ t('wishlist.price') }}: {{ wishlist.price }}</li>
-      <li>{{ t('wishlist.link') }}: <a :href="wishlist.link">{{ wishlist.link }}</a></li>
+      <li>{{ t('wishlist.price') }}: {{ wishlistItem.price }}</li>
+      <li>{{ t('wishlist.link') }}: <a :href="wishlistItem.link">{{ wishlistItem.link }}</a></li>
     </ul>
+
+    <delete-wishlist-item
+      :wishlist-item="wishlistItem"
+      @deleted="deleted"
+    />
   </template>
 </template>
 
@@ -14,19 +19,25 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
+import DeleteWishlistItem from '@/modules/wishlist/delete/delete-wishlist-item.vue';
+import { router } from '@/modules/app/app.router';
 
 export default defineComponent({
   name: 'ViewWishlistItem',
+  components: { DeleteWishlistItem },
   setup() {
     const { t } = useI18n();
     const route = useRoute();
     const idWishlist = route.params.id as string;
-    const wishlist = ref<Wishlist | null>(null);
+    const wishlistItem = ref<Wishlist | null>(null);
 
-    ServiceWishlist.getOrLoad(idWishlist).then((value: Wishlist) => { wishlist.value = value; });
+    ServiceWishlist.getOrLoad(idWishlist).then((value: Wishlist) => { wishlistItem.value = value; });
     return {
       t,
-      wishlist,
+      wishlistItem,
+      deleted() {
+        router.push({ name: 'wishlist' });
+      },
     };
   },
 });
