@@ -29,7 +29,7 @@ export class Wishlist {
   name: string;
 
   @Column({
-    type: 'tinyint',
+    type: 'int',
   })
   @Field(() => Int)
   price: number;
