@@ -31,6 +31,15 @@
       }"
     />
   </div>
+  <div>
+    <base-input-select
+      v-model="giftForInternal"
+      :options="{
+        label: t('wishlist.giftFor'),
+        items: itemsGiftFor,
+      }"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -40,15 +49,18 @@ import { useStore } from 'vuex';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
-import { useModelWrapper } from '@/modules/app/utilities/helpers';
+import { toNumber, useModelWrapper } from '@/modules/app/utilities/helpers';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
+import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import { useCollection } from '../app/utilities/collection/collection';
 
 export default defineComponent({
   name: 'ItemWishlist',
-  components: { BaseInputBoolean, BaseInputNumber, BaseInputText },
+  components: {
+    BaseInputSelect, BaseInputBoolean, BaseInputNumber, BaseInputText,
+  },
   props: {
     name: {
       type: String,
@@ -74,6 +86,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false,
+    },
+    giftFor: {
+      type: Number,
+      required: true,
     },
   },
   setup(props, { emit }) {
@@ -106,6 +122,10 @@ export default defineComponent({
       linkInternal: useModelWrapper({
         props, emit, name: 'link',
       }),
+      giftForInternal: useModelWrapper({
+        props, emit, name: 'giftFor', parse: (value) => toNumber(value as string),
+      }),
+      itemsGiftFor: ServiceWishlist.getItemsGiftFor(),
     };
   },
 });

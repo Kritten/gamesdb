@@ -7,12 +7,14 @@ export function useModelWrapper({
   name = 'modelValue',
   isEntity = false,
   entities = {},
+  parse = value => value,
 }: {
   props: { [key: string]: Entity | Entity[] | unknown };
   emit: (event: string, ...args: any[]) => void;
   name: string;
   isEntity?: boolean;
   entities?: { [key: string]: unknown };
+  parse?: (value: unknown) => unknown;
 }) {
   return computed({
     get: () => {
@@ -35,7 +37,7 @@ export function useModelWrapper({
           emit(`update:${name}`, entities[value as string]);
         }
       } else {
-        emit(`update:${name}`, value);
+        emit(`update:${name}`, parse(value));
       }
     },
   });

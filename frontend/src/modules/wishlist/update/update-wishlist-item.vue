@@ -6,6 +6,7 @@
       v-model:taken="updateWishlistItem.entity.value.taken"
       v-model:link="updateWishlistItem.entity.value.link"
       v-model:images="updateWishlistItem.entity.value.images"
+      v-model:gift-for="updateWishlistItem.entity.value.giftFor"
       :hide-taken="true"
     />
     <div>

@@ -235,6 +235,7 @@ type User {
 }
 
 type Wishlist {
+    giftFor: Float!
     id: ID!
     images: [Image!]!
     link: String!
@@ -446,6 +447,7 @@ input UpdateUniverseInput {
 }
 
 input UpdateWishlistInput {
+    giftFor: Int
     id: ID!
     images: [ID!]
     link: String
@@ -455,6 +457,7 @@ input UpdateWishlistInput {
 }
 
 input WishlistInput {
+    giftFor: Int!
     id: ID
     images: [ID!]
     link: String!

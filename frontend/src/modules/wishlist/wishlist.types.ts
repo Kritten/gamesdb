@@ -7,4 +7,5 @@ export interface WishlistInterface extends EntityInterface {
   link?: string;
   images?: Image[];
   taken?: boolean;
+  giftFor?: number;
 }

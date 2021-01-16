@@ -15,6 +15,8 @@ export class Wishlist extends Entity implements WishlistInterface {
 
   taken: boolean;
 
+  giftFor: number;
+
   constructor(data: WishlistInterface = {}) {
     super(data);
     this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
@@ -22,6 +24,7 @@ export class Wishlist extends Entity implements WishlistInterface {
     this.link = setDefaultIfNullOrUndefined<string>(data.link, '');
     this.images = setDefaultIfNullOrUndefined<Image[]>(data.images, []);
     this.taken = setDefaultIfNullOrUndefined<boolean>(data.taken, false);
+    this.giftFor = setDefaultIfNullOrUndefined<number>(data.giftFor, 0);
   }
 
   static async parseFromServer(data: EntityInterface): Promise<Wishlist> {
@@ -38,6 +41,7 @@ export class Wishlist extends Entity implements WishlistInterface {
     data.link = this.link;
     data.images = this.images;
     data.taken = this.taken;
+    data.giftFor = this.giftFor;
 
     return data;
   }

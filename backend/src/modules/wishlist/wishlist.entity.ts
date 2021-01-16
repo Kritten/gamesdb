@@ -45,6 +45,11 @@ export class Wishlist {
   })
   link: string;
 
+  @Column({
+    type: 'tinyint',
+  })
+  giftFor: number;
+
   @ManyToMany(
     () => Image,
     image => image.wishlists,

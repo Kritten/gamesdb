@@ -127,6 +127,23 @@ class ServiceWishlistClass
       }),
     });
   }
+
+  getGiftFor() {
+    return {
+      LieneAndKristof: 0,
+      Liene: 1,
+      Kristof: 2,
+    };
+  }
+
+  getItemsGiftFor() {
+    const giftsFor = this.getGiftFor();
+    return [
+      { key: giftsFor.LieneAndKristof, text: 'Liene und Kristof' },
+      { key: giftsFor.Liene, text: 'Liene' },
+      { key: giftsFor.Kristof, text: 'Kristof' },
+    ];
+  }
 }
 
 export const ServiceWishlist = new ServiceWishlistClass();

@@ -16,6 +16,9 @@ export class WishlistInput {
   @Field(() => String)
   link: string;
 
+  @Field(() => Int)
+  giftFor: number;
+
   @Field(() => [ID])
   images?: string[];
 }

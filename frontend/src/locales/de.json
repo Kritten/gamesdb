@@ -90,6 +90,7 @@
     "name": "Name",
     "price": "Preis",
     "taken": "Vergeben",
-    "link": "Link"
+    "link": "Link",
+    "giftFor": "Geschenk für"
   }
 }
