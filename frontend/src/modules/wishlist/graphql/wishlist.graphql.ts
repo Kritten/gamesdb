@@ -26,6 +26,15 @@ export const queryPageWishlist = gql`
   }
   ${fragments.wishlist}
 `;
+
+export const queryWishlistItem = gql`
+  query wishlist($id: ID!) {
+    wishlist(id: $id) {
+      ...wishlist
+    }
+  }
+  ${fragments.wishlist}
+`;
 /**
  * Create
  */

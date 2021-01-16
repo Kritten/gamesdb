@@ -8,6 +8,7 @@ import { moduleImage } from '@/modules/image/image.store';
 import { moduleUniverse } from '@/modules/universe/universe.store';
 import { moduleGame } from '@/modules/game/game.store';
 import { moduleSession } from '@/modules/session/session.store';
+import { moduleWishlist } from '@/modules/wishlist/wishlist.store';
 
 export type UserState = User | null;
 
@@ -33,6 +34,7 @@ export const store = createStore({
     moduleUniverse,
     moduleGame,
     moduleSession,
+    moduleWishlist,
   },
   state,
   mutations: {

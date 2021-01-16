@@ -10,9 +10,11 @@ import {
   mutationDeleteWishlist,
   mutationUpdateWishlist,
   queryPageWishlist,
+  queryWishlistItem,
 } from '@/modules/wishlist/graphql/wishlist.graphql';
-import { ServiceEntityInterface } from '../app/utilities/entity/entity.types';
+import { ID, ServiceEntityInterface } from '../app/utilities/entity/entity.types';
 import { ServiceCollectionInterface } from '../app/utilities/collection/collection.types';
+import { store } from '@/modules/app/app.store';
 
 class ServiceWishlistClass
   implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist> {
@@ -87,6 +89,26 @@ class ServiceWishlistClass
     queue.notify('deletedWishlist', wishlist);
 
     return response.data.deleteWishlist;
+  }
+
+  async getOrLoad(id: ID) {
+    // @ts-ignore
+    let wishlistItem: Wishlist = store.state.moduleWishlist.wishlistItems[id];
+
+    if (wishlistItem === undefined) {
+      const response = await apolloClient.query({
+        query: queryWishlistItem,
+        variables: {
+          id,
+        },
+      });
+
+      wishlistItem = await Wishlist.parseFromServer(response.data.wishlist);
+
+      store.commit('moduleWishlist/addWishlistItem', wishlistItem);
+    }
+
+    return wishlistItem;
   }
 
   async loadPage(data: InputCollection) {

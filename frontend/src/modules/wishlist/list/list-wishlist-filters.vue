@@ -6,20 +6,20 @@
     Reset
   </button>
   <div>
-    <base-list-filter
-      :filters="filters"
-      label="game.filters.name"
-      name="game.name"
-      type="string"
-      @update-filter="$emit('update-filter', $event)"
-    />
-    <base-list-filter
-      :filters="filters"
-      label="player.filters.name"
-      name="player.name"
-      type="string"
-      @update-filter="$emit('update-filter', $event)"
-    />
+<!--    <base-list-filter-->
+<!--      :filters="filters"-->
+<!--      label="game.filters.name"-->
+<!--      name="game.name"-->
+<!--      type="string"-->
+<!--      @update-filter="$emit('update-filter', $event)"-->
+<!--    />-->
+<!--    <base-list-filter-->
+<!--      :filters="filters"-->
+<!--      label="player.filters.name"-->
+<!--      name="player.name"-->
+<!--      type="string"-->
+<!--      @update-filter="$emit('update-filter', $event)"-->
+<!--    />-->
   </div>
 </template>
 
