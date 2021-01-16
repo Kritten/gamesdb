@@ -15,7 +15,7 @@
       }"
     />
   </div>
-  <div>
+  <div v-if="hideTaken === false">
     <base-input-boolean
       v-model="takenInternal"
       :options="{
@@ -69,6 +69,11 @@ export default defineComponent({
     images: {
       type: Array,
       required: true,
+    },
+    hideTaken: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   setup(props, { emit }) {

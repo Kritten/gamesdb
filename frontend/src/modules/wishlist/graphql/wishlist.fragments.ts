@@ -7,6 +7,7 @@ export const fragments = {
       name
       price
       link
+      taken
     }
   `,
 };

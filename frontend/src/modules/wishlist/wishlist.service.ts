@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { apolloClient } from '@/vue-apollo';
 import { cloneDeep } from 'lodash';
 import { InputCollection } from '@backend/src/utilities/collection/collection.input';
@@ -72,6 +72,8 @@ class ServiceWishlistClass
     });
 
     const wishlistNew = await Wishlist.parseFromServer(response.data.updateWishlist);
+
+    store.commit('moduleWishlist/addWishlistItem', wishlistNew);
 
     queue.notify('updatedWishlist', wishlistNew);
 
