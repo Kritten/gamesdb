@@ -8,10 +8,11 @@
     />
   </div>
   <div>
-    <base-input-number
+    <base-input-select
       v-model="priceInternal"
       :options="{
         label: t('wishlist.price'),
+        items: itemsPriceRange,
       }"
     />
   </div>
@@ -51,7 +52,6 @@ import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
 import { toNumber, useModelWrapper } from '@/modules/app/utilities/helpers';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
-import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import { useCollection } from '../app/utilities/collection/collection';
@@ -59,7 +59,7 @@ import { useCollection } from '../app/utilities/collection/collection';
 export default defineComponent({
   name: 'ItemWishlist',
   components: {
-    BaseInputSelect, BaseInputBoolean, BaseInputNumber, BaseInputText,
+    BaseInputSelect, BaseInputBoolean, BaseInputText,
   },
   props: {
     name: {
@@ -114,7 +114,7 @@ export default defineComponent({
         props, emit, name: 'name',
       }),
       priceInternal: useModelWrapper({
-        props, emit, name: 'price',
+        props, emit, name: 'price', parse: (value) => toNumber(value as string),
       }),
       takenInternal: useModelWrapper({
         props, emit, name: 'taken',
@@ -126,6 +126,7 @@ export default defineComponent({
         props, emit, name: 'giftFor', parse: (value) => toNumber(value as string),
       }),
       itemsGiftFor: ServiceWishlist.getItemsGiftFor(),
+      itemsPriceRange: ServiceWishlist.getItemsPriceRange(),
     };
   },
 });

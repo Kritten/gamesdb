@@ -2,7 +2,8 @@
   <template v-if="wishlistItem !== undefined">
     <h1>{{ wishlistItem.name }}</h1>
     <ul>
-      <li>{{ t('wishlist.price') }}: {{ wishlistItem.price }}</li>
+      <li>{{ t('wishlist.price') }}: <display-price-range :value="wishlistItem.price" /></li>
+      <li>{{ t('wishlist.giftFor') }}: <display-gift-for :value="wishlistItem.giftFor" /></li>
       <li>{{ t('wishlist.link') }}: <a :href="wishlistItem.link">{{ wishlistItem.link }}</a></li>
     </ul>
     <hr>
@@ -32,10 +33,14 @@ import DeleteWishlistItem from '@/modules/wishlist/delete/delete-wishlist-item.v
 import { router } from '@/modules/app/app.router';
 import UpdateWishlistItem from '@/modules/wishlist/update/update-wishlist-item.vue';
 import { store } from '@/modules/app/app.store';
+import DisplayPriceRange from '@/modules/wishlist/display/display-price-range.vue';
+import DisplayGiftFor from '@/modules/wishlist/display/display-gift-for.vue';
 
 export default defineComponent({
   name: 'ViewWishlistItem',
-  components: { UpdateWishlistItem, DeleteWishlistItem },
+  components: {
+    DisplayGiftFor, DisplayPriceRange, UpdateWishlistItem, DeleteWishlistItem,
+  },
   setup() {
     const { t } = useI18n();
     const route = useRoute();

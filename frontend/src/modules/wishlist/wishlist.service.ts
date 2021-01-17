@@ -15,6 +15,7 @@ import {
 import { ID, ServiceEntityInterface } from '../app/utilities/entity/entity.types';
 import { ServiceCollectionInterface } from '../app/utilities/collection/collection.types';
 import { store } from '@/modules/app/app.store';
+import { GIFT_FOR, PRICE_RANGE } from '@/modules/wishlist/wishlist.constants';
 
 class ServiceWishlistClass
   implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist> {
@@ -128,20 +129,20 @@ class ServiceWishlistClass
     });
   }
 
-  getGiftFor() {
-    return {
-      LieneAndKristof: 0,
-      Liene: 1,
-      Kristof: 2,
-    };
+  getItemsPriceRange() {
+    return [
+      { key: PRICE_RANGE.UpToTen, text: 'bis 10€' },
+      { key: PRICE_RANGE.UpToTwenty, text: '10€ bis 20€' },
+      { key: PRICE_RANGE.UpToFifty, text: '20€ bis 50€' },
+      { key: PRICE_RANGE.AboveFifty, text: 'über 50€' },
+    ];
   }
 
   getItemsGiftFor() {
-    const giftsFor = this.getGiftFor();
     return [
-      { key: giftsFor.LieneAndKristof, text: 'Liene und Kristof' },
-      { key: giftsFor.Liene, text: 'Liene' },
-      { key: giftsFor.Kristof, text: 'Kristof' },
+      { key: GIFT_FOR.LieneAndKristof, text: 'Liene und Kristof' },
+      { key: GIFT_FOR.Liene, text: 'Liene' },
+      { key: GIFT_FOR.Kristof, text: 'Kristof' },
     ];
   }
 }
