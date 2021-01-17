@@ -20,7 +20,7 @@ export class Wishlist extends Entity implements WishlistInterface {
   constructor(data: WishlistInterface = {}) {
     super(data);
     this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
-    this.price = setDefaultIfNullOrUndefined<number>(data.price, 0);
+    this.price = setDefaultIfNullOrUndefined<number>(data.price, 1000);
     this.link = setDefaultIfNullOrUndefined<string>(data.link, '');
     this.images = setDefaultIfNullOrUndefined<Image[]>(data.images, []);
     this.taken = setDefaultIfNullOrUndefined<boolean>(data.taken, false);
