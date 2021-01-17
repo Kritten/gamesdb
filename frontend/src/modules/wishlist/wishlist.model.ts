@@ -39,7 +39,7 @@ export class Wishlist extends Entity implements WishlistInterface {
     data.name = this.name;
     data.price = this.price;
     data.link = this.link;
-    data.images = this.images;
+    data.images = this.images.map(image => image.id);
     data.taken = this.taken;
     data.giftFor = this.giftFor;
 

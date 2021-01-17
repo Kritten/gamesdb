@@ -41,11 +41,16 @@
       }"
     />
   </div>
+  <div>
+    <base-input-images
+      v-model="imagesInternal"
+    />
+  </div>
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { defineComponent, ref } from 'vue';
+import {defineComponent, PropType, ref} from 'vue';
 import { useStore } from 'vuex';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
@@ -55,10 +60,13 @@ import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import { useCollection } from '../app/utilities/collection/collection';
+import BaseInputImages from "@/modules/app/base/inputs/base-input-images.vue";
+import {Image} from "@/modules/image/image.model";
 
 export default defineComponent({
   name: 'ItemWishlist',
   components: {
+    BaseInputImages,
     BaseInputSelect, BaseInputBoolean, BaseInputText,
   },
   props: {
@@ -79,7 +87,7 @@ export default defineComponent({
       required: true,
     },
     images: {
-      type: Array,
+      type: Array as PropType<Array<Image>>,
       required: true,
     },
     hideTaken: {
@@ -121,6 +129,9 @@ export default defineComponent({
       }),
       linkInternal: useModelWrapper({
         props, emit, name: 'link',
+      }),
+      imagesInternal: useModelWrapper({
+        props, emit, name: 'images',
       }),
       giftForInternal: useModelWrapper({
         props, emit, name: 'giftFor', parse: (value) => toNumber(value as string),
