@@ -1,10 +1,4 @@
 <template>
-  <details>
-    <summary>
-      {{ t('wishlist.label') }} anlegen
-    </summary>
-    <create-wishlist />
-  </details>
   <list-wishlist-filters
     v-model="filters"
     @reset="resetFilters"
@@ -19,16 +13,18 @@
   <h2>
     {{ collection.countItems.value }} {{ t('wishlist.label', collection.countItems.value) }}
   </h2>
-  <table>
-    <tr>
-      <th>{{ t('wishlist.label') }}</th>
-    </tr>
-    <list-wishlist-item
-      v-for="wishlist in collection.items.value"
-      :key="wishlist.id"
-      :wishlist="wishlist"
-    />
-  </table>
+  <slot name="items" :wishlistItems="collection.items.value">
+    <table>
+      <tr>
+        <th>{{ t('wishlist.label') }}</th>
+      </tr>
+      <list-wishlist-item
+        v-for="wishlist in collection.items.value"
+        :key="wishlist.id"
+        :wishlist="wishlist"
+      />
+    </table>
+  </slot>
   <button
     v-if="collection.hasNextPage.value"
     @click="collection.loadNextItems"
@@ -50,12 +46,11 @@ import { cloneDeep } from 'lodash';
 import { InputCollectionFilter } from '@backend/src/utilities/collection/collection.input';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
-import CreateWishlist from '@/modules/wishlist/create/create-wishlist.vue';
 
 export default defineComponent({
   name: 'ListWishlist',
   components: {
-    CreateWishlist, ListWishlistFilters, BaseListSort, ListWishlistItem,
+    ListWishlistFilters, BaseListSort, ListWishlistItem,
   },
   setup() {
     const { t } = useI18n();

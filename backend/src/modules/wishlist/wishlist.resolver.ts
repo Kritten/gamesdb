@@ -21,7 +21,6 @@ export class WishlistResolver extends EntityResolver {
   }
 
   @Query(() => WishlistCollectionData)
-  @UseGuards(GqlAuthGuard)
   async wishlists(@Args('wishlistData') data: InputCollection) {
     return this.wishlistCollectionService.loadPage(data);
   }
