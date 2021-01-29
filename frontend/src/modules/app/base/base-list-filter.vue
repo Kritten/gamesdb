@@ -72,6 +72,11 @@ export default defineComponent({
       required: true,
       type: String,
     },
+    operator: {
+      required: false,
+      type: String,
+      default: undefined,
+    },
     filterInputs: {
       required: false,
       type: Array,
@@ -119,6 +124,12 @@ export default defineComponent({
       default:
         // @ts-ignore
         throw Error(`Unknown filter type ${props.type}`);
+    }
+
+    // @ts-ignore
+    if (props.operator !== undefined) {
+      // @ts-ignore
+      operator[0] = props.operator;
     }
 
     // @ts-ignore

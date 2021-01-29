@@ -10,10 +10,11 @@
     v-model:sort-desc="sortDesc"
     :options-sort-by="optionsSortBy"
   />
-  <h2>
-    {{ collection.countItems.value }} {{ t('wishlist.label', collection.countItems.value) }}
-  </h2>
-  <slot name="items" :wishlistItems="collection.items.value">
+  <h2>{{ collection.countItems.value }} {{ t('wishlist.label', collection.countItems.value) }}</h2>
+  <slot
+    name="items"
+    :wishlistItems="collection.items.value"
+  >
     <table>
       <tr>
         <th>{{ t('wishlist.label') }}</th>
@@ -46,17 +47,31 @@ import { cloneDeep } from 'lodash';
 import { InputCollectionFilter } from '@backend/src/utilities/collection/collection.input';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
+import { GIFT_FOR } from '@/modules/wishlist/wishlist.constants';
 
 export default defineComponent({
   name: 'ListWishlist',
   components: {
-    ListWishlistFilters, BaseListSort, ListWishlistItem,
+    ListWishlistFilters,
+    BaseListSort,
+    ListWishlistItem,
   },
   setup() {
     const { t } = useI18n();
-    const filters = ref<ServiceCollectionFilters>({});
+    const filters = ref<ServiceCollectionFilters>({
+      'entity.giftFor': {
+        field: 'entity.giftFor',
+        valueInt: GIFT_FOR.LieneAndKristof,
+        operator: '=',
+      },
+      'entity.price': {
+        field: 'entity.price',
+        valueInt: undefined,
+        operator: '=',
+      },
+    });
 
-    const optionsSortBy: {field: string, name: string}[] = [
+    const optionsSortBy: { field: string; name: string }[] = [
       { field: 'entity.name', name: 'name' },
     ];
 
@@ -125,6 +140,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
