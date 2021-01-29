@@ -1,9 +1,10 @@
 import { queue } from '@/queue';
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client/core';
+import {
+  ApolloClient, ApolloLink, HttpLink, InMemoryCache,
+} from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 
-const httpEndpoint =
-  `${process.env.VUE_APP_API_ENDPOINT}/graphql` || 'http://localhost:4000/graphql';
+const httpEndpoint = `${process.env.VUE_APP_API_ENDPOINT}/graphql` || 'http://localhost:4000/graphql';
 
 // const httpLink = createHttpLink({
 //   // You should use an absolute URL here

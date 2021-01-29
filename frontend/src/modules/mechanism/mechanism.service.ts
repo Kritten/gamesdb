@@ -12,7 +12,7 @@ import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.ty
 
 class ServiceMechanismClass implements ServiceEntityInterface<Mechanism> {
   useCreate() {
-    let mechanism = ref(new Mechanism());
+    const mechanism = ref(new Mechanism());
 
     return {
       entity: mechanism,
@@ -25,7 +25,7 @@ class ServiceMechanismClass implements ServiceEntityInterface<Mechanism> {
   }
 
   useUpdate(mechanismPassed: Mechanism) {
-    let mechanism = ref(cloneDeep(mechanismPassed));
+    const mechanism = ref(cloneDeep(mechanismPassed));
 
     return {
       entity: mechanism,

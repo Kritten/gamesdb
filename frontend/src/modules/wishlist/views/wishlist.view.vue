@@ -13,11 +13,11 @@
 import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ListWishlist from '@/modules/wishlist/list/list-wishlist.vue';
-import CreateWishlist from "@/modules/wishlist/create/create-wishlist.vue";
+import CreateWishlist from '@/modules/wishlist/create/create-wishlist.vue';
 
 export default defineComponent({
   name: 'ViewWishlist',
-  components: {CreateWishlist, ListWishlist },
+  components: { CreateWishlist, ListWishlist },
   setup() {
     const { t } = useI18n();
     return {

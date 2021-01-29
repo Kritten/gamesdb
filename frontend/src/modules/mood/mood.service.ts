@@ -12,7 +12,7 @@ import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.ty
 
 class ServiceMoodClass implements ServiceEntityInterface<Mood> {
   useCreate() {
-    let mood = ref(new Mood());
+    const mood = ref(new Mood());
 
     return {
       entity: mood,
@@ -25,7 +25,7 @@ class ServiceMoodClass implements ServiceEntityInterface<Mood> {
   }
 
   useUpdate(moodPassed: Mood) {
-    let mood = ref(cloneDeep(moodPassed));
+    const mood = ref(cloneDeep(moodPassed));
 
     return {
       entity: mood,

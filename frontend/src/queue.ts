@@ -10,7 +10,7 @@ class Queue {
 
   notify(type: string, payload?: Data) {
     if (this.listeners[type] !== undefined) {
-      this.listeners[type].forEach(callback => {
+      this.listeners[type].forEach((callback) => {
         callback(payload);
       });
     }

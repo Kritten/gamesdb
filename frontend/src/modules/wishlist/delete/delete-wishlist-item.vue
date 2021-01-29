@@ -19,7 +19,7 @@ export default defineComponent({
     },
   },
   emits: ['deleted'],
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const { t } = useI18n();
     const deleteWishlistItem = ServiceWishlist.useDelete();
 

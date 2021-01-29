@@ -9,7 +9,7 @@ class ServiceLoginClass {
       password: null,
     });
 
-    const login = async function() {
+    const login = async function () {
       const payload = {
         username: data.username,
         password: data.password,

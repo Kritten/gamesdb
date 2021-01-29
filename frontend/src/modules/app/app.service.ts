@@ -61,40 +61,40 @@ class ServiceAppClass {
         .query({
           query: queryCategories,
         })
-        .then(response => Category.convertFromServerToStore(response.data.categories))
-        .then(categories => {
+        .then((response) => Category.convertFromServerToStore(response.data.categories))
+        .then((categories) => {
           store.commit('moduleCategory/setCategories', categories);
         }),
       apolloClient
         .query({
           query: queryMechanisms,
         })
-        .then(response => Mechanism.convertFromServerToStore(response.data.mechanisms))
-        .then(mechanisms => {
+        .then((response) => Mechanism.convertFromServerToStore(response.data.mechanisms))
+        .then((mechanisms) => {
           store.commit('moduleMechanism/setMechanisms', mechanisms);
         }),
       apolloClient
         .query({
           query: queryMoods,
         })
-        .then(response => Mood.convertFromServerToStore(response.data.moods))
-        .then(moods => {
+        .then((response) => Mood.convertFromServerToStore(response.data.moods))
+        .then((moods) => {
           store.commit('moduleMood/setMoods', moods);
         }),
       apolloClient
         .query({
           query: queryPlayers,
         })
-        .then(response => Player.convertFromServerToStore(response.data.players))
-        .then(players => {
+        .then((response) => Player.convertFromServerToStore(response.data.players))
+        .then((players) => {
           store.commit('modulePlayer/setPlayers', players);
         }),
       apolloClient
         .query({
           query: queryUniverses,
         })
-        .then(response => Universe.convertFromServerToStore(response.data.universes))
-        .then(universes => {
+        .then((response) => Universe.convertFromServerToStore(response.data.universes))
+        .then((universes) => {
           store.commit('moduleUniverse/setUniverses', universes);
         }),
     ]);

@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import {defineComponent, PropType, ref} from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { useStore } from 'vuex';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
@@ -59,15 +59,17 @@ import { toNumber, useModelWrapper } from '@/modules/app/utilities/helpers';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
+import BaseInputImages from '@/modules/app/base/inputs/base-input-images.vue';
+import { Image } from '@/modules/image/image.model';
 import { useCollection } from '../app/utilities/collection/collection';
-import BaseInputImages from "@/modules/app/base/inputs/base-input-images.vue";
-import {Image} from "@/modules/image/image.model";
 
 export default defineComponent({
   name: 'ItemWishlist',
   components: {
     BaseInputImages,
-    BaseInputSelect, BaseInputBoolean, BaseInputText,
+    BaseInputSelect,
+    BaseInputBoolean,
+    BaseInputText,
   },
   props: {
     name: {

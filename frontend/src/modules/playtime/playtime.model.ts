@@ -6,6 +6,7 @@ import { parseISO } from 'date-fns';
 
 export class Playtime extends Entity implements PlaytimeInterface {
   start: Date;
+
   end: Date;
 
   constructor(data: PlaytimeInterface = {}) {

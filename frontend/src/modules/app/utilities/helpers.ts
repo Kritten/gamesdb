@@ -7,7 +7,7 @@ export function useModelWrapper({
   name = 'modelValue',
   isEntity = false,
   entities = {},
-  parse = value => value,
+  parse = (value) => value,
 }: {
   props: { [key: string]: Entity | Entity[] | unknown };
   emit: (event: string, ...args: any[]) => void;
@@ -26,7 +26,7 @@ export function useModelWrapper({
       }
       return props[name];
     },
-    set: value => {
+    set: (value) => {
       if (isEntity === true) {
         if (Array.isArray(value)) {
           emit(
@@ -84,7 +84,7 @@ export function getValidator(types: {
     return arr;
   }, [] as ((value: unknown) => boolean)[]);
 
-  return value => validations.some(func => func(value));
+  return (value) => validations.some((func) => func(value));
 }
 
 let idInternal = 0;

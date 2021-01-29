@@ -12,11 +12,17 @@ import { isEqual } from 'date-fns';
 
 export class Session extends Entity implements SessionInterface {
   comment?: string | null;
+
   isChallenge: boolean;
+
   isVirtual: boolean;
+
   game?: Game;
+
   players: Player[];
+
   winners: Player[];
+
   playtimes: Playtime[];
 
   constructor(data: SessionInterface) {
@@ -31,13 +37,11 @@ export class Session extends Entity implements SessionInterface {
   }
 
   get currentPlaytime(): Playtime | undefined {
-    return this.playtimes.find(playtime => isEqual(playtime.start, playtime.end));
+    return this.playtimes.find((playtime) => isEqual(playtime.start, playtime.end));
   }
 
   stop() {
-    const indexCurrentPlaytime = this.playtimes.findIndex(playtime =>
-      isEqual(playtime.start, playtime.end),
-    );
+    const indexCurrentPlaytime = this.playtimes.findIndex((playtime) => isEqual(playtime.start, playtime.end));
 
     if (indexCurrentPlaytime > -1) {
       const currentPlaytime = this.playtimes[indexCurrentPlaytime];
@@ -57,14 +61,14 @@ export class Session extends Entity implements SessionInterface {
     if (entity.players !== undefined) {
       entity.players = entity.players.map(
         // @ts-ignore
-        player => store.state.modulePlayer.players[player.id as ID],
+        (player) => store.state.modulePlayer.players[player.id as ID],
       );
     }
 
     if (entity.winners !== undefined) {
       entity.winners = entity.winners.map(
         // @ts-ignore
-        winners => store.state.modulePlayer.players[winners.id as ID],
+        (winners) => store.state.modulePlayer.players[winners.id as ID],
       );
     }
 
@@ -74,7 +78,7 @@ export class Session extends Entity implements SessionInterface {
     }
 
     entity.playtimes = await Promise.all(
-      entity.playtimes.map(playtime => Playtime.parseFromServer(playtime)),
+      entity.playtimes.map((playtime) => Playtime.parseFromServer(playtime)),
     );
 
     return entity;
@@ -90,9 +94,9 @@ export class Session extends Entity implements SessionInterface {
     data.comment = this.comment;
     data.isChallenge = this.isChallenge;
     data.isVirtual = this.isVirtual;
-    data.players = this.players.map(player => player.id);
-    data.winners = this.winners.map(winner => winner.id);
-    data.playtimes = this.playtimes.map(playtime => {
+    data.players = this.players.map((player) => player.id);
+    data.winners = this.winners.map((winner) => winner.id);
+    data.playtimes = this.playtimes.map((playtime) => {
       const result: PlaytimeInterface = {};
       if (playtime.id !== undefined) {
         result.id = playtime.id;

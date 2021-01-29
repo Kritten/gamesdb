@@ -12,7 +12,7 @@ import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.ty
 
 class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
   useCreate() {
-    let universe = ref(new Universe());
+    const universe = ref(new Universe());
 
     return {
       entity: universe,
@@ -25,7 +25,7 @@ class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
   }
 
   useUpdate(universePassed: Universe) {
-    let universe = ref(cloneDeep(universePassed));
+    const universe = ref(cloneDeep(universePassed));
 
     return {
       entity: universe,

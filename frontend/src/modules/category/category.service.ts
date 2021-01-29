@@ -12,7 +12,7 @@ import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.ty
 
 class ServiceCategoryClass implements ServiceEntityInterface<Category> {
   useCreate() {
-    let category = ref(new Category());
+    const category = ref(new Category());
 
     return {
       entity: category,
@@ -25,7 +25,7 @@ class ServiceCategoryClass implements ServiceEntityInterface<Category> {
   }
 
   useUpdate(categoryPassed: Category) {
-    let category = ref(cloneDeep(categoryPassed));
+    const category = ref(cloneDeep(categoryPassed));
 
     return {
       entity: category,

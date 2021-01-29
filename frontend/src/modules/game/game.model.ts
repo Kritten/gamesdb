@@ -78,27 +78,27 @@ export class Game extends Entity implements GameInterface {
     if (entity.universes !== undefined) {
       entity.universes = entity.universes.map(
         // @ts-ignore
-        universe => store.state.moduleUniverse.universes[universe.id as ID],
+        (universe) => store.state.moduleUniverse.universes[universe.id as ID],
       );
     }
 
     if (entity.categories !== undefined) {
       entity.categories = entity.categories.map(
         // @ts-ignore
-        category => store.state.moduleCategory.categories[category.id as ID],
+        (category) => store.state.moduleCategory.categories[category.id as ID],
       );
     }
 
     if (entity.mechanisms !== undefined) {
       entity.mechanisms = entity.mechanisms.map(
         // @ts-ignore
-        mechanism => store.state.moduleMechanism.mechanisms[mechanism.id as ID],
+        (mechanism) => store.state.moduleMechanism.mechanisms[mechanism.id as ID],
       );
     }
 
     if (entity.moods !== undefined) {
       // @ts-ignore
-      entity.moods = entity.moods.map(mood => store.state.moduleMood.moods[mood.id as ID]);
+      entity.moods = entity.moods.map((mood) => store.state.moduleMood.moods[mood.id as ID]);
     }
 
     return entity;
@@ -117,14 +117,14 @@ export class Game extends Entity implements GameInterface {
     data.isDigital = this.isDigital;
     data.complexity = this.complexity;
     data.size = this.size;
-    data.universes = this.universes.map(universe => universe.id);
-    data.categories = this.categories.map(category => category.id);
-    data.mechanisms = this.mechanisms.map(mechanism => mechanism.id);
-    data.moods = this.moods.map(mood => mood.id);
-    data.images = this.images.map(image => image.id);
-    data.playableWith = this.playableWith.map(game => game.id);
+    data.universes = this.universes.map((universe) => universe.id);
+    data.categories = this.categories.map((category) => category.id);
+    data.mechanisms = this.mechanisms.map((mechanism) => mechanism.id);
+    data.moods = this.moods.map((mood) => mood.id);
+    data.images = this.images.map((image) => image.id);
+    data.playableWith = this.playableWith.map((game) => game.id);
     data.isExpansionOf = this.isExpansionOf;
-    data.expansions = this.expansions.map(game => game.id);
+    data.expansions = this.expansions.map((game) => game.id);
     // data.ratings = this.ratings.map(rating => rating.id);
 
     return data;

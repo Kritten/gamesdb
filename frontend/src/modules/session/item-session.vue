@@ -12,7 +12,7 @@
     <textarea
       id="comment"
       v-model="commentInternal"
-    ></textarea>
+    />
   </div>
   <div>
     <label for="players">{{ t('player.label', 2) }}</label>

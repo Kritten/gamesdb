@@ -12,7 +12,7 @@ import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.ty
 
 export class ServicePlayerClass implements ServiceEntityInterface<Player> {
   useCreate() {
-    let player = ref(new Player());
+    const player = ref(new Player());
 
     return {
       entity: player,
@@ -25,7 +25,7 @@ export class ServicePlayerClass implements ServiceEntityInterface<Player> {
   }
 
   useUpdate(playerPassed: Player) {
-    let player = ref(cloneDeep(playerPassed));
+    const player = ref(cloneDeep(playerPassed));
 
     return {
       entity: player,

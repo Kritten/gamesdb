@@ -48,7 +48,7 @@ export default defineComponent({
       >(
         props,
         emit,
-      // @ts-ignore
+        // @ts-ignore
         (value) => value.target.value,
       );
 

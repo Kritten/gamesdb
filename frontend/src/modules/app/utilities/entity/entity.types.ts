@@ -25,7 +25,7 @@ export interface ServiceEntityInterface<T> {
   update(entity: T): Promise<T>;
 
   useDelete(): {
-    delete(entity: T): Promise<Boolean>;
+    delete(entity: T): Promise<boolean>;
   };
-  delete(entity: T): Promise<Boolean>;
+  delete(entity: T): Promise<boolean>;
 }

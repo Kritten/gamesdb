@@ -1,8 +1,8 @@
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { WishlistInterface } from '@/modules/wishlist/wishlist.types';
 import { Image } from '@/modules/image/image.model';
-import { EntityInterface } from '../app/utilities/entity/entity.types';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
+import { EntityInterface } from '../app/utilities/entity/entity.types';
 
 export class Wishlist extends Entity implements WishlistInterface {
   name: string;
@@ -39,7 +39,7 @@ export class Wishlist extends Entity implements WishlistInterface {
     data.name = this.name;
     data.price = this.price;
     data.link = this.link;
-    data.images = this.images.map(image => image.id);
+    data.images = this.images.map((image) => image.id);
     data.taken = this.taken;
     data.giftFor = this.giftFor;
 
