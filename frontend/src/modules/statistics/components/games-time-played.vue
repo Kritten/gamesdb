@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
-import { GamesTimePlayedItem } from '@backend/src/modules/statistics/collection/gamesTimePlayed.collectionData.model';
 import BaseDisplayDuration from '@/modules/app/base/base-display-duration.vue';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
+import { GamesTimePlayedItem } from '@/modules/statistics/statistics.types';
 
 export default defineComponent({
   name: 'GamesTimePlayed',

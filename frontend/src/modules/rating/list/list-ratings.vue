@@ -50,9 +50,8 @@ import { useI18n } from 'vue-i18n';
 import { Rating } from '@/modules/rating/rating.model';
 import { ServiceRating } from '@/modules/rating/rating.service';
 import { queue } from '@/queue';
-import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
+import { ServiceCollectionFilters, InputCollectionFilter } from '@/modules/app/utilities/collection/collection.types';
 import { cloneDeep } from 'lodash';
-import { InputCollectionFilter } from '@backend/src/utilities/collection/collection.input';
 
 export default defineComponent({
   name: 'ListRatings',

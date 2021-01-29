@@ -1,7 +1,6 @@
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { apolloClient } from '@/vue-apollo';
 import { cloneDeep } from 'lodash';
-import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { queue } from '@/queue';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
@@ -12,14 +11,17 @@ import {
   queryPageWishlist,
   queryWishlistItem,
 } from '@/modules/wishlist/graphql/wishlist.graphql';
-import { ID, ServiceEntityInterface } from '../app/utilities/entity/entity.types';
-import { ServiceCollectionInterface } from '../app/utilities/collection/collection.types';
 import { store } from '@/modules/app/app.store';
 import { GIFT_FOR, PRICE_RANGE } from '@/modules/wishlist/wishlist.constants';
 import { useI18n } from 'vue-i18n';
+import {
+  InputCollection,
+  ServiceCollectionInterface,
+} from '@/modules/app/utilities/collection/collection.types';
+import { ID, ServiceEntityInterface } from '../app/utilities/entity/entity.types';
 
 class ServiceWishlistClass
-  implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist> {
+implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist> {
   useCreate() {
     const wishlist = ref(new Wishlist());
 
@@ -119,11 +121,9 @@ class ServiceWishlistClass
     return loadPageBase<Wishlist>({
       data,
       query: queryPageWishlist,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         items: await Promise.all(
-          response.data.wishlists.items.map((wishlist: Wishlist) =>
-            Wishlist.parseFromServer(wishlist),
-          ),
+          response.data.wishlists.items.map((wishlist: Wishlist) => Wishlist.parseFromServer(wishlist)),
         ),
         count: response.data.wishlists.count,
       }),

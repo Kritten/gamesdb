@@ -1,10 +1,8 @@
-import { apolloClient } from '@/vue-apollo';
 import {
   queryStatisticsGamesBestRated,
   queryStatisticsGamesCountPlayed,
   queryStatisticsGamesTimePlayed,
 } from '@/modules/statistics/graphql/statistics.graphql';
-import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { Playtime } from '@/modules/playtime/playtime.model';
 import { ServicePlaytime } from '@/modules/playtime/playtime.service';
 import {
@@ -22,9 +20,12 @@ import {
   subSeconds,
 } from 'date-fns';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
-import { GamesCountPlayedItem } from '@backend/src/modules/statistics/collection/gamesCountPlayed.collectionData.model';
-import { GamesTimePlayedItem } from '@backend/src/modules/statistics/collection/gamesTimePlayed.collectionData.model';
-import { GamesBestRatedItem } from '@backend/src/modules/statistics/collection/gamesBestRated.collectionData.model';
+import { InputCollection } from '@/modules/app/utilities/collection/collection.types';
+import {
+  GamesBestRatedItem,
+  GamesCountPlayedItem,
+  GamesTimePlayedItem,
+} from '@/modules/statistics/statistics.types';
 
 class ServiceStatisticsClass {
   async loadPageStatisticsGamesCountPlayed(data: InputCollection, payload: unknown = {}) {
@@ -50,7 +51,7 @@ class ServiceStatisticsClass {
     return loadPageBase<GamesCountPlayedItem>({
       data,
       query: queryStatisticsGamesCountPlayed,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         count: response.data.statisticsGamesCountPlayed.count,
         items: response.data.statisticsGamesCountPlayed.items,
       }),
@@ -80,7 +81,7 @@ class ServiceStatisticsClass {
     return loadPageBase<GamesTimePlayedItem>({
       data,
       query: queryStatisticsGamesTimePlayed,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         count: response.data.statisticsGamesTimePlayed.count,
         items: response.data.statisticsGamesTimePlayed.items,
       }),
@@ -110,7 +111,7 @@ class ServiceStatisticsClass {
     return loadPageBase<GamesBestRatedItem>({
       data,
       query: queryStatisticsGamesBestRated,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         count: response.data.statisticsGamesBestRated.count,
         items: response.data.statisticsGamesBestRated.items,
       }),
@@ -118,7 +119,9 @@ class ServiceStatisticsClass {
   }
 
   loadPageStatisticsPlaytimesPerDay = async (
-    { page, count, sortBy, sortDesc, filters, leftJoins }: InputCollection,
+    {
+      page, count, sortBy, sortDesc, filters, leftJoins,
+    }: InputCollection,
     payload: unknown = {},
   ) => {
     const { endInitial, analogOnly = false, digitalOnly = false } = payload as {
@@ -126,7 +129,7 @@ class ServiceStatisticsClass {
       analogOnly?: boolean;
       digitalOnly?: boolean;
     };
-    let start = startOfMonth(subMonths(endInitial, page));
+    const start = startOfMonth(subMonths(endInitial, page));
     let end: Date;
 
     if (page === 1) {
@@ -161,7 +164,7 @@ class ServiceStatisticsClass {
     const result = this.processPlaytimes(collectionPlaytimes.items);
 
     const interval = eachDayOfInterval({ start, end })
-      .map(date => format(date, 'yyyy-MM-dd HH:mm:ss'))
+      .map((date) => format(date, 'yyyy-MM-dd HH:mm:ss'))
       .reduce((obj, value) => {
         obj[value] = {
           date: value,
@@ -215,7 +218,7 @@ class ServiceStatisticsClass {
       playtimes.sort((playtime1, playtime2) => compareAsc(playtime1.start, playtime2.start));
       // console.log(date, 'date');
       // console.log(playtimes[0].start, 'playtimes[0].start');
-      //TODO handle overlapping
+      // TODO handle overlapping
       // console.log(differenceInSeconds(playtimes[0].start, date), 'differenceInSeconds');
 
       let difference = 0;

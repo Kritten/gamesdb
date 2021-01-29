@@ -19,10 +19,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
-import { GamesCountPlayedItem } from '@backend/src/modules/statistics/collection/gamesCountPlayed.collectionData.model';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
+import { GamesCountPlayedItem } from '@/modules/statistics/statistics.types';
 
 export default defineComponent({
   name: 'GamesCountPlayed',

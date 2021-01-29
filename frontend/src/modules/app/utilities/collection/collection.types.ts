@@ -1,8 +1,23 @@
-import {
-  InputCollection,
-  InputCollectionFilter,
-} from '@backend/src/utilities/collection/collection.input';
 import { Ref } from 'vue';
+
+export type InputCollectionFilter = {
+  field: string;
+  valueInt?: number;
+  valueFloat?: number;
+  valueBoolean?: boolean;
+  valueString?: string;
+  valueDate?: Date;
+  operator: string;
+};
+
+export type InputCollection = {
+  page: number;
+  count?: number;
+  sortBy: string[];
+  sortDesc: boolean[];
+  filters: InputCollectionFilter[];
+  leftJoins?: string[];
+};
 
 export type ServiceCollectionLoadPageReturn<T> = Promise<{ count: number; items: T[] }>;
 

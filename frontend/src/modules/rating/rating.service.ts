@@ -8,16 +8,18 @@ import {
 } from '@/modules/rating/graphql/rating.graphql';
 import { Rating } from '@/modules/rating/rating.model';
 import { cloneDeep } from 'lodash';
-import { ServiceCollectionInterface } from '../app/utilities/collection/collection.types';
-import { ServiceEntityInterface } from '../app/utilities/entity/entity.types';
-import { InputCollection } from '@backend/src/utilities/collection/collection.input';
+import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { queue } from '@/queue';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
+import {
+  ServiceCollectionInterface,
+  InputCollection,
+} from '../app/utilities/collection/collection.types';
 
 class ServiceRatingClass
-  implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
+implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
   useCreate() {
-    let rating = ref(new Rating());
+    const rating = ref(new Rating());
 
     return {
       entity: rating,
@@ -30,7 +32,7 @@ class ServiceRatingClass
   }
 
   useUpdate(ratingPassed: Rating) {
-    let rating = ref(cloneDeep(ratingPassed));
+    const rating = ref(cloneDeep(ratingPassed));
 
     return {
       entity: rating,
@@ -93,7 +95,7 @@ class ServiceRatingClass
     return loadPageBase<Rating>({
       data,
       query: queryPageRatings,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         items: await Promise.all(
           response.data.ratings.items.map((rating: Rating) => Rating.parseFromServer(rating)),
         ),

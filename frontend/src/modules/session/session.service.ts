@@ -12,15 +12,17 @@ import { Playtime } from '@/modules/playtime/playtime.model';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { queue } from '@/queue';
-import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
-import { InputCollection } from '@backend/src/utilities/collection/collection.input';
+import {
+  ServiceCollectionInterface,
+  InputCollection,
+} from '@/modules/app/utilities/collection/collection.types';
 import { cloneDeep } from 'lodash';
 import { compareAsc } from 'date-fns';
 import { Game } from '@/modules/game/game.model';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 
 class ServiceSessionClass
-  implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
+implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
   private static playtimeAdd(session: Ref<Session>, playtimeNew: Ref<Playtime>) {
     session.value.playtimes.push(playtimeNew.value);
     playtimeNew.value = new Playtime();
@@ -28,8 +30,7 @@ class ServiceSessionClass
 
   private playtimeRemove(session: Ref<Session>, playtime: Playtime) {
     session.value.playtimes = session.value.playtimes.filter(
-      (playtimeCurrent: Playtime) =>
-        !(playtimeCurrent.start === playtime.start && playtimeCurrent.end === playtime.end),
+      (playtimeCurrent: Playtime) => !(playtimeCurrent.start === playtime.start && playtimeCurrent.end === playtime.end),
     );
   }
 
@@ -67,7 +68,7 @@ class ServiceSessionClass
     }).then(async ({ items }) => {
       if (items.length > 0) {
         session.value = items[0];
-        lastDate.value = session.value.playtimes.map(playtime => playtime.end).sort(compareAsc)[
+        lastDate.value = session.value.playtimes.map((playtime) => playtime.end).sort(compareAsc)[
           session.value.playtimes.length - 1
         ];
       }
@@ -102,7 +103,7 @@ class ServiceSessionClass
   }
 
   useUpdate(sessionPassed: Session) {
-    let session = ref(cloneDeep(sessionPassed));
+    const session = ref(cloneDeep(sessionPassed));
 
     const playtimeNew = ref(new Playtime());
 
@@ -201,20 +202,19 @@ class ServiceSessionClass
     return loadPageBase<Session>({
       data,
       query: queryPageSession,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         items: await Promise.all(
           response.data.sessions.items.map((session: Session) => Session.parseFromServer(session)),
         ),
         count: response.data.sessions.count,
       }),
-      after: ({ items }) =>
-        store.commit(
-          'moduleSession/setSessionsIfNotExisting',
-          items.reduce((obj, entity) => {
-            obj[entity.id as ID] = entity;
-            return obj;
-          }, {} as Partial<{ [key in ID]: Entity }>),
-        ),
+      after: ({ items }) => store.commit(
+        'moduleSession/setSessionsIfNotExisting',
+        items.reduce((obj, entity) => {
+          obj[entity.id as ID] = entity;
+          return obj;
+        }, {} as Partial<{ [key in ID]: Entity }>),
+      ),
     });
   }
 

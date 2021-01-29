@@ -43,8 +43,7 @@ import { Game } from '@/modules/game/game.model';
 import { useI18n } from 'vue-i18n';
 import { queue } from '@/queue';
 import { defineComponent, ref, nextTick } from 'vue';
-import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
-import { InputCollectionFilter } from '@backend/src/utilities/collection/collection.input';
+import { ServiceCollectionFilters, InputCollectionFilter } from '@/modules/app/utilities/collection/collection.types';
 import { cloneDeep } from 'lodash';
 import RandomGame from '@/modules/game/random-game.vue';
 

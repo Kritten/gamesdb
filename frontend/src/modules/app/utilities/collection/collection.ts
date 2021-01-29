@@ -1,12 +1,14 @@
-import { computed, Ref, ref, watch } from 'vue';
 import {
+  computed, Ref, ref, watch,
+} from 'vue';
+import {
+  InputCollection,
   InputCollectionData,
   ServiceCollectionFilters,
   ServiceCollectionLoadPageType,
 } from '@/modules/app/utilities/collection/collection.types';
 import { debounce } from 'lodash';
 import { apolloClient } from '@/vue-apollo';
-import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { DocumentNode } from 'graphql';
 import { ApolloQueryResult } from '@apollo/client';
 
@@ -68,15 +70,13 @@ export function useCollection<T>(
 
   let hasNextPage;
   if (hasNextPagePassed !== undefined) {
-    hasNextPage = computed(() =>
-      hasNextPagePassed({
-        // @ts-ignore
-        items,
-        countItems,
-        page: pageRef,
-        isLoading,
-      }),
-    );
+    hasNextPage = computed(() => hasNextPagePassed({
+      // @ts-ignore
+      items,
+      countItems,
+      page: pageRef,
+      isLoading,
+    }));
   } else {
     hasNextPage = computed(() => countItems.value !== items.value.length);
   }
@@ -123,7 +123,7 @@ export function useCollection<T>(
   if (watchFilters) {
     watch(
       filters,
-      value => {
+      (value) => {
         console.warn('CALLED WATCH FILTERS, check if used');
         resetDebounced();
       },
@@ -133,7 +133,7 @@ export function useCollection<T>(
 
   watch(
     sortBy,
-    value => {
+    (value) => {
       reset();
     },
     { deep: true },

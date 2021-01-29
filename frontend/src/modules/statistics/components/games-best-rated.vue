@@ -24,10 +24,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
-import { GamesBestRatedItem } from '@backend/src/modules/statistics/collection/gamesBestRated.collectionData.model';
+import { GamesBestRatedItem } from '@/modules/statistics/statistics.types';
 
 export default defineComponent({
   name: 'GamesBestRated',

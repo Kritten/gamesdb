@@ -9,15 +9,17 @@ import {
 import { Image } from '@/modules/image/image.model';
 import { cloneDeep } from 'lodash';
 import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import { ServiceCollectionInterface } from '@/modules/app/utilities/collection/collection.types';
+import {
+  ServiceCollectionInterface,
+  InputCollection,
+} from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
-import { InputCollection } from '@backend/src/utilities/collection/collection.input';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 
 class ServiceImageClass
-  implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
+implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
   useCreate() {
-    let image = ref(new Image());
+    const image = ref(new Image());
 
     return {
       entity: image,
@@ -30,7 +32,7 @@ class ServiceImageClass
   }
 
   useUpdate(imagePassed: Image) {
-    let image = ref(cloneDeep(imagePassed));
+    const image = ref(cloneDeep(imagePassed));
 
     return {
       entity: image,
@@ -93,7 +95,7 @@ class ServiceImageClass
     return loadPageBase<Image>({
       data,
       query: queryPageImage,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         items: await Promise.all(
           response.data.images.items.map((image: Image) => Image.parseFromServer(image)),
         ),
