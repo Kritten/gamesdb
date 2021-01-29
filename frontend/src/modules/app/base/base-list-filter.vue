@@ -26,6 +26,15 @@
           }"
         />
       </template>
+      <template v-else-if="type === 'select'">
+        <base-input-select
+          v-model="value"
+          :options="{
+            label: t(label),
+            items,
+          }"
+        />
+      </template>
     </slot>
   </div>
 </template>
@@ -36,13 +45,16 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
-import { useId } from '@/modules/app/utilities/helpers';
+import { toNumber, useId } from '@/modules/app/utilities/helpers';
 import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
+import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 
 export default defineComponent({
   name: 'BaseListFilter',
-  components: { BaseInputBoolean, BaseInputNumber, BaseInputText },
+  components: {
+    BaseInputSelect, BaseInputBoolean, BaseInputNumber, BaseInputText,
+  },
   props: {
     filters: {
       required: true,
@@ -54,7 +66,7 @@ export default defineComponent({
     },
     type: {
       required: true,
-      validator: (value) => value === 'string' || value === 'int' || value === 'float' || value === 'boolean',
+      validator: (value) => value === 'string' || value === 'int' || value === 'float' || value === 'boolean' || value === 'select',
     },
     label: {
       required: true,
@@ -64,6 +76,13 @@ export default defineComponent({
       required: false,
       type: Array,
       default: undefined,
+    },
+    items: {
+      type: Array,
+      required: false,
+      default() {
+        return [];
+      },
     },
   },
   emits: ['update-filter'],
@@ -93,6 +112,10 @@ export default defineComponent({
         nameValueField = 'valueBoolean';
         operator.push('=');
         break;
+      case 'select':
+        nameValueField = 'valueInt';
+        operator.push('=');
+        break;
       default:
         // @ts-ignore
         throw Error(`Unknown filter type ${props.type}`);
@@ -107,6 +130,11 @@ export default defineComponent({
     }
 
     const emitValue = (valueNew: unknown) => {
+      // @ts-ignore
+      if (props.type === 'select') {
+        valueNew = toNumber(valueNew as string);
+      }
+
       const payload: {[key:string]: {}} = {};
 
       for (let i = 0; i < operator.length; i += 1) {
