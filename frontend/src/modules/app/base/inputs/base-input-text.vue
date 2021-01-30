@@ -1,16 +1,18 @@
 <template>
-  <label :for="idInput">{{ optionsMerged.label }}</label>
-  <input
-    :id="idInput"
-    :value="modelValue"
-    :type="optionsMerged.type === undefined ? 'text' : optionsMerged.type "
-    @input="baseInput.input($event.target.value)"
-  >
+  <el-form-item :label="optionsMerged.label">
+    <el-input
+      :model-value="modelValue"
+      v-bind="optionsMerged"
+      @input="baseInput.input"
+    />
+  </el-form-item>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
-import { getValidator, toNumber, useId } from '@/modules/app/utilities/helpers';
+import {
+  computed, defineComponent, PropType,
+} from 'vue';
+import { getValidator, toNumber } from '@/modules/app/utilities/helpers';
 import { configBaseInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
 import { Validation } from '@vuelidate/core';
 
@@ -34,6 +36,7 @@ export default defineComponent({
       default: () => ({}),
     },
   },
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const baseInput = useBaseInput<
       string | null,
@@ -59,7 +62,6 @@ export default defineComponent({
         ...props.options,
         label: baseInput.label.value,
       })),
-      idInput: useId().generate(),
     };
   },
 });

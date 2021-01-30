@@ -5,8 +5,8 @@ export const configBaseInput = {};
 
 export function useBaseInput<I, E>(
   props: { validation: Validation; options: Record<string, unknown> },
-  emit: (event: string, ...args: unknown[]) => void,
-  parseValue: (value: I) => E = (value) => (value as unknown) as E,
+  emit: (event: 'update:modelValue', ...args: unknown[]) => void,
+  parseValue: (value: I) => E = value => (value as unknown) as E,
 ): {
   label: ComputedRef<string>;
   errorsComputed: ComputedRef<Array<string | Ref<string>>>;
@@ -21,7 +21,9 @@ export function useBaseInput<I, E>(
     return false;
   });
 
-  const errorsComputed = computed<Array<string | Ref<string>>>(() => (hasValidationInfo.value ? props.validation.$errors.map((error) => error.$message) : []));
+  const errorsComputed = computed<Array<string | Ref<string>>>(() =>
+    hasValidationInfo.value ? props.validation.$errors.map(error => error.$message) : [],
+  );
 
   const labelInternal = computed<string>(() => {
     let { label }: { label?: string } = props.options;
