@@ -3,6 +3,14 @@ html, body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 
+.el-header {
+  line-height: 60px;
+
+  & .el-col:nth-of-type(2) {
+    text-align: right;
+  }
+}
+
 .list-wishlist {
   .list-wishlist-item-extern {
     //padding-top: 10px;
@@ -26,7 +34,7 @@ html, body {
           flex-grow: 1;
           padding: 0 20px 20px;
 
-          &>.el-col {
+          & > .el-col {
             display: flex;
             flex-direction: column;
             justify-content: flex-end;

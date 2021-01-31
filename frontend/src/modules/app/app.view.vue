@@ -1,34 +1,60 @@
 <template>
   <el-container>
     <el-header>
-      <a
-        href="#"
-        @click="logoutService.logout"
-      >{{ t('common.logout') }}</a>
-      <ul>
-        <router-link
-          v-for="route in routes"
-          :key="route.label"
-          :to="{ name: route.name }"
-        >
-          <li>
-            {{ route.label }}
-          </li>
-        </router-link>
-      </ul>
+      <el-row>
+        <el-col :span="10">
+          <el-button
+            :icon="isCollapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
+            type="text"
+            @click="isCollapsed = !isCollapsed"
+          />
+        </el-col>
+        <el-col :span="14">
+          <el-link
+            href="#"
+            :underline="false"
+            @click="logoutService.logout"
+          >
+            {{ t('common.logout') }}
+          </el-link>
+        </el-col>
+      </el-row>
     </el-header>
-    <el-main>
-      <template v-if="store.state.user !== undefined">
-        <router-view />
-      </template>
-    </el-main>
+
+    <el-container>
+      <el-aside
+        v-if="isCollapsed"
+        :width="null"
+      >
+        <el-menu
+          router
+        >
+          <el-menu-item
+            v-for="route in routes"
+            :key="route.label"
+            :index="route.name"
+            :route="{name: route.name}"
+          >
+            <i :class="route.icon" />
+            <template #title>
+              {{ route.label }}
+            </template>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <template v-if="store.state.user !== undefined">
+          <router-view />
+        </template>
+      </el-main>
+    </el-container>
   </el-container>
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { ServiceLogin } from '@/modules/app/login/login.service';
 
 export default defineComponent({
@@ -90,6 +116,7 @@ export default defineComponent({
       store,
       routes,
       logoutService,
+      isCollapsed: ref(false),
     };
   },
 });
