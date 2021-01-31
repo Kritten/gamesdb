@@ -1,22 +1,28 @@
 <template>
-  <a
-    href="#"
-    @click="logoutService.logout"
-  >{{ t('common.logout') }}</a>
-  <ul>
-    <router-link
-      v-for="route in routes"
-      :key="route.label"
-      :to="{ name: route.name }"
-    >
-      <li>
-        {{ route.label }}
-      </li>
-    </router-link>
-  </ul>
-  <template v-if="store.state.user !== undefined">
-    <router-view />
-  </template>
+  <el-container>
+    <el-header>
+      <a
+        href="#"
+        @click="logoutService.logout"
+      >{{ t('common.logout') }}</a>
+      <ul>
+        <router-link
+          v-for="route in routes"
+          :key="route.label"
+          :to="{ name: route.name }"
+        >
+          <li>
+            {{ route.label }}
+          </li>
+        </router-link>
+      </ul>
+    </el-header>
+    <el-main>
+      <template v-if="store.state.user !== undefined">
+        <router-view />
+      </template>
+    </el-main>
+  </el-container>
 </template>
 
 <script lang="ts">

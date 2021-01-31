@@ -1,15 +1,32 @@
 <template>
-  <h1>{{ t('wishlist.label') }}</h1>
-  <list-wishlist>
-    <template #items="{ wishlistItems }">
-      <template
-        v-for="wishlistItem in wishlistItems"
-        :key="wishlistItem.id"
+  <el-container>
+    <el-main>
+      <el-row
+        type="flex"
+        justify="center"
       >
-        <list-wishlist-item-extern :wishlist-item="wishlistItem" />
-      </template>
-    </template>
-  </list-wishlist>
+        <el-col :md="12">
+          <h1>{{ t('wishlist.label') }}</h1>
+          <list-wishlist>
+            <template #items="{ wishlistItems }">
+              <el-row
+                :gutter="20"
+                type="flex"
+                class="list-wishlist"
+              >
+                <template
+                  v-for="wishlistItem in wishlistItems"
+                  :key="wishlistItem.id"
+                >
+                  <list-wishlist-item-extern :wishlist-item="wishlistItem" />
+                </template>
+              </el-row>
+            </template>
+          </list-wishlist>
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script lang="ts">

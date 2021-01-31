@@ -1,0 +1,50 @@
+html, body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+.list-wishlist {
+  .list-wishlist-item-extern {
+    //padding-top: 10px;
+    //padding-bottom: 10px;
+    height: 100%;
+
+    .el-card {
+      height: 100%;
+
+      .el-card__body {
+        height: 100%;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+
+        .row-name {
+          padding: 0 20px;
+        }
+
+        .row-bottom {
+          flex-grow: 1;
+          padding: 0 20px 20px;
+
+          .row-gift-for {
+            padding-bottom: 10px;
+          }
+
+          & > .el-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+            .row-link {
+
+              & > .el-col {
+                display: flex;
+                justify-content: flex-end;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

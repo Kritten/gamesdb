@@ -6,6 +6,7 @@ import { router } from '@/modules/app/app.router';
 import { i18n } from '@/modules/app/app.i18n';
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
+import '@/assets/main.scss';
 import locale from 'element-plus/lib/locale/lang/de.js';
 
 createApp(App)

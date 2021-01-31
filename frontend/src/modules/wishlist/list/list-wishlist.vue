@@ -60,7 +60,7 @@ export default defineComponent({
     const filters = ref<ServiceCollectionFilters>({
       'entity.giftFor': {
         field: 'entity.giftFor',
-        valueInt: GIFT_FOR.LieneAndKristof,
+        valueInt: undefined,
         operator: '=',
       },
       'entity.price': {
