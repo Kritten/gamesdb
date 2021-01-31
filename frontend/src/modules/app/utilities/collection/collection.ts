@@ -1,6 +1,4 @@
-import {
-  computed, Ref, ref, watch,
-} from 'vue';
+import { computed, Ref, ref, watch } from 'vue';
 import {
   InputCollection,
   InputCollectionData,
@@ -70,13 +68,15 @@ export function useCollection<T>(
 
   let hasNextPage;
   if (hasNextPagePassed !== undefined) {
-    hasNextPage = computed(() => hasNextPagePassed({
-      // @ts-ignore
-      items,
-      countItems,
-      page: pageRef,
-      isLoading,
-    }));
+    hasNextPage = computed(() =>
+      hasNextPagePassed({
+        // @ts-ignore
+        items,
+        countItems,
+        page: pageRef,
+        isLoading,
+      }),
+    );
   } else {
     hasNextPage = computed(() => countItems.value !== items.value.length);
   }
@@ -90,7 +90,13 @@ export function useCollection<T>(
         count,
         sortBy: sortBy.value,
         sortDesc: sortDesc.value,
-        filters: Object.values(filters.value),
+        // TODO kann dann mit vuetify weg
+        filters: Object.values(filters.value).map(filter => {
+          if (typeof filter.valueBoolean === 'number') {
+            filter.valueBoolean = undefined;
+          }
+          return filter;
+        }),
         leftJoins,
       },
       payload,
@@ -123,7 +129,7 @@ export function useCollection<T>(
   if (watchFilters) {
     watch(
       filters,
-      (value) => {
+      value => {
         console.warn('CALLED WATCH FILTERS, check if used');
         resetDebounced();
       },
@@ -133,7 +139,7 @@ export function useCollection<T>(
 
   watch(
     sortBy,
-    (value) => {
+    value => {
       reset();
     },
     { deep: true },

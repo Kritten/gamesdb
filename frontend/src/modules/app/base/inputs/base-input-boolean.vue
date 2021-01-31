@@ -1,34 +1,24 @@
 <template>
-  <div>
-    {{ optionsMerged.label }}
-  </div>
-  <label>
-    <input
-      v-model="modelValueInternal"
-      :name="name"
-      :value="true"
-      type="radio"
+  <el-form-item :label="optionsMerged.label">
+    <el-radio-group
+      class="inputs"
+      :model-value="modelValue"
+      @change="baseInput.input"
     >
-    {{ t('common.yes') }}
-  </label>
-  <label>
-    <input
-      v-model="modelValueInternal"
-      :name="name"
-      :value="false"
-      type="radio"
-    >
-    {{ t('common.no') }}
-  </label>
-  <label v-if="canBeUndefined === true">
-    <input
-      v-model="modelValueInternal"
-      :name="name"
-      :value="undefined"
-      type="radio"
-    >
-    {{ t('common.undefined') }}
-  </label>
+      <el-radio :label="true">
+        {{ t('common.yes') }}
+      </el-radio>
+      <el-radio :label="false">
+        {{ t('common.no') }}
+      </el-radio>
+      <el-radio
+        v-if="canBeUndefined === true"
+        :label="-1"
+      >
+        {{ t('common.undefined') }}
+      </el-radio>
+    </el-radio-group>
+  </el-form-item>
 </template>
 
 <script lang="ts">
@@ -45,7 +35,7 @@ export default defineComponent({
   props: {
     modelValue: {
       required: true,
-      validator: getValidator({ boolean: true, undefined: true }),
+      validator: getValidator({ boolean: true, undefined: true, number: true }),
     },
     canBeUndefined: {
       required: false,
@@ -63,20 +53,23 @@ export default defineComponent({
       default: () => ({}),
     },
   },
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const { t } = useI18n();
 
     const baseInput = useBaseInput<
-      boolean | undefined,
-      boolean | undefined
+      boolean | number | undefined,
+      boolean | number | undefined
       >(
         props,
         emit,
+        // (value) => typeof value === 'number' ? undefined : value,
       );
 
     return {
       t,
       modelValueInternal: useModelWrapper({
+        // @ts-ignore
         props, emit, name: 'modelValue',
       }),
       baseInput,
@@ -91,6 +84,5 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
 </style>

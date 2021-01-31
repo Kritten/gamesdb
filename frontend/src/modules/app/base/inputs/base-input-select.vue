@@ -1,23 +1,24 @@
 <template>
-  <label :for="idInput"> {{ optionsMerged.label }}</label>
-  <select
-    :id="idInput"
-    :value="modelValue"
-    @change="baseInput.input"
-  >
-    <option
-      v-for="(option, index) in optionsMerged.items"
-      :key="index"
-      :value="option.key"
+  <el-form-item :label="optionsMerged.label">
+    <el-select
+      :model-value="modelValue"
+      @change="baseInput.input"
     >
-      {{ option.text }}
-    </option>
-  </select>
+      <el-option
+        v-for="(option, index) in optionsMerged.items"
+        :key="index"
+        :value="option.key"
+        :label="option.text"
+      >
+        {{ option.text }}
+      </el-option>
+    </el-select>
+  </el-form-item>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import { getValidator, useId } from '@/modules/app/utilities/helpers';
+import { getValidator } from '@/modules/app/utilities/helpers';
 import { configBaseInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
 import { Validation } from '@vuelidate/core';
 
@@ -41,6 +42,7 @@ export default defineComponent({
       default: () => ({}),
     },
   },
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const baseInput = useBaseInput<
       string,
@@ -48,8 +50,7 @@ export default defineComponent({
       >(
         props,
         emit,
-        // @ts-ignore
-        (value) => value.target.value,
+        (value) => value,
       );
 
     return {
@@ -59,7 +60,6 @@ export default defineComponent({
         ...props.options,
         label: baseInput.label.value,
       })),
-      idInput: useId().generate(),
     };
   },
 });

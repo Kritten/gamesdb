@@ -66,24 +66,24 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n();
 
-    const filters = ref<ServiceCollectionFilters>(props.filters({
+    const filtersInitial: ServiceCollectionFilters = props.filters({
       'entity.giftFor': {
         field: 'entity.giftFor',
-        valueInt: undefined,
+        valueInt: -1,
         operator: '=',
       },
       'entity.price': {
         field: 'entity.price',
-        valueInt: undefined,
+        valueInt: -1,
         operator: '=',
       },
-    }));
+    });
+
+    const filters = ref<ServiceCollectionFilters>(filtersInitial);
 
     const optionsSortBy: { field: string; name: string }[] = [
       { field: 'entity.name', name: 'name' },
     ];
-
-    const filtersInitial: ServiceCollectionFilters = {};
 
     const sortBy = ref<string[]>(['entity.name']);
     const sortDesc = ref<boolean[]>([false]);

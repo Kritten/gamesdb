@@ -19,7 +19,11 @@
   </el-row>
   <el-row>
     <el-col>
-      <el-form>
+      <el-form
+        size="mini"
+        label-width="150px"
+        label-position="left"
+      >
         <base-list-filter
           :filters="filters"
           label="wishlist.filters.name"
@@ -81,8 +85,8 @@ export default defineComponent({
       t,
       i18nPrefix: 'game',
       filters: computed(() => props.modelValue),
-      itemsGiftFor: [{ key: undefined, text: t('common.undefined') }, ...ServiceWishlist.getItemsGiftFor()],
-      itemsPriceRange: [{ key: undefined, text: t('common.undefined') }, ...ServiceWishlist.getItemsPriceRange()],
+      itemsGiftFor: [{ key: -1, text: t('common.undefined') }, ...ServiceWishlist.getItemsGiftFor()],
+      itemsPriceRange: [{ key: -1, text: t('common.undefined') }, ...ServiceWishlist.getItemsPriceRange()],
     };
   },
 });

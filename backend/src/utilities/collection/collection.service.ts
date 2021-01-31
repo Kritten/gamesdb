@@ -45,7 +45,7 @@ export class CollectionService<T extends BaseEntity> {
         value = filter.valueDate;
       }
 
-      if (value === undefined) {
+      if (value === undefined || value === -1) {
         continue;
       }
 
