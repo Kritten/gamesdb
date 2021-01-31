@@ -1,43 +1,59 @@
 <template>
-  <button
-    type="button"
-    @click="$emit('reset')"
-  >
-    Reset
-  </button>
-  <div>
-    <base-list-filter
-      :filters="filters"
-      label="wishlist.filters.name"
-      name="entity.name"
-      type="string"
-      @update-filter="$emit('update-filter', $event)"
-    />
-    <base-list-filter
-      :filters="filters"
-      :items="itemsGiftFor"
-      label="wishlist.filters.giftFor"
-      name="entity.giftFor"
-      type="select"
-      @update-filter="$emit('update-filter', $event)"
-    />
-    <base-list-filter
-      :filters="filters"
-      :items="itemsPriceRange"
-      label="wishlist.filters.price"
-      name="entity.price"
-      type="select"
-      operator="<="
-      @update-filter="$emit('update-filter', $event)"
-    />
-    <base-list-filter
-      :filters="filters"
-      label="wishlist.filters.taken"
-      name="entity.taken"
-      type="boolean"
-      @update-filter="$emit('update-filter', $event)"
-    />
-  </div>
+  <el-row>
+    <el-col :span="12">
+      <h3>{{ t('filter.label') }}</h3>
+    </el-col>
+    <el-col
+      :span="12"
+      class="filter-reset"
+    >
+      <div>
+        <el-button
+          type="text"
+          @click="$emit('reset')"
+        >
+          {{ t('filter.reset') }}
+        </el-button>
+      </div>
+    </el-col>
+  </el-row>
+  <el-row>
+    <el-col>
+      <el-form>
+        <base-list-filter
+          :filters="filters"
+          label="wishlist.filters.name"
+          name="entity.name"
+          type="string"
+          @update-filter="$emit('update-filter', $event)"
+        />
+        <base-list-filter
+          :filters="filters"
+          :items="itemsGiftFor"
+          label="wishlist.filters.giftFor"
+          name="entity.giftFor"
+          type="select"
+          @update-filter="$emit('update-filter', $event)"
+        />
+        <base-list-filter
+          :filters="filters"
+          :items="itemsPriceRange"
+          label="wishlist.filters.price"
+          name="entity.price"
+          type="select"
+          operator="<="
+          @update-filter="$emit('update-filter', $event)"
+        />
+        <base-list-filter
+          :filters="filters"
+          label="wishlist.filters.taken"
+          name="entity.taken"
+          type="boolean"
+          @update-filter="$emit('update-filter', $event)"
+        />
+      </el-form>
+    </el-col>
+  </el-row>
 </template>
 
 <script lang="ts">
@@ -62,6 +78,7 @@ export default defineComponent({
     const { t } = useI18n();
 
     return {
+      t,
       i18nPrefix: 'game',
       filters: computed(() => props.modelValue),
       itemsGiftFor: [{ key: undefined, text: t('common.undefined') }, ...ServiceWishlist.getItemsGiftFor()],
@@ -71,4 +88,14 @@ export default defineComponent({
 });
 </script>
 
-<style scoped />
+<style scoped lang="scss">
+.filter-reset {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  div {
+    text-align: right;
+  }
+}
+</style>

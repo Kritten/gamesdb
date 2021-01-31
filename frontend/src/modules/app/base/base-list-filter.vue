@@ -1,42 +1,44 @@
 <template>
-  <div>
-    <slot>
-      <template v-if="type === 'string'">
-        <base-input-text
-          v-model="value"
-          :options="{
-            label: t(label),
-          }"
-        />
-      </template>
-      <template v-else-if="type === 'int' || type === 'float'">
-        <base-input-number
-          v-model="value"
-          :options="{
-            label: t(label),
-          }"
-        />
-      </template>
-      <template v-else-if="type === 'boolean'">
-        <base-input-boolean
-          v-model="value"
-          :can-be-undefined="true"
-          :options="{
-            label: t(label),
-          }"
-        />
-      </template>
-      <template v-else-if="type === 'select'">
-        <base-input-select
-          v-model="value"
-          :options="{
-            label: t(label),
-            items,
-          }"
-        />
-      </template>
-    </slot>
-  </div>
+  <el-row>
+    <el-col>
+      <slot>
+        <template v-if="type === 'string'">
+          <base-input-text
+            v-model="value"
+            :options="{
+              label: t(label),
+            }"
+          />
+        </template>
+        <template v-else-if="type === 'int' || type === 'float'">
+          <base-input-number
+            v-model="value"
+            :options="{
+              label: t(label),
+            }"
+          />
+        </template>
+        <template v-else-if="type === 'boolean'">
+          <base-input-boolean
+            v-model="value"
+            :can-be-undefined="true"
+            :options="{
+              label: t(label),
+            }"
+          />
+        </template>
+        <template v-else-if="type === 'select'">
+          <base-input-select
+            v-model="value"
+            :options="{
+              label: t(label),
+              items,
+            }"
+          />
+        </template>
+      </slot>
+    </el-col>
+  </el-row>
 </template>
 
 <script lang="ts">

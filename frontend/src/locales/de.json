@@ -20,6 +20,10 @@
   "dashboard": {
     "label": "Dashboard"
   },
+  "filter": {
+    "label": "Filter",
+    "reset": "Filter zurücksetzen"
+  },
   "game": {
     "label": "Spiel | Spiele",
     "name": "Name",
@@ -88,6 +92,12 @@
   },
   "wishlist": {
     "label": "Wunschliste | Wunschlisten",
+    "item": {
+      "label": "Wunsch | Wünsche"
+    },
+    "headerInfo": "{header}{content}",
+    "headerInfoHeader": "Willkommen auf unserer Wunschliste",
+    "headerInfoContent": "test",
     "name": "Name",
     "price": "Preis",
     "taken": "Vergeben",
@@ -106,6 +116,7 @@
     },
     "buy": "mehr Infos",
     "filters": {
+      "taken": "Schon verschenkt",
       "name": "Name",
       "price": "Preis",
       "giftFor": "Geschenk für"

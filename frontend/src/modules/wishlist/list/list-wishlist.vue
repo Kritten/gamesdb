@@ -10,14 +10,14 @@
     v-model:sort-desc="sortDesc"
     :options-sort-by="optionsSortBy"
   />
-  <h2>{{ collection.countItems.value }} {{ t('wishlist.label', collection.countItems.value) }}</h2>
+  <h2>{{ collection.countItems.value }} {{ t('wishlist.item.label', collection.countItems.value) }}</h2>
   <slot
     name="items"
     :wishlistItems="collection.items.value"
   >
     <table>
       <tr>
-        <th>{{ t('wishlist.label') }}</th>
+        <th>{{ t('wishlist.item.label') }}</th>
       </tr>
       <list-wishlist-item
         v-for="wishlist in collection.items.value"

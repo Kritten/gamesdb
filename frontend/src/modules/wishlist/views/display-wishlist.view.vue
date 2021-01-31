@@ -7,6 +7,16 @@
       >
         <el-col :md="12">
           <h1>{{ t('wishlist.label') }}</h1>
+          <i18n
+            keypath="wishlist.headerInfo"
+          >
+            <template #header>
+              <p>{{  t('wishlist.headerInfoHeader') }}</p>
+            </template>
+            <template #content>
+              <p>{{  t('wishlist.headerInfoContent') }}</p>
+            </template>
+          </i18n>
           <list-wishlist :filters="filters">
             <template #items="{ wishlistItems }">
               <el-row
@@ -31,14 +41,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useI18n, Translation as I18n } from 'vue-i18n';
 import ListWishlist from '@/modules/wishlist/list/list-wishlist.vue';
 import ListWishlistItemExtern from '@/modules/wishlist/list/list-wishlist-item-extern.vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 
 export default defineComponent({
   name: 'ViewDisplayWishlist',
-  components: { ListWishlistItemExtern, ListWishlist },
+  components: { ListWishlistItemExtern, ListWishlist, I18n },
   setup() {
     const { t } = useI18n();
     return {
