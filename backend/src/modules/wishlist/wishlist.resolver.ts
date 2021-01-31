@@ -25,6 +25,19 @@ export class WishlistResolver extends EntityResolver {
     return this.wishlistCollectionService.loadPage(data);
   }
 
+  @Mutation(() => Wishlist)
+  async updateWishlistTaken(
+    @Args('wishlistData') wishlistData: UpdateWishlistInput,
+  ) {
+    const wishlist = await this.wishlistService.findOne(
+      parseInt(wishlistData.id, 10),
+    );
+
+    wishlist.taken = wishlistData.taken;
+
+    return await this.wishlistService.update(wishlist);
+  }
+
   @Query(() => Wishlist)
   @UseGuards(GqlAuthGuard)
   async wishlist(@Args({ name: 'id', type: () => ID }) id: string) {

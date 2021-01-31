@@ -7,6 +7,7 @@
     "delete": "Löschen",
     "yes": "Ja",
     "no": "Nein",
+    "cancel": "Abbrechen",
     "undefined": "Egal",
     "login": "Login",
     "logout": "Logout"
@@ -108,6 +109,12 @@
       "name": "Name",
       "price": "Preis",
       "giftFor": "Geschenk für"
-    }
+    },
+    "confirm": {
+      "take": "Soll dieses Produkt wirklich von der Wunschliste gestrichen werden?",
+      "giveBack": "Willst du dieses Produkt wirklich wieder zurück auf die Wunschliste stellen?"
+    },
+    "take": "Verschenken",
+    "giveBack": "Zurück auf die Liste"
   }
 }

@@ -58,6 +58,17 @@ export const mutationUpdateWishlist = gql`
   ${fragments.wishlist}
 `;
 /**
+ * Update
+ */
+export const mutationUpdateWishlistTaken = gql`
+  mutation updateWishlistTaken($wishlist: UpdateWishlistInput!) {
+    updateWishlistTaken(wishlistData: $wishlist) {
+      ...wishlist
+    }
+  }
+  ${fragments.wishlist}
+`;
+/**
  * Delete
  */
 export const mutationDeleteWishlist = gql`

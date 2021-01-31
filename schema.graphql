@@ -142,6 +142,7 @@ type Mutation {
     updateSession(sessionData: UpdateSessionInput!): Session!
     updateUniverse(universeData: UpdateUniverseInput!): Universe!
     updateWishlist(wishlistData: UpdateWishlistInput!): Wishlist!
+    updateWishlistTaken(wishlistData: UpdateWishlistInput!): Wishlist!
 }
 
 type Player {

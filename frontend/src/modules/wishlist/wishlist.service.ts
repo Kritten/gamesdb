@@ -8,6 +8,7 @@ import {
   mutationCreateWishlist,
   mutationDeleteWishlist,
   mutationUpdateWishlist,
+  mutationUpdateWishlistTaken,
   queryPageWishlist,
   queryWishlistItem,
 } from '@/modules/wishlist/graphql/wishlist.graphql';
@@ -21,7 +22,7 @@ import {
 import { ID, ServiceEntityInterface } from '../app/utilities/entity/entity.types';
 
 class ServiceWishlistClass
-implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist> {
+  implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist> {
   useCreate() {
     const wishlist = ref(new Wishlist());
 
@@ -84,6 +85,23 @@ implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist
     return wishlistNew;
   }
 
+  async updateTaken(wishlist: Wishlist) {
+    const response = await apolloClient.mutate({
+      mutation: mutationUpdateWishlistTaken,
+      variables: {
+        wishlist: wishlist.prepareForServer(),
+      },
+    });
+
+    const wishlistNew = await Wishlist.parseFromServer(response.data.updateWishlist);
+
+    store.commit('moduleWishlist/addWishlistItem', wishlistNew);
+
+    queue.notify('updatedWishlist', wishlistNew);
+
+    return wishlistNew;
+  }
+
   async delete(wishlist: Wishlist) {
     const response = await apolloClient.mutate({
       mutation: mutationDeleteWishlist,
@@ -121,9 +139,11 @@ implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist
     return loadPageBase<Wishlist>({
       data,
       query: queryPageWishlist,
-      parseResult: async (response) => ({
+      parseResult: async response => ({
         items: await Promise.all(
-          response.data.wishlists.items.map((wishlist: Wishlist) => Wishlist.parseFromServer(wishlist)),
+          response.data.wishlists.items.map((wishlist: Wishlist) =>
+            Wishlist.parseFromServer(wishlist),
+          ),
         ),
         count: response.data.wishlists.count,
       }),
