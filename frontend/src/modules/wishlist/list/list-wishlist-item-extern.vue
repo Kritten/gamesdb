@@ -44,15 +44,27 @@
               <display-price-range :value="wishlistItem.price" />
             </el-col>
           </el-row>
-          <el-row class="row-link">
-            <el-col>
+          <el-row>
+            <el-col
+              class="col-info"
+              :span="12"
+            >
               <el-link
+                :underline="false"
                 :href="wishlistItem.link"
-                icon="el-icon-shopping-cart-2"
+                icon="el-icon-info"
                 target="_blank"
               >
                 {{ t('wishlist.buy') }}
               </el-link>
+            </el-col>
+            <el-col
+              class="col-button"
+              :span="12"
+            >
+              <el-button type="primary">
+                Verschenken
+              </el-button>
             </el-col>
           </el-row>
         </el-col>

@@ -26,22 +26,24 @@ html, body {
           flex-grow: 1;
           padding: 0 20px 20px;
 
-          .row-gift-for {
-            padding-bottom: 10px;
-          }
-
-          & > .el-col {
+          &>.el-col {
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+          }
 
-            .row-link {
+          .row-gift-for, .row-price-range {
+            padding-bottom: 10px;
+          }
 
-              & > .el-col {
-                display: flex;
-                justify-content: flex-end;
-              }
-            }
+          .col-info {
+            display: flex;
+            //align-items: flex-end;
+          }
+
+          .col-button {
+            display: flex;
+            justify-content: flex-end;
           }
         }
       }
