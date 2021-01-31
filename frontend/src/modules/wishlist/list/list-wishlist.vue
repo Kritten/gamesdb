@@ -35,7 +35,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref } from 'vue';
+import {
+  defineComponent, nextTick, PropType, ref,
+} from 'vue';
 import ListWishlistItem from '@/modules/wishlist/list/list-wishlist-item.vue';
 import BaseListSort from '@/modules/app/base/base-list-sort.vue';
 import ListWishlistFilters from '@/modules/wishlist/list/list-wishlist-filters.vue';
@@ -46,7 +48,6 @@ import { queue } from '@/queue';
 import { cloneDeep } from 'lodash';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
-import { GIFT_FOR } from '@/modules/wishlist/wishlist.constants';
 
 export default defineComponent({
   name: 'ListWishlist',
@@ -55,9 +56,17 @@ export default defineComponent({
     BaseListSort,
     ListWishlistItem,
   },
-  setup() {
+  props: {
+    filters: {
+      required: false,
+      type: Function as PropType<(filters: ServiceCollectionFilters) => ServiceCollectionFilters>,
+      default: (filters: ServiceCollectionFilters) => filters,
+    },
+  },
+  setup(props) {
     const { t } = useI18n();
-    const filters = ref<ServiceCollectionFilters>({
+
+    const filters = ref<ServiceCollectionFilters>(props.filters({
       'entity.giftFor': {
         field: 'entity.giftFor',
         valueInt: undefined,
@@ -68,7 +77,7 @@ export default defineComponent({
         valueInt: undefined,
         operator: '=',
       },
-    });
+    }));
 
     const optionsSortBy: { field: string; name: string }[] = [
       { field: 'entity.name', name: 'name' },

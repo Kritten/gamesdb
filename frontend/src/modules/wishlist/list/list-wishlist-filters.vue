@@ -30,6 +30,13 @@
       operator="<="
       @update-filter="$emit('update-filter', $event)"
     />
+    <base-list-filter
+      :filters="filters"
+      label="wishlist.filters.taken"
+      name="entity.taken"
+      type="boolean"
+      @update-filter="$emit('update-filter', $event)"
+    />
   </div>
 </template>
 
