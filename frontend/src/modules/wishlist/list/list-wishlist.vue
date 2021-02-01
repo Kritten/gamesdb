@@ -4,12 +4,11 @@
     @reset="resetFilters"
     @update-filter="updateFilter"
   />
-  <hr>
-  <base-list-sort
-    v-model:sort-by="sortBy"
-    v-model:sort-desc="sortDesc"
-    :options-sort-by="optionsSortBy"
-  />
+<!--  <base-list-sort-->
+<!--    v-model:sort-by="sortBy"-->
+<!--    v-model:sort-desc="sortDesc"-->
+<!--    :options-sort-by="optionsSortBy"-->
+<!--  />-->
   <h2>{{ collection.countItems.value }} {{ t('wishlist.item.label', collection.countItems.value) }}</h2>
   <slot
     name="items"
