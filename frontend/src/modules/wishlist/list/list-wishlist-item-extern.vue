@@ -19,7 +19,7 @@
           <el-image
             :src="image.link"
             :fit="'contain'"
-            style="height: 200px"
+            style="height: 200px; width: 100%"
           />
         </el-carousel-item>
       </el-carousel>
