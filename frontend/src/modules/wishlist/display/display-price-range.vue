@@ -1,5 +1,6 @@
 <template>
-  <span>{{ t(`wishlist.priceRange.${value}`) }}</span>
+  <span>{{ t(`wishlist.priceRange`, [value / 100.0]) }}</span>
+<!--  <span>{{ t(`wishlist.priceRange.${value}`) }}</span>-->
 </template>
 
 <script lang="ts">

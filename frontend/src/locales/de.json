@@ -106,12 +106,7 @@
     "taken": "Vergeben",
     "link": "Link",
     "giftFor": "Geschenk für",
-    "priceRange": {
-      "1000": "unter 10€",
-      "2000": "unter 20€",
-      "5000": "unter 50€",
-      "999999": "über 50€"
-    },
+    "priceRange": "ca. {0}€",
     "giftForWho": {
       "0": "Liene und Kristof",
       "1": "Liene",
