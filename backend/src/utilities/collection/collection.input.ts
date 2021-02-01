@@ -10,6 +10,8 @@ export class InputCollectionFilter {
   valueBoolean?: boolean;
   valueString?: string;
   valueDate?: Date;
+  @Field(() => [Float, Float])
+  valueRange?: [number, number];
   operator: string;
 }
 

@@ -37,12 +37,23 @@
         />
         <base-list-filter
           :filters="filters"
-          :items="itemsPriceRange"
           label="wishlist.filters.price"
           name="entity.price"
-          type="select"
-          operator="<="
+          type="range"
           @update-filter="$emit('update-filter', $event)"
+          :options="{
+            marks: {
+              0: '0€',
+              100: 'unbegrenzt',
+            },
+            'format-tooltip': (value) => {
+              if (value === 100) {
+                return 'unbegrenzt';
+              }
+
+              return `${value}€`
+            },
+          }"
         />
         <base-list-filter
           :filters="filters"
@@ -63,7 +74,7 @@ import {
 import BaseListFilter from '@/modules/app/base/base-list-filter.vue';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { useI18n } from 'vue-i18n';
-import {useStore} from "vuex";
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'ListWishlistFilters',
@@ -85,7 +96,6 @@ export default defineComponent({
       i18nPrefix: 'game',
       filters: computed(() => props.modelValue),
       itemsGiftFor: [{ key: -1, text: t('common.undefined') }, ...ServiceWishlist.getItemsGiftFor()],
-      itemsPriceRange: [{ key: -1, text: t('common.undefined') }, ...ServiceWishlist.getItemsPriceRange()],
     };
   },
 });

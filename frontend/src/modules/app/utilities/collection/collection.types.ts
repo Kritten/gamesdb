@@ -7,6 +7,7 @@ export type InputCollectionFilter = {
   valueBoolean?: boolean;
   valueString?: string;
   valueDate?: Date;
+  valueRange?: [number, number];
   operator: string;
 };
 

@@ -303,6 +303,7 @@ input InputCollectionFilter {
     valueDate: DateTime
     valueFloat: Float
     valueInt: Int
+    valueRange: [Float!]
     valueString: String
 }
 

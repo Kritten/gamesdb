@@ -7,6 +7,7 @@
             v-model="value"
             :options="{
               label: t(label),
+              ...options,
             }"
           />
         </template>
@@ -15,6 +16,7 @@
             v-model="value"
             :options="{
               label: t(label),
+              ...options,
             }"
           />
         </template>
@@ -24,6 +26,7 @@
             :can-be-undefined="true"
             :options="{
               label: t(label),
+              ...options,
             }"
           />
         </template>
@@ -32,7 +35,17 @@
             v-model="value"
             :options="{
               label: t(label),
+              ...options,
               items,
+            }"
+          />
+        </template>
+        <template v-else-if="type === 'range'">
+          <base-input-range
+            v-model="value"
+            :options="{
+              label: t(label),
+              ...options,
             }"
           />
         </template>
@@ -47,15 +60,20 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
-import { toNumber, useId } from '@/modules/app/utilities/helpers';
+import { toNumber } from '@/modules/app/utilities/helpers';
 import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
+import BaseInputRange from '@/modules/app/base/inputs/base-input-range.vue';
 
 export default defineComponent({
   name: 'BaseListFilter',
   components: {
-    BaseInputSelect, BaseInputBoolean, BaseInputNumber, BaseInputText,
+    BaseInputRange,
+    BaseInputSelect,
+    BaseInputBoolean,
+    BaseInputNumber,
+    BaseInputText,
   },
   props: {
     filters: {
@@ -68,7 +86,7 @@ export default defineComponent({
     },
     type: {
       required: true,
-      validator: (value) => value === 'string' || value === 'int' || value === 'float' || value === 'boolean' || value === 'select',
+      validator: (value) => value === 'string' || value === 'int' || value === 'float' || value === 'boolean' || value === 'select' || value === 'range',
     },
     label: {
       required: true,
@@ -90,6 +108,11 @@ export default defineComponent({
       default() {
         return [];
       },
+    },
+    options: {
+      required: false,
+      type: Object,
+      default: () => ({}),
     },
   },
   emits: ['update-filter'],
@@ -122,6 +145,10 @@ export default defineComponent({
       case 'select':
         nameValueField = 'valueInt';
         operator.push('=');
+        break;
+      case 'range':
+        nameValueField = 'valueRange';
+        operator.push('between');
         break;
       default:
         // @ts-ignore
@@ -178,6 +205,7 @@ export default defineComponent({
         emitValue(valueNew);
       },
     });
+
     /**
      * Execute everytime the current filter changes to check if it has to be initialized
      */
@@ -194,7 +222,6 @@ export default defineComponent({
     return {
       t,
       value,
-      useId: useId(),
     };
   },
 });

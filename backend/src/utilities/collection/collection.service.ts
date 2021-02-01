@@ -29,6 +29,7 @@ export class CollectionService<T extends BaseEntity> {
   }
 
   where(query: SelectQueryBuilder<T>, data: InputCollection) {
+    let indexParams = 0;
     for (let i = 0; i < data.filters.length; i++) {
       const filter = data.filters[i];
 
@@ -43,6 +44,8 @@ export class CollectionService<T extends BaseEntity> {
         value = filter.valueString;
       } else if (filter.valueDate !== undefined) {
         value = filter.valueDate;
+      } else if (filter.valueRange !== undefined) {
+        value = filter.valueRange;
       }
 
       if (value === undefined || value === -1) {
@@ -56,17 +59,35 @@ export class CollectionService<T extends BaseEntity> {
         nameFunctionWhere = 'andWhere';
       }
 
-      if (filter.field.includes('.')) {
-        query[nameFunctionWhere](`${filter.field} ${filter.operator} :${i}`, {
-          [i]: valueFormatted,
-        });
+      let operation = `${filter.operator} :${indexParams}`;
+      let params = {
+        [indexParams]: valueFormatted,
+      };
+
+      if (Array.isArray(value)) {
+        if (value[1] === 100) {
+          operation = `>= :${indexParams}`;
+          params = {
+            [indexParams]: value[0],
+          };
+          indexParams += 1;
+        } else {
+          operation = `${filter.operator} :${indexParams} and :${indexParams +
+            1}`;
+          params = {
+            [indexParams]: value[0],
+            [indexParams + 1]: value[1],
+          };
+          indexParams += 2;
+        }
       } else {
-        query[nameFunctionWhere](
-          `entity.${filter.field} ${filter.operator} :${i}`,
-          {
-            [i]: valueFormatted,
-          },
-        );
+        indexParams += 1;
+      }
+
+      if (filter.field.includes('.')) {
+        query[nameFunctionWhere](`${filter.field} ${operation}`, params);
+      } else {
+        query[nameFunctionWhere](`entity.${filter.field} ${operation}`, params);
       }
     }
   }
