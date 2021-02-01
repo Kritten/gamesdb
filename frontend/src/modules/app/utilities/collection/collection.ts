@@ -92,10 +92,11 @@ export function useCollection<T>(
         sortDesc: sortDesc.value,
         // TODO kann dann mit vuetify weg
         filters: Object.values(filters.value).map(filter => {
+          const filterNew = { ...filter };
           if (typeof filter.valueBoolean === 'number') {
-            filter.valueBoolean = undefined;
+            filterNew.valueBoolean = undefined;
           }
-          return filter;
+          return filterNew;
         }),
         leftJoins,
       },
