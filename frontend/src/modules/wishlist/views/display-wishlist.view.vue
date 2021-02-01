@@ -6,15 +6,23 @@
         justify="center"
       >
         <el-col :md="12">
-          <h1>{{ t('wishlist.label') }}</h1>
           <i18n
             keypath="wishlist.headerInfo"
           >
             <template #header>
-              <p>{{  t('wishlist.headerInfoHeader') }}</p>
+              <h1>{{ t('wishlist.headerInfoHeader') }}</h1>
+            </template>
+            <template #disclaimer>
+              <p>{{  t('wishlist.headerInfoDisclaimer') }}</p>
             </template>
             <template #content>
               <p>{{  t('wishlist.headerInfoContent') }}</p>
+            </template>
+            <template #return>
+              <p>{{  t('wishlist.headerInfoReturn') }}</p>
+            </template>
+            <template #classics>
+              <p>{{  t('wishlist.headerInfoClassics') }}</p>
             </template>
           </i18n>
           <list-wishlist :filters="filters">
