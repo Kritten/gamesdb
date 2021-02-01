@@ -19,11 +19,7 @@
   </el-row>
   <el-row>
     <el-col>
-      <el-form
-        size="mini"
-        label-width="150px"
-        label-position="left"
-      >
+      <el-form v-bind="state.optionsForm">
         <base-list-filter
           :filters="filters"
           label="wishlist.filters.name"
@@ -67,6 +63,7 @@ import {
 import BaseListFilter from '@/modules/app/base/base-list-filter.vue';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { useI18n } from 'vue-i18n';
+import {useStore} from "vuex";
 
 export default defineComponent({
   name: 'ListWishlistFilters',
@@ -80,9 +77,11 @@ export default defineComponent({
   emits: ['reset', 'update-filter'],
   setup(props) {
     const { t } = useI18n();
+    const { state } = useStore();
 
     return {
       t,
+      state,
       i18nPrefix: 'game',
       filters: computed(() => props.modelValue),
       itemsGiftFor: [{ key: -1, text: t('common.undefined') }, ...ServiceWishlist.getItemsGiftFor()],

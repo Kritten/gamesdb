@@ -8,11 +8,10 @@
     />
   </div>
   <div>
-    <base-input-select
+    <base-input-number
       v-model="priceInternal"
       :options="{
-        label: t('wishlist.price'),
-        items: itemsPriceRange,
+        label: t('wishlist.price')
       }"
     />
   </div>
@@ -61,11 +60,13 @@ import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import BaseInputImages from '@/modules/app/base/inputs/base-input-images.vue';
 import { Image } from '@/modules/image/image.model';
+import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import { useCollection } from '../app/utilities/collection/collection';
 
 export default defineComponent({
   name: 'ItemWishlist',
   components: {
+    BaseInputNumber,
     BaseInputImages,
     BaseInputSelect,
     BaseInputBoolean,
@@ -102,6 +103,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['update:name', 'update:price', 'update:taken', 'update:link', 'update:giftFor', 'update:images'],
   setup(props, { emit }) {
     const { t } = useI18n();
     const store = useStore();

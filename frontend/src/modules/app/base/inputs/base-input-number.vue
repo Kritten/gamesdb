@@ -1,21 +1,27 @@
 <template>
-  <base-input-text
-    :model-value="modelValue"
-    :validation="validation"
-    :options="optionsMerged"
-    @update:model-value="$emit('update:modelValue', $event)"
-  />
+  <!--  <base-input-text-->
+  <!--    :model-value="modelValue"-->
+  <!--    :validation="validation"-->
+  <!--    :options="optionsMerged"-->
+  <!--    @update:model-value="$emit('update:modelValue', $event)"-->
+  <!--  />-->
+  <el-form-item :label="optionsMerged.label">
+    <el-input-number
+      :model-value="modelValue"
+      @input="baseInput.input"
+    />
+  </el-form-item>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
 import { getValidator } from '@/modules/app/utilities/helpers';
 import { Validation } from '@vuelidate/core';
-import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
+import { useBaseInput } from '@/modules/app/base/inputs/base-input';
 
 export default defineComponent({
   name: 'BaseInputNumber',
-  components: { BaseInputText },
+  components: { },
   props: {
     modelValue: {
       required: true,
@@ -34,11 +40,20 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  setup(props) {
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const baseInput = useBaseInput<
+      string | null,
+      string | number | null
+      >(
+        props,
+        emit,
+      );
     return {
+      baseInput,
       optionsMerged: computed(() => ({
         ...props.options,
-        type: 'number',
+        // type: 'number',
       })),
     };
   },

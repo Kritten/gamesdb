@@ -10,7 +10,8 @@ export function useModelWrapper({
   parse = value => value,
 }: {
   props: { [key: string]: Entity | Entity[] | unknown };
-  emit: (event: string, ...args: unknown[]) => void;
+  // TODO any ist hier notwendig weil string irgendwie nicht funktioniert
+  emit: (event: any, ...args: unknown[]) => void;
   name: string;
   isEntity?: boolean;
   entities?: { [key: string]: unknown };

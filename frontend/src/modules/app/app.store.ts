@@ -16,12 +16,18 @@ interface State {
   isInitialized: boolean;
   user?: UserState;
   messagesSnackbar: [];
+  optionsForm: Record<string, string>;
 }
 
 const state: State = {
   isInitialized: false,
   user: undefined,
   messagesSnackbar: [],
+  optionsForm: {
+    size: 'mini',
+    'label-width': '150px',
+    'label-position': 'left',
+  },
 };
 
 export const store = createStore({
