@@ -109,6 +109,10 @@ export default defineComponent({
         label: t('wishlist.label'),
         name: 'wishlist',
       },
+      {
+        label: t('wishlist.extern.label'),
+        name: 'display-wishlist',
+      },
     ];
 
     return {

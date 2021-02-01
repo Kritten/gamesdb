@@ -92,6 +92,9 @@
   },
   "wishlist": {
     "label": "Wunschliste | Wunschlisten",
+    "extern": {
+      "label": "Externe Wunschliste | Externe Wunschlisten"
+    },
     "item": {
       "label": "Wunsch | Wünsche"
     },
