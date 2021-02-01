@@ -73,12 +73,12 @@ export default defineComponent({
       },
       'entity.price': {
         field: 'entity.price',
-        valueInt: -1,
-        operator: '=',
+        valueRange: [0, 100],
+        operator: 'between',
       },
     });
 
-    const filters = ref<ServiceCollectionFilters>(filtersInitial);
+    const filters = ref<ServiceCollectionFilters>(cloneDeep(filtersInitial));
 
     const optionsSortBy: { field: string; name: string }[] = [
       { field: 'entity.name', name: 'name' },
