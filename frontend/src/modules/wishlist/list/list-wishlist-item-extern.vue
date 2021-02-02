@@ -5,12 +5,13 @@
   >
     <el-card class="list-wishlist-item-extern">
       <!--      :type="wishlistItem.images.length === 1 ? undefined : 'card'"-->
-      <!--      :arrow="wishlistItem.images.length === 1 ? 'never' : 'always'"-->
+<!--            :arrow="wishlistItem.images.length === 1 ? 'never' : 'always'"-->
       <el-carousel
         trigger="click"
         indicator-position="none"
         height="200px"
-        arrow="never"
+        :autoplay="false"
+        :arrow="wishlistItem.images.length === 1 ? 'never' : 'always'"
       >
         <el-carousel-item
           v-for="image in wishlistItem.images"
