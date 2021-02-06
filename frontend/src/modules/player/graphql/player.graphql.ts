@@ -5,6 +5,7 @@ export const queryPlayers = gql`
     players {
       id
       name
+      lastSession
     }
   }
 `;

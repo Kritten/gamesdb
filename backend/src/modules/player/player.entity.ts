@@ -1,8 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  AfterLoad,
+  getConnection,
+} from 'typeorm';
 import { Session } from '../session/session.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Rating } from '../rating/rating.entity';
 import { OneToMany } from 'typeorm/index';
+import { max } from 'date-fns';
 
 @Entity()
 @ObjectType()
@@ -17,6 +25,30 @@ export class Player {
     unique: true,
   })
   name: string;
+
+  public lastSession: Date;
+
+  @AfterLoad()
+  public async setLastSession() {
+    const playtimes = await getConnection().query(`
+      select
+        distinct player.id, playtime.end
+      from
+        session
+      inner join
+        session_players_player
+          on session_players_player.sessionId = session.id
+      inner join
+        player
+          on player.id = session_players_player.playerId
+      inner join
+        playtime
+          on playtime.sessionId =  session.id
+      where player.id = ${this.id}
+    `);
+
+    this.lastSession = max(playtimes.map(playtime => playtime.end));
+  }
 
   @ManyToMany(
     () => Session,

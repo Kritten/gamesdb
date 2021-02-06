@@ -22,7 +22,7 @@
       multiple
     >
       <option
-        v-for="player in store.state.modulePlayer.players"
+        v-for="player in store.getters['modulePlayer/playersSortedByLastPlayed']"
         :key="player.id"
         :value="player.id"
       >
@@ -38,7 +38,7 @@
       multiple
     >
       <option
-        v-for="winner in store.state.modulePlayer.players"
+        v-for="winner in store.getters['modulePlayer/playersSortedByLastPlayed']"
         :key="winner.id"
         :value="winner.id"
       >

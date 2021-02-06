@@ -1,16 +1,26 @@
 import { Player } from '@/modules/player/player.model';
+import { compareDesc } from 'date-fns';
 
 interface StateInterface {
   players: { [key: string]: Player };
 }
 
-const state: StateInterface = {
+const stateInitial: StateInterface = {
   players: {},
 };
 
 export const modulePlayer = {
   namespaced: true,
-  state,
+  state: stateInitial,
+  getters: {
+    playersSortedByLastPlayed(state: StateInterface): Array<Player> {
+      const players = Object.values(state.players);
+
+      players.sort((playerA, playerB) => compareDesc(playerA.lastSession, playerB.lastSession));
+
+      return players;
+    },
+  },
   mutations: {
     setPlayers(state: StateInterface, players: { [key: string]: Player }) {
       state.players = players;

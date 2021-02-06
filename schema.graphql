@@ -147,6 +147,7 @@ type Mutation {
 
 type Player {
     id: ID!
+    lastSession: DateTime!
     name: String!
     ratings: [Rating!]!
     sessionsPlayed: [Session!]!
