@@ -30,16 +30,24 @@ import { useI18n } from 'vue-i18n';
 import { ServiceGame } from '@/modules/game/game.service';
 import { useStore } from 'vuex';
 import ItemGame from '@/modules/game/item-game.vue';
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+import { GameInterface } from '@/modules/game/game.types';
 
 export default defineComponent({
   name: 'CreateGame',
   components: { ItemGame },
-  setup() {
+  props: {
+    initialData: {
+      required: false,
+      type: Object as PropType<GameInterface>,
+      default: () => ({}),
+    },
+  },
+  setup(props) {
     const { t } = useI18n();
     const store = useStore();
 
-    const createGame = ServiceGame.useCreate();
+    const createGame = ServiceGame.useCreate({ initialData: props.initialData });
 
     return {
       t,

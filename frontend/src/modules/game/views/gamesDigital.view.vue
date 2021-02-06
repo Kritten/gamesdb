@@ -1,8 +1,12 @@
 <template>
-  <h1>{{ t('game.digital.label', 2) }}</h1>
+  <h1>{{ t('game.digital.label', 2) }}f</h1>
   <details>
     <summary>{{ t('game.digital.label') }} {{ t('common.create') }}</summary>
-    <create-game />
+    <create-game
+      :initial-data="{
+        isDigital: true,
+      }"
+    />
   </details>
   <list-games digital-only />
 </template>

@@ -19,10 +19,11 @@ import { cloneDeep } from 'lodash';
 import { store } from '@/modules/app/app.store';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import { router } from '@/modules/app/app.router';
+import type { GameInterface } from '@/modules/game/game.types';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
-  useCreate() {
-    const game = ref(new Game());
+  useCreate({ initialData }: { initialData: GameInterface } = { initialData: {} }) {
+    const game = ref(new Game(initialData));
 
     return {
       entity: game,
@@ -134,19 +135,20 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
     return loadPageBase<Game>({
       data,
       query: queryPageGame,
-      parseResult: async (response) => ({
+      parseResult: async response => ({
         items: await Promise.all(
           response.data.games.items.map((game: Game) => Game.parseFromServer(game)),
         ),
         count: response.data.games.count,
       }),
-      after: ({ items }) => store.commit(
-        'moduleGame/addGames',
-        items.reduce((obj, entity) => {
-          obj[entity.id as ID] = entity;
-          return obj;
-        }, {} as { [key: string]: Game }),
-      ),
+      after: ({ items }) =>
+        store.commit(
+          'moduleGame/addGames',
+          items.reduce((obj, entity) => {
+            obj[entity.id as ID] = entity;
+            return obj;
+          }, {} as { [key: string]: Game }),
+        ),
     });
   }
 
