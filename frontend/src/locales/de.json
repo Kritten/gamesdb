@@ -107,6 +107,7 @@
     "name": "Name",
     "price": "Preis",
     "taken": "Vergeben",
+    "description": "Beschreibung",
     "link": "Link",
     "giftFor": "Geschenk für",
     "priceRange": "ca. {0}€",

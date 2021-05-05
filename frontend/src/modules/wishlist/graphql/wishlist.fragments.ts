@@ -6,6 +6,7 @@ export const fragments = {
       id
       name
       price
+      description
       link
       taken
       giftFor

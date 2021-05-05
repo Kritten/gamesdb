@@ -8,6 +8,7 @@
       v-model:name="updateWishlistItem.entity.value.name"
       v-model:price="updateWishlistItem.entity.value.price"
       v-model:taken="updateWishlistItem.entity.value.taken"
+      v-model:description="updateWishlistItem.entity.value.description"
       v-model:link="updateWishlistItem.entity.value.link"
       v-model:images="updateWishlistItem.entity.value.images"
       v-model:gift-for="updateWishlistItem.entity.value.giftFor"

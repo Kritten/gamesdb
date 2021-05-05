@@ -43,6 +43,11 @@ export class Wishlist {
   @Column({
     type: 'text',
   })
+  description: string;
+
+  @Column({
+    type: 'text',
+  })
   link: string;
 
   @Column({

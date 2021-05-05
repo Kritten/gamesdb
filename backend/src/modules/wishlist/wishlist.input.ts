@@ -14,6 +14,9 @@ export class WishlistInput {
   taken?: boolean;
 
   @Field(() => String)
+  description: string;
+
+  @Field(() => String)
   link: string;
 
   @Field(() => Int)

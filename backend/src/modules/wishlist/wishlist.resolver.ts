@@ -52,6 +52,7 @@ export class WishlistResolver extends EntityResolver {
     wishlist.name = wishlistData.name;
     wishlist.price = wishlistData.price;
     wishlist.taken = wishlistData.taken;
+    wishlist.description = wishlistData.description;
     wishlist.link = wishlistData.link;
     wishlist.giftFor = wishlistData.giftFor;
     await this.handleRelation(
@@ -75,6 +76,7 @@ export class WishlistResolver extends EntityResolver {
     wishlist.name = wishlistData.name;
     wishlist.price = wishlistData.price;
     wishlist.taken = wishlistData.taken;
+    wishlist.description = wishlistData.description;
     wishlist.link = wishlistData.link;
     wishlist.giftFor = wishlistData.giftFor;
     await this.handleRelation(

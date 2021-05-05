@@ -9,6 +9,8 @@ export class Wishlist extends Entity implements WishlistInterface {
 
   price: number;
 
+  description: string;
+
   link: string;
 
   images: Image[];
@@ -21,6 +23,7 @@ export class Wishlist extends Entity implements WishlistInterface {
     super(data);
     this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
     this.price = setDefaultIfNullOrUndefined<number>(data.price, 1000);
+    this.description = setDefaultIfNullOrUndefined<string>(data.description, '');
     this.link = setDefaultIfNullOrUndefined<string>(data.link, '');
     this.images = setDefaultIfNullOrUndefined<Image[]>(data.images, []);
     this.taken = setDefaultIfNullOrUndefined<boolean>(data.taken, false);
@@ -38,8 +41,9 @@ export class Wishlist extends Entity implements WishlistInterface {
 
     data.name = this.name;
     data.price = this.price;
+    data.description = this.description;
     data.link = this.link;
-    data.images = this.images.map((image) => image.id);
+    data.images = this.images.map(image => image.id);
     data.taken = this.taken;
     data.giftFor = this.giftFor;
 

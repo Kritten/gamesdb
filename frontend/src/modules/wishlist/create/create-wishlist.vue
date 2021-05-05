@@ -4,6 +4,7 @@
       v-model:name="createWishlist.entity.value.name"
       v-model:price="createWishlist.entity.value.price"
       v-model:taken="createWishlist.entity.value.taken"
+      v-model:description="createWishlist.entity.value.description"
       v-model:link="createWishlist.entity.value.link"
       v-model:images="createWishlist.entity.value.images"
       v-model:gift-for="createWishlist.entity.value.giftFor"

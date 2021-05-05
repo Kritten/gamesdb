@@ -4,6 +4,7 @@
     <ul>
       <li>{{ t('wishlist.price') }}: <display-price-range :value="wishlistItem.price" /></li>
       <li>{{ t('wishlist.giftFor') }}: <display-gift-for :value="wishlistItem.giftFor" /></li>
+      <li>{{ t('wishlist.description') }}: {{ wishlistItem.description }}</li>
       <li>{{ t('wishlist.link') }}: <a :href="wishlistItem.link">{{ wishlistItem.link }}</a></li>
     </ul>
     <hr>

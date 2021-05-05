@@ -45,6 +45,11 @@
               <display-price-range :value="wishlistItem.price" />
             </el-col>
           </el-row>
+          <el-row class="row-description">
+            <el-col>
+              {{ wishlistItem.description }}
+            </el-col>
+          </el-row>
           <el-row>
             <el-col
               class="col-info"

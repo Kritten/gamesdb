@@ -25,8 +25,16 @@
   </div>
   <div>
     <base-input-text
-      v-model="linkInternal"
-      :options="{
+        v-model="descriptionInternal"
+        :options="{
+        label: t('wishlist.description'),
+      }"
+    />
+  </div>
+  <div>
+    <base-input-text
+        v-model="linkInternal"
+        :options="{
         label: t('wishlist.link'),
       }"
     />
@@ -81,6 +89,10 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
     link: {
       type: String,
       required: true,
@@ -130,6 +142,9 @@ export default defineComponent({
       }),
       takenInternal: useModelWrapper({
         props, emit, name: 'taken',
+      }),
+      descriptionInternal: useModelWrapper({
+        props, emit, name: 'description',
       }),
       linkInternal: useModelWrapper({
         props, emit, name: 'link',
