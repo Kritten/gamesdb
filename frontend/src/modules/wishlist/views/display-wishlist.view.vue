@@ -24,6 +24,9 @@
             <template #classics>
               <p>{{  t('wishlist.headerInfoClassics') }}</p>
             </template>
+            <template #nogos>
+              <p style="color: #F56C6C">{{  t('wishlist.headerInfoNogos') }}</p>
+            </template>
           </i18n>
           <list-wishlist :filters="filters">
             <template #items="{ wishlistItems }">
