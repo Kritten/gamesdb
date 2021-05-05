@@ -1,5 +1,6 @@
 <template>
-  <span>{{ t(`wishlist.priceRange`, [value]) }}</span>
+  <span v-if="value > 0">{{ t(`wishlist.priceRange`, [value]) }}</span>
+  <span v-else>{{ t(`wishlist.priceRangeUnknown`) }}</span>
 <!--  <span>{{ t(`wishlist.priceRange.${value}`) }}</span>-->
 </template>
 

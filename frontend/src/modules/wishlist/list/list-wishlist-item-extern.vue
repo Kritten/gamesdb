@@ -56,6 +56,7 @@
               :span="12"
             >
               <el-link
+                v-if="wishlistItem.link !== ''"
                 :underline="false"
                 :href="wishlistItem.link"
                 icon="el-icon-info"

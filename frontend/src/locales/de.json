@@ -112,6 +112,7 @@
     "link": "Link",
     "giftFor": "Geschenk für",
     "priceRange": "ca. {0}€",
+    "priceRangeUnknown": "unbekannt",
     "giftForWho": {
       "0": "Liene und Kristof",
       "1": "Liene",
