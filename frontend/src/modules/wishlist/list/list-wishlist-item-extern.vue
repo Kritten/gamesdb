@@ -47,7 +47,7 @@
           </el-row>
           <el-row class="row-description">
             <el-col>
-              {{ wishlistItem.description }}
+              <div v-html="wishlistItem.description"></div>
             </el-col>
           </el-row>
           <el-row>
