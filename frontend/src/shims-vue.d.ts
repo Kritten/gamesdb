@@ -1,6 +1,7 @@
+// Mocks all files ending in `.vue` showing them as plain Vue instances
 declare module '*.vue' {
-  import { defineComponent } from 'vue';
+  import { ComponentOptions } from 'vue';
 
-  const component: ReturnType<typeof defineComponent>;
+  const component: ComponentOptions;
   export default component;
 }
