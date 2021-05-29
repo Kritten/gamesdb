@@ -1,6 +1,8 @@
 import { reactive, toRefs } from 'vue';
 import { ServiceApp } from '@/modules/app/app.service';
 import { useRouter } from 'vue-router';
+import { Notify } from 'quasar';
+import { i18n } from '@/boot/i18n';
 
 class ServiceLoginClass {
   useLogin() {
@@ -15,7 +17,7 @@ class ServiceLoginClass {
         password: data.password,
       };
 
-      const response = await fetch(`${process.env.VUE_APP_API_ENDPOINT}/login`, {
+      const response = await fetch(`${process.env.GRAPHQL_URI}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,6 +27,11 @@ class ServiceLoginClass {
 
       if (response.ok) {
         await ServiceApp.initialize();
+      } else {
+        Notify.create({
+          message: i18n.global.t('login.wrongCredentials'),
+          type: 'negative',
+        });
       }
     };
 
@@ -36,7 +43,7 @@ class ServiceLoginClass {
 
   useLogout() {
     const logout = async () => {
-      const response = await fetch(`${process.env.VUE_APP_API_ENDPOINT}/logout`);
+      const response = await fetch(`${process.env.GRAPHQL_URI}/logout`);
 
       if (response.ok) {
         await ServiceApp.setCurrentUser(null);

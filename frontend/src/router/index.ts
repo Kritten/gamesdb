@@ -4,7 +4,9 @@ import {
   createRouter,
   createWebHashHistory,
   createWebHistory,
+  Router,
 } from 'vue-router';
+import { ref } from 'vue';
 import routes from './routes';
 
 /*
@@ -16,12 +18,14 @@ import routes from './routes';
  * with the Router instance.
  */
 
+const router = ref<Router>();
+
 export default route((/* { store, ssrContext } */) => {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
 
-  const Router = createRouter({
+  const routerCreated = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
 
@@ -33,5 +37,15 @@ export default route((/* { store, ssrContext } */) => {
     ),
   });
 
-  return Router;
+  router.value = routerCreated;
+
+  return routerCreated;
 });
+
+export const useRouter = (): Router => {
+  if (router.value === undefined) {
+    throw new Error('Router not instantiated');
+  }
+
+  return router.value;
+};

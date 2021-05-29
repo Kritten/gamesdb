@@ -1,10 +1,9 @@
 <template>
-  <el-button
-    type="primary"
-    native-type="submit"
-  >
-    {{ label }}
-  </el-button>
+  <q-btn
+    color="primary"
+    type="submit"
+    :label="label"
+  />
 </template>
 
 <script lang="ts">

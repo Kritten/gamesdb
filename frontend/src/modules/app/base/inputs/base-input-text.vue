@@ -1,11 +1,9 @@
 <template>
-  <el-form-item :label="optionsMerged.label">
-    <el-input
-      :model-value="modelValue"
-      v-bind="optionsMerged"
-      @input="baseInput.input"
-    />
-  </el-form-item>
+  <q-input
+    :model-value="modelValue"
+    v-bind="optionsMerged"
+    @update:model-value="baseInput.input"
+  />
 </template>
 
 <script lang="ts">

@@ -19,6 +19,7 @@ export default {
     name: 'Name',
     password: 'Passwort',
     submit: 'Anmelden',
+    wrongCredentials: 'Falsche Zugangsdaten',
   },
   dashboard: {
     label: 'Dashboard',

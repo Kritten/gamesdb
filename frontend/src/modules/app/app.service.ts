@@ -14,28 +14,26 @@ import { UserInterface } from '@/modules/user/user.types';
 import { store } from '@/modules/app/app.store';
 import { query } from '@/modules/app/utilities/helpers';
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import { useRouter } from 'vue-router';
 import { useUser } from '@/modules/user/composables/useUser';
 import { useApp } from '@/modules/app/composables/useApp';
+import { useRouter } from '@/router';
 
 class ServiceAppClass {
   async initialize() {
     const { setUser } = useUser();
     try {
       const response = await query<{user: UserInterface}>(queryUserCurrent);
-      console.warn(response, 'response');
+
       setUser(response.user);
 
       await this.loadInitialData().then();
 
       const router = useRouter();
-
-      if (router.currentRoute.value.name === 'login') {
+      if ((router.currentRoute as unknown as {name: string}).name === 'login') {
         void router
           .push({
             name: 'dashboard',
-          })
-          .then();
+          });
       }
     } catch (e) {
       setUser(null);

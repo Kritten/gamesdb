@@ -108,7 +108,7 @@ export const query = async <T, >(queryPassed: DocumentNode, variables?: Record<s
     variables,
   });
 
-  return response as unknown as T;
+  return response.data as unknown as T;
   // TODO: Replace when apollo is updated
   // const { onResult } = useQuery(queryPassed, variables === undefined ? {} : variables);
   // console.warn(onResult, 'onResult');

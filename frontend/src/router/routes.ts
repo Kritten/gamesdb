@@ -22,9 +22,6 @@ import ViewWishlist from '@/modules/wishlist/views/wishlist.view.vue';
 import ViewWishlistItem from '@/modules/wishlist/views/wishlist-item.view.vue';
 import { useUser } from '@/modules/user/composables/useUser';
 import { watch } from 'vue';
-// import { router } from '@/modules/app/app.router';
-
-// const { user } = useUser();
 
 // eslint-disable-next-line no-unused-vars
 type callbackType = (userPassed: User | null) => void
@@ -86,8 +83,8 @@ const routes: RouteRecordRaw[] = [
     component: ViewApp,
     beforeEnter: (to, from, next) => {
       // redirect the user to home if he is not logged in
-      waitForUser((user: User | null) => {
-        if (user === null) {
+      waitForUser((userPassed: User | null) => {
+        if (userPassed === null) {
           next({ name: 'home' });
         } else {
           next();
