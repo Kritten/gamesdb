@@ -11,13 +11,14 @@
 /* eslint func-names: 0 */
 /* eslint global-require: 0 */
 const { configure } = require('quasar/wrappers');
+const path = require('path');
 
 module.exports = configure((ctx) => ({
   // https://v2.quasar.dev/quasar-cli/supporting-ts
   supportTS: {
     tsCheckerConfig: {
       eslint: {
-        enabled: true,
+        enabled: false,
         files: './src/**/*.{ts,tsx,js,jsx,vue}',
       },
     },
@@ -31,6 +32,8 @@ module.exports = configure((ctx) => ({
   // https://v2.quasar.dev/quasar-cli/boot-files
   boot: [
     'i18n',
+    'apollo',
+    // '../extensions/apollo/boot',
   ],
 
   // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -74,16 +77,17 @@ module.exports = configure((ctx) => ({
 
     // https://v2.quasar.dev/quasar-cli/handling-webpack
     // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-    chainWebpack(/* chain */) {
-      //
+    chainWebpack(chain) {
+      chain.resolve.alias
+        .set('@', path.resolve(__dirname, './src'));
     },
   },
 
   // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
   devServer: {
     https: false,
-    port: 8080,
-    open: true, // opens browser window automatically
+    port: 4022,
+    open: false, // opens browser window automatically
   },
 
   // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import {
   mutationCreateImage,
   mutationDeleteImage,
@@ -11,7 +11,7 @@ import { cloneDeep } from 'lodash';
 import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import {
   ServiceCollectionInterface,
-  InputCollection,
+  InputCollection, ServiceCollectionLoadPage,
 } from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
@@ -49,8 +49,8 @@ implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
   }
 
   async create(image: Image) {
-    const response = await apolloClient.mutate({
-      mutation: mutationCreateImage,
+    const { mutate } = useMutation(mutationCreateImage);
+    const response = await mutate({
       variables: {
         image,
       },
@@ -64,8 +64,8 @@ implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
   }
 
   async update(image: Image) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdateImage,
+    const { mutate } = useMutation(mutationUpdateImage);
+    const response = await mutate({
       variables: {
         image,
       },
@@ -79,8 +79,8 @@ implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
   }
 
   async delete(image: Image) {
-    const response = await apolloClient.mutate({
-      mutation: mutationDeleteImage,
+    const { mutate } = useMutation(mutationDeleteImage);
+    const response = await mutate({
       variables: {
         id: image.id,
       },
@@ -92,14 +92,14 @@ implements ServiceEntityInterface<Image>, ServiceCollectionInterface<Image> {
   }
 
   async loadPage(data: InputCollection) {
-    return loadPageBase<Image>({
+    return loadPageBase<Image, {images: ServiceCollectionLoadPage<Image>}>({
       data,
       query: queryPageImage,
       parseResult: async (response) => ({
         items: await Promise.all(
-          response.data.images.items.map((image: Image) => Image.parseFromServer(image)),
+          response.images.items.map((image: Image) => Image.parseFromServer(image)),
         ),
-        count: response.data.images.count,
+        count: response.images.count,
       }),
     });
   }

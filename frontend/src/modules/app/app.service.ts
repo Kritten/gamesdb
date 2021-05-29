@@ -1,4 +1,3 @@
-import { apolloClient } from '@/vue-apollo';
 import { queryUserCurrent } from '@/modules/user/graphql/user.graphql';
 import { User } from '@/modules/user/user.model';
 import { queryCategories } from '@/modules/category/graphql/category.graphql';
@@ -13,33 +12,36 @@ import { queryUniverses } from '@/modules/universe/graphql/universe.graphql';
 import { Universe } from '@/modules/universe/universe.model';
 import { UserInterface } from '@/modules/user/user.types';
 import { store } from '@/modules/app/app.store';
-import { router } from '@/modules/app/app.router';
+import { query } from '@/modules/app/utilities/helpers';
+import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
+import { useRouter } from 'vue-router';
+import { useUser } from '@/modules/user/composables/useUser';
+import { useApp } from '@/modules/app/composables/useApp';
 
 class ServiceAppClass {
   async initialize() {
+    const { setUser } = useUser();
     try {
-      const response = await apolloClient.query({
-        query: queryUserCurrent,
-      });
-
-      await this.setCurrentUser(response.data.user);
+      const response = await query<{user: UserInterface}>(queryUserCurrent);
+      console.warn(response, 'response');
+      setUser(response.user);
 
       await this.loadInitialData().then();
 
-      store.commit('setIsInitialized', true);
+      const router = useRouter();
 
       if (router.currentRoute.value.name === 'login') {
-        router
+        void router
           .push({
             name: 'dashboard',
           })
           .then();
       }
     } catch (e) {
-      await this.setCurrentUser(null);
+      setUser(null);
     }
 
-    store.commit('setIsInitialized', true);
+    useApp().setIsInitialized(true);
   }
 
   /**
@@ -57,43 +59,28 @@ class ServiceAppClass {
 
   async loadInitialData() {
     await Promise.all([
-      apolloClient
-        .query({
-          query: queryCategories,
-        })
-        .then((response) => Category.convertFromServerToStore(response.data.categories))
+      query<{categories: Array<EntityInterface>}>(queryCategories)
+        .then((response) => Category.convertFromServerToStore(response.categories))
         .then((categories) => {
           store.commit('moduleCategory/setCategories', categories);
         }),
-      apolloClient
-        .query({
-          query: queryMechanisms,
-        })
-        .then((response) => Mechanism.convertFromServerToStore(response.data.mechanisms))
+      query<{mechanisms: Array<EntityInterface>}>(queryMechanisms)
+        .then((response) => Mechanism.convertFromServerToStore(response.mechanisms))
         .then((mechanisms) => {
           store.commit('moduleMechanism/setMechanisms', mechanisms);
         }),
-      apolloClient
-        .query({
-          query: queryMoods,
-        })
-        .then((response) => Mood.convertFromServerToStore(response.data.moods))
+      query<{moods: Array<EntityInterface>}>(queryMoods)
+        .then((response) => Mood.convertFromServerToStore(response.moods))
         .then((moods) => {
           store.commit('moduleMood/setMoods', moods);
         }),
-      apolloClient
-        .query({
-          query: queryPlayers,
-        })
-        .then((response) => Player.convertFromServerToStore(response.data.players))
+      query<{players: Array<EntityInterface>}>(queryPlayers)
+        .then((response) => Player.convertFromServerToStore(response.players))
         .then((players) => {
           store.commit('modulePlayer/setPlayers', players);
         }),
-      apolloClient
-        .query({
-          query: queryUniverses,
-        })
-        .then((response) => Universe.convertFromServerToStore(response.data.universes))
+      query<{universes: Array<EntityInterface>}>(queryUniverses)
+        .then((response) => Universe.convertFromServerToStore(response.universes))
         .then((universes) => {
           store.commit('moduleUniverse/setUniverses', universes);
         }),

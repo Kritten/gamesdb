@@ -1,4 +1,6 @@
-import { computed, Ref, ref, watch } from 'vue';
+import {
+  computed, Ref, ref, watch,
+} from 'vue';
 import {
   InputCollection,
   InputCollectionData,
@@ -6,9 +8,10 @@ import {
   ServiceCollectionLoadPageType,
 } from '@/modules/app/utilities/collection/collection.types';
 import { debounce } from 'lodash';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import { DocumentNode } from 'graphql';
 import { ApolloQueryResult } from '@apollo/client';
+import { query } from '@/modules/app/utilities/helpers';
 
 /**
  * Used for paginated data loading
@@ -68,15 +71,13 @@ export function useCollection<T>(
 
   let hasNextPage;
   if (hasNextPagePassed !== undefined) {
-    hasNextPage = computed(() =>
-      hasNextPagePassed({
-        // @ts-ignore
-        items,
-        countItems,
-        page: pageRef,
-        isLoading,
-      }),
-    );
+    hasNextPage = computed(() => hasNextPagePassed({
+      // @ts-ignore
+      items,
+      countItems,
+      page: pageRef,
+      isLoading,
+    }));
   } else {
     hasNextPage = computed(() => countItems.value !== items.value.length);
   }
@@ -91,7 +92,7 @@ export function useCollection<T>(
         sortBy: sortBy.value,
         sortDesc: sortDesc.value,
         // TODO kann dann mit vuetify weg
-        filters: Object.values(filters.value).map(filter => {
+        filters: Object.values(filters.value).map((filter) => {
           const filterNew = { ...filter };
           if (typeof filter.valueBoolean === 'number') {
             filterNew.valueBoolean = undefined;
@@ -130,7 +131,7 @@ export function useCollection<T>(
   if (watchFilters) {
     watch(
       filters,
-      value => {
+      (value) => {
         console.warn('CALLED WATCH FILTERS, check if used');
         resetDebounced();
       },
@@ -140,7 +141,7 @@ export function useCollection<T>(
 
   watch(
     sortBy,
-    value => {
+    (value) => {
       reset();
     },
     { deep: true },
@@ -172,21 +173,18 @@ export function useCollection<T>(
   };
 }
 
-export async function loadPageBase<T>({
+export async function loadPageBase<T, R>({
   data,
-  query,
+  query: queryPassed,
   parseResult,
   after,
 }: {
   data: InputCollection;
   query: DocumentNode;
-  parseResult: (response: ApolloQueryResult<any>) => Promise<{ items: T[]; count: number }>;
+  parseResult: (response: R) => Promise<{ items: T[]; count: number }>;
   after?: ({ items, count }: { items: T[]; count: number }) => void;
 }) {
-  const response = await apolloClient.query({
-    query,
-    variables: data,
-  });
+  const response = await query<R>(queryPassed, data);
 
   const { items, count: countItems } = await parseResult(response);
 

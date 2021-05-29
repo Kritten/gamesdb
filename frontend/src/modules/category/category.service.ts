@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import {
   mutationCreateCategory,
   mutationDeleteCategory,
@@ -42,8 +42,9 @@ class ServiceCategoryClass implements ServiceEntityInterface<Category> {
   }
 
   async create(category: Category) {
-    const response = await apolloClient.mutate({
-      mutation: mutationCreateCategory,
+    const { mutate } = useMutation(mutationCreateCategory);
+
+    const response = await mutate({
       variables: {
         category,
       },
@@ -56,8 +57,9 @@ class ServiceCategoryClass implements ServiceEntityInterface<Category> {
   }
 
   async update(category: Category) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdateCategory,
+    const { mutate } = useMutation(mutationUpdateCategory);
+
+    const response = await mutate({
       variables: {
         category,
       },
@@ -70,8 +72,9 @@ class ServiceCategoryClass implements ServiceEntityInterface<Category> {
   }
 
   async delete(category: Category) {
-    const response = await apolloClient.mutate({
-      mutation: mutationDeleteCategory,
+    const { mutate } = useMutation(mutationDeleteCategory);
+
+    const response = await mutate({
       variables: {
         id: category.id,
       },

@@ -20,7 +20,7 @@ import {
   subSeconds,
 } from 'date-fns';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
-import { InputCollection } from '@/modules/app/utilities/collection/collection.types';
+import { InputCollection, ServiceCollectionLoadPage } from '@/modules/app/utilities/collection/collection.types';
 import {
   GamesBestRatedItem,
   GamesCountPlayedItem,
@@ -48,12 +48,12 @@ class ServiceStatisticsClass {
       });
     }
 
-    return loadPageBase<GamesCountPlayedItem>({
+    return loadPageBase<GamesCountPlayedItem, {statisticsGamesCountPlayed: ServiceCollectionLoadPage<GamesCountPlayedItem>}>({
       data,
       query: queryStatisticsGamesCountPlayed,
       parseResult: async (response) => ({
-        count: response.data.statisticsGamesCountPlayed.count,
-        items: response.data.statisticsGamesCountPlayed.items,
+        count: response.statisticsGamesCountPlayed.count,
+        items: response.statisticsGamesCountPlayed.items,
       }),
     });
   }
@@ -78,12 +78,12 @@ class ServiceStatisticsClass {
       });
     }
 
-    return loadPageBase<GamesTimePlayedItem>({
+    return loadPageBase<GamesTimePlayedItem, {statisticsGamesTimePlayed: ServiceCollectionLoadPage<GamesTimePlayedItem>}>({
       data,
       query: queryStatisticsGamesTimePlayed,
       parseResult: async (response) => ({
-        count: response.data.statisticsGamesTimePlayed.count,
-        items: response.data.statisticsGamesTimePlayed.items,
+        count: response.statisticsGamesTimePlayed.count,
+        items: response.statisticsGamesTimePlayed.items,
       }),
     });
   }
@@ -108,12 +108,12 @@ class ServiceStatisticsClass {
       });
     }
 
-    return loadPageBase<GamesBestRatedItem>({
+    return loadPageBase<GamesBestRatedItem, {statisticsGamesBestRated: ServiceCollectionLoadPage<GamesBestRatedItem>}>({
       data,
       query: queryStatisticsGamesBestRated,
       parseResult: async (response) => ({
-        count: response.data.statisticsGamesBestRated.count,
-        items: response.data.statisticsGamesBestRated.items,
+        count: response.statisticsGamesBestRated.count,
+        items: response.statisticsGamesBestRated.items,
       }),
     });
   }

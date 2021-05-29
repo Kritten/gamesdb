@@ -96,7 +96,6 @@ import { Wishlist } from '@/modules/wishlist/wishlist.model';
 import DisplayGiftFor from '@/modules/wishlist/display/display-gift-for.vue';
 import { useI18n } from 'vue-i18n';
 import DisplayPriceRange from '@/modules/wishlist/display/display-price-range.vue';
-import { ElMessageBox } from 'element-plus';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 
 export default defineComponent({
@@ -114,24 +113,26 @@ export default defineComponent({
     return {
       t,
       take() {
-        ElMessageBox.confirm(t('wishlist.confirm.take'), {
-          cancelButtonText: t('common.cancel'),
-          confirmButtonText: t('common.yes'),
-        }).then(() => {
-          const wishlistItemEdited = props.wishlistItem as Wishlist;
-          wishlistItemEdited.taken = true;
-          ServiceWishlist.updateTaken(wishlistItemEdited);
-        }).catch(() => {});
+        console.warn('missing');
+        // ElMessageBox.confirm(t('wishlist.confirm.take'), {
+        //   cancelButtonText: t('common.cancel'),
+        //   confirmButtonText: t('common.yes'),
+        // }).then(() => {
+        //   const wishlistItemEdited = props.wishlistItem as Wishlist;
+        //   wishlistItemEdited.taken = true;
+        //   ServiceWishlist.updateTaken(wishlistItemEdited);
+        // }).catch(() => {});
       },
       giveBack() {
-        ElMessageBox.confirm(t('wishlist.confirm.giveBack'), {
-          cancelButtonText: t('common.cancel'),
-          confirmButtonText: t('common.yes'),
-        }).then(() => {
-          const wishlistItemEdited = props.wishlistItem as Wishlist;
-          wishlistItemEdited.taken = false;
-          ServiceWishlist.updateTaken(wishlistItemEdited);
-        }).catch(() => {});
+        console.warn('missing');
+        // ElMessageBox.confirm(t('wishlist.confirm.giveBack'), {
+        //   cancelButtonText: t('common.cancel'),
+        //   confirmButtonText: t('common.yes'),
+        // }).then(() => {
+        //   const wishlistItemEdited = props.wishlistItem as Wishlist;
+        //   wishlistItemEdited.taken = false;
+        //   ServiceWishlist.updateTaken(wishlistItemEdited);
+        // }).catch(() => {});
       },
     };
   },

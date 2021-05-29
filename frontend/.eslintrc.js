@@ -86,11 +86,20 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',
     'prefer-promise-reject-errors': 'off',
+    'max-len': ['error', {code: 120, ignoreStrings: true}],
+    // TODO remove this an migrate to composables
+    'class-methods-use-this': 'off',
 
     // TypeScript
     quotes: ['warn', 'single', { avoidEscape: true }],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    // TODO weird composition api error
+    '@typescript-eslint/unbound-method': 'off',
+    // TODO remove and fix corresponding code
+    "@typescript-eslint/ban-ts-ignore": "off",
+    // TODO remove and fix corresponding code
+    "@typescript-eslint/ban-ts-comment": "off",
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'

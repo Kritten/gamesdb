@@ -44,11 +44,11 @@ export const store = createStore({
   },
   state,
   mutations: {
-    setIsInitialized(state, value: boolean) {
-      state.isInitialized = value;
+    setIsInitialized(statePassed, value: boolean) {
+      statePassed.isInitialized = value;
     },
-    setUser(state, value: User) {
-      state.user = value;
+    setUser(statePassed, value: User) {
+      statePassed.user = value;
     },
     // addSnackbar(state, data) {
     //   state.messagesSnackbar.push(data);

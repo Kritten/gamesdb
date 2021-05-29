@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import {
   mutationCreateUniverse,
   mutationDeleteUniverse,
@@ -42,8 +42,8 @@ class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
   }
 
   async create(universe: Universe) {
-    const response = await apolloClient.mutate({
-      mutation: mutationCreateUniverse,
+    const { mutate } = useMutation(mutationCreateUniverse);
+    const response = await mutate({
       variables: {
         universe,
       },
@@ -56,8 +56,8 @@ class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
   }
 
   async update(universe: Universe) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdateUniverse,
+    const { mutate } = useMutation(mutationUpdateUniverse);
+    const response = await mutate({
       variables: {
         universe,
       },
@@ -70,8 +70,8 @@ class ServiceUniverseClass implements ServiceEntityInterface<Universe> {
   }
 
   async delete(universe: Universe) {
-    const response = await apolloClient.mutate({
-      mutation: mutationDeleteUniverse,
+    const { mutate } = useMutation(mutationDeleteUniverse);
+    const response = await mutate({
       variables: {
         id: universe.id,
       },

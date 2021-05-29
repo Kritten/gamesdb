@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import {
   mutationCreateMood,
   mutationDeleteMood,
@@ -42,7 +42,8 @@ class ServiceMoodClass implements ServiceEntityInterface<Mood> {
   }
 
   async create(mood: Mood) {
-    const response = await apolloClient.mutate({
+    const { mutate } = useMutation(mutationCreateMood);
+    const response = await mutate({
       mutation: mutationCreateMood,
       variables: {
         mood,
@@ -56,7 +57,8 @@ class ServiceMoodClass implements ServiceEntityInterface<Mood> {
   }
 
   async update(mood: Mood) {
-    const response = await apolloClient.mutate({
+    const { mutate } = useMutation(mutationUpdateMood);
+    const response = await mutate({
       mutation: mutationUpdateMood,
       variables: {
         mood,
@@ -70,7 +72,8 @@ class ServiceMoodClass implements ServiceEntityInterface<Mood> {
   }
 
   async delete(mood: Mood) {
-    const response = await apolloClient.mutate({
+    const { mutate } = useMutation(mutationDeleteMood);
+    const response = await mutate({
       mutation: mutationDeleteMood,
       variables: {
         id: mood.id,

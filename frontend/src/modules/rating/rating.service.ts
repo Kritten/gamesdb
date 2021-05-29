@@ -1,5 +1,6 @@
 import { ref } from 'vue';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
+
 import {
   mutationCreateRating,
   mutationDeleteRating,
@@ -13,7 +14,7 @@ import { queue } from '@/queue';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import {
   ServiceCollectionInterface,
-  InputCollection,
+  InputCollection, ServiceCollectionLoadPage,
 } from '../app/utilities/collection/collection.types';
 
 class ServiceRatingClass
@@ -49,12 +50,15 @@ implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
   }
 
   async create(rating: Rating) {
-    const response = await apolloClient.mutate({
-      mutation: mutationCreateRating,
-      variables: {
-        rating: rating.prepareForServer(),
+    const { mutate } = useMutation(mutationCreateRating);
+
+    const response = await mutate(
+      {
+        variables: {
+          rating: rating.prepareForServer(),
+        },
       },
-    });
+    );
 
     const ratingNew = await Rating.parseFromServer(response.data.createRating);
 
@@ -64,8 +68,9 @@ implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
   }
 
   async update(rating: Rating) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdateRating,
+    const { mutate } = useMutation(mutationUpdateRating);
+
+    const response = await mutate({
       variables: {
         rating: rating.prepareForServer(),
       },
@@ -79,8 +84,9 @@ implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
   }
 
   async delete(rating: Rating) {
-    const response = await apolloClient.mutate({
-      mutation: mutationDeleteRating,
+    const { mutate } = useMutation(mutationDeleteRating);
+
+    const response = await mutate({
       variables: {
         id: rating.id,
       },
@@ -92,14 +98,14 @@ implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
   }
 
   async loadPage(data: InputCollection) {
-    return loadPageBase<Rating>({
+    return loadPageBase<Rating, {ratings: ServiceCollectionLoadPage<Rating>}>({
       data,
       query: queryPageRatings,
       parseResult: async (response) => ({
         items: await Promise.all(
-          response.data.ratings.items.map((rating: Rating) => Rating.parseFromServer(rating)),
+          response.ratings.items.map((rating: Rating) => Rating.parseFromServer(rating)),
         ),
-        count: response.data.ratings.count,
+        count: response.ratings.count,
       }),
     });
   }

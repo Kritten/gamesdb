@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import { cloneDeep } from 'lodash';
 import { queue } from '@/queue';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
@@ -17,12 +17,14 @@ import { GIFT_FOR, PRICE_RANGE } from '@/modules/wishlist/wishlist.constants';
 import { useI18n } from 'vue-i18n';
 import {
   InputCollection,
-  ServiceCollectionInterface,
+  ServiceCollectionInterface, ServiceCollectionLoadPage,
 } from '@/modules/app/utilities/collection/collection.types';
+import { query } from '@/modules/app/utilities/helpers';
+import { WishlistInterface } from '@/modules/wishlist/wishlist.types';
 import { ID, ServiceEntityInterface } from '../app/utilities/entity/entity.types';
 
 class ServiceWishlistClass
-  implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist> {
+implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist> {
   useCreate() {
     const wishlist = ref(new Wishlist());
 
@@ -54,8 +56,8 @@ class ServiceWishlistClass
   }
 
   async create(wishlist: Wishlist) {
-    const response = await apolloClient.mutate({
-      mutation: mutationCreateWishlist,
+    const { mutate } = useMutation(mutationCreateWishlist);
+    const response = await mutate({
       variables: {
         wishlist: wishlist.prepareForServer(),
       },
@@ -69,8 +71,8 @@ class ServiceWishlistClass
   }
 
   async update(wishlist: Wishlist) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdateWishlist,
+    const { mutate } = useMutation(mutationUpdateWishlist);
+    const response = await mutate({
       variables: {
         wishlist: wishlist.prepareForServer(),
       },
@@ -86,8 +88,8 @@ class ServiceWishlistClass
   }
 
   async updateTaken(wishlist: Wishlist) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdateWishlistTaken,
+    const { mutate } = useMutation(mutationUpdateWishlistTaken);
+    const response = await mutate({
       variables: {
         wishlist: wishlist.prepareForServer(),
       },
@@ -103,8 +105,8 @@ class ServiceWishlistClass
   }
 
   async delete(wishlist: Wishlist) {
-    const response = await apolloClient.mutate({
-      mutation: mutationDeleteWishlist,
+    const { mutate } = useMutation(mutationDeleteWishlist);
+    const response = await mutate({
       variables: {
         id: wishlist.id,
       },
@@ -120,14 +122,11 @@ class ServiceWishlistClass
     let wishlistItem: Wishlist = store.state.moduleWishlist.wishlistItems[id];
 
     if (wishlistItem === undefined) {
-      const response = await apolloClient.query({
-        query: queryWishlistItem,
-        variables: {
-          id,
-        },
+      const response = await query<{wishlist: WishlistInterface}>(queryWishlistItem, {
+        id,
       });
 
-      wishlistItem = await Wishlist.parseFromServer(response.data.wishlist);
+      wishlistItem = await Wishlist.parseFromServer(response.wishlist);
 
       store.commit('moduleWishlist/addWishlistItem', wishlistItem);
     }
@@ -136,16 +135,14 @@ class ServiceWishlistClass
   }
 
   async loadPage(data: InputCollection) {
-    return loadPageBase<Wishlist>({
+    return loadPageBase<Wishlist, {wishlists: ServiceCollectionLoadPage<Wishlist>}>({
       data,
       query: queryPageWishlist,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         items: await Promise.all(
-          response.data.wishlists.items.map((wishlist: Wishlist) =>
-            Wishlist.parseFromServer(wishlist),
-          ),
+          response.wishlists.items.map((wishlist: Wishlist) => Wishlist.parseFromServer(wishlist)),
         ),
-        count: response.data.wishlists.count,
+        count: response.wishlists.count,
       }),
     });
   }

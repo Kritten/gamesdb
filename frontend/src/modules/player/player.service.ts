@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import {
   mutationCreatePlayer,
   mutationDeletePlayer,
@@ -42,36 +42,36 @@ export class ServicePlayerClass implements ServiceEntityInterface<Player> {
   }
 
   async create(player: Player) {
-    const response = await apolloClient.mutate({
-      mutation: mutationCreatePlayer,
+    const { mutate } = useMutation(mutationCreatePlayer);
+    const response = await mutate({
       variables: {
         player,
       },
     });
 
-    const playerNew = (await Player.parseFromServer(response.data.createPlayer)) as Player;
+    const playerNew = (await Player.parseFromServer(response.data.createPlayer));
     store.commit('modulePlayer/addPlayer', playerNew);
 
     return playerNew;
   }
 
   async update(player: Player) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdatePlayer,
+    const { mutate } = useMutation(mutationUpdatePlayer);
+    const response = await mutate({
       variables: {
         player,
       },
     });
 
-    const playerNew = (await Player.parseFromServer(response.data.updatePlayer)) as Player;
+    const playerNew = (await Player.parseFromServer(response.data.updatePlayer));
     store.commit('modulePlayer/addPlayer', playerNew);
 
     return playerNew;
   }
 
   async delete(player: Player) {
-    const response = await apolloClient.mutate({
-      mutation: mutationDeletePlayer,
+    const { mutate } = useMutation(mutationDeletePlayer);
+    const response = await mutate({
       variables: {
         id: player.id,
       },

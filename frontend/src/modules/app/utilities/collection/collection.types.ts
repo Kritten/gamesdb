@@ -20,7 +20,9 @@ export type InputCollection = {
   leftJoins?: string[];
 };
 
-export type ServiceCollectionLoadPageReturn<T> = Promise<{ count: number; items: T[] }>;
+export type ServiceCollectionLoadPage<T> = { count: number; items: T[] }
+
+export type ServiceCollectionLoadPageReturn<T> = Promise<ServiceCollectionLoadPage<T>>;
 
 export type ServiceCollectionFilters = { [key: string]: InputCollectionFilter };
 

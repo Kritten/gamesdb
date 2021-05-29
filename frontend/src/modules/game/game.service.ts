@@ -1,4 +1,4 @@
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import {
   mutationCreateGame,
   mutationDeleteGame,
@@ -11,15 +11,16 @@ import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entit
 import {
   ServiceCollectionFilters,
   ServiceCollectionInterface,
-  InputCollection,
+  InputCollection, ServiceCollectionLoadPage,
 } from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
 import { Ref, ref } from 'vue';
 import { cloneDeep } from 'lodash';
 import { store } from '@/modules/app/app.store';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
-import { router } from '@/modules/app/app.router';
 import type { GameInterface } from '@/modules/game/game.types';
+import { query } from '@/modules/app/utilities/helpers';
+import { useRouter } from 'vue-router';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
   useCreate({ initialData }: { initialData: GameInterface } = { initialData: {} }) {
@@ -66,7 +67,8 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
         const game = games.items[0];
 
         if (game !== undefined) {
-          router.push({
+          const router = useRouter();
+          void router.push({
             name: 'game',
             params: {
               id: game.id as string,
@@ -78,8 +80,9 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
   }
 
   async create(game: Game) {
-    const response = await apolloClient.mutate({
-      mutation: mutationCreateGame,
+    const { mutate } = useMutation(mutationCreateGame);
+
+    const response = await mutate({
       variables: {
         game: game.prepareForServer(),
       },
@@ -95,8 +98,9 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
   }
 
   async update(game: Game) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdateGame,
+    const { mutate } = useMutation(mutationUpdateGame);
+
+    const response = await mutate({
       variables: {
         game: game.prepareForServer(),
       },
@@ -116,14 +120,13 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
     let game: Game = store.state.moduleGame.games[id];
 
     if (game === undefined) {
-      const response = await apolloClient.query({
-        query: queryGame,
+      const response = await query<{game: GameInterface}>(queryGame, {
         variables: {
           id,
         },
       });
 
-      game = await Game.parseFromServer(response.data.game);
+      game = await Game.parseFromServer(response.game);
 
       store.commit('moduleGame/addGame', game);
     }
@@ -132,29 +135,29 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
   }
 
   async loadPage(data: InputCollection) {
-    return loadPageBase<Game>({
+    return loadPageBase<Game, {games: ServiceCollectionLoadPage<Game>}>({
       data,
       query: queryPageGame,
-      parseResult: async response => ({
+      parseResult: async (response) => ({
         items: await Promise.all(
-          response.data.games.items.map((game: Game) => Game.parseFromServer(game)),
+          response.games.items.map((game: Game) => Game.parseFromServer(game)),
         ),
-        count: response.data.games.count,
+        count: response.games.count,
       }),
-      after: ({ items }) =>
-        store.commit(
-          'moduleGame/addGames',
-          items.reduce((obj, entity) => {
-            obj[entity.id as ID] = entity;
-            return obj;
-          }, {} as { [key: string]: Game }),
-        ),
+      after: ({ items }) => store.commit(
+        'moduleGame/addGames',
+        items.reduce((obj, entity) => {
+          obj[entity.id as ID] = entity;
+          return obj;
+        }, {} as { [key: string]: Game }),
+      ),
     });
   }
 
   async delete(game: Game) {
-    const response = await apolloClient.mutate({
-      mutation: mutationDeleteGame,
+    const { mutate } = useMutation(mutationDeleteGame);
+
+    const response = await mutate({
       variables: {
         id: game.id,
       },

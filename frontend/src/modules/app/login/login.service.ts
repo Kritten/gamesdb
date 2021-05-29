@@ -1,6 +1,6 @@
 import { reactive, toRefs } from 'vue';
 import { ServiceApp } from '@/modules/app/app.service';
-import { router } from '@/modules/app/app.router';
+import { useRouter } from 'vue-router';
 
 class ServiceLoginClass {
   useLogin() {
@@ -41,11 +41,10 @@ class ServiceLoginClass {
       if (response.ok) {
         await ServiceApp.setCurrentUser(null);
 
-        router
-          .push({
-            name: 'home',
-          })
-          .then();
+        const router = useRouter();
+        void router.push({
+          name: 'home',
+        });
       }
     };
 

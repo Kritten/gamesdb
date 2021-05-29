@@ -1,5 +1,5 @@
 import { Ref, ref } from 'vue';
-import { apolloClient } from '@/vue-apollo';
+import { useMutation } from '@vue/apollo-composable';
 import { store } from '@/modules/app/app.store';
 import { Session } from '@/modules/session/session.model';
 import {
@@ -14,7 +14,7 @@ import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entit
 import { queue } from '@/queue';
 import {
   ServiceCollectionInterface,
-  InputCollection,
+  InputCollection, ServiceCollectionLoadPage,
 } from '@/modules/app/utilities/collection/collection.types';
 import { cloneDeep } from 'lodash';
 import { compareAsc } from 'date-fns';
@@ -169,8 +169,8 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
   }
 
   async create(session: Session, { event = 'createdSession' }: { event?: string } = {}) {
-    const response = await apolloClient.mutate({
-      mutation: mutationCreateSession,
+    const { mutate } = useMutation(mutationCreateSession);
+    const response = await mutate({
       variables: {
         session: session.prepareForServer(),
       },
@@ -184,8 +184,8 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
   }
 
   async update(session: Session, { event = 'updatedSession' }: { event?: string } = {}) {
-    const response = await apolloClient.mutate({
-      mutation: mutationUpdateSession,
+    const { mutate } = useMutation(mutationUpdateSession);
+    const response = await mutate({
       variables: {
         session: session.prepareForServer(),
       },
@@ -199,14 +199,14 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
   }
 
   async loadPage(data: InputCollection) {
-    return loadPageBase<Session>({
+    return loadPageBase<Session, {sessions: ServiceCollectionLoadPage<Session>}>({
       data,
       query: queryPageSession,
       parseResult: async (response) => ({
         items: await Promise.all(
-          response.data.sessions.items.map((session: Session) => Session.parseFromServer(session)),
+          response.sessions.items.map((session: Session) => Session.parseFromServer(session)),
         ),
-        count: response.data.sessions.count,
+        count: response.sessions.count,
       }),
       after: ({ items }) => store.commit(
         'moduleSession/setSessionsIfNotExisting',
@@ -219,8 +219,8 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
   }
 
   async delete(session: Session) {
-    const response = await apolloClient.mutate({
-      mutation: mutationDeleteSession,
+    const { mutate } = useMutation(mutationDeleteSession);
+    const response = await mutate({
       variables: {
         id: session.id,
       },

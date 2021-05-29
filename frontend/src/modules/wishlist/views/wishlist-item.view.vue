@@ -28,10 +28,10 @@ import {
   computed, defineComponent,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import DeleteWishlistItem from '@/modules/wishlist/delete/delete-wishlist-item.vue';
-import { router } from '@/modules/app/app.router';
+
 import UpdateWishlistItem from '@/modules/wishlist/update/update-wishlist-item.vue';
 import { store } from '@/modules/app/app.store';
 import DisplayPriceRange from '@/modules/wishlist/display/display-price-range.vue';
@@ -54,7 +54,8 @@ export default defineComponent({
       // @ts-ignore
       wishlistItem: computed(() => store.state.moduleWishlist.wishlistItems[idWishlist]),
       deleted() {
-        router.push({ name: 'wishlist' });
+        const router = useRouter();
+        void router.push({ name: 'wishlist' });
       },
     };
   },

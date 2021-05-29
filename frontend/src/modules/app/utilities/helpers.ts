@@ -1,5 +1,7 @@
 import { computed } from 'vue';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
+import { DocumentNode } from 'graphql';
+import { apolloClients } from '@/boot/apollo';
 
 export function useModelWrapper({
   props,
@@ -7,7 +9,7 @@ export function useModelWrapper({
   name = 'modelValue',
   isEntity = false,
   entities = {},
-  parse = value => value,
+  parse = (value) => value,
 }: {
   props: { [key: string]: Entity | Entity[] | unknown };
   // TODO any ist hier notwendig weil string irgendwie nicht funktioniert
@@ -27,7 +29,7 @@ export function useModelWrapper({
       }
       return props[name];
     },
-    set: value => {
+    set: (value) => {
       if (isEntity === true) {
         if (Array.isArray(value)) {
           emit(
@@ -51,7 +53,7 @@ export function toNumber(value: string): number | string {
 
 export function setDefaultIfNullOrUndefined<T>(value: T | undefined, defaultValue: T): T {
   if (value === undefined || value === null) {
-    return defaultValue as T;
+    return defaultValue;
   }
   return value;
 }
@@ -85,7 +87,7 @@ export function getValidator(types: {
     return arr;
   }, [] as ((value: unknown) => boolean)[]);
 
-  return value => validations.some(func => func(value));
+  return (value) => validations.some((func) => func(value));
 }
 
 let idInternal = 0;
@@ -99,3 +101,20 @@ export function useId(): { generate: () => number } {
     },
   };
 }
+
+export const query = async <T, >(queryPassed: DocumentNode, variables?: Record<string, unknown>): Promise<T> => {
+  const response = await apolloClients.default.query({
+    query: queryPassed,
+    variables,
+  });
+
+  return response as unknown as T;
+  // TODO: Replace when apollo is updated
+  // const { onResult } = useQuery(queryPassed, variables === undefined ? {} : variables);
+  // console.warn(onResult, 'onResult');
+  // resolve({} as T);
+  // onResult((response) => {
+  //   console.warn(response, 'response');
+  //   resolve(response.data as unknown as T);
+  // });
+};
