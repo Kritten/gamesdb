@@ -3,6 +3,7 @@
 
 export default {
   common: {
+    title: 'Spieledatenbank',
     select: 'Auswählen',
     add: 'Hinzufügen',
     create: 'Anlegen',

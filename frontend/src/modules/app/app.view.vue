@@ -1,126 +1,176 @@
 <template>
-  <el-container>
-    <el-header>
-      <el-row>
-        <el-col :span="10">
-          <el-button
-            :icon="isCollapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
-            type="text"
-            @click="isCollapsed = !isCollapsed"
-          />
-        </el-col>
-        <el-col :span="14">
-          <el-link
-            href="#"
-            :underline="false"
-            @click="logoutService.logout"
-          >
-            {{ t('common.logout') }}
-          </el-link>
-        </el-col>
-      </el-row>
-    </el-header>
+  <q-layout view="hHh lpR fFf">
+    <q-header
+      elevated
+      class="bg-primary text-white"
+    >
+      <q-toolbar>
+        <q-btn
+          dense
+          flat
+          round
+          icon="menu"
+          @click="isCollapsed = !isCollapsed"
+        />
 
-    <el-container>
-      <el-aside
-        v-if="isCollapsed"
-        :width="null"
-      >
-        <el-menu
-          router
+        <q-toolbar-title>
+          <q-avatar>
+            <img
+              src="@/assets/pwa-192x192.png"
+              alt="Logo"
+            >
+          </q-avatar>
+          {{ t('common.title') }}
+        </q-toolbar-title>
+
+        <q-btn
+          dense
+          flat
+          @click="logoutService.logout"
         >
-          <el-menu-item
-            v-for="route in routes"
+          {{ t('common.logout') }}
+        </q-btn>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="isCollapsed"
+      show-if-above
+      side="left"
+      bordered
+      :mini="miniState"
+      mini-to-overlay
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
+    >
+      <q-scroll-area class="fit">
+        <q-list>
+          <template
+            v-for="(route, index) in routes"
             :key="route.label"
-            :index="route.name"
-            :route="{name: route.name}"
           >
-            <i :class="route.icon" />
-            <template #title>
-              {{ route.label }}
-            </template>
-          </el-menu-item>
-        </el-menu>
-      </el-aside>
-      <el-main>
-        <template v-if="store.state.user !== undefined">
-          <router-view />
-        </template>
-      </el-main>
-    </el-container>
-  </el-container>
+            <q-separator
+              v-if="route.separator"
+              :key="'sep' + index"
+            />
+            <q-item
+              :to="{name: route.name}"
+              clickable
+            >
+              <q-item-section avatar>
+                <q-icon :name="route.icon" />
+              </q-item-section>
+              <q-item-section>
+                {{ route.label }}
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+
+    <q-page-container v-if="user !== undefined">
+      <!--      <router-view />-->
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
 import { defineComponent, ref } from 'vue';
 import { ServiceLogin } from '@/modules/app/login/login.service';
+import { useUser } from '@/modules/user/composables/useUser';
+import {
+  fasCogs,
+  fasDice,
+  fasGamepad,
+  fasGift,
+  fasGifts, fasGlobeAmericas,
+  fasImages, fasSmile,
+  fasStarHalfAlt,
+  fasTachometerAlt,
+  fasTags,
+  fasUsers,
+} from '@quasar/extras/fontawesome-v5';
 
 export default defineComponent({
   name: 'ViewApp',
   setup() {
     const { t } = useI18n();
-    const store = useStore();
+    const { user } = useUser();
     const logoutService = ServiceLogin.useLogout();
 
     const routes = [
       {
         label: t('dashboard.label'),
         name: 'dashboard',
+        icon: fasTachometerAlt,
       },
       {
         label: t('game.label', 2),
         name: 'games',
+        icon: fasDice,
       },
       {
         label: t('game.digital.label', 2),
         name: 'gamesDigital',
+        icon: fasGamepad,
       },
       {
         label: t('category.label', 2),
         name: 'categories',
+        icon: fasTags,
       },
       {
         label: t('mechanism.label', 2),
         name: 'mechanisms',
+        icon: fasCogs,
       },
       {
         label: t('mood.label', 2),
         name: 'moods',
+        icon: fasSmile,
       },
       {
         label: t('universe.label', 2),
         name: 'universes',
+        icon: fasGlobeAmericas,
       },
       {
         label: t('player.label', 2),
         name: 'players',
+        icon: fasUsers,
       },
       {
         label: t('image.label', 2),
         name: 'images',
+        icon: fasImages,
       },
       {
         label: t('rating.label', 2),
         name: 'ratings',
+        icon: fasStarHalfAlt,
       },
       {
         label: t('wishlist.label'),
         name: 'wishlist',
+        icon: fasGift,
       },
       {
         label: t('wishlist.extern.label'),
         name: 'display-wishlist',
+        icon: fasGifts,
+        separator: true,
       },
     ];
 
     return {
       t,
-      store,
+      user,
       routes,
       logoutService,
       isCollapsed: ref(false),
+      miniState: ref(true),
     };
   },
 });
