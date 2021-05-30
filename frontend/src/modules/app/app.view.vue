@@ -23,12 +23,20 @@
           {{ t('common.title') }}
         </q-toolbar-title>
 
+        <q-separator
+          dark
+          vertical
+        />
+
         <q-btn
-          dense
           flat
+          stretch
+          :icon="fasSignOutAlt"
           @click="logoutService.logout"
         >
-          {{ t('common.logout') }}
+          <q-tooltip>
+            {{ t('common.logout') }}
+          </q-tooltip>
         </q-btn>
       </q-toolbar>
     </q-header>
@@ -86,7 +94,7 @@ import {
   fasGamepad,
   fasGift,
   fasGifts, fasGlobeAmericas,
-  fasImages, fasSmile,
+  fasImages, fasSignOutAlt, fasSmile,
   fasStarHalfAlt,
   fasTachometerAlt,
   fasTags,
@@ -171,6 +179,7 @@ export default defineComponent({
       logoutService,
       isCollapsed: ref(false),
       miniState: ref(true),
+      fasSignOutAlt,
     };
   },
 });

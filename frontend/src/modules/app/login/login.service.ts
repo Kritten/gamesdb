@@ -1,8 +1,9 @@
 import { reactive, toRefs } from 'vue';
 import { ServiceApp } from '@/modules/app/app.service';
-import { useRouter } from 'vue-router';
 import { Notify } from 'quasar';
 import { i18n } from '@/boot/i18n';
+import { useRouter } from '@/router';
+import { useUser } from '@/modules/user/composables/useUser';
 
 class ServiceLoginClass {
   useLogin() {
@@ -46,7 +47,8 @@ class ServiceLoginClass {
       const response = await fetch(`${process.env.GRAPHQL_URI}/logout`);
 
       if (response.ok) {
-        await ServiceApp.setCurrentUser(null);
+        const { setUser } = useUser();
+        setUser(null);
 
         const router = useRouter();
         void router.push({
