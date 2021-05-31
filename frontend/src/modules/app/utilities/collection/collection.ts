@@ -82,7 +82,7 @@ export function useCollection<T>(
     hasNextPage = computed(() => countItems.value !== items.value.length);
   }
 
-  const loadNextItemsInternal = async (counter: number) => {
+  const loadNextItemsInternal = async (counter: number, addToExistingItems: boolean) => {
     isLoading.value = true;
 
     const response = await loadPage(
@@ -109,12 +109,14 @@ export function useCollection<T>(
     }
 
     countItems.value = response.count;
-    if (prependValues) {
-      // @ts-ignore
-      items.value = response.items.concat(items.value);
-    } else {
-      // @ts-ignore
-      items.value = items.value.concat(response.items);
+    if (addToExistingItems === true) {
+      if (prependValues) {
+        // @ts-ignore
+        items.value = response.items.concat(items.value);
+      } else {
+        // @ts-ignore
+        items.value = items.value.concat(response.items);
+      }
     }
     pageRef.value += 1;
 
@@ -123,9 +125,9 @@ export function useCollection<T>(
     return response;
   };
 
-  const loadNextItems = async () => {
+  const loadNextItems = async ({ addToExistingItems = true }: {addToExistingItems?: boolean} = {}) => {
     counterRequests += 1;
-    return loadNextItemsInternal(counterRequests);
+    return loadNextItemsInternal(counterRequests, addToExistingItems);
   };
 
   if (watchFilters) {
@@ -142,20 +144,20 @@ export function useCollection<T>(
   watch(
     sortBy,
     (value) => {
-      reset();
+      void reset();
     },
     { deep: true },
   );
 
-  const reset = () => {
+  const reset = async () => {
     items.value = [];
     countItems.value = -1;
     pageRef.value = 1;
-    loadNextItems();
+    await loadNextItems();
   };
 
   const resetDebounced = debounce(() => {
-    reset();
+    void reset();
   }, 500);
 
   if (immediate) {

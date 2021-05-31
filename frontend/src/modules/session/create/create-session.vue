@@ -1,30 +1,8 @@
 <template>
   <form @submit.prevent="createSession.create(game)">
-    <div v-if="game === undefined">
-      <label for="game">{{ t('game.label', 2) }}</label>
-      <input
-        id="game"
-        v-model="filtersGame.name.valueString"
-      >
-      <div>
-        <div
-          v-for="gameLocal in collectionGame.items.value"
-          :key="gameLocal.id"
-        >
-          {{ gameLocal.name }} <button
-            type="button"
-            @click="createSession.entity.value.game = gameLocal"
-          >
-            {{ t('common.select') }}
-          </button>
-        </div>
-      </div>
-    </div>
-    <item-session
-      v-model:comment="createSession.entity.value.comment"
-      v-model:is-challenge="createSession.entity.value.isChallenge"
-      v-model:players="createSession.entity.value.players"
-      v-model:winners="createSession.entity.value.winners"
+    <input-select-game
+      v-if="game === undefined"
+      v-model="createSession.entity.value.game"
     />
     <div>
       <p>{{ t('playtime.label', 2) }}</p>

@@ -14,6 +14,12 @@ export /* async */ function getClientOptions(/* {app, router, ...}: Partial<Boot
       }),
 
       cache: new InMemoryCache({}),
+
+      defaultOptions: {
+        query: { fetchPolicy: 'no-cache' },
+        mutate: { fetchPolicy: 'no-cache' },
+        watchQuery: { fetchPolicy: 'no-cache' },
+      },
     },
 
     // Specific Quasar mode options.

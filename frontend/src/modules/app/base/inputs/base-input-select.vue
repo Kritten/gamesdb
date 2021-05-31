@@ -1,26 +1,24 @@
 <template>
-  <el-form-item :label="optionsMerged.label">
-    <el-select
-      :model-value="modelValue"
-      @change="baseInput.input"
-    >
-      <el-option
-        v-for="(option, index) in optionsMerged.items"
-        :key="index"
-        :value="option.key"
-        :label="option.text"
-      >
-        {{ option.text }}
-      </el-option>
-    </el-select>
-  </el-form-item>
+  <q-select
+    ref="qSelect"
+    :model-value="modelValue"
+    :options="optionsMerged.items"
+    v-bind="optionsMerged"
+    @update:model-value="baseInput.input"
+
+    @virtual-scroll="onScroll"
+    @filter="filter"
+  />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
+import {
+  computed, defineComponent, PropType, ref,
+} from 'vue';
 import { getValidator } from '@/modules/app/utilities/helpers';
 import { configBaseInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
 import { Validation } from '@vuelidate/core';
+import { QSelect } from 'quasar';
 
 export default defineComponent({
   name: 'BaseInputSelect',
@@ -28,7 +26,7 @@ export default defineComponent({
     modelValue: {
       required: true,
       validator: getValidator({
-        number: true, string: true, boolean: true, null: true, undefined: true,
+        number: true, string: true, boolean: true, null: true, undefined: true, object: true,
       }),
     },
     validation: {
@@ -41,9 +39,21 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    onScroll: {
+      required: false,
+      type: Function,
+      default: () => true,
+    },
+    filter: {
+      required: false,
+      type: Function,
+      default: () => true,
+    },
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
+    const qSelect = ref<QSelect | null>(null);
+
     const baseInput = useBaseInput<
       string,
       string
@@ -55,11 +65,17 @@ export default defineComponent({
 
     return {
       baseInput,
+      qSelect,
       optionsMerged: computed(() => ({
         ...configBaseInput,
         ...props.options,
         label: baseInput.label.value,
       })),
+      refresh() {
+        if (qSelect.value !== null) {
+          qSelect.value.refresh();
+        }
+      },
     };
   },
 });

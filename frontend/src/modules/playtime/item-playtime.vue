@@ -21,7 +21,6 @@
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
 import DatetimePicker from '@/modules/app/base/datetime-picker.vue';
 import BaseDateTime from '@/modules/app/base/base-date-time.vue';
@@ -42,11 +41,9 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { t } = useI18n();
-    const store = useStore();
 
     return {
       t,
-      store,
       startInternal: useModelWrapper({
         props, emit, name: 'start',
       }),
