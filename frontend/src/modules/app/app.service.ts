@@ -17,6 +17,7 @@ import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { useUser } from '@/modules/user/composables/useUser';
 import { useApp } from '@/modules/app/composables/useApp';
 import { useRouter } from '@/router';
+import { usePlayers } from '@/modules/player/composables/usePlayers';
 
 class ServiceAppClass {
   async initialize() {
@@ -73,9 +74,9 @@ class ServiceAppClass {
           store.commit('moduleMood/setMoods', moods);
         }),
       query<{players: Array<EntityInterface>}>(queryPlayers)
-        .then((response) => Player.convertFromServerToStore(response.players))
+        .then((response) => Player.convertFromServerToStore<Player>(response.players))
         .then((players) => {
-          store.commit('modulePlayer/setPlayers', players);
+          usePlayers().setPlayers(players);
         }),
       query<{universes: Array<EntityInterface>}>(queryUniverses)
         .then((response) => Universe.convertFromServerToStore(response.universes))

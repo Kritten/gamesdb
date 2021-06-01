@@ -8,7 +8,26 @@
 
     @virtual-scroll="onScroll"
     @filter="filter"
-  />
+  >
+    <template
+      v-if="Array.isArray(modelValue)"
+      #option="{ itemProps, opt, selected, toggleOption }"
+    >
+      <q-item v-bind="itemProps">
+        <q-item-section side>
+          <q-checkbox
+            :model-value="selected"
+            @update:model-value="toggleOption(opt)"
+          />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>
+            {{ opt[options.optionLabel !== undefined ? options.optionLabel : 'label'] }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+    </template>
+  </q-select>
 </template>
 
 <script lang="ts">
@@ -26,7 +45,7 @@ export default defineComponent({
     modelValue: {
       required: true,
       validator: getValidator({
-        number: true, string: true, boolean: true, null: true, undefined: true, object: true,
+        number: true, string: true, boolean: true, null: true, undefined: true, object: true, array: true,
       }),
     },
     validation: {
@@ -47,7 +66,7 @@ export default defineComponent({
     filter: {
       required: false,
       type: Function,
-      default: () => true,
+      default: (value: string, update: () => void) => update(),
     },
   },
   emits: ['update:modelValue'],
@@ -70,6 +89,7 @@ export default defineComponent({
         ...configBaseInput,
         ...props.options,
         label: baseInput.label.value,
+        multiple: Array.isArray(props.modelValue),
       })),
       refresh() {
         if (qSelect.value !== null) {
