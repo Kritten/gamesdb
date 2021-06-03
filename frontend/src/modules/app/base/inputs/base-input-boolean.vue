@@ -1,33 +1,38 @@
 <template>
-  <el-form-item :label="optionsMerged.label">
-    <el-radio-group
-      class="inputs"
-      :model-value="modelValue"
-      @change="baseInput.input"
-    >
-      <el-radio :label="true">
-        {{ t('common.yes') }}
-      </el-radio>
-      <el-radio :label="false">
-        {{ t('common.no') }}
-      </el-radio>
-      <el-radio
-        v-if="canBeUndefined === true"
-        :label="-1"
-      >
-        {{ t('common.undefined') }}
-      </el-radio>
-    </el-radio-group>
-  </el-form-item>
+  <q-toggle
+    :model-value="modelValue"
+    v-bind="optionsMerged"
+    @update:model-value="baseInput.input"
+  />
+<!--  <el-form-item :label="optionsMerged.label">-->
+<!--    <el-radio-group-->
+<!--      class="inputs"-->
+<!--      :model-value="modelValue"-->
+<!--      @change="baseInput.input"-->
+<!--    >-->
+<!--      <el-radio :label="true">-->
+<!--        {{ t('common.yes') }}-->
+<!--      </el-radio>-->
+<!--      <el-radio :label="false">-->
+<!--        {{ t('common.no') }}-->
+<!--      </el-radio>-->
+<!--      <el-radio-->
+<!--        v-if="canBeUndefined === true"-->
+<!--        :label="-1"-->
+<!--      >-->
+<!--        {{ t('common.undefined') }}-->
+<!--      </el-radio>-->
+<!--    </el-radio-group>-->
+<!--  </el-form-item>-->
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
-  getValidator, toNumber, useId, useModelWrapper,
+  getValidator, useId, useModelWrapper,
 } from '@/modules/app/utilities/helpers';
-import { configBaseInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
+import { configBaseInput, TypeOptionsInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
 import { Validation } from '@vuelidate/core';
 
 export default defineComponent({
@@ -49,7 +54,7 @@ export default defineComponent({
     },
     options: {
       required: false,
-      type: Object,
+      type: Object as PropType<TypeOptionsInput>,
       default: () => ({}),
     },
   },
