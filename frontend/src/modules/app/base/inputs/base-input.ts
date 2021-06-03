@@ -1,12 +1,18 @@
 import { computed, ComputedRef, Ref } from 'vue';
 import { Validation } from '@vuelidate/core';
 
+export type TypeOptionsInput = {
+  label: string,
+  dense?: boolean,
+  [key: string]: unknown,
+};
+
 export const configBaseInput = {};
 
 export function useBaseInput<I, E>(
   props: { validation: Validation; options: Record<string, unknown> },
   emit: (event: 'update:modelValue', ...args: unknown[]) => void,
-  parseValue: (value: I) => E = value => (value as unknown) as E,
+  parseValue: (value: I) => E = (value) => (value as unknown) as E,
 ): {
   label: ComputedRef<string>;
   errorsComputed: ComputedRef<Array<string | Ref<string>>>;
@@ -21,8 +27,8 @@ export function useBaseInput<I, E>(
     return false;
   });
 
-  const errorsComputed = computed<Array<string | Ref<string>>>(() =>
-    hasValidationInfo.value ? props.validation.$errors.map(error => error.$message) : [],
+  const errorsComputed = computed<Array<string | Ref<string>>>(
+    () => (hasValidationInfo.value ? props.validation.$errors.map((error) => error.$message) : []),
   );
 
   const labelInternal = computed<string>(() => {
