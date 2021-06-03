@@ -1,62 +1,55 @@
 <template>
-  <div>
-    <label for="isChallenge">{{ t('session.isChallenge') }}</label>
-    <input
-      id="isChallenge"
-      v-model="isChallengeInternal"
-      type="checkbox"
-    >
-  </div>
-  <div>
-    <label for="comment">{{ t('session.comment') }}</label>
-    <textarea
-      id="comment"
-      v-model="commentInternal"
-    />
-  </div>
-  <div>
-    <label for="players">{{ t('player.label', 2) }}</label>
-    <select
-      id="players"
-      v-model="playersInternal"
-      multiple
-    >
-      <option
-        v-for="player in store.getters['modulePlayer/playersSortedByLastPlayed']"
-        :key="player.id"
-        :value="player.id"
-      >
-        {{ player.name }}
-      </option>
-    </select>
-  </div>
-  <div>
-    <label for="winners">{{ t('winner.label', 2) }}</label>
-    <select
-      id="winners"
-      v-model="winnersInternal"
-      multiple
-    >
-      <option
-        v-for="winner in store.getters['modulePlayer/playersSortedByLastPlayed']"
-        :key="winner.id"
-        :value="winner.id"
-      >
-        {{ winner.name }}
-      </option>
-    </select>
-  </div>
+  {{ gameInternal }}
+  <input-select-game
+    v-if="hideGame === false"
+    v-model="gameInternal"
+  />
+  <base-input-boolean
+    v-model="isChallengeInternal"
+    :options="{
+      label: t('session.isChallenge')
+    }"
+  />
+  <base-input-text
+    v-model="commentInternal"
+    :options="{
+      label: t('session.comment'),
+      autogrow: true,
+    }"
+  />
+  <input-select-player v-model="playersInternal" />
+  <input-select-player
+    v-model="winnersInternal"
+    :options="{
+      label: t('winner.label', 2),
+      options: playersInternal,
+      useInput: false,
+      disable: playersInternal.length === 0,
+    }"
+  />
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
 import { defineComponent } from 'vue';
+import { Game } from '@/modules/game/game.model';
+import InputSelectGame from '@/modules/game/base/input-select-game.vue';
+import InputSelectPlayer from '@/modules/player/base/input-select-player.vue';
+import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
+import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 
 export default defineComponent({
   name: 'ItemSession',
+  components: {
+    BaseInputText, BaseInputBoolean, InputSelectPlayer, InputSelectGame,
+  },
   props: {
+    game: {
+      type: Game,
+      required: false,
+      default: undefined,
+    },
     comment: {
       validator: (value) => typeof value === 'string' || value === null,
       required: true,
@@ -73,14 +66,20 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    hideGame: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   setup(props, { emit }) {
     const { t } = useI18n();
-    const store = useStore();
 
     return {
       t,
-      store,
+      gameInternal: useModelWrapper({
+        props, emit, name: 'game',
+      }),
       playersInternal: useModelWrapper({
         props, emit, name: 'players', isEntity: true,
       }),
