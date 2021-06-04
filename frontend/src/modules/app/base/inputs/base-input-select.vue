@@ -2,12 +2,12 @@
   <q-select
     ref="qSelect"
     :model-value="modelValue"
-    :options="optionsMerged.items"
+    :options="filter === undefined ? itemsInternal : optionsMerged.items"
     v-bind="optionsMerged"
     @update:model-value="baseInput.input"
 
     @virtual-scroll="onScroll"
-    @filter="filter"
+    @filter="filterInternal"
   >
     <template
       v-if="Array.isArray(modelValue)"
@@ -35,7 +35,11 @@ import {
   computed, defineComponent, PropType, ref,
 } from 'vue';
 import { getValidator } from '@/modules/app/utilities/helpers';
-import { configBaseInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
+import {
+  configBaseInput,
+  TypeOptionsInputSelect,
+  useBaseInput,
+} from '@/modules/app/base/inputs/base-input';
 import { Validation } from '@vuelidate/core';
 import { QSelect } from 'quasar';
 
@@ -55,7 +59,7 @@ export default defineComponent({
     },
     options: {
       required: false,
-      type: Object,
+      type: Object as PropType<TypeOptionsInputSelect>,
       default: () => ({}),
     },
     onScroll: {
@@ -66,12 +70,14 @@ export default defineComponent({
     filter: {
       required: false,
       type: Function,
-      default: (value: string, update: () => void) => update(),
+      default: undefined,
     },
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const qSelect = ref<QSelect | null>(null);
+
+    const multiple = Array.isArray(props.modelValue);
 
     const baseInput = useBaseInput<
       string,
@@ -79,18 +85,42 @@ export default defineComponent({
       >(
         props,
         emit,
-        (value) => value,
+        (value) => {
+          if (value === null && multiple) {
+            return [];
+          }
+          return value;
+        },
       );
+
+    const optionsMerged = computed(() => ({
+      ...configBaseInput,
+      ...props.options,
+      label: baseInput.label.value,
+      multiple,
+    }));
+
+    const itemsInternal = ref<Array<Record<string, unknown>>>(optionsMerged.value.items);
+
+    let filterInternal = props.filter;
+    if (filterInternal === undefined) {
+      filterInternal = (value: string, update: (callback: () => void) => void) => {
+        update(() => {
+          const needle = value.toLowerCase();
+          itemsInternal.value = optionsMerged.value.items.filter(
+            (v) => (v.name as string).toLowerCase().indexOf(needle) > -1,
+          );
+        });
+      };
+      optionsMerged.value.inputDebounce = 0;
+    }
 
     return {
       baseInput,
       qSelect,
-      optionsMerged: computed(() => ({
-        ...configBaseInput,
-        ...props.options,
-        label: baseInput.label.value,
-        multiple: Array.isArray(props.modelValue),
-      })),
+      filterInternal,
+      optionsMerged,
+      itemsInternal,
       refresh() {
         if (qSelect.value !== null) {
           qSelect.value.refresh();
