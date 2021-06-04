@@ -12,7 +12,9 @@ export type TypeOptionsInputSelect = TypeOptionsInput & {
   items: Array<Record<string, unknown>>,
 };
 
-export const configBaseInput = {};
+export const configBaseInput = {
+  dense: true,
+};
 
 export function useBaseInput<I, E>(
   props: { validation: Validation; options: Record<string, unknown> },

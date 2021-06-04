@@ -11,11 +11,11 @@
               <q-form @submit="loginService.login">
                 <base-input-text
                   v-model="loginService.username.value"
-                  :options="{ label: t('login.name'), autofocus: true }"
+                  :options="{ label: t('login.name'), autofocus: true, dense: false }"
                 />
                 <base-input-text
                   v-model="loginService.password.value"
-                  :options="{ label: t('login.password'), type: 'password' }"
+                  :options="{ label: t('login.password'), type: 'password', dense: false }"
                 />
                 <base-button-submit
                   class="q-mt-md"

@@ -173,5 +173,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+  tfoot tr td {
+    border-top-width: 3px;
+  }
 </style>
