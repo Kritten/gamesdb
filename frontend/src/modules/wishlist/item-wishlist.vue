@@ -25,16 +25,16 @@
   </div>
   <div>
     <base-input-text
-        v-model="descriptionInternal"
-        :options="{
+      v-model="descriptionInternal"
+      :options="{
         label: t('wishlist.description'),
       }"
     />
   </div>
   <div>
     <base-input-text
-        v-model="linkInternal"
-        :options="{
+      v-model="linkInternal"
+      :options="{
         label: t('wishlist.link'),
       }"
     />
@@ -134,19 +134,19 @@ export default defineComponent({
       t,
       store,
       collectionGame,
-      nameInternal: useModelWrapper({
+      nameInternal: useModelWrapper<string>({
         props, emit, name: 'name',
       }),
-      priceInternal: useModelWrapper({
+      priceInternal: useModelWrapper<number>({
         props, emit, name: 'price', parse: (value) => toNumber(value as string),
       }),
-      takenInternal: useModelWrapper({
+      takenInternal: useModelWrapper<boolean>({
         props, emit, name: 'taken',
       }),
-      descriptionInternal: useModelWrapper({
+      descriptionInternal: useModelWrapper<string>({
         props, emit, name: 'description',
       }),
-      linkInternal: useModelWrapper({
+      linkInternal: useModelWrapper<string>({
         props, emit, name: 'link',
       }),
       imagesInternal: useModelWrapper({

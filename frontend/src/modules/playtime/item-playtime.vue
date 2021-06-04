@@ -1,34 +1,34 @@
 <template>
-  <div>
-    <label>{{ t('playtime.start') }}
-      <small>(<base-date-time
-        :value="startInternal"
-        :compact="true"
-      />)</small>
-    </label>
-    <datetime-picker v-model="startInternal" />
-  </div>
-  <div>
-    <label>{{ t('playtime.end') }}
-      <small>(<base-date-time
-        :value="endInternal"
-        :compact="true"
-      />)</small>
-    </label>
-    <datetime-picker v-model="endInternal" />
+  <div class="row q-gutter-md">
+    <div class="col">
+      <base-input-datetime
+        v-model="startInternal"
+        :options="{
+          label: t('playtime.start'),
+        }"
+      />
+    </div>
+
+    <div class="col">
+      <base-input-datetime
+        v-model="endInternal"
+        :options="{
+          label: t('playtime.end'),
+        }"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
-import DatetimePicker from '@/modules/app/base/datetime-picker.vue';
-import BaseDateTime from '@/modules/app/base/base-date-time.vue';
+import BaseInputDatetime from '@/modules/app/base/inputs/base-input-datetime.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ItemPlaytime',
-  components: { DatetimePicker, BaseDateTime },
+  components: { BaseInputDatetime },
   props: {
     start: {
       type: Date,
@@ -44,10 +44,10 @@ export default defineComponent({
 
     return {
       t,
-      startInternal: useModelWrapper({
+      startInternal: useModelWrapper<Date>({
         props, emit, name: 'start',
       }),
-      endInternal: useModelWrapper({
+      endInternal: useModelWrapper<Date>({
         props, emit, name: 'end',
       }),
     };

@@ -1,9 +1,13 @@
 import { computed } from 'vue';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { DocumentNode } from 'graphql';
+
 import { apolloClients } from '@/boot/apollo';
 
-export function useModelWrapper({
+type TypePropsSingle = Entity | number | string | boolean | Date;
+type TypeProps = TypePropsSingle | Array<TypePropsSingle>;
+
+export function useModelWrapper<T extends TypeProps>({
   props,
   emit,
   name = 'modelValue',
@@ -19,15 +23,15 @@ export function useModelWrapper({
   entities?: { [key: string]: unknown };
   parse?: (value: unknown) => unknown;
 }) {
-  return computed({
+  return computed<T>({
     get: () => {
       if (isEntity === true) {
         if (Array.isArray(props[name])) {
-          return (props[name] as Entity[]).map((entity: Entity) => entity.id);
+          return (props[name] as Array<Entity>).map((entity: Entity) => entity.id) as T;
         }
-        return (props[name] as Entity)?.id;
+        return (props[name] as Entity)?.id as T;
       }
-      return props[name];
+      return (props[name] as T);
     },
     set: (value) => {
       if (isEntity === true) {

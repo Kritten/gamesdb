@@ -73,7 +73,7 @@ export default defineComponent({
 
     return {
       t,
-      modelValueInternal: useModelWrapper({
+      modelValueInternal: useModelWrapper<boolean>({
         // @ts-ignore
         props, emit, name: 'modelValue',
       }),

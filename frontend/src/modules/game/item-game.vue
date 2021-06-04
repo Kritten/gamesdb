@@ -175,8 +175,12 @@
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
+import { Universe } from '@/modules/universe/universe.model';
+import { Category } from '@/modules/category/category.model';
+import { Mechanism } from '@/modules/mechanism/mechanism.model';
+import { Mood } from '@/modules/mood/mood.model';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Image } from '../image/image.model';
 import { ServiceImage } from '../image/image.service';
@@ -225,23 +229,23 @@ export default defineComponent({
       required: true,
     },
     universes: {
-      type: Array,
+      type: Array as PropType<Array<Universe>>,
       required: true,
     },
     categories: {
-      type: Array,
+      type: Array as PropType<Array<Category>>,
       required: true,
     },
     mechanisms: {
-      type: Array,
+      type: Array as PropType<Array<Mechanism>>,
       required: true,
     },
     moods: {
-      type: Array,
+      type: Array as PropType<Array<Mood>>,
       required: true,
     },
     images: {
-      type: Array,
+      type: Array as PropType<Array<Image>>,
       required: true,
     },
   },
@@ -261,46 +265,46 @@ export default defineComponent({
       store,
       collectionImage,
       filters,
-      nameInternal: useModelWrapper({
+      nameInternal: useModelWrapper<string>({
         props, emit, name: 'name',
       }),
-      descriptionInternal: useModelWrapper({
+      descriptionInternal: useModelWrapper<string>({
         props, emit, name: 'description',
       }),
-      countPlayersMinInternal: useModelWrapper({
+      countPlayersMinInternal: useModelWrapper<number>({
         props, emit, name: 'countPlayersMin',
       }),
-      countPlayersMaxInternal: useModelWrapper({
+      countPlayersMaxInternal: useModelWrapper<number>({
         props, emit, name: 'countPlayersMax',
       }),
-      minutesPlaytimeMinInternal: useModelWrapper({
+      minutesPlaytimeMinInternal: useModelWrapper<number>({
         props, emit, name: 'minutesPlaytimeMin',
       }),
-      minutesPlaytimeMaxInternal: useModelWrapper({
+      minutesPlaytimeMaxInternal: useModelWrapper<number>({
         props, emit, name: 'minutesPlaytimeMax',
       }),
-      isCoopInternal: useModelWrapper({
+      isCoopInternal: useModelWrapper<boolean>({
         props, emit, name: 'isCoop',
       }),
-      isDigitalInternal: useModelWrapper({
+      isDigitalInternal: useModelWrapper<boolean>({
         props, emit, name: 'isDigital',
       }),
-      complexityInternal: useModelWrapper({
+      complexityInternal: useModelWrapper<number>({
         props, emit, name: 'complexity',
       }),
-      sizeInternal: useModelWrapper({
+      sizeInternal: useModelWrapper<number>({
         props, emit, name: 'size',
       }),
-      universesInternal: useModelWrapper({
+      universesInternal: useModelWrapper<Array<Universe>>({
         props, emit, name: 'universes', isEntity: true,
       }),
-      categoriesInternal: useModelWrapper({
+      categoriesInternal: useModelWrapper<Array<Category>>({
         props, emit, name: 'categories', isEntity: true,
       }),
-      mechanismsInternal: useModelWrapper({
+      mechanismsInternal: useModelWrapper<Array<Mechanism>>({
         props, emit, name: 'mechanisms', isEntity: true,
       }),
-      moodsInternal: useModelWrapper({
+      moodsInternal: useModelWrapper<Array<Mood>>({
         props, emit, name: 'moods', isEntity: true,
       }),
     };

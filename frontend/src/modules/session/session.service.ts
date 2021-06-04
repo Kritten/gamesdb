@@ -23,17 +23,6 @@ import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 
 class ServiceSessionClass
 implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
-  private static playtimeAdd(session: Ref<Session>, playtimeNew: Ref<Playtime>) {
-    session.value.playtimes.push(playtimeNew.value);
-    playtimeNew.value = new Playtime();
-  }
-
-  private playtimeRemove(session: Ref<Session>, playtime: Playtime) {
-    session.value.playtimes = session.value.playtimes.filter(
-      (playtimeCurrent: Playtime) => !(playtimeCurrent.start === playtime.start && playtimeCurrent.end === playtime.end),
-    );
-  }
-
   useLastSession({
     analogOnly = false,
     digitalOnly = false,
@@ -83,13 +72,8 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
   useCreate() {
     const session = ref(new Session({ isChallenge: false }));
 
-    const playtimeNew = ref(new Playtime());
-
     return {
       entity: session,
-      playtimeNew,
-      playtimeAdd: () => ServiceSessionClass.playtimeAdd(session, playtimeNew),
-      playtimeRemove: (playtime: Playtime) => this.playtimeRemove(session, playtime),
       create: async (game: Game) => {
         if (game !== undefined) {
           session.value.game = game;
@@ -105,13 +89,8 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
   useUpdate(sessionPassed: Session) {
     const session = ref(cloneDeep(sessionPassed));
 
-    const playtimeNew = ref(new Playtime());
-
     return {
       entity: session,
-      playtimeNew,
-      playtimeAdd: () => ServiceSessionClass.playtimeAdd(session, playtimeNew),
-      playtimeRemove: (playtime: Playtime) => this.playtimeRemove(session, playtime),
       update: async () => {
         session.value = cloneDeep(await this.update(session.value));
       },
