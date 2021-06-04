@@ -23,6 +23,8 @@
           {{ t('common.title') }}
         </q-toolbar-title>
 
+        <create-session />
+
         <q-separator
           dark
           vertical
@@ -102,9 +104,12 @@ import {
   fasTags,
   fasUsers,
 } from '@quasar/extras/fontawesome-v5';
+import CreateSession from '@/modules/session/create/create-session.vue';
+import BaseDialog from '@/modules/app/base/base-dialog.vue';
 
 export default defineComponent({
   name: 'ViewApp',
+  components: { CreateSession },
   setup() {
     const { t } = useI18n();
     const { user } = useUser();

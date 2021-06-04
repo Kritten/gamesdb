@@ -11,6 +11,8 @@ export default {
     delete: 'Löschen',
     yes: 'Ja',
     no: 'Nein',
+    open: 'Öffnen',
+    close: 'Schließen',
     cancel: 'Abbrechen',
     undefined: 'Egal',
     login: 'Login',
