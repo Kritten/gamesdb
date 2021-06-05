@@ -1,8 +1,13 @@
 <template>
-  <q-btn
-    v-bind="optionsButtonMerged"
-    @click="isOpen = true"
-  />
+  <slot
+    name="activator"
+    :open="open"
+  >
+    <q-btn
+      v-bind="optionsButtonMerged"
+      @click="open"
+    />
+  </slot>
 
   <q-dialog
     v-model="isOpen"
@@ -10,15 +15,17 @@
   >
     <q-card :style="style">
       <q-form
-        @submit.prevent="$emit('submit')"
+        @submit.prevent="$emit('submit', close)"
       >
         <q-toolbar>
-          <q-toolbar-title>{{ title }}</q-toolbar-title>
+          <q-toolbar-title>
+            {{ title }}
+          </q-toolbar-title>
           <q-btn
             round
             flat
             icon="fas fa-times"
-            @click="isOpen = false"
+            @click="close"
           />
         </q-toolbar>
         <q-card-section class="q-gutter-md">
@@ -27,10 +34,10 @@
         <q-card-actions align="right">
           <q-btn
             :label="t('common.cancel')"
-            @click="isOpen = false"
+            @click="close"
           />
           <slot name="buttons" />
-          <base-button-submit :label="t('common.create')" />
+          <base-button-submit :label="textSubmit" />
         </q-card-actions>
       </q-form>
     </q-card>
@@ -42,6 +49,7 @@ import { computed, defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import BaseButtonSubmit from '@/modules/app/base/base-button-submit.vue';
+import { i18n } from '@/boot/i18n';
 
 export default defineComponent({
   name: 'BaseDialog',
@@ -57,16 +65,23 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    textSubmit: {
+      required: false,
+      type: String,
+      default: i18n.global.t('common.create'),
+    },
   },
   emits: ['submit'],
   setup(props) {
     const { t } = useI18n();
     const { screen } = useQuasar();
 
+    const isOpen = ref(false);
+
     return {
       t,
       screen,
-      isOpen: ref(false),
+      isOpen,
       optionsButtonMerged: computed(() => ({
         flat: true,
         stretch: true,
@@ -77,6 +92,12 @@ export default defineComponent({
         width: '700px',
         maxWidth: '80vw',
       })),
+      open() {
+        isOpen.value = true;
+      },
+      close() {
+        isOpen.value = false;
+      },
     };
   },
 });

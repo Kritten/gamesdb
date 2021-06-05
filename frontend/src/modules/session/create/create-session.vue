@@ -4,7 +4,7 @@
     :options-button="{
       label: `${t('session.label')} ${t('common.create')}`,
     }"
-    @submit="createSession.create(game)"
+    @submit="submit"
   >
     <item-session
       v-model:game="createSession.entity.value.game"
@@ -47,7 +47,7 @@ export default defineComponent({
       default: undefined,
     },
   },
-  setup() {
+  setup(props) {
     const { t } = useI18n();
 
     const createSession = ServiceSession.useCreate();
@@ -56,6 +56,10 @@ export default defineComponent({
       t,
       createSession,
       useTrackSession,
+      async submit(close: () => void) {
+        await createSession.create(props.game);
+        close();
+      },
     };
   },
 });

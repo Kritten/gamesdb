@@ -31,23 +31,15 @@
           </span>
         </td>
         <td style="width: 1px">
-          <q-btn
-            icon="fas fa-edit"
-            color="primary"
-            flat
-            round
-            class="q-mr-md"
-            @click="useTrackSession.stop(session)"
-          >
-            <q-tooltip>
-              {{ t('common.edit') }}
-            </q-tooltip>
-          </q-btn>
+          <update-session
+            :session="session"
+          />
 
           <q-btn
             v-if="session.currentPlaytime !== undefined"
             color="warning"
             icon="fas fa-pause"
+            class="q-ml-md"
             flat
             round
             @click="useTrackSession.pause(session)"
@@ -61,6 +53,7 @@
             v-if="session.currentPlaytime === undefined"
             color="positive"
             icon="fas fa-play"
+            class="q-ml-md"
             flat
             round
             @click="useTrackSession.continue(session)"

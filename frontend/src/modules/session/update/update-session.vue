@@ -1,11 +1,26 @@
 <template>
   <base-dialog
     :title="`${t('session.label')} ${t('common.edit')}`"
+    :text-submit="t('common.edit')"
     :options-button="{
       label: `${t('session.label')} ${t('common.edit')}`,
     }"
-    @submit="updateSession.update"
+    @submit="submit"
   >
+    <template #activator="{ open }">
+      <q-btn
+        icon="fas fa-edit"
+        color="primary"
+        flat
+        round
+        @click="open"
+      >
+        <q-tooltip class="text-capitalize">
+          {{ t('common.edit') }}
+        </q-tooltip>
+      </q-btn>
+    </template>
+
     <item-session
       v-model:game="updateSession.entity.value.game"
       v-model:comment="updateSession.entity.value.comment"
@@ -17,7 +32,7 @@
   </base-dialog>
 </template>
 
-<script>
+<script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Session } from '@/modules/session/session.model';
 import ItemSession from '@/modules/session/item-session.vue';
@@ -45,6 +60,10 @@ export default defineComponent({
       t,
       updateSession,
       isEqual,
+      async submit(close: () => void) {
+        await updateSession.update();
+        close();
+      },
     };
   },
 });
