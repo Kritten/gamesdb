@@ -4,6 +4,7 @@
     :options-button="{
       label: `${t('session.label')} ${t('common.create')}`,
     }"
+    :validation="vuelidate"
     @submit="submit"
   >
     <item-session
@@ -13,6 +14,7 @@
       v-model:players="createSession.entity.value.players"
       v-model:winners="createSession.entity.value.winners"
       v-model:playtimes="createSession.entity.value.playtimes"
+      :validation="vuelidate"
       :hide-game="game !== undefined"
     />
 
@@ -31,8 +33,12 @@ import { useI18n } from 'vue-i18n';
 import { ServiceSession } from '@/modules/session/session.service';
 import { Game } from '@/modules/game/game.model';
 import ItemSession from '@/modules/session/item-session.vue';
-import { defineComponent } from 'vue';
+import {
+  computed, defineComponent,
+} from 'vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 
 export default defineComponent({
   name: 'CreateSession',
@@ -52,10 +58,21 @@ export default defineComponent({
 
     const createSession = ServiceSession.useCreate();
     const useTrackSession = ServiceSession.useTrackSession();
+
+    const vuelidate = useVuelidate(computed(() => ({
+      game: {
+        required,
+      },
+      comment: {
+        required,
+      },
+    })), createSession.entity, { $autoDirty: true, $lazy: true });
+
     return {
       t,
       createSession,
       useTrackSession,
+      vuelidate,
       async submit(close: () => void) {
         await createSession.create(props.game);
         close();

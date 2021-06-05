@@ -2,6 +2,8 @@
   <q-input
     :model-value="modelValue"
     v-bind="optionsMerged"
+    :error="baseInput.errorMessage.value !== ''"
+    :error-message="baseInput.errorMessage.value"
     @update:model-value="baseInput.input"
   />
 </template>

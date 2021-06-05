@@ -2,10 +2,12 @@
   <input-select-game
     v-if="hideGame === false"
     v-model="gameInternal"
+    :validation="validation.game"
   />
 
   <base-input-boolean
     v-model="isChallengeInternal"
+    :validation="validation.isChallenge"
     :options="{
       label: t('session.isChallenge')
     }"
@@ -13,16 +15,21 @@
 
   <base-input-text
     v-model="commentInternal"
+    :validation="validation.comment"
     :options="{
       label: t('session.comment'),
       autogrow: true,
     }"
   />
 
-  <input-select-player v-model="playersInternal" />
+  <input-select-player
+    v-model="playersInternal"
+    :validation="validation.players"
+  />
 
   <input-select-player
     v-model="winnersInternal"
+    :validation="validation.winners"
     :options="{
       label: t('winner.label', 2),
       options: playersInternal,
@@ -85,7 +92,7 @@
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { Game } from '@/modules/game/game.model';
 import InputSelectGame from '@/modules/game/base/input-select-game.vue';
 import InputSelectPlayer from '@/modules/player/base/input-select-player.vue';
@@ -95,6 +102,7 @@ import ItemPlaytime from '@/modules/playtime/item-playtime.vue';
 import { usePlaytime } from '@/modules/playtime/composables/usePlaytime';
 import { Playtime } from '@/modules/playtime/playtime.model';
 import { Player } from '@/modules/player/player.model';
+import { Validation } from '@vuelidate/core';
 
 export default defineComponent({
   name: 'ItemSession',
@@ -135,6 +143,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false,
+    },
+    validation: {
+      required: false,
+      type: Object as PropType<Validation>,
+      default: undefined,
     },
   },
   setup(props, { emit }) {

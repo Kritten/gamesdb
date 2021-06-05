@@ -1,4 +1,6 @@
-import { computed, ComputedRef, Ref } from 'vue';
+import {
+  computed, ComputedRef, ref, Ref, watch, isRef,
+} from 'vue';
 import { Validation } from '@vuelidate/core';
 
 export type TypeOptionsInput = {
@@ -23,7 +25,7 @@ export function useBaseInput<I, E>(
   (value) => (value as unknown) as E | Array<E> | null,
 ): {
   label: ComputedRef<string>;
-  errorsComputed: ComputedRef<Array<string | Ref<string>>>;
+  errorMessage: Ref<string>;
   input: (value: I | Array<I> | null) => void;
 } {
   const hasValidationInfo = computed(() => props.validation !== undefined);
@@ -35,9 +37,21 @@ export function useBaseInput<I, E>(
     return false;
   });
 
-  const errorsComputed = computed<Array<string | Ref<string>>>(
-    () => (hasValidationInfo.value ? props.validation.$errors.map((error) => error.$message) : []),
-  );
+  /**
+   * Validation
+   */
+  const errorMessage = ref<string>('');
+
+  if (hasValidationInfo.value) {
+    watch(computed(() => props.validation.$errors), (value) => {
+      if (value.length > 0) {
+        errorMessage.value = isRef(value[0].$message) ? value[0].$message.value : value[0].$message;
+        return;
+      }
+
+      errorMessage.value = '';
+    });
+  }
 
   const labelInternal = computed<string>(() => {
     let { label }: { label?: string } = props.options;
@@ -64,8 +78,8 @@ export function useBaseInput<I, E>(
 
   return {
     label: labelInternal,
-    errorsComputed,
     input,
+    errorMessage,
     // styles: {
     //   // 'margin-top': '0.7rem',
     // },
