@@ -1,66 +1,36 @@
 <template>
-  <form @submit.prevent="updateSession.update">
+  <base-dialog
+    :title="`${t('session.label')} ${t('common.edit')}`"
+    :options-button="{
+      label: `${t('session.label')} ${t('common.edit')}`,
+    }"
+    @submit="updateSession.update"
+  >
     <item-session
+      v-model:game="updateSession.entity.value.game"
       v-model:comment="updateSession.entity.value.comment"
       v-model:is-challenge="updateSession.entity.value.isChallenge"
       v-model:players="updateSession.entity.value.players"
       v-model:winners="updateSession.entity.value.winners"
+      v-model:playtimes="updateSession.entity.value.playtimes"
     />
-    <div>
-      <p>{{ t('playtime.label', 2) }}</p>
-      <item-playtime
-        v-model:start="updateSession.playtimeNew.value.start"
-        v-model:end="updateSession.playtimeNew.value.end"
-      />
-      <div>
-        <button
-          type="button"
-          @click="updateSession.playtimeAdd"
-        >
-          {{ t('playtime.label') }} {{ t('common.create') }}
-        </button>
-      </div>
-      <div
-        v-for="(playtime, index) in updateSession.entity.value.playtimes"
-        :key="index"
-      >
-        <template v-if="!updateSession.entity.value.isVirtual || !isEqual(playtime.start, playtime.end)">
-          <hr>
-          <item-playtime
-            v-model:start="playtime.start"
-            v-model:end="playtime.end"
-          />
-          <button
-            type="button"
-            @click="updateSession.playtimeRemove(playtime)"
-          >
-            {{ t('playtime.label') }} {{ t('common.delete') }}
-          </button>
-        </template>
-      </div>
-    </div>
-    <hr>
-    <div>
-      <button type="submit">
-        {{ t('common.edit') }}
-      </button>
-    </div>
-  </form>
+  </base-dialog>
 </template>
 
 <script>
 import { useI18n } from 'vue-i18n';
 import { Session } from '@/modules/session/session.model';
 import ItemSession from '@/modules/session/item-session.vue';
-import ItemPlaytime from '@/modules/playtime/item-playtime.vue';
-import DisplayPlaytime from '@/modules/playtime/display-playtime.vue';
 import { ServiceSession } from '@/modules/session/session.service';
 import { defineComponent } from 'vue';
 import { isEqual } from 'date-fns';
+import BaseDialog from '@/modules/app/base/base-dialog';
 
 export default defineComponent({
   name: 'UpdateSession',
-  components: { ItemSession, ItemPlaytime, DisplayPlaytime },
+  components: {
+    BaseDialog, ItemSession,
+  },
   props: {
     session: {
       required: true,

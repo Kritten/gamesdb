@@ -20,6 +20,7 @@ import { cloneDeep } from 'lodash';
 import { compareAsc } from 'date-fns';
 import { Game } from '@/modules/game/game.model';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
+import { mutate } from '@/modules/app/utilities/helpers';
 
 class ServiceSessionClass
 implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
@@ -121,7 +122,7 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
           }),
         );
 
-        const sessionNew = await this.create(session.value, { event: 'startedSession' });
+        const sessionNew = await this.create(session.value, { event: 'startedSessionVirtual' });
         session.value = new Session({ isChallenge: false });
         return sessionNew;
       },
@@ -148,14 +149,11 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
   }
 
   async create(session: Session, { event = 'createdSession' }: { event?: string } = {}) {
-    const { mutate } = useMutation(mutationCreateSession);
-    const response = await mutate({
-      variables: {
-        session: session.prepareForServer(),
-      },
+    const response = await mutate<{createSession: Session}>(mutationCreateSession, {
+      session: session.prepareForServer(),
     });
 
-    const sessionNew = await Session.parseFromServer(response.data.createSession);
+    const sessionNew = await Session.parseFromServer(response.createSession);
 
     queue.notify(event, sessionNew);
 
@@ -163,14 +161,11 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
   }
 
   async update(session: Session, { event = 'updatedSession' }: { event?: string } = {}) {
-    const { mutate } = useMutation(mutationUpdateSession);
-    const response = await mutate({
-      variables: {
-        session: session.prepareForServer(),
-      },
+    const response = await mutate<{ updateSession: Session }>(mutationUpdateSession, {
+      session: session.prepareForServer(),
     });
 
-    const sessionNew = await Session.parseFromServer(response.data.updateSession);
+    const sessionNew = await Session.parseFromServer(response.updateSession);
 
     queue.notify(event, sessionNew);
 

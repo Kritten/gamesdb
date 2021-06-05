@@ -13,7 +13,7 @@ export type InputCollectionFilter = {
 
 export type InputCollection = {
   page: number;
-  count?: number;
+  count: number | null;
   sortBy: string[];
   sortDesc: boolean[];
   filters: InputCollectionFilter[];

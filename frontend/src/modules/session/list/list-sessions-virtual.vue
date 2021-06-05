@@ -1,11 +1,13 @@
 <template>
-  {{ collection.countItems.value }} {{ t('session.virtual.label', collection.countItems.value) }}
-  <table>
+  <q-markup-table>
     <thead>
       <tr>
-        <th>{{ t('game.label') }}</th>
-        <th>{{ t('session.label') }}</th>
-        <th>{{ t('playtime.label') }}</th>
+        <th class="text-left">
+          {{ t('game.label') }}
+        </th>
+        <th class="text-right">
+          {{ t('playtime.label') }}
+        </th>
         <th />
       </tr>
     </thead>
@@ -18,54 +20,74 @@
         <td>
           {{ session.game.name }}
         </td>
-        <td>
-          <details>
-            <summary>{{ t('session.label') }}</summary>
-            <update-session :session="session" />
-          </details>
-        </td>
-        <td>
+        <td
+          class="text-right"
+          style="width: 1px"
+        >
           <span
             v-if="session.currentPlaytime !== undefined"
           >
             {{ formatDistanceToNowStrict(session.currentPlaytime.start, {locale: de, includeSeconds: true }) }}
           </span>
         </td>
-        <td>
-          <button
-            v-if="session.currentPlaytime !== undefined"
-            type="button"
-            @click="useTrackSession.pause(session)"
-          >
-            Session Pausieren
-          </button>
-          <button
-            v-if="session.currentPlaytime === undefined"
-            type="button"
-            @click="useTrackSession.continue(session)"
-          >
-            Session Fortsetzen
-          </button>
-          <button
-            type="button"
+        <td style="width: 1px">
+          <q-btn
+            icon="fas fa-edit"
+            color="primary"
+            flat
+            round
+            class="q-mr-md"
             @click="useTrackSession.stop(session)"
           >
-            Session Beenden
-          </button>
+            <q-tooltip>
+              {{ t('common.edit') }}
+            </q-tooltip>
+          </q-btn>
+
+          <q-btn
+            v-if="session.currentPlaytime !== undefined"
+            color="warning"
+            icon="fas fa-pause"
+            flat
+            round
+            @click="useTrackSession.pause(session)"
+          >
+            <q-tooltip>
+              {{ t('session.pause') }}
+            </q-tooltip>
+          </q-btn>
+
+          <q-btn
+            v-if="session.currentPlaytime === undefined"
+            color="positive"
+            icon="fas fa-play"
+            flat
+            round
+            @click="useTrackSession.continue(session)"
+          >
+            <q-tooltip>
+              {{ t('session.continue') }}
+            </q-tooltip>
+          </q-btn>
+
+          <q-btn
+            icon="fas fa-stop"
+            color="negative"
+            flat
+            round
+            @click="useTrackSession.stop(session)"
+          >
+            <q-tooltip>
+              {{ t('session.stop') }}
+            </q-tooltip>
+          </q-btn>
         </td>
       </tr>
     </tbody>
-  </table>
-  <button
-    v-if="collection.hasNextPage.value"
-    @click="collection.loadNextItems"
-  >
-    Mehr laden
-  </button>
+  </q-markup-table>
 </template>
 
 <script lang="ts">
-import { useStore } from 'vuex';
 import { ServiceSession } from '@/modules/session/session.service';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Session } from '@/modules/session/session.model';
@@ -92,13 +114,14 @@ export default defineComponent({
     const collection = useCollection<Session>(ServiceSession.loadPage, {
       inputCollectionData: {
         sortBy: ref(['entity.id']),
+        count: undefined,
         filters,
       },
     });
 
     const useTrackSession = ServiceSession.useTrackSession();
 
-    for (const event of ['startedSession', 'continuedSession', 'pausedSession', 'stoppedSession']) {
+    for (const event of ['startedSessionVirtual', 'continuedSession', 'pausedSession', 'stoppedSession']) {
       queue.listen(event, () => {
         collection.reset();
       });
@@ -107,7 +130,6 @@ export default defineComponent({
     return {
       t,
       collection,
-      store: useStore(),
       useTrackSession,
       formatDistanceToNowStrict,
       de,

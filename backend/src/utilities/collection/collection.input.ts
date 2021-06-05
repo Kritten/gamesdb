@@ -21,7 +21,7 @@ export class InputCollection {
   page: number;
 
   @Field(() => Int, { nullable: true })
-  count?: number;
+  count: number | null;
 
   sortBy: string[];
 

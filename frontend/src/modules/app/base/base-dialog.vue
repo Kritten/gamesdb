@@ -29,6 +29,7 @@
             :label="t('common.cancel')"
             @click="isOpen = false"
           />
+          <slot name="buttons" />
           <base-button-submit :label="t('common.create')" />
         </q-card-actions>
       </q-form>

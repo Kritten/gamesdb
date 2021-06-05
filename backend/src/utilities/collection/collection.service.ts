@@ -149,7 +149,7 @@ export class CollectionService<T extends BaseEntity> {
     data: InputCollection,
     useTakeAndSkip = true,
   ) {
-    if (data.count !== undefined) {
+    if (data.count !== null) {
       if (useTakeAndSkip) {
         query.take(data.count);
         query.skip((data.page - 1) * data.count);

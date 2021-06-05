@@ -122,3 +122,12 @@ export const query = async <T, >(queryPassed: DocumentNode, variables?: Record<s
   //   resolve(response.data as unknown as T);
   // });
 };
+
+export const mutate = async <T, >(mutationPassed: DocumentNode, variables?: Record<string, unknown>): Promise<T> => {
+  const response = await apolloClients.default.mutate({
+    mutation: mutationPassed,
+    variables,
+  });
+
+  return response.data as unknown as T;
+};

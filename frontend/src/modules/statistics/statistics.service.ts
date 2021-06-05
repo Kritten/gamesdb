@@ -156,7 +156,7 @@ class ServiceStatisticsClass {
       page: 1,
       sortBy: ['entity.start'],
       sortDesc: [true],
-      count: undefined,
+      count: null,
       filters: filtersPlaytimes,
       leftJoins,
     });

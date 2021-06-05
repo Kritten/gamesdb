@@ -86,6 +86,10 @@ export default {
     virtual: {
       label: 'Virtuelle Session | Virtuelle Sessions',
     },
+    start: 'Start',
+    pause: 'Pause',
+    stop: 'Stop',
+    continue: 'Weiter',
     comment: 'Kommentar',
     isChallenge: 'Herausforderung',
   },
