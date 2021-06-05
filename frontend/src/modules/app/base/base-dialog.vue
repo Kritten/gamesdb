@@ -15,7 +15,7 @@
   >
     <q-card :style="style">
       <q-form
-        @submit.prevent="$emit('submit', close)"
+        @submit.prevent="submit"
       >
         <q-toolbar>
           <q-toolbar-title>
@@ -37,7 +37,12 @@
             @click="close"
           />
           <slot name="buttons" />
-          <base-button-submit :label="textSubmit" />
+          <base-button-submit
+            :label="textSubmit"
+            :options="{
+              disabled,
+            }"
+          />
         </q-card-actions>
       </q-form>
     </q-card>
@@ -45,11 +50,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import {
+  computed, defineComponent, PropType, ref, watch,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import BaseButtonSubmit from '@/modules/app/base/base-button-submit.vue';
 import { i18n } from '@/boot/i18n';
+import { Validation } from '@vuelidate/core';
 
 export default defineComponent({
   name: 'BaseDialog',
@@ -70,18 +78,44 @@ export default defineComponent({
       type: String,
       default: i18n.global.t('common.create'),
     },
+    validation: {
+      required: false,
+      type: Object as PropType<Validation>,
+      default: undefined,
+    },
+    disabled: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['submit'],
-  setup(props) {
+  setup(props, { emit }) {
     const { t } = useI18n();
     const { screen } = useQuasar();
 
     const isOpen = ref(false);
 
+    const open = () => {
+      isOpen.value = true;
+    };
+    const close = () => {
+      isOpen.value = false;
+      props.validation.$reset();
+    };
+
+    watch(isOpen, () => {
+      if (isOpen.value === false) {
+        props.validation.$reset();
+      }
+    });
+
     return {
       t,
       screen,
       isOpen,
+      open,
+      close,
       optionsButtonMerged: computed(() => ({
         flat: true,
         stretch: true,
@@ -92,11 +126,15 @@ export default defineComponent({
         width: '700px',
         maxWidth: '80vw',
       })),
-      open() {
-        isOpen.value = true;
-      },
-      close() {
-        isOpen.value = false;
+      async submit() {
+        if (props.validation !== undefined) {
+          const result = await props.validation.$validate();
+          if (result) {
+            emit('submit', close);
+          }
+        } else {
+          emit('submit', close);
+        }
       },
     };
   },

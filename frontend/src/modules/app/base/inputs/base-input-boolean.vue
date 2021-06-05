@@ -33,7 +33,6 @@ import {
   getValidator, useId, useModelWrapper,
 } from '@/modules/app/utilities/helpers';
 import { configBaseInput, TypeOptionsInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
-import { Validation } from '@vuelidate/core';
 
 export default defineComponent({
   name: 'BaseInputBoolean',
@@ -46,11 +45,6 @@ export default defineComponent({
       required: false,
       type: Boolean,
       default: false,
-    },
-    validation: {
-      required: false,
-      type: Object as PropType<Validation>,
-      default: undefined,
     },
     options: {
       required: false,

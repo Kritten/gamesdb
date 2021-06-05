@@ -3,6 +3,8 @@
     ref="qSelect"
     :model-value="modelValue"
     :options="filter === undefined ? itemsInternal : optionsMerged.items"
+    :error="baseInput.errorMessage.value !== ''"
+    :error-message="baseInput.errorMessage.value"
     v-bind="optionsMerged"
     @update:model-value="baseInput.input"
 

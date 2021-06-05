@@ -3,6 +3,7 @@
     color="primary"
     type="submit"
     :label="label"
+    v-bind="options"
   />
 </template>
 
@@ -15,6 +16,11 @@ export default defineComponent({
     label: {
       required: true,
       type: String,
+    },
+    options: {
+      required: false,
+      type: Object,
+      default: () => ({}),
     },
   },
 });

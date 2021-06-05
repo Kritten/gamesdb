@@ -2,6 +2,7 @@
   <base-input-select
     ref="baseInputSelect"
     :model-value="modelValue"
+    :validation="validation"
     :options="{
       label: t('game.label'),
       items: collectionGame.items.value,
@@ -18,7 +19,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, ref, watch,
+  defineComponent, PropType, ref, watch,
 } from 'vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import { Game } from '@/modules/game/game.model';
@@ -27,6 +28,7 @@ import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { ServiceGame } from '@/modules/game/game.service';
 import { useI18n } from 'vue-i18n';
 import { QSelect } from 'quasar';
+import { Validation } from '@vuelidate/core';
 
 export default defineComponent({
   name: 'InputSelectGame',
@@ -35,6 +37,11 @@ export default defineComponent({
     modelValue: {
       required: false,
       type: Game,
+      default: undefined,
+    },
+    validation: {
+      required: false,
+      type: Object as PropType<Validation>,
       default: undefined,
     },
   },

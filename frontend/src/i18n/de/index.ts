@@ -17,6 +17,7 @@ export default {
     undefined: 'Egal',
     login: 'Login',
     logout: 'Logout',
+    required: 'Pflichtfeld',
   },
   login: {
     name: 'Name',
@@ -149,5 +150,8 @@ export default {
     },
     take: 'Verschenken',
     giveBack: 'Zurück auf die Liste',
+  },
+  validator: {
+    required: 'Das ist ein Pflichtfeld',
   },
 };

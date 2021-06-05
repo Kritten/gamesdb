@@ -7,7 +7,6 @@
 
   <base-input-boolean
     v-model="isChallengeInternal"
-    :validation="validation.isChallenge"
     :options="{
       label: t('session.isChallenge')
     }"

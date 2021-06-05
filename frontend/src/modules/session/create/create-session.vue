@@ -4,6 +4,7 @@
     :options-button="{
       label: `${t('session.label')} ${t('common.create')}`,
     }"
+    :disabled="vuelidate.$dirty && vuelidate.$invalid"
     :validation="vuelidate"
     @submit="submit"
   >
@@ -63,10 +64,7 @@ export default defineComponent({
       game: {
         required,
       },
-      comment: {
-        required,
-      },
-    })), createSession.entity, { $autoDirty: true, $lazy: true });
+    })), createSession.entity);
 
     return {
       t,

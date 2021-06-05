@@ -1,7 +1,8 @@
 import {
   computed, ComputedRef, ref, Ref, watch, isRef,
 } from 'vue';
-import { Validation } from '@vuelidate/core';
+import { ErrorObject, Validation } from '@vuelidate/core';
+import { useI18n } from 'vue-i18n';
 
 export type TypeOptionsInput = {
   label: string,
@@ -18,8 +19,14 @@ export const configBaseInput = {
   dense: true,
 };
 
+const translate = (errorObject: ErrorObject, t: (value: string) => string) => ({
+  ...errorObject,
+  $message: t(`validator.${errorObject.$validator}`),
+
+});
+
 export function useBaseInput<I, E>(
-  props: { validation: Validation; options: Record<string, unknown> },
+  props: { validation?: Validation; options: Record<string, unknown> },
   emit: (event: 'update:modelValue', ...args: unknown[]) => void,
   parseValue: (value: I | Array<I> | null) => E | Array<E> | null =
   (value) => (value as unknown) as E | Array<E> | null,
@@ -28,11 +35,13 @@ export function useBaseInput<I, E>(
   errorMessage: Ref<string>;
   input: (value: I | Array<I> | null) => void;
 } {
+  const { t } = useI18n();
+
   const hasValidationInfo = computed(() => props.validation !== undefined);
 
   const isRequired = computed(() => {
     if (hasValidationInfo.value) {
-      return props.validation.required !== undefined;
+      return props.validation?.required !== undefined;
     }
     return false;
   });
@@ -43,15 +52,23 @@ export function useBaseInput<I, E>(
   const errorMessage = ref<string>('');
 
   if (hasValidationInfo.value) {
-    watch(computed(() => props.validation.$errors), (value) => {
+    watch(computed(() => props.validation?.$errors), (value) => {
+      if (value === undefined) {
+        return;
+      }
       if (value.length > 0) {
-        errorMessage.value = isRef(value[0].$message) ? value[0].$message.value : value[0].$message;
+        const validation = translate(value[0], t);
+        errorMessage.value = validation.$message;
         return;
       }
 
       errorMessage.value = '';
     });
   }
+
+  /**
+   * Label
+   */
 
   const labelInternal = computed<string>(() => {
     let { label }: { label?: string } = props.options;
@@ -61,7 +78,7 @@ export function useBaseInput<I, E>(
     }
 
     if (isRequired.value) {
-      label += ' (required)';
+      label += ` (${t('common.required')})`;
     }
     return label;
   });
@@ -72,7 +89,7 @@ export function useBaseInput<I, E>(
     emit('update:modelValue', valueParsed);
 
     if (hasValidationInfo.value) {
-      props.validation.$touch();
+      props.validation?.$touch();
     }
   };
 
