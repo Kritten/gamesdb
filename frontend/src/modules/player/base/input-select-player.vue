@@ -44,6 +44,7 @@ export default defineComponent({
         label: t('player.label'),
         items: players.value,
         useInput: true,
+        optionValue: 'id',
         optionLabel: 'name',
         clearable: true,
         ...props.options,

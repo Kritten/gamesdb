@@ -6,9 +6,9 @@ import { Playtime } from '@/modules/playtime/playtime.model';
 import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
 import { ServiceGame } from '@/modules/game/game.service';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
-import { store } from '@/modules/app/app.store';
 import { PlaytimeInterface } from '@/modules/playtime/playtime.types';
 import { isEqual } from 'date-fns';
+import { usePlayers } from '@/modules/player/composables/usePlayers';
 
 export class Session extends Entity implements SessionInterface {
   comment?: string | null;
@@ -58,17 +58,17 @@ export class Session extends Entity implements SessionInterface {
   static async parseFromServer(data: EntityInterface): Promise<Session> {
     const entity = (await super.parseFromServer(data)) as Session;
 
+    const { playerById } = usePlayers();
+
     if (entity.players !== undefined) {
       entity.players = entity.players.map(
-        // @ts-ignore
-        (player) => store.state.modulePlayer.players[player.id as ID],
+        (player) => playerById(player.id as ID),
       );
     }
 
     if (entity.winners !== undefined) {
       entity.winners = entity.winners.map(
-        // @ts-ignore
-        (winners) => store.state.modulePlayer.players[winners.id as ID],
+        (winner) => playerById(winner.id as ID),
       );
     }
 

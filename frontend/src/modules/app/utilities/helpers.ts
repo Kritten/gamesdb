@@ -37,10 +37,7 @@ export function useModelWrapper<T extends TypeProps>({
     set: (value) => {
       if (isEntity === true) {
         if (Array.isArray(value)) {
-          emit(
-            `update:${name}`,
-            value.map((val: string) => ({ id: val })),
-          );
+          emit(`update:${name}`, value);
         } else {
           emit(`update:${name}`, entities[value as string]);
         }

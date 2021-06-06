@@ -172,10 +172,10 @@ export default defineComponent({
         props, emit, name: 'game',
       }),
       playersInternal: useModelWrapper<Array<Player>>({
-        props, emit, name: 'players', isEntity: true,
+        props, emit, name: 'players',
       }),
       winnersInternal: useModelWrapper<Array<Player>>({
-        props, emit, name: 'winners', isEntity: true,
+        props, emit, name: 'winners',
       }),
       commentInternal: useModelWrapper<string>({
         props, emit, name: 'comment',
