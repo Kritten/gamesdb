@@ -66,6 +66,7 @@
             <q-item
               :to="{name: route.name}"
               clickable
+              exact
             >
               <q-item-section avatar>
                 <q-icon :name="route.icon" />

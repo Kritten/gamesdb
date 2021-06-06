@@ -135,7 +135,7 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
         session.playtimes.push(
           new Playtime({
             start: dateCurrent,
-            end: dateCurrent,
+            end: null,
           }),
         );
         await this.update(session, { event: 'continuedSession' });
