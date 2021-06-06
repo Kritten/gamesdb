@@ -14,7 +14,7 @@
 
   <base-input-text
     v-model="commentInternal"
-    :validation="validation.comment"
+    :validation="validation?.comment"
     :options="{
       label: t('session.comment'),
       autogrow: true,
@@ -23,12 +23,12 @@
 
   <input-select-player
     v-model="playersInternal"
-    :validation="validation.players"
+    :validation="validation?.players"
   />
 
   <input-select-player
     v-model="winnersInternal"
-    :validation="validation.winners"
+    :validation="validation?.winners"
     :options="{
       label: t('winner.label', 2),
       options: playersInternal,
@@ -188,8 +188,8 @@ export default defineComponent({
       playtimeAdd,
       playtimeRemove,
       errorMessagePlaytimes: computed(() => {
-        if ((props as {validation: Validation}).validation.playtimes.$errors.length > 0) {
-          return translate((props as {validation: Validation}).validation.playtimes.$errors[0], t).$message;
+        if ((props as {validation: Validation}).validation.playtimes?.$errors.length > 0) {
+          return translate((props as {validation: Validation}).validation.playtimes?.$errors[0], t).$message;
         }
         return '';
       }),

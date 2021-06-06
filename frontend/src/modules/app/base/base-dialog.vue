@@ -104,11 +104,13 @@ export default defineComponent({
     };
     const close = () => {
       isOpen.value = false;
-      props.validation.$reset();
+      if (props.validation) {
+        props.validation.$reset();
+      }
     };
 
     watch(isOpen, () => {
-      if (isOpen.value === false) {
+      if (isOpen.value === false && props.validation) {
         props.validation.$reset();
       }
     });
