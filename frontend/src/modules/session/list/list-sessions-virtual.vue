@@ -63,17 +63,7 @@
             </q-tooltip>
           </q-btn>
 
-          <q-btn
-            icon="fas fa-stop"
-            color="negative"
-            flat
-            round
-            @click="useTrackSession.stop(session)"
-          >
-            <q-tooltip>
-              {{ t('session.stop') }}
-            </q-tooltip>
-          </q-btn>
+          <list-sessions-virtual-stop :session="session" />
         </td>
       </tr>
     </tbody>
@@ -91,10 +81,11 @@ import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/col
 import UpdateSession from '@/modules/session/update/update-session.vue';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { de } from 'date-fns/locale';
+import ListSessionsVirtualStop from '@/modules/session/list/list-sessions-virtual-stop.vue';
 
 export default defineComponent({
   name: 'ListSessionsVirtual',
-  components: { UpdateSession },
+  components: { ListSessionsVirtualStop, UpdateSession },
   props: {
   },
   setup() {

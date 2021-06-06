@@ -89,7 +89,7 @@ export default {
     },
     start: 'Start',
     pause: 'Pause',
-    stop: 'Stop',
+    stop: 'Session beenden',
     continue: 'Weiter',
     comment: 'Kommentar',
     isChallenge: 'Herausforderung',
