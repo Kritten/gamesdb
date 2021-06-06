@@ -111,7 +111,13 @@ export default defineComponent({
 
     const useTrackSession = ServiceSession.useTrackSession();
 
-    for (const event of ['startedSessionVirtual', 'continuedSession', 'pausedSession', 'stoppedSession']) {
+    for (const event of [
+      'startedSessionVirtual',
+      'continuedSession',
+      'pausedSession',
+      'stoppedSession',
+      'updatedSession',
+    ]) {
       queue.listen(event, () => {
         collection.reset();
       });
