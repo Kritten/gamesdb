@@ -43,7 +43,7 @@
           <base-button-submit
             :label="textSubmit"
             :options="{
-              disabled,
+              disabled: validation.$dirty && validation.$invalid,
             }"
           />
         </q-card-actions>
@@ -85,11 +85,6 @@ export default defineComponent({
       required: false,
       type: Object as PropType<Validation>,
       default: undefined,
-    },
-    disabled: {
-      required: false,
-      type: Boolean,
-      default: false,
     },
   },
   emits: ['submit'],

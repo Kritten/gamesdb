@@ -5,6 +5,7 @@
     :options-button="{
       label: `${t('session.label')} ${t('common.edit')}`,
     }"
+    :validation="vuelidate"
     @submit="submit"
   >
     <template #activator="{ open }">

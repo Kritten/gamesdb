@@ -4,7 +4,6 @@
     :options-button="{
       label: `${t('session.label')} ${t('common.create')}`,
     }"
-    :disabled="vuelidateCreate.$dirty && vuelidateCreate.$invalid"
     :validation="vuelidateCreate"
     @submit="submit"
   >
