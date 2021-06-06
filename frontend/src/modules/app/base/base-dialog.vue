@@ -36,7 +36,10 @@
             :label="t('common.cancel')"
             @click="close"
           />
-          <slot name="buttons" />
+          <slot
+            name="buttons"
+            :close="close"
+          />
           <base-button-submit
             :label="textSubmit"
             :options="{

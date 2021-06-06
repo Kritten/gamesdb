@@ -4,8 +4,8 @@
     :options-button="{
       label: `${t('session.label')} ${t('common.create')}`,
     }"
-    :disabled="vuelidate.$dirty && vuelidate.$invalid"
-    :validation="vuelidate"
+    :disabled="vuelidateCreate.$dirty && vuelidateCreate.$invalid"
+    :validation="vuelidateCreate"
     @submit="submit"
   >
     <item-session
@@ -15,15 +15,15 @@
       v-model:players="createSession.entity.value.players"
       v-model:winners="createSession.entity.value.winners"
       v-model:playtimes="createSession.entity.value.playtimes"
-      :validation="vuelidate"
+      :validation="vuelidateCreate"
       :hide-game="game !== undefined"
     />
 
-    <template #buttons>
+    <template #buttons="{ close }">
       <q-btn
         :label="t('session.start')"
         color="secondary"
-        @click="useTrackSession.start(createSession.entity, game)"
+        @click="start(close)"
       />
     </template>
   </base-dialog>
@@ -60,7 +60,19 @@ export default defineComponent({
     const createSession = ServiceSession.useCreate();
     const useTrackSession = ServiceSession.useTrackSession();
 
-    const vuelidate = useVuelidate(computed(() => ({
+    const vuelidateCreate = useVuelidate(computed(() => ({
+      game: {
+        required,
+      },
+      players: {
+        required,
+      },
+      playtimes: {
+        required,
+      },
+    })), createSession.entity);
+
+    const vuelidateStart = useVuelidate(computed(() => ({
       game: {
         required,
       },
@@ -70,10 +82,18 @@ export default defineComponent({
       t,
       createSession,
       useTrackSession,
-      vuelidate,
+      vuelidateCreate,
       async submit(close: () => void) {
         await createSession.create(props.game);
         close();
+      },
+      async start(close: () => void) {
+        const result = await vuelidateStart.value.$validate();
+
+        if (result) {
+          await useTrackSession.start(createSession.entity, props.game);
+          close();
+        }
       },
     };
   },
