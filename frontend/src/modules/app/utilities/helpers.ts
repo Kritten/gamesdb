@@ -3,6 +3,7 @@ import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { DocumentNode } from 'graphql';
 
 import { apolloClients } from '@/boot/apollo';
+import { ErrorObject } from '@vuelidate/core';
 
 type TypePropsSingle = Entity | number | string | boolean | Date;
 type TypeProps = TypePropsSingle | Array<TypePropsSingle>;
@@ -49,6 +50,11 @@ export function useModelWrapper<T extends TypeProps>({
     },
   });
 }
+
+export const translate = (errorObject: ErrorObject, t: (value: string) => string) => ({
+  ...errorObject,
+  $message: t(`validator.${errorObject.$validator}`),
+});
 
 export function toNumber(value: string): number | string {
   const n = parseFloat(value);

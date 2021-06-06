@@ -40,7 +40,9 @@
   <q-markup-table>
     <thead>
       <tr>
-        <th>{{ t('playtime.label') }}</th>
+        <th class="text-left">
+          {{ t('playtime.label') }}
+        </th>
         <th />
       </tr>
     </thead>
@@ -86,12 +88,18 @@
       </tr>
     </tfoot>
   </q-markup-table>
+  <div
+    v-if="errorMessagePlaytimes !== ''"
+    class="text-negative q-mt-sm error-playtimes"
+  >
+    {{ errorMessagePlaytimes }}
+  </div>
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { useModelWrapper } from '@/modules/app/utilities/helpers';
-import { defineComponent, PropType } from 'vue';
+import { translate, useModelWrapper } from '@/modules/app/utilities/helpers';
+import { computed, defineComponent, PropType } from 'vue';
 import { Game } from '@/modules/game/game.model';
 import InputSelectGame from '@/modules/game/base/input-select-game.vue';
 import InputSelectPlayer from '@/modules/player/base/input-select-player.vue';
@@ -179,6 +187,12 @@ export default defineComponent({
       playtimeNew,
       playtimeAdd,
       playtimeRemove,
+      errorMessagePlaytimes: computed(() => {
+        if ((props as {validation: Validation}).validation.playtimes.$errors.length > 0) {
+          return translate((props as {validation: Validation}).validation.playtimes.$errors[0], t).$message;
+        }
+        return '';
+      }),
     };
   },
 });
@@ -187,5 +201,9 @@ export default defineComponent({
 <style scoped>
   tfoot tr td {
     border-top-width: 3px;
+  }
+
+  .error-playtimes {
+    font-size: 11px;
   }
 </style>

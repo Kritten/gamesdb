@@ -1,8 +1,9 @@
 import {
-  computed, ComputedRef, ref, Ref, watch, isRef,
+  computed, ComputedRef, ref, Ref, watch,
 } from 'vue';
-import { ErrorObject, Validation } from '@vuelidate/core';
+import { Validation } from '@vuelidate/core';
 import { useI18n } from 'vue-i18n';
+import { translate } from '@/modules/app/utilities/helpers';
 
 export type TypeOptionsInput = {
   label: string,
@@ -18,12 +19,6 @@ export type TypeOptionsInputSelect = TypeOptionsInput & {
 export const configBaseInput = {
   dense: true,
 };
-
-const translate = (errorObject: ErrorObject, t: (value: string) => string) => ({
-  ...errorObject,
-  $message: t(`validator.${errorObject.$validator}`),
-
-});
 
 export function useBaseInput<I, E>(
   props: { validation?: Validation; options: Record<string, unknown> },

@@ -88,11 +88,15 @@ export default defineComponent({
         close();
       },
       async start(close: () => void) {
+        vuelidateCreate.value.$reset();
+
         const result = await vuelidateStart.value.$validate();
 
         if (result) {
           await useTrackSession.start(createSession.entity, props.game);
           close();
+        } else {
+          vuelidateCreate.value.game.$touch();
         }
       },
     };
