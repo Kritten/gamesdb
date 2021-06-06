@@ -10,7 +10,7 @@ import { Session } from '../session/session.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Rating } from '../rating/rating.entity';
 import { OneToMany } from 'typeorm/index';
-import { max } from 'date-fns';
+import {isValid, max} from 'date-fns';
 
 @Entity()
 @ObjectType()
@@ -26,7 +26,7 @@ export class Player {
   })
   name: string;
 
-  public lastSession: Date;
+  public lastSession?: Date | null;
 
   @AfterLoad()
   public async setLastSession() {
@@ -48,6 +48,7 @@ export class Player {
     `);
 
     this.lastSession = max(playtimes.map(playtime => playtime.end));
+    this.lastSession = isValid(this.lastSession) ? this.lastSession : null;
   }
 
   @ManyToMany(

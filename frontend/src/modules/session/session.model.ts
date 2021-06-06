@@ -37,11 +37,11 @@ export class Session extends Entity implements SessionInterface {
   }
 
   get currentPlaytime(): Playtime | undefined {
-    return this.playtimes.find((playtime) => isEqual(playtime.start, playtime.end));
+    return this.playtimes.find((playtime) => playtime.end === null);
   }
 
   stop() {
-    const indexCurrentPlaytime = this.playtimes.findIndex((playtime) => isEqual(playtime.start, playtime.end));
+    const indexCurrentPlaytime = this.playtimes.findIndex((playtime) => playtime.end === null);
 
     if (indexCurrentPlaytime > -1) {
       const currentPlaytime = this.playtimes[indexCurrentPlaytime];

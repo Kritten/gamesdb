@@ -18,9 +18,10 @@ export class Playtime {
 
   @Column({
     type: 'datetime',
+    nullable: true,
   })
-  @Field(() => GraphQLISODateTime)
-  end: Date;
+  @Field(() => GraphQLISODateTime, {nullable: true})
+  end: Date | null;
 
   @ManyToOne(
     () => Session,

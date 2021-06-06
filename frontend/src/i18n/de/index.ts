@@ -101,6 +101,7 @@ export default {
     label: 'Spielzeit | Spielzeiten',
     start: 'Anfang',
     end: 'Ende',
+    pending: 'Laufende Spielzeit: ',
   },
   wishlist: {
     label: 'Wunschliste | Wunschlisten',

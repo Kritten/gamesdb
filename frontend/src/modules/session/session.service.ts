@@ -58,7 +58,7 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
     }).then(async ({ items }) => {
       if (items.length > 0) {
         session.value = items[0];
-        lastDate.value = session.value.playtimes.map((playtime) => playtime.end).sort(compareAsc)[
+        lastDate.value = session.value.playtimes.map((playtime) => playtime.end as Date).sort(compareAsc)[
           session.value.playtimes.length - 1
         ];
       }
@@ -118,7 +118,7 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
         session.value.playtimes.push(
           new Playtime({
             start: dateCurrent,
-            end: dateCurrent,
+            end: null,
           }),
         );
 

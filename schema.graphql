@@ -147,7 +147,7 @@ type Mutation {
 
 type Player {
     id: ID!
-    lastSession: DateTime!
+    lastSession: DateTime
     name: String!
     ratings: [Rating!]!
     sessionsPlayed: [Session!]!
@@ -155,7 +155,7 @@ type Player {
 }
 
 type Playtime {
-    end: DateTime!
+    end: DateTime
     id: ID!
     session: Session!
     start: DateTime!
@@ -328,7 +328,7 @@ input PlayerInput {
 }
 
 input PlaytimeInput {
-    end: DateTime!
+    end: DateTime
     id: ID
     session: ID!
     start: DateTime!
@@ -353,7 +353,7 @@ input SessionInput {
 }
 
 input SessionPlaytimeInput {
-    end: DateTime!
+    end: DateTime
     id: String
     start: DateTime!
 }

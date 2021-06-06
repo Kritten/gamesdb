@@ -6,6 +6,9 @@
           {{ t('game.label') }}
         </th>
         <th class="text-right">
+          {{ t('player.label') }}
+        </th>
+        <th class="text-right">
           {{ t('playtime.label') }}
         </th>
         <th />
@@ -19,6 +22,9 @@
       >
         <td>
           {{ session.game.name }}
+        </td>
+        <td class="text-right">
+          {{ session.players.length }}
         </td>
         <td
           class="text-right"

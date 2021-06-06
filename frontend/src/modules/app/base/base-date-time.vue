@@ -32,7 +32,7 @@ export default defineComponent({
   },
   setup(props) {
     const formatDate = props.compact === true ? 'dd.MM.yyyy' : 'PPP';
-    const formatTime = props.compact === true ? 'HH:mm:ss' : 'ppp';
+    const formatTime = props.compact === true ? 'HH:mm:ss' : 'p';
     // const formatDate = 'dd.MM.yyyy';
     // const formatTime = 'HH:mm:ss';
 
@@ -43,6 +43,7 @@ export default defineComponent({
       } else if (props.dateOnly) {
         formatUsed = formatDate;
       }
+      console.warn(formatUsed, 'formatUsed');
       return formatUsed;
     };
 

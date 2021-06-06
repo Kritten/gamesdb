@@ -7,7 +7,7 @@ export class PlaytimeInput {
 
   start: Date;
 
-  end: Date;
+  end?: Date | null;
 
   @Field(() => ID)
   session: string;

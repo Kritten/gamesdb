@@ -51,20 +51,33 @@
         v-for="(playtime, index) in playtimes"
         :key="index"
       >
-        <td>
-          <item-playtime
-            :start="playtime.start"
-            :end="playtime.end"
-          />
-        </td>
-        <td>
-          <q-btn
-            flat
-            color="negative"
-            :label="`${t('playtime.label')} ${t('common.delete')}`"
-            @click="playtimeRemove(playtime)"
-          />
-        </td>
+        <template v-if="playtime.end !== null">
+          <td>
+            <item-playtime
+              :start="playtime.start"
+              :end="playtime.end"
+            />
+          </td>
+          <td>
+            <q-btn
+              flat
+              color="negative"
+              :label="`${t('playtime.label')} ${t('common.delete')}`"
+              @click="playtimeRemove(playtime)"
+            />
+          </td>
+        </template>
+        <template v-else>
+          <td
+            colspan="2"
+            class="bg-info"
+          >
+            {{ t('playtime.pending') }}
+            <base-date-time
+              :value="playtime.start"
+            />
+          </td>
+        </template>
       </tr>
     </tbody>
     <tfoot>
@@ -110,10 +123,12 @@ import { usePlaytime } from '@/modules/playtime/composables/usePlaytime';
 import { Playtime } from '@/modules/playtime/playtime.model';
 import { Player } from '@/modules/player/player.model';
 import { Validation } from '@vuelidate/core';
+import BaseDateTime from '@/modules/app/base/base-date-time.vue';
 
 export default defineComponent({
   name: 'ItemSession',
   components: {
+    BaseDateTime,
     ItemPlaytime,
     BaseInputText,
     BaseInputBoolean,

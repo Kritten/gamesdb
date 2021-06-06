@@ -7,13 +7,13 @@ import { parseISO } from 'date-fns';
 export class Playtime extends Entity implements PlaytimeInterface {
   start: Date;
 
-  end: Date;
+  end: Date | null;
 
   constructor(data: PlaytimeInterface = {}) {
     super(data);
     const dateDefault = new Date();
     this.start = setDefaultIfNullOrUndefined<Date>(data.start, dateDefault);
-    this.end = setDefaultIfNullOrUndefined<Date>(data.end, dateDefault);
+    this.end = data.end === undefined ? dateDefault : data.end;
   }
 
   static async parseFromServer(data: EntityInterface): Promise<Playtime> {
@@ -21,7 +21,9 @@ export class Playtime extends Entity implements PlaytimeInterface {
 
     entity.start = parseISO((entity.start as unknown) as string);
 
-    entity.end = parseISO((entity.end as unknown) as string);
+    if (entity.end !== null) {
+      entity.end = parseISO((entity.end as unknown) as string);
+    }
 
     return entity;
   }

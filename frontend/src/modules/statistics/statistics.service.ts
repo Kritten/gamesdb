@@ -224,7 +224,7 @@ class ServiceStatisticsClass {
       let difference = 0;
       for (let j = 0; j < playtimes.length; j++) {
         const playtime = playtimes[j];
-        difference += differenceInSeconds(playtime.end, playtime.start);
+        difference += differenceInSeconds(playtime.end as Date, playtime.start);
         // console.log(difference, 'difference');
         // console.log(playtime, 'playtime');
       }
