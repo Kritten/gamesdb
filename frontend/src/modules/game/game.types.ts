@@ -18,6 +18,7 @@ export interface GameInterface extends EntityInterface {
   isDigital?: boolean;
   complexity?: number;
   size?: number;
+  ratingAverage?: number | null;
   universes?: Universe[];
   categories?: Category[];
   mechanisms?: Mechanism[];

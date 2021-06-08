@@ -18,6 +18,7 @@ export default {
     login: 'Login',
     logout: 'Logout',
     required: 'Pflichtfeld',
+    details: 'Details',
   },
   login: {
     name: 'Name',
@@ -44,6 +45,13 @@ export default {
     isDigital: 'Digital',
     complexity: 'Schwierigkeit',
     size: 'Größe',
+    sizeFormatted: {
+      0: 'klein',
+      1: 'mittel',
+      2: 'groß',
+    },
+    infoPlaytime: '{minutesPlaytimeMin} Minuten | {minutesPlaytimeMin} bis {minutesPlaytimeMax} Minuten',
+    infoCountPlayers: '{countPlayersMin} Spieler | {countPlayersMin} bis {countPlayersMax} Spieler',
     digital: {
       label: 'Digitales Spiel | Digitale Spiele',
     },

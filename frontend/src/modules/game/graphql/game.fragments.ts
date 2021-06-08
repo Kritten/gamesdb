@@ -14,6 +14,7 @@ export const fragments = {
       isDigital
       complexity
       size
+      ratingAverage
       universes {
         id
       }

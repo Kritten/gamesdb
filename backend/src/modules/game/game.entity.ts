@@ -5,7 +5,7 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
-  ManyToOne,
+  ManyToOne, AfterLoad, getConnection,
 } from 'typeorm';
 import { Category } from '../category/category.entity';
 import { Mechanism } from '../mechanism/mechanism.entity';
@@ -165,4 +165,22 @@ export class Game {
   @JoinTable()
   @Field(() => [Session], { defaultValue: [] })
   sessions: Session[];
+
+  public ratingAverage?: number | null;
+
+  @AfterLoad()
+  public async calculateRatingAverage() {
+    const rating = await getConnection().query(`
+      select
+        Avg(rating.rating) as rating
+      from
+        game
+      left join
+          rating
+          on rating.gameId = game.id
+      where game.id = ${this.id}
+    `);
+
+    this.ratingAverage = rating[0].rating;
+  }
 }
