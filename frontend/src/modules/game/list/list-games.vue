@@ -17,13 +17,14 @@
   <random-game :filters="filters" />
   <hr>
   {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
-  <table>
+  <div class="row q-col-gutter-lg">
     <list-item-game
-      v-for="game in collection.items.value"
+      v-for="(game, index) in collection.items.value"
       :key="game.id"
+      v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
       :game="game"
     />
-  </table>
+  </div>
   <button
     v-if="collection.hasNextPage.value"
     :disabled="collection.isLoading.value === true"
@@ -80,7 +81,9 @@ export default defineComponent({
     const sortDesc = ref<boolean[]>([false]);
 
     const collection = useCollection<Game>(ServiceGame.loadPage, {
-      inputCollectionData: { sortBy, sortDesc, filters },
+      inputCollectionData: {
+        sortBy, sortDesc, filters, count: 30,
+      },
       watchFilters: false,
     });
 
@@ -143,6 +146,11 @@ export default defineComponent({
       optionsSortBy,
       resetFilters,
       updateFilter,
+      onIntersection(entry: {isIntersecting: boolean}) {
+        if (entry.isIntersecting === true && collection.hasNextPage.value) {
+          void collection.loadNextItems();
+        }
+      },
     };
   },
 });
