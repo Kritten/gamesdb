@@ -14,6 +14,8 @@ export type TypeOptionsInput = {
 
 export type TypeOptionsInputSelect = TypeOptionsInput & {
   items: Array<Record<string, unknown>>,
+  optionValue: string,
+  optionLabel: string,
 };
 
 export const configBaseInput = {

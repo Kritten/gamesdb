@@ -16,12 +16,12 @@
       <!--              {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}-->
     </div>
   </list-filters-game>
-  <!--  <base-list-sort-->
-  <!--    v-model:sort-by="sortBy"-->
-  <!--    v-model:sort-desc="sortDesc"-->
-  <!--    :options-sort-by="optionsSortBy"-->
-  <!--  />-->
-  <!--  <hr>-->
+  <q-separator spaced="lg" />
+  <base-list-sort
+    v-model:sort-by="sortBy"
+    v-model:sort-desc="sortDesc"
+    :options-sort-by="optionsSortBy"
+  />
   <!--  <random-game :filters="filters" />-->
   <q-separator spaced="lg" />
   <div
@@ -133,18 +133,18 @@ export default defineComponent({
     };
 
     const optionsSortBy = [
-      { field: 'entity.name', name: 'name' },
-      { field: 'entity.description', name: 'description' },
-      { field: 'entity.countPlayersMin', name: 'countPlayersMin' },
-      { field: 'entity.countPlayersMax', name: 'countPlayersMax' },
-      { field: 'entity.minutesPlaytimeMin', name: 'minutesPlaytimeMin' },
-      { field: 'entity.minutesPlaytimeMax', name: 'minutesPlaytimeMax' },
-      { field: 'entity.size', name: 'size' },
-      { field: 'entity.complexity', name: 'complexity' },
-      { field: 'entity.isCoop', name: 'isCoop' },
-      { field: 'rating:rating', name: 'rating' },
-      { field: 'countPlayed:countPlayed', name: 'countPlayed' },
-      { field: 'timePlayed:timePlayed', name: 'timePlayed' },
+      { field: 'entity.name', name: t('game.name') },
+      { field: 'entity.description', name: t('game.description') },
+      { field: 'entity.countPlayersMin', name: t('game.countPlayersMin') },
+      { field: 'entity.countPlayersMax', name: t('game.countPlayersMax') },
+      { field: 'entity.minutesPlaytimeMin', name: t('game.minutesPlaytimeMin') },
+      { field: 'entity.minutesPlaytimeMax', name: t('game.minutesPlaytimeMax') },
+      { field: 'entity.size', name: t('game.size') },
+      { field: 'entity.complexity', name: t('game.complexity') },
+      { field: 'entity.isCoop', name: t('game.isCoop') },
+      { field: 'rating:rating', name: t('rating.label') },
+      { field: 'countPlayed:countPlayed', name: t('game.countPlayed') },
+      { field: 'timePlayed:timePlayed', name: t('game.timePlayed') },
     ];
 
     return {

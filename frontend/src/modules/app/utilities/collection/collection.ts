@@ -149,6 +149,14 @@ export function useCollection<T>(
     { deep: true },
   );
 
+  watch(
+    sortDesc,
+    (value) => {
+      void reset();
+    },
+    { deep: true },
+  );
+
   const reset = async () => {
     items.value = [];
     countItems.value = -1;

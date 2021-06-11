@@ -33,6 +33,9 @@ export default {
     label: 'Filter',
     reset: 'Filter zurücksetzen',
   },
+  sort: {
+    label: 'Sortierung',
+  },
   game: {
     label: 'Spiel | Spiele',
     name: 'Name',
@@ -45,6 +48,8 @@ export default {
     isDigital: 'Digital',
     complexity: 'Schwierigkeit',
     size: 'Größe',
+    countPlayed: 'Spielhäufigkeit',
+    timePlayed: 'Spielzeit',
     sizeFormatted: {
       0: 'klein',
       1: 'mittel',

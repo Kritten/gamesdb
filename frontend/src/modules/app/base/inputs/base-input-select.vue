@@ -110,7 +110,7 @@ export default defineComponent({
         update(() => {
           const needle = value.toLowerCase();
           itemsInternal.value = optionsMerged.value.items.filter(
-            (v) => (v.name as string).toLowerCase().indexOf(needle) > -1,
+            (v) => (v[optionsMerged.value.optionLabel !== undefined ? optionsMerged.value.optionLabel : 'label'] as string).toLowerCase().indexOf(needle) > -1,
           );
         });
       };
