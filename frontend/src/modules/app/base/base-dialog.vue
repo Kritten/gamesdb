@@ -28,9 +28,11 @@
             @click="close"
           />
         </q-toolbar>
-        <q-card-section class="q-gutter-md">
+
+        <q-card-section>
           <slot />
         </q-card-section>
+
         <q-card-actions align="right">
           <q-btn
             :label="t('common.cancel')"
@@ -43,8 +45,9 @@
           <base-button-submit
             :label="textSubmit"
             :options="{
-              disabled: validation.$dirty && validation.$invalid,
+              disabled: validation?.$dirty && validation?.$invalid,
             }"
+            v-bind="optionsButtonSubmit"
           />
         </q-card-actions>
       </q-form>
@@ -72,6 +75,11 @@ export default defineComponent({
       default: null,
     },
     optionsButton: {
+      required: false,
+      type: Object,
+      default: () => ({}),
+    },
+    optionsButtonSubmit: {
       required: false,
       type: Object,
       default: () => ({}),

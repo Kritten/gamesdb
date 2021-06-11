@@ -2,9 +2,6 @@
   <base-dialog
     :title="`${t('session.stop')}`"
     :text-submit="t('session.stop')"
-    :options-button="{
-      label: `${t('session.label')} ${t('common.edit')}`,
-    }"
     :validation="vuelidate"
     @submit="submit"
   >

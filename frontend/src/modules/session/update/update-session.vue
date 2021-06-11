@@ -2,9 +2,6 @@
   <base-dialog
     :title="`${t('session.label')} ${t('common.edit')}`"
     :text-submit="t('common.edit')"
-    :options-button="{
-      label: `${t('session.label')} ${t('common.edit')}`,
-    }"
     :validation="vuelidate"
     @submit="submit"
   >
@@ -16,8 +13,8 @@
         round
         @click="open"
       >
-        <q-tooltip class="text-capitalize">
-          {{ t('common.edit') }}
+        <q-tooltip>
+          {{ t('session.label') }} {{ t('common.edit') }}
         </q-tooltip>
       </q-btn>
     </template>

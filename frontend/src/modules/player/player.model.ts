@@ -22,4 +22,12 @@ export class Player extends Entity implements PlayerInterface {
 
     return entity;
   }
+
+  prepareForServer() {
+    const data = super.prepareForServer();
+
+    data.name = this.name;
+
+    return data;
+  }
 }

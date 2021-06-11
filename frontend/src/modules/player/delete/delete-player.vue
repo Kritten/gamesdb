@@ -1,7 +1,29 @@
 <template>
-  <button @click="confirmDelete">
-    {{ t('common.delete') }}
-  </button>
+  <base-dialog
+    :title="`${t('player.label')} ${t('common.delete')}`"
+    :text-submit="t('common.delete')"
+    :options-button-submit="{
+      color: 'negative',
+    }"
+    @submit="submit"
+  >
+    <template #activator="{ open }">
+      <q-btn
+        icon="fas fa-trash"
+        color="negative"
+        flat
+        size="sm"
+        round
+        @click="open"
+      >
+        <q-tooltip class="text-capitalize">
+          {{ t('common.delete') }}
+        </q-tooltip>
+      </q-btn>
+    </template>
+
+    {{ t('player.confirm.delete', {name: player.name}) }}
+  </base-dialog>
 </template>
 
 <script lang="ts">
@@ -9,31 +31,28 @@ import { ServicePlayer } from '@/modules/player/player.service';
 import { useI18n } from 'vue-i18n';
 import { Player } from '@/modules/player/player.model';
 import { defineComponent } from 'vue';
+import BaseDialog from '@/modules/app/base/base-dialog.vue';
 
 export default defineComponent({
   name: 'DeletePlayer',
+  components: { BaseDialog },
   props: {
     player: {
       required: true,
       type: Player,
     },
   },
-  setup(context) {
+  setup(props) {
     const { t } = useI18n();
     const deletePlayer = ServicePlayer.useDelete();
-
-    const confirmDelete = () => {
-      const confirmed = confirm(`Spieler '${context.player.name}' löschen?`);
-
-      if (confirmed) {
-        deletePlayer.delete(context.player);
-      }
-    };
 
     return {
       t,
       deletePlayer,
-      confirmDelete,
+      async submit(close: () => void) {
+        await deletePlayer.delete(props.player);
+        close();
+      },
     };
   },
 });

@@ -82,8 +82,12 @@ export default {
   },
   player: {
     label: 'Spieler | Spieler',
+    name: 'Name',
     filters: {
       name: 'Spielername',
+    },
+    confirm: {
+      delete: "Soll der Spieler '{name}' wirklich gelöscht werden?",
     },
   },
   winner: {

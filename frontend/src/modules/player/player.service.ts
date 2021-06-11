@@ -1,5 +1,4 @@
 import { ref } from 'vue';
-import { useMutation } from '@vue/apollo-composable';
 import {
   mutationCreatePlayer,
   mutationDeletePlayer,
@@ -9,6 +8,8 @@ import { Player } from '@/modules/player/player.model';
 import { store } from '@/modules/app/app.store';
 import { cloneDeep } from 'lodash';
 import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
+import { mutate } from '@/modules/app/utilities/helpers';
+import { usePlayers } from '@/modules/player/composables/usePlayers';
 
 export class ServicePlayerClass implements ServiceEntityInterface<Player> {
   useCreate() {
@@ -42,44 +43,37 @@ export class ServicePlayerClass implements ServiceEntityInterface<Player> {
   }
 
   async create(player: Player) {
-    const { mutate } = useMutation(mutationCreatePlayer);
-    const response = await mutate({
-      variables: {
-        player,
-      },
+    const response = await mutate<{createPlayer: Player}>(mutationCreatePlayer, {
+      player: player.prepareForServer(),
     });
 
-    const playerNew = (await Player.parseFromServer(response.data.createPlayer));
-    store.commit('modulePlayer/addPlayer', playerNew);
+    const playerNew = (await Player.parseFromServer(response.createPlayer));
+
+    usePlayers().setPlayer(playerNew);
 
     return playerNew;
   }
 
   async update(player: Player) {
-    const { mutate } = useMutation(mutationUpdatePlayer);
-    const response = await mutate({
-      variables: {
-        player,
-      },
+    const response = await mutate<{updatePlayer: Player}>(mutationUpdatePlayer, {
+      player: player.prepareForServer(),
     });
 
-    const playerNew = (await Player.parseFromServer(response.data.updatePlayer));
-    store.commit('modulePlayer/addPlayer', playerNew);
+    const playerNew = (await Player.parseFromServer(response.updatePlayer));
+
+    usePlayers().setPlayer(playerNew);
 
     return playerNew;
   }
 
   async delete(player: Player) {
-    const { mutate } = useMutation(mutationDeletePlayer);
-    const response = await mutate({
-      variables: {
-        id: player.id,
-      },
+    await mutate<{deletePlayer: Player}>(mutationDeletePlayer, {
+      id: player.id,
     });
 
-    store.commit('modulePlayer/deletePlayer', player);
+    usePlayers().deletePlayer(player);
 
-    return response.data.deletePlayer;
+    return true;
   }
 }
 

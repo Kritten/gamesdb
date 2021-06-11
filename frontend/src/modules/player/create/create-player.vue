@@ -1,34 +1,50 @@
 <template>
-  <form @submit.prevent="createPlayer.create">
-    <div>
-      <label for="name">{{ t('player.label') }}</label>
-      <input
-        id="name"
-        v-model="createPlayer.entity.value.name"
-      >
-    </div>
-    <div>
-      <button type="submit">
-        {{ t('common.create') }}
-      </button>
-    </div>
-  </form>
+  <base-dialog
+    :title="`${t('player.label')} ${t('common.create')}`"
+    :text-submit="t('common.create')"
+    :options-button="{
+      label: `${t('player.label')} ${t('common.create')}`,
+    }"
+    :validation="vuelidate"
+    @submit="submit"
+  >
+    <item-player
+      v-model:name="createPlayer.entity.value.name"
+      :validation="vuelidate"
+    />
+  </base-dialog>
 </template>
 
 <script lang="ts">
 import { ServicePlayer } from '@/modules/player/player.service';
 import { useI18n } from 'vue-i18n';
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
+import BaseDialog from '@/modules/app/base/base-dialog.vue';
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+import ItemPlayer from '@/modules/player/item-player.vue';
 
 export default defineComponent({
   name: 'CreatePlayer',
+  components: { ItemPlayer, BaseDialog },
   setup() {
     const { t } = useI18n();
     const createPlayer = ServicePlayer.useCreate();
 
+    const vuelidate = useVuelidate(computed(() => ({
+      name: {
+        required,
+      },
+    })), createPlayer.entity);
+
     return {
       t,
       createPlayer,
+      vuelidate,
+      async submit(close: () => void) {
+        await createPlayer.create();
+        close();
+      },
     };
   },
 });

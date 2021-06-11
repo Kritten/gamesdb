@@ -11,7 +11,13 @@ const playersSortedByLastPlayed = computed(() => Object.values(players.value).so
 export const usePlayers = () => ({
   players: playersSortedByLastPlayed,
   playerById: (id: ID) => players.value[id],
-  setPlayers(playerPassed: Record<ID, Player>) {
-    players.value = playerPassed;
+  setPlayers(playersPassed: Record<ID, Player>) {
+    players.value = playersPassed;
+  },
+  setPlayer(playerPassed: Player) {
+    players.value[playerPassed.id as ID] = playerPassed;
+  },
+  deletePlayer(playerPassed: Player) {
+    delete players.value[playerPassed.id as ID];
   },
 });

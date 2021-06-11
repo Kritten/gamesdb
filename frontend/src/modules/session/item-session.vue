@@ -1,106 +1,115 @@
 <template>
-  <input-select-game
-    v-if="hideGame === false"
-    v-model="gameInternal"
-    :validation="validation.game"
-  />
-
-  <base-input-boolean
-    v-model="isChallengeInternal"
-    :options="{
-      label: t('session.isChallenge')
-    }"
-  />
-
-  <base-input-text
-    v-model="commentInternal"
-    :validation="validation?.comment"
-    :options="{
-      label: t('session.comment'),
-      autogrow: true,
-    }"
-  />
-
-  <input-select-player
-    v-model="playersInternal"
-    :validation="validation?.players"
-  />
-
-  <input-select-player
-    v-model="winnersInternal"
-    :validation="validation?.winners"
-    :options="{
-      label: t('winner.label', 2),
-      options: playersInternal,
-      useInput: false,
-      disable: playersInternal.length === 0,
-    }"
-  />
-
-  <q-markup-table>
-    <thead>
-      <tr>
-        <th class="text-left">
-          {{ t('playtime.label') }}
-        </th>
-        <th />
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="(playtime, index) in playtimes"
-        :key="index"
-      >
-        <template v-if="playtime.end !== null">
-          <td>
-            <item-playtime
-              :start="playtime.start"
-              :end="playtime.end"
-            />
-          </td>
-          <td>
-            <q-btn
-              flat
-              color="negative"
-              :label="`${t('playtime.label')} ${t('common.delete')}`"
-              @click="playtimeRemove(playtime)"
-            />
-          </td>
-        </template>
-        <template v-else>
-          <td
-            colspan="2"
-            class="bg-info"
+  <div class="row q-col-gutter-md">
+    <div class="col-12">
+      <input-select-game
+        v-if="hideGame === false"
+        v-model="gameInternal"
+        :validation="validation.game"
+      />
+    </div>
+    <div class="col-12">
+      <base-input-boolean
+        v-model="isChallengeInternal"
+        :options="{
+          label: t('session.isChallenge')
+        }"
+      />
+    </div>
+    <div class="col-12">
+      <base-input-text
+        v-model="commentInternal"
+        :validation="validation?.comment"
+        :options="{
+          label: t('session.comment'),
+          autogrow: true,
+        }"
+      />
+    </div>
+    <div class="col-12">
+      <input-select-player
+        v-model="playersInternal"
+        :validation="validation?.players"
+      />
+    </div>
+    <div class="col-12">
+      <input-select-player
+        v-model="winnersInternal"
+        :validation="validation?.winners"
+        :options="{
+          label: t('winner.label', 2),
+          options: playersInternal,
+          useInput: false,
+          disable: playersInternal.length === 0,
+        }"
+      />
+    </div>
+    <div class="col-12">
+      <q-markup-table>
+        <thead>
+          <tr>
+            <th class="text-left">
+              {{ t('playtime.label') }}
+            </th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(playtime, index) in playtimes"
+            :key="index"
           >
-            {{ t('playtime.pending') }}
-            <base-date-time
-              :value="playtime.start"
-            />
-          </td>
-        </template>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td>
-          <item-playtime
-            :start="playtimeNew.start"
-            :end="playtimeNew.end"
-          />
-        </td>
-        <td
-          class="text-right"
-          style="width: 1px;"
-        >
-          <q-btn
-            flat
-            :label="`${t('playtime.label')} ${t('common.create')}`"
-            @click="playtimeAdd"
-          />
-        </td>
-      </tr>
-    </tfoot>
-  </q-markup-table>
+            <template v-if="playtime.end !== null">
+              <td>
+                <item-playtime
+                  :start="playtime.start"
+                  :end="playtime.end"
+                />
+              </td>
+              <td>
+                <q-btn
+                  flat
+                  color="negative"
+                  :label="`${t('playtime.label')} ${t('common.delete')}`"
+                  @click="playtimeRemove(playtime)"
+                />
+              </td>
+            </template>
+            <template v-else>
+              <td
+                colspan="2"
+                class="bg-info"
+              >
+                {{ t('playtime.pending') }}
+                <base-date-time
+                  :value="playtime.start"
+                />
+              </td>
+            </template>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>
+              <item-playtime
+                :start="playtimeNew.start"
+                :end="playtimeNew.end"
+              />
+            </td>
+            <td
+              class="text-right"
+              style="width: 1px;"
+            >
+              <q-btn
+                flat
+                :label="`${t('playtime.label')} ${t('common.create')}`"
+                @click="playtimeAdd"
+              />
+            </td>
+          </tr>
+        </tfoot>
+      </q-markup-table>
+    </div>
+  </div>
   <div
     v-if="errorMessagePlaytimes !== ''"
     class="text-negative q-mt-sm error-playtimes"
