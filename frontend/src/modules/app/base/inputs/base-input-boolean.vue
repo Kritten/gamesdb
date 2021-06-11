@@ -1,29 +1,38 @@
 <template>
   <q-toggle
+    v-if="canBeUndefined === false"
     :model-value="modelValue"
     v-bind="optionsMerged"
     @update:model-value="baseInput.input"
   />
-<!--  <el-form-item :label="optionsMerged.label">-->
-<!--    <el-radio-group-->
-<!--      class="inputs"-->
-<!--      :model-value="modelValue"-->
-<!--      @change="baseInput.input"-->
-<!--    >-->
-<!--      <el-radio :label="true">-->
-<!--        {{ t('common.yes') }}-->
-<!--      </el-radio>-->
-<!--      <el-radio :label="false">-->
-<!--        {{ t('common.no') }}-->
-<!--      </el-radio>-->
-<!--      <el-radio-->
-<!--        v-if="canBeUndefined === true"-->
-<!--        :label="-1"-->
-<!--      >-->
-<!--        {{ t('common.undefined') }}-->
-<!--      </el-radio>-->
-<!--    </el-radio-group>-->
-<!--  </el-form-item>-->
+  <template v-else>
+    <div class="row items-center">
+      <div class="col-shrink">
+        {{ optionsMerged.label }}:
+      </div>
+      <div class="col">
+        <q-option-group
+          inline
+          :model-value="modelValue"
+          :options="[
+            {
+              label: t('common.yes'),
+              value: true,
+            },
+            {
+              label: t('common.no'),
+              value: false,
+            },
+            {
+              label: t('common.undefined'),
+              value: undefined,
+            },
+          ]"
+          @update:model-value="baseInput.input"
+        />
+      </div>
+    </div>
+  </template>
 </template>
 
 <script lang="ts">

@@ -1,6 +1,6 @@
 <template>
-  <el-row>
-    <el-col>
+  <div class="row">
+    <div class="col">
       <slot>
         <template v-if="type === 'string'">
           <base-input-text
@@ -50,8 +50,8 @@
           />
         </template>
       </slot>
-    </el-col>
-  </el-row>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
