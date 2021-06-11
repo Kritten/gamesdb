@@ -1,9 +1,5 @@
 <template>
-  <h1>Spiele</h1>
-  <details>
-    <summary>{{ t('game.label') }} anlegen</summary>
-    <create-game />
-  </details>
+  <!--    <create-game />-->
   <list-games analog-only />
 </template>
 
