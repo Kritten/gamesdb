@@ -24,7 +24,8 @@ jobs:
         continue-on-error: true
         env:
           #          VUE_APP_I18N_LOCALE: ${{ secrets.VUE_APP_I18N_LOCALE }}
-          VUE_APP_API_ENDPOINT: ${{ secrets.VUE_APP_API_ENDPOINT }}
+          GRAPHQL_URI: ${{ secrets.VUE_APP_API_ENDPOINT }}
+#          VUE_APP_API_ENDPOINT: ${{ secrets.VUE_APP_API_ENDPOINT }}
       #          ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
       #          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - run: ls dist
@@ -44,7 +45,7 @@ jobs:
           ftp-password: ${{ secrets.UBERSPACE_PASSWORD }}
           #          known-hosts: ${{ secrets.UBERSPACE_HOST }}
           git-ftp-args: --insecure
-          local-dir: frontend/dist
+          local-dir: frontend/dist/pwa
   build-backend:
     name: Build backend
     runs-on: ubuntu-latest

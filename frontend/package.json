@@ -7,6 +7,8 @@
   "private": true,
   "scripts": {
     "dev": "env-cmd -f ../.env quasar dev",
+    "build": "env-cmd -f ../.env quasar build",
+    "build-action": "quasar build -mode pwa",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
