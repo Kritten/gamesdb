@@ -3,7 +3,7 @@
     <div class="col-shrink">
       <q-spinner
         color="primary"
-        size="md"
+        :size="size"
       />
     </div>
   </div>
@@ -14,6 +14,13 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'BaseSpinner',
+  props: {
+    size: {
+      required: false,
+      type: String,
+      default: 'md',
+    },
+  },
 });
 </script>
 

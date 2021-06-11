@@ -6,7 +6,13 @@
   >
     <div class="text-h6">
       {{ t('filter.label', 2) }}
-      ({{ collection.countItems.value }}/{{ countTotal }})
+
+      (<span v-if="collection.isLoading.value === false">{{ collection.countItems.value }}</span><base-spinner
+        v-else
+        class="inline"
+        size="xs"
+      />/{{ countTotal }})
+
       <!--              {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}-->
     </div>
   </list-filters-game>
