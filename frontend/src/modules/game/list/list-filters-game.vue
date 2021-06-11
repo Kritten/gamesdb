@@ -4,13 +4,12 @@
       <q-card>
         <q-card-section>
           <div class="row items-center">
-            <div class="col">
+            <slot>
               <div class="text-h6">
                 {{ t('filter.label', 2) }}
               </div>
-
-              <!--              {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}-->
-            </div>
+            </slot>
+            <div class="col" />
             <div class="col-shrink">
               <q-btn
                 flat
@@ -112,6 +111,7 @@ export default defineComponent({
   emits: ['reset', 'update-filter'],
   setup(props) {
     const { t } = useI18n();
+
     return {
       t,
       i18nPrefix: 'game',

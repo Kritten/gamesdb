@@ -1,22 +1,23 @@
 <template>
-  <!--  <div v-for="filter in filters">-->
-  <!--    {{filter}}-->
-  <!--  </div>-->
   <list-filters-game
     v-model="filters"
     @reset="resetFilters"
     @update-filter="updateFilter"
-  />
-  <hr>
-  <base-list-sort
-    v-model:sort-by="sortBy"
-    v-model:sort-desc="sortDesc"
-    :options-sort-by="optionsSortBy"
-  />
-  <hr>
-  <random-game :filters="filters" />
-  <hr>
-  {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}
+  >
+    <div class="text-h6">
+      {{ t('filter.label', 2) }}
+      ({{ collection.countItems.value }}/{{ countTotal }})
+      <!--              {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}-->
+    </div>
+  </list-filters-game>
+  <!--  <base-list-sort-->
+  <!--    v-model:sort-by="sortBy"-->
+  <!--    v-model:sort-desc="sortDesc"-->
+  <!--    :options-sort-by="optionsSortBy"-->
+  <!--  />-->
+  <!--  <hr>-->
+  <!--  <random-game :filters="filters" />-->
+  <q-separator spaced="lg" />
   <div class="row q-col-gutter-lg">
     <list-item-game
       v-for="(game, index) in collection.items.value"
@@ -47,6 +48,7 @@ import { defineComponent, ref, nextTick } from 'vue';
 import { ServiceCollectionFilters, InputCollectionFilter } from '@/modules/app/utilities/collection/collection.types';
 import { cloneDeep } from 'lodash';
 import RandomGame from '@/modules/game/random-game.vue';
+import { useGames } from '@/modules/game/composables/useGames';
 
 export default defineComponent({
   name: 'ListGames',
@@ -67,6 +69,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n();
+    const { countTotal } = useGames();
 
     const filtersInitial: ServiceCollectionFilters = {
       isDigital: {
@@ -139,6 +142,7 @@ export default defineComponent({
 
     return {
       t,
+      countTotal,
       collection,
       filters,
       sortBy,
