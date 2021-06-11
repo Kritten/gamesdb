@@ -1,5 +1,14 @@
 import gql from 'graphql-tag';
 
+export const queryStatisticsCounts = gql`
+    query statisticsCounts {
+      statisticsCounts {
+        gamesAnalog
+        gamesDigital
+      }
+    }
+`;
+
 export const queryStatisticsGamesCountPlayed = gql`
   query statisticsGamesCountPlayed(
     $page: Int!

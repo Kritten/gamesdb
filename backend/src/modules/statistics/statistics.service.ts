@@ -1,4 +1,4 @@
-import { getConnection } from 'typeorm';
+import {getConnection, getManager} from 'typeorm';
 import { Game } from '../game/game.entity';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { CollectionService } from '../../utilities/collection/collection.service';
@@ -11,6 +11,26 @@ export class StatisticsService {
     @Inject('CollectionService')
     private collectionService: CollectionService<any>,
   ) {}
+
+  async counts() {
+    const results = await Promise.all([
+      await getManager().count(Game, {
+        where: {
+          isDigital: true
+        }
+      }),
+      await getManager().count(Game, {
+        where: {
+          isDigital: false
+        }
+      }),
+    ]);
+
+    return {
+      gamesDigital: results[0],
+      gamesAnalog: results[1],
+    };
+  }
 
   async gamesCountPlayed(data: InputCollection) {
     const query = await getConnection()

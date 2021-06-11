@@ -18,6 +18,7 @@ import { useUser } from '@/modules/user/composables/useUser';
 import { useApp } from '@/modules/app/composables/useApp';
 import { useRouter } from '@/router';
 import { usePlayers } from '@/modules/player/composables/usePlayers';
+import { useStatistics } from '@/modules/statistics/composables/useStatistics';
 
 class ServiceAppClass {
   async initialize() {
@@ -83,6 +84,7 @@ class ServiceAppClass {
         .then((universes) => {
           store.commit('moduleUniverse/setUniverses', universes);
         }),
+      useStatistics().loadStatisticsCounts(),
     ]);
   }
 }

@@ -2,15 +2,22 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { InputCollection } from '../../utilities/collection/collection.input';
-import { GamesCountPlayedCollectionDataModel } from './collection/gamesCountPlayed.collectionData.model';
+import { GamesCountPlayedCollectionDataModel } from './models/gamesCountPlayed.collectionData.model';
 import { StatisticsService } from './statistics.service';
-import { GamesTimePlayedCollectionDataModel } from './collection/gamesTimePlayed.collectionData.model';
-import { GraphCollectionDataModel } from './collection/graph.collectionData.model';
-import { GamesBestRatedCollectionDataModel } from './collection/gamesBestRated.collectionData.model';
+import { GamesTimePlayedCollectionDataModel } from './models/gamesTimePlayed.collectionData.model';
+import { GraphCollectionDataModel } from './models/graph.collectionData.model';
+import { GamesBestRatedCollectionDataModel } from './models/gamesBestRated.collectionData.model';
+import {CountsModel} from "./models/counts.model";
 
 @Resolver()
 export class StatisticsResolver {
   constructor(private statisticsService: StatisticsService) {}
+
+  @Query(() => CountsModel)
+  @UseGuards(GqlAuthGuard)
+  async statisticsCounts() {
+    return this.statisticsService.counts();
+  }
 
   @Query(() => GamesCountPlayedCollectionDataModel)
   @UseGuards(GqlAuthGuard)

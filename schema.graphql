@@ -11,6 +11,11 @@ type Category {
     name: String!
 }
 
+type CountsModel {
+    gamesAnalog: Float!
+    gamesDigital: Float!
+}
+
 type Game {
     categories: [Category!]!
     complexity: Int
@@ -186,6 +191,7 @@ type Query {
     ratings(ratingData: InputCollection!): RatingCollectionData!
     session(id: ID!): Session!
     sessions(sessionData: InputCollection!): SessionCollectionData!
+    statisticsCounts: CountsModel!
     statisticsGamesBestRated(statisticsData: InputCollection!): GamesBestRatedCollectionDataModel!
     statisticsGamesCountPlayed(statisticsData: InputCollection!): GamesCountPlayedCollectionDataModel!
     statisticsGamesTimePlayed(statisticsData: InputCollection!): GamesTimePlayedCollectionDataModel!
