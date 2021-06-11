@@ -1,6 +1,6 @@
 <template>
   <div
-    class="col-4"
+    class="col-12 col-md-6 col-lg-4"
   >
     <q-card class="column full-height">
       <q-card-section class="row col-grow">
