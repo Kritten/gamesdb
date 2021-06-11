@@ -18,7 +18,9 @@
   <!--  <hr>-->
   <!--  <random-game :filters="filters" />-->
   <q-separator spaced="lg" />
-  <div class="row q-col-gutter-lg">
+  <div
+    class="row q-col-gutter-lg"
+  >
     <list-item-game
       v-for="(game, index) in collection.items.value"
       :key="game.id"
@@ -26,13 +28,7 @@
       :game="game"
     />
   </div>
-  <button
-    v-if="collection.hasNextPage.value"
-    :disabled="collection.isLoading.value === true"
-    @click="collection.loadNextItems"
-  >
-    Mehr laden
-  </button>
+  <base-spinner v-if="collection.isLoading.value" />
 </template>
 
 <script lang="ts">
@@ -49,11 +45,16 @@ import { ServiceCollectionFilters, InputCollectionFilter } from '@/modules/app/u
 import { cloneDeep } from 'lodash';
 import RandomGame from '@/modules/game/random-game.vue';
 import { useGames } from '@/modules/game/composables/useGames';
+import BaseSpinner from '@/modules/app/base/base-spinner.vue';
 
 export default defineComponent({
   name: 'ListGames',
   components: {
-    RandomGame, ListItemGame, ListFiltersGame, BaseListSort,
+    BaseSpinner,
+    RandomGame,
+    ListItemGame,
+    ListFiltersGame,
+    BaseListSort,
   },
   props: {
     digitalOnly: {
