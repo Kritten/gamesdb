@@ -14,13 +14,13 @@
         />
 
         <q-toolbar-title>
-          <q-avatar>
-            <img
-              src="@/assets/pwa-192x192.png"
-              alt="Logo"
-            >
-          </q-avatar>
-          {{ t('common.title') }}
+          <!--          <q-avatar>-->
+          <!--            <img-->
+          <!--              src="@/assets/pwa-192x192.png"-->
+          <!--              alt="Logo"-->
+          <!--            >-->
+          <!--          </q-avatar>-->
+          {{ title }}
         </q-toolbar-title>
 
         <create-session />
@@ -90,7 +90,7 @@
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { ServiceLogin } from '@/modules/app/login/login.service';
 import { useUser } from '@/modules/user/composables/useUser';
 import {
@@ -106,7 +106,7 @@ import {
   fasUsers,
 } from '@quasar/extras/fontawesome-v5';
 import CreateSession from '@/modules/session/create/create-session.vue';
-import BaseDialog from '@/modules/app/base/base-dialog.vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'ViewApp',
@@ -114,6 +114,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
     const { user } = useUser();
+    const { currentRoute } = useRouter();
     const logoutService = ServiceLogin.useLogout();
 
     const routes = [
@@ -180,9 +181,12 @@ export default defineComponent({
       },
     ];
 
+    const title = computed(() => routes.find((route) => route.name === currentRoute.value.name)?.label);
+
     return {
       t,
       user,
+      title,
       routes,
       logoutService,
       isCollapsed: ref(false),
