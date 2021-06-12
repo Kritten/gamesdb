@@ -1,14 +1,69 @@
 <template>
-  <list-players />
+  <base-entity-page
+    :entities="players"
+    :columns="columns"
+
+    :service="service"
+    :validation-rules="validationRules"
+
+    i18n-prefix="player"
+  >
+    <template #item="{ entity, validation }">
+      <item-player
+        v-model:name="entity.value.name"
+        :validation="validation"
+      />
+    </template>
+
+    <template #item-update="{ entity, validation }">
+      <item-player
+        v-model:name="entity.value.name"
+        :validation="validation"
+      />
+    </template>
+  </base-entity-page>
 </template>
 
 <script lang="ts">
-import ListPlayers from '@/modules/player/list/list-player.vue';
 import { defineComponent } from 'vue';
+import BaseEntityPage from '@/modules/app/base/entity/base-entity-page.vue';
+import { usePlayers } from '@/modules/player/composables/usePlayers';
+import ItemPlayer from '@/modules/player/item-player.vue';
+import { ServicePlayer } from '@/modules/player/player.service';
+import { required } from '@vuelidate/validators';
 
 export default defineComponent({
   name: 'ViewPlayer',
-  components: { ListPlayers },
+  components: {
+    ItemPlayer, BaseEntityPage,
+  },
+  setup() {
+    const { players } = usePlayers();
+
+    const columns = [
+      {
+        name: 'name',
+        label: 'Name',
+        field: 'name',
+        align: 'left',
+        sortable: true,
+      },
+    ];
+
+    const validationRules = {
+      name: {
+        required,
+      },
+    };
+
+    return {
+      players,
+      columns,
+
+      validationRules,
+      service: ServicePlayer,
+    };
+  },
 });
 </script>
 

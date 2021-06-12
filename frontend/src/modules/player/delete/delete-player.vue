@@ -34,6 +34,7 @@ import { defineComponent } from 'vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 
 export default defineComponent({
+  // TODO: Migrate to <base-entity-delete>
   name: 'DeletePlayer',
   components: { BaseDialog },
   props: {

@@ -6,7 +6,7 @@
           {{ players.length }} {{ t('player.label', 2) }}
         </div>
         <div class="col-shrink" />
-        <create-player />
+<!--        <create-player />-->
       </div>
     </q-card-section>
   </q-card>

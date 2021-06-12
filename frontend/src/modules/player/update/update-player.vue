@@ -38,6 +38,7 @@ import { required } from '@vuelidate/validators';
 import ItemPlayer from '@/modules/player/item-player.vue';
 
 export default defineComponent({
+  // TODO: Migrate to <base-entity-update>
   name: 'UpdatePlayer',
   components: { ItemPlayer, BaseDialog },
   props: {
