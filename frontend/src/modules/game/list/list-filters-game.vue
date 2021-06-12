@@ -13,18 +13,18 @@
             <div class="col-shrink">
               <q-btn
                 flat
+                :label="$q.screen.gt.xs ? `${t('filter.reset')}`: undefined"
+                icon="fas fa-undo"
                 padding="none md"
                 color="primary"
                 @click="$emit('reset')"
-              >
-                {{ t('filter.reset') }}
-              </q-btn>
+              />
             </div>
           </div>
         </q-card-section>
         <q-card-section>
           <div class="row q-col-gutter-md">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <base-list-filter
                 :filters="filters"
                 label="game.filters.name"
@@ -33,7 +33,7 @@
                 @update-filter="$emit('update-filter', $event)"
               />
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <base-list-filter
                 :filters="filters"
                 label="game.filters.countPlayers"
@@ -49,7 +49,7 @@
                 @update-filter="$emit('update-filter', $event)"
               />
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <base-list-filter
                 :filters="filters"
                 label="game.filters.isCoop"
@@ -58,7 +58,7 @@
                 @update-filter="$emit('update-filter', $event)"
               />
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <base-list-filter
                 :filters="filters"
                 label="game.filters.minutesPlaytimeMin"
@@ -71,7 +71,7 @@
                 @update-filter="$emit('update-filter', $event)"
               />
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <base-list-filter
                 :filters="filters"
                 label="game.filters.minutesPlaytimeMax"

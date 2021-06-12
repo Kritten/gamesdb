@@ -1,9 +1,6 @@
 <template>
   <base-dialog
     :title="`${t('session.label')} ${t('common.create')}`"
-    :options-button="{
-      label: `${t('session.label')} ${t('common.create')}`,
-    }"
     :validation="vuelidateCreate"
     @submit="submit"
   >
@@ -17,6 +14,16 @@
       :validation="vuelidateCreate"
       :hide-game="game !== undefined"
     />
+
+    <template #activator="{ open }">
+      <q-btn
+        :label="$q.screen.gt.xs ? `${t('session.label')} ${t('common.create')}`: undefined"
+        icon="fas fa-plus"
+        flat
+        stretch
+        @click="open"
+      />
+    </template>
 
     <template #buttons="{ close }">
       <q-btn
