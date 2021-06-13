@@ -3,9 +3,7 @@ import { User } from '@/modules/user/user.model';
 import { moduleCategory } from '@/modules/category/category.store';
 import { moduleMechanism } from '@/modules/mechanism/mechanism.store';
 import { moduleMood } from '@/modules/mood/mood.store';
-import { modulePlayer } from '@/modules/player/player.store';
 import { moduleImage } from '@/modules/image/image.store';
-import { moduleUniverse } from '@/modules/universe/universe.store';
 import { moduleGame } from '@/modules/game/game.store';
 import { moduleSession } from '@/modules/session/session.store';
 import { moduleWishlist } from '@/modules/wishlist/wishlist.store';
@@ -35,9 +33,7 @@ export const store = createStore({
     moduleCategory,
     moduleMechanism,
     moduleMood,
-    modulePlayer,
     moduleImage,
-    moduleUniverse,
     moduleGame,
     moduleSession,
     moduleWishlist,

@@ -98,6 +98,10 @@ export default {
   },
   universe: {
     label: 'Universum | Universen',
+    name: 'Name',
+    confirm: {
+      delete: "Soll das Universum '{name}' wirklich gelöscht werden?",
+    },
   },
   session: {
     label: 'Session | Sessions',

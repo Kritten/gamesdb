@@ -19,6 +19,7 @@ import { useApp } from '@/modules/app/composables/useApp';
 import { useRouter } from '@/router';
 import { usePlayers } from '@/modules/player/composables/usePlayers';
 import { useStatistics } from '@/modules/statistics/composables/useStatistics';
+import { useUniverse } from '@/modules/universe/composables/useUniverse';
 
 class ServiceAppClass {
   async initialize() {
@@ -80,9 +81,9 @@ class ServiceAppClass {
           usePlayers().setPlayers(players);
         }),
       query<{universes: Array<EntityInterface>}>(queryUniverses)
-        .then((response) => Universe.convertFromServerToStore(response.universes))
+        .then((response) => Universe.convertFromServerToStore<Universe>(response.universes))
         .then((universes) => {
-          store.commit('moduleUniverse/setUniverses', universes);
+          useUniverse().setUniverses(universes);
         }),
       useStatistics().loadStatisticsCounts(),
     ]);
