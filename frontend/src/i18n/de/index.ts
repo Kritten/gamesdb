@@ -79,6 +79,10 @@ export default {
   },
   mood: {
     label: 'Stimmung | Stimmungen',
+    name: 'Name',
+    confirm: {
+      delete: "Soll die Stimmung '{name}' wirklich gelöscht werden?",
+    },
   },
   player: {
     label: 'Spieler | Spieler',

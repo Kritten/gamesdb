@@ -2,7 +2,6 @@ import { createStore } from 'vuex';
 import { User } from '@/modules/user/user.model';
 import { moduleCategory } from '@/modules/category/category.store';
 import { moduleMechanism } from '@/modules/mechanism/mechanism.store';
-import { moduleMood } from '@/modules/mood/mood.store';
 import { moduleImage } from '@/modules/image/image.store';
 import { moduleGame } from '@/modules/game/game.store';
 import { moduleSession } from '@/modules/session/session.store';
@@ -32,7 +31,6 @@ export const store = createStore({
   modules: {
     moduleCategory,
     moduleMechanism,
-    moduleMood,
     moduleImage,
     moduleGame,
     moduleSession,

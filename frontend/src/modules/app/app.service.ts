@@ -20,6 +20,7 @@ import { useRouter } from '@/router';
 import { usePlayers } from '@/modules/player/composables/usePlayers';
 import { useStatistics } from '@/modules/statistics/composables/useStatistics';
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
+import { useMood } from '@/modules/mood/composables/useMood';
 
 class ServiceAppClass {
   async initialize() {
@@ -66,14 +67,14 @@ class ServiceAppClass {
           store.commit('moduleCategory/setCategories', categories);
         }),
       query<{mechanisms: Array<EntityInterface>}>(queryMechanisms)
-        .then((response) => Mechanism.convertFromServerToStore(response.mechanisms))
+        .then((response) => Mechanism.convertFromServerToStore<Mechanism>(response.mechanisms))
         .then((mechanisms) => {
           store.commit('moduleMechanism/setMechanisms', mechanisms);
         }),
       query<{moods: Array<EntityInterface>}>(queryMoods)
-        .then((response) => Mood.convertFromServerToStore(response.moods))
+        .then((response) => Mood.convertFromServerToStore<Mood>(response.moods))
         .then((moods) => {
-          store.commit('moduleMood/setMoods', moods);
+          useMood().setMoods(moods);
         }),
       query<{players: Array<EntityInterface>}>(queryPlayers)
         .then((response) => Player.convertFromServerToStore<Player>(response.players))

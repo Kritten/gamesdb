@@ -38,7 +38,7 @@ import { useCreateUniverse } from '@/modules/universe/composables/useCreateUnive
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
 
 export default defineComponent({
-  name: 'ViewGame',
+  name: 'ViewUniverse',
   components: { ItemUniverse, BaseEntityPage },
   setup() {
     const { universes } = useUniverse();

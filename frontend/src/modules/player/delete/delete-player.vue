@@ -31,6 +31,7 @@ import { useI18n } from 'vue-i18n';
 import { Player } from '@/modules/player/player.model';
 import { defineComponent } from 'vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
+import { useDeletePlayer } from '@/modules/player/composables/useDeletePlayer';
 
 export default defineComponent({
   // TODO: Migrate to <base-entity-delete>
@@ -44,7 +45,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n();
-    const deletePlayer = useDele();
+    const deletePlayer = useDeletePlayer();
 
     return {
       t,
