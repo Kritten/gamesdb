@@ -10,7 +10,7 @@
         <slot name="create">
           <base-entity-create
             :i18n-prefix="i18nPrefix"
-            :service="service"
+            :use-create-entity="useCreateEntity"
             :validation-rules="validationRulesCreate ? validationRulesCreate : validationRules"
             @submit="$emit('submitCreate', $event)"
           >
@@ -45,7 +45,7 @@
         <base-entity-update
           :entity="props.row"
           :i18n-prefix="i18nPrefix"
-          :service="service"
+          :use-update-entity="useUpdateEntity"
           :validation-rules="validationRulesUpdate ? validationRulesUpdate : validationRules"
         >
           <template #item="propsUpdate">
@@ -59,7 +59,7 @@
         <base-entity-delete
           :entity="props.row"
           :i18n-prefix="i18nPrefix"
-          :service="service"
+          :use-delete-entity="useDeleteEntity"
         />
       </q-td>
     </template>
@@ -71,7 +71,6 @@ import { computed, defineComponent, PropType } from 'vue';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { useI18n } from 'vue-i18n';
 import BaseEntityCreate from '@/modules/app/base/entity/base-entity-create.vue';
-import { Validation } from '@vuelidate/core';
 import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
 import BaseEntityDelete from '@/modules/app/base/entity/base-entity-delete.vue';
 
@@ -92,10 +91,19 @@ export default defineComponent({
       type: String,
     },
 
-    service: {
+    useCreateEntity: {
       required: true,
-      type: Object,
+      type: Function,
     },
+    useUpdateEntity: {
+      required: true,
+      type: Function,
+    },
+    useDeleteEntity: {
+      required: true,
+      type: Function,
+    },
+
     validationRules: {
       required: false,
       type: Object,

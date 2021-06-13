@@ -16,13 +16,13 @@
 </template>
 
 <script lang="ts">
-import { ServicePlayer } from '@/modules/player/player.service';
 import { useI18n } from 'vue-i18n';
 import { computed, defineComponent } from 'vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import ItemPlayer from '@/modules/player/item-player.vue';
+import { useCreatePlayer } from '@/modules/player/composables/useCreatePlayer';
 
 export default defineComponent({
   // TODO: Migrate to <base-entity-create>
@@ -30,7 +30,7 @@ export default defineComponent({
   components: { ItemPlayer, BaseDialog },
   setup() {
     const { t } = useI18n();
-    const createPlayer = ServicePlayer.useCreate();
+    const createPlayer = useCreatePlayer();
 
     const vuelidate = useVuelidate(computed(() => ({
       name: {

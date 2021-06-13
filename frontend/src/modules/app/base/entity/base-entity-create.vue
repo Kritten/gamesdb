@@ -20,12 +20,11 @@
 <script lang="ts">
 import {
   computed,
-  defineComponent, PropType, Ref, UnwrapRef,
+  defineComponent,
 } from 'vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate, { Validation } from '@vuelidate/core';
-import { Entity } from '@/modules/app/utilities/entity/entity.model';
 
 export default defineComponent({
   name: 'BaseEntityCreate',
@@ -35,12 +34,9 @@ export default defineComponent({
       required: true,
       type: String,
     },
-    service: {
+    useCreateEntity: {
       required: true,
-      type: Object as PropType<{useCreate(): {
-          entity: Ref<UnwrapRef<Entity>>;
-          create(): Promise<Entity>;
-        }}>,
+      type: Function,
     },
     validationRules: {
       required: false,
@@ -52,7 +48,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = useI18n();
 
-    const createEntity = props.service.useCreate();
+    const createEntity = props.useCreateEntity();
 
     const validation = useVuelidate(computed(() => (props.validationRules)), createEntity.entity, { $stopPropagation: true });
 

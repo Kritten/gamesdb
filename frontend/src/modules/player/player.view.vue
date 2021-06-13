@@ -3,7 +3,10 @@
     :entities="players"
     :columns="columns"
 
-    :service="service"
+    :use-create-entity="useCreateEntity"
+    :use-update-entity="useUpdateEntity"
+    :use-delete-entity="useDeleteEntity"
+
     :validation-rules="validationRules"
 
     i18n-prefix="player"
@@ -29,8 +32,10 @@ import { defineComponent } from 'vue';
 import BaseEntityPage from '@/modules/app/base/entity/base-entity-page.vue';
 import { usePlayers } from '@/modules/player/composables/usePlayers';
 import ItemPlayer from '@/modules/player/item-player.vue';
-import { ServicePlayer } from '@/modules/player/player.service';
 import { required } from '@vuelidate/validators';
+import { useCreatePlayer } from '@/modules/player/composables/useCreatePlayer';
+import { useUpdatePlayer } from '@/modules/player/composables/useUpdatePlayer';
+import { useDeletePlayer } from '@/modules/player/composables/useDeletePlayer';
 
 export default defineComponent({
   name: 'ViewPlayer',
@@ -61,7 +66,9 @@ export default defineComponent({
       columns,
 
       validationRules,
-      service: ServicePlayer,
+      useCreateEntity: useCreatePlayer,
+      useUpdateEntity: useUpdatePlayer,
+      useDeleteEntity: useDeletePlayer,
     };
   },
 });

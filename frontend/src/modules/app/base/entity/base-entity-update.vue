@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, PropType, Ref, UnwrapRef,
+  computed, defineComponent, PropType,
 } from 'vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import { useI18n } from 'vue-i18n';
@@ -52,12 +52,9 @@ export default defineComponent({
       required: true,
       type: Object as PropType<Entity>,
     },
-    service: {
+    useUpdateEntity: {
       required: true,
-      type: Object as PropType<{useUpdate(entity: Entity): {
-        entity: Ref<UnwrapRef<Entity>>;
-        update(): Promise<void>;
-      }}>,
+      type: Function,
     },
     validationRules: {
       required: false,
@@ -69,7 +66,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = useI18n();
 
-    const updateEntity = props.service.useUpdate(props.entity);
+    const updateEntity = props.useUpdateEntity(props.entity);
 
     const validation = useVuelidate(computed(() => (props.validationRules)), updateEntity.entity, { $stopPropagation: true });
 

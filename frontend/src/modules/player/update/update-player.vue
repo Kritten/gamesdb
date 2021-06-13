@@ -28,7 +28,6 @@
 </template>
 
 <script lang="ts">
-import { ServicePlayer } from '@/modules/player/player.service';
 import { useI18n } from 'vue-i18n';
 import { Player } from '@/modules/player/player.model';
 import { computed, defineComponent } from 'vue';
@@ -36,6 +35,7 @@ import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import ItemPlayer from '@/modules/player/item-player.vue';
+import { useUpdatePlayer } from '@/modules/player/composables/useUpdatePlayer';
 
 export default defineComponent({
   // TODO: Migrate to <base-entity-update>
@@ -49,7 +49,7 @@ export default defineComponent({
   },
   setup(context) {
     const { t } = useI18n();
-    const updatePlayer = ServicePlayer.useUpdate(context.player);
+    const updatePlayer = useUpdatePlayer(context.player);
 
     const vuelidate = useVuelidate(computed(() => ({
       name: {

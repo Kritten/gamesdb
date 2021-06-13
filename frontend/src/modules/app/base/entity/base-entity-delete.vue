@@ -1,7 +1,7 @@
 <template>
   <base-dialog
     :title="`${t(`${i18nPrefix}.label`)} ${t('common.delete')}`"
-    :text-submit="t('common.edit')"
+    :text-submit="t('common.delete')"
     :options-button-submit="{
       color: 'negative',
     }"
@@ -46,23 +46,21 @@ export default defineComponent({
       required: true,
       type: Object as PropType<Entity>,
     },
-    service: {
+    useDeleteEntity: {
       required: true,
-      type: Object as PropType<{useDelete(): {
-          delete(entity: Entity): Promise<boolean>;
-      }}>,
+      type: Function,
     },
   },
   emits: ['submit'],
   setup(props, { emit }) {
     const { t } = useI18n();
 
-    const deletePlayer = props.service.useDelete();
+    const deleteEntity = props.useDeleteEntity();
 
     return {
       t,
       async submit(close: () => void) {
-        await deletePlayer.delete(props.entity);
+        await deleteEntity.delete(props.entity);
         close();
         emit('submit', close);
       },
