@@ -76,6 +76,10 @@ export default {
   },
   mechanism: {
     label: 'Mechanismus | Mechanismen',
+    name: 'Name',
+    confirm: {
+      delete: "Soll der Mechanismus '{name}' wirklich gelöscht werden?",
+    },
   },
   mood: {
     label: 'Stimmung | Stimmungen',

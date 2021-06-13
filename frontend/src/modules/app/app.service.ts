@@ -21,6 +21,7 @@ import { usePlayers } from '@/modules/player/composables/usePlayers';
 import { useStatistics } from '@/modules/statistics/composables/useStatistics';
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
 import { useMood } from '@/modules/mood/composables/useMood';
+import { useMechanism } from '@/modules/mechanism/composables/useMechanism';
 
 class ServiceAppClass {
   async initialize() {
@@ -69,7 +70,7 @@ class ServiceAppClass {
       query<{mechanisms: Array<EntityInterface>}>(queryMechanisms)
         .then((response) => Mechanism.convertFromServerToStore<Mechanism>(response.mechanisms))
         .then((mechanisms) => {
-          store.commit('moduleMechanism/setMechanisms', mechanisms);
+          useMechanism().setMechanisms(mechanisms);
         }),
       query<{moods: Array<EntityInterface>}>(queryMoods)
         .then((response) => Mood.convertFromServerToStore<Mood>(response.moods))
