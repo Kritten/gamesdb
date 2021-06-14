@@ -73,6 +73,10 @@ export default {
   },
   category: {
     label: 'Kategorie | Kategorien',
+    name: 'Name',
+    confirm: {
+      delete: "Soll die Kategorie '{name}' wirklich gelöscht werden?",
+    },
   },
   mechanism: {
     label: 'Mechanismus | Mechanismen',

@@ -22,6 +22,7 @@ import { useStatistics } from '@/modules/statistics/composables/useStatistics';
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
 import { useMood } from '@/modules/mood/composables/useMood';
 import { useMechanism } from '@/modules/mechanism/composables/useMechanism';
+import { useCategory } from '@/modules/category/composables/useCategory';
 
 class ServiceAppClass {
   async initialize() {
@@ -63,9 +64,9 @@ class ServiceAppClass {
   async loadInitialData() {
     await Promise.all([
       query<{categories: Array<EntityInterface>}>(queryCategories)
-        .then((response) => Category.convertFromServerToStore(response.categories))
+        .then((response) => Category.convertFromServerToStore<Category>(response.categories))
         .then((categories) => {
-          store.commit('moduleCategory/setCategories', categories);
+          useCategory().setCategories(categories);
         }),
       query<{mechanisms: Array<EntityInterface>}>(queryMechanisms)
         .then((response) => Mechanism.convertFromServerToStore<Mechanism>(response.mechanisms))
