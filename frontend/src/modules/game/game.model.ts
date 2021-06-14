@@ -9,6 +9,10 @@ import { Rating } from '@/modules/rating/rating.model';
 import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 import { store } from '@/modules/app/app.store';
+import { useUniverse } from '@/modules/universe/composables/useUniverse';
+import { useCategory } from '@/modules/category/composables/useCategory';
+import { useMechanism } from '@/modules/mechanism/composables/useMechanism';
+import { useMood } from '@/modules/mood/composables/useMood';
 
 export class Game extends Entity implements GameInterface {
   name: string;
@@ -79,29 +83,33 @@ export class Game extends Entity implements GameInterface {
     const entity = (await super.parseFromServer(data)) as Game;
 
     if (entity.universes !== undefined) {
+      const { universeById } = useUniverse();
+
       entity.universes = entity.universes.map(
-        // @ts-ignore
-        (universe) => store.state.moduleUniverse.universes[universe.id as ID],
+        (universe) => universeById(universe.id as ID),
       );
     }
 
     if (entity.categories !== undefined) {
+      const { categoryById } = useCategory();
+
       entity.categories = entity.categories.map(
-        // @ts-ignore
-        (category) => store.state.moduleCategory.categories[category.id as ID],
+        (category) => categoryById(category.id as ID),
       );
     }
 
     if (entity.mechanisms !== undefined) {
+      const { mechanismById } = useMechanism();
+
       entity.mechanisms = entity.mechanisms.map(
-        // @ts-ignore
-        (mechanism) => store.state.moduleMechanism.mechanisms[mechanism.id as ID],
+        (mechanism) => mechanismById(mechanism.id as ID),
       );
     }
 
     if (entity.moods !== undefined) {
-      // @ts-ignore
-      entity.moods = entity.moods.map((mood) => store.state.moduleMood.moods[mood.id as ID]);
+      const { moodById } = useMood();
+
+      entity.moods = entity.moods.map((mood) => moodById(mood.id as ID));
     }
 
     return entity;
