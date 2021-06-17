@@ -8,10 +8,11 @@ const countTotalDigital = ref<number>();
 
 export const useGames = () => ({
   games,
-  countTotal: countTotalAnalog,
-  setGames(gamesPassed: Record<ID, Game>) {
-    games.value = gamesPassed;
-  },
+  countTotalAnalog,
+  countTotalDigital,
+  // setGames(gamesPassed: Record<ID, Game>) {
+  //   games.value = gamesPassed;
+  // },
   addGame(gamePassed: Game) {
     if (gamePassed.id === undefined) {
       return;

@@ -1,40 +1,47 @@
 <template>
-  <list-filters-game
-    v-model="filters"
-    @reset="resetFilters"
-    @update-filter="updateFilter"
-  >
-    <div class="text-h6">
-      {{ t('filter.label', 2) }}
+  <div class="row q-col-gutter-md">
+    <div class="col-12">
+      <list-filters-game
+        v-model="filters"
+        @reset="resetFilters"
+        @update-filter="updateFilter"
+      >
+        <div class="text-h6">
+          {{ t('filter.label', 2) }}
 
-      (<span v-if="collection.isLoading.value === false">{{ collection.countItems.value }}</span><base-spinner
-        v-else
-        class="inline"
-        size="xs"
-      />/{{ countTotal }})
+          (<span v-if="collection.isLoading.value === false">{{ collection.countItems.value }}</span><base-spinner
+            v-else
+            class="inline"
+            size="xs"
+          />/{{ countTotalAnalog }})
 
-      <!--              {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}-->
+          <!--              {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}-->
+        </div>
+      </list-filters-game>
     </div>
-  </list-filters-game>
-  <q-separator spaced="lg" />
-  <base-list-sort
-    v-model:sort-by="sortBy"
-    v-model:sort-desc="sortDesc"
-    :options-sort-by="optionsSortBy"
-  />
-  <!--  <random-game :filters="filters" />-->
-  <q-separator spaced="lg" />
-  <div
-    class="row q-col-gutter-lg"
-  >
-    <list-item-game
-      v-for="(game, index) in collection.items.value"
-      :key="game.id"
-      v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
-      :game="game"
-    />
+    <div class="col-12">
+      <base-list-sort
+        v-model:sort-by="sortBy"
+        v-model:sort-desc="sortDesc"
+        :options-sort-by="optionsSortBy"
+      />
+    </div>
+    <div class="col-12">
+      <!--  <random-game :filters="filters" />-->
+
+      <div
+        class="row q-col-gutter-lg"
+      >
+        <list-item-game
+          v-for="(game, index) in collection.items.value"
+          :key="game.id"
+          v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
+          :game="game"
+        />
+      </div>
+      <base-spinner v-if="collection.isLoading.value" />
+    </div>
   </div>
-  <base-spinner v-if="collection.isLoading.value" />
 </template>
 
 <script lang="ts">
@@ -76,7 +83,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n();
-    const { countTotal } = useGames();
+    const { countTotalAnalog } = useGames();
 
     const filtersInitial: ServiceCollectionFilters = {
       isDigital: {
@@ -149,7 +156,7 @@ export default defineComponent({
 
     return {
       t,
-      countTotal,
+      countTotalAnalog,
       collection,
       filters,
       sortBy,

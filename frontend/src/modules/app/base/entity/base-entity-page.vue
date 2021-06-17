@@ -1,69 +1,73 @@
 <template>
-  <q-card>
-    <q-card-section class="q-py-none">
-      <div class="row items-center">
-        <div class="col">
-          {{ entities.length }} {{ t(`${i18nPrefix}.label`, 2) }}
-        </div>
-        <div class="col-shrink" />
+  <div class="row q-col-gutter-md">
+    <div class="col-12">
+      <q-card>
+        <q-card-section class="q-py-none">
+          <div class="row items-center">
+            <div class="col">
+              {{ entities.length }} {{ t(`${i18nPrefix}.label`, 2) }}
+            </div>
+            <div class="col-shrink" />
 
-        <slot name="create">
-          <base-entity-create
-            :i18n-prefix="i18nPrefix"
-            :use-create-entity="useCreateEntity"
-            :validation-rules="validationRulesCreate ? validationRulesCreate : validationRules"
-            @submit="$emit('submitCreate', $event)"
-          >
-            <template #item="propsCreate">
-              <slot
-                name="item"
-                v-bind="propsCreate"
-              />
-            </template>
-          </base-entity-create>
-        </slot>
-      </div>
-    </q-card-section>
-  </q-card>
+            <slot name="create">
+              <base-entity-create
+                :i18n-prefix="i18nPrefix"
+                :use-create-entity="useCreateEntity"
+                :validation-rules="validationRulesCreate ? validationRulesCreate : validationRules"
+                @submit="$emit('submitCreate', $event)"
+              >
+                <template #item="propsCreate">
+                  <slot
+                    name="item"
+                    v-bind="propsCreate"
+                  />
+                </template>
+              </base-entity-create>
+            </slot>
+          </div>
+        </q-card-section>
+      </q-card>
+    </div>
 
-  <q-separator spaced="lg" />
+    <div class="col-12">
+      <q-table
+        dense
+        :rows="entities"
+        :columns="columnsComputed"
+        hide-bottom
+        :pagination="{
+          sortBy: 'name',
+          descending: false,
+          page: 0,
+          rowsPerPage: 0,
+        }"
+      >
+        <template #body-cell-actions="props">
+          <q-td :props="props">
+            <base-entity-update
+              :entity="props.row"
+              :i18n-prefix="i18nPrefix"
+              :use-update-entity="useUpdateEntity"
+              :validation-rules="validationRulesUpdate ? validationRulesUpdate : validationRules"
+            >
+              <template #item="propsUpdate">
+                <slot
+                  name="item-update"
+                  v-bind="propsUpdate"
+                />
+              </template>
+            </base-entity-update>
 
-  <q-table
-    dense
-    :rows="entities"
-    :columns="columnsComputed"
-    hide-bottom
-    :pagination="{
-      sortBy: 'name',
-      descending: false,
-      page: 0,
-      rowsPerPage: 0,
-    }"
-  >
-    <template #body-cell-actions="props">
-      <q-td :props="props">
-        <base-entity-update
-          :entity="props.row"
-          :i18n-prefix="i18nPrefix"
-          :use-update-entity="useUpdateEntity"
-          :validation-rules="validationRulesUpdate ? validationRulesUpdate : validationRules"
-        >
-          <template #item="propsUpdate">
-            <slot
-              name="item-update"
-              v-bind="propsUpdate"
+            <base-entity-delete
+              :entity="props.row"
+              :i18n-prefix="i18nPrefix"
+              :use-delete-entity="useDeleteEntity"
             />
-          </template>
-        </base-entity-update>
-
-        <base-entity-delete
-          :entity="props.row"
-          :i18n-prefix="i18nPrefix"
-          :use-delete-entity="useDeleteEntity"
-        />
-      </q-td>
-    </template>
-  </q-table>
+          </q-td>
+        </template>
+      </q-table>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
