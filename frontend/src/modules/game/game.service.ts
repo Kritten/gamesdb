@@ -21,7 +21,7 @@ import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import type { GameInterface } from '@/modules/game/game.types';
 import { query } from '@/modules/app/utilities/helpers';
 import { useRouter } from 'vue-router';
-import { useGames } from '@/modules/game/composables/useGames';
+import { useGame } from '@/modules/game/composables/useGame';
 
 class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntityInterface<Game> {
   useCreate({ initialData }: { initialData: GameInterface } = { initialData: {} }) {
@@ -117,7 +117,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
   }
 
   async getOrLoadGame(id: ID) {
-    const { games, addGame } = useGames();
+    const { games, setGame } = useGame();
     let game = games.value[id];
     if (game === undefined) {
       const response = await query<{game: GameInterface}>(queryGame, {
@@ -126,7 +126,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
 
       game = await Game.parseFromServer(response.game);
 
-      addGame(game);
+      setGame(game);
     }
 
     return game;

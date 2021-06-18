@@ -57,7 +57,7 @@ import { defineComponent, ref, nextTick } from 'vue';
 import { ServiceCollectionFilters, InputCollectionFilter } from '@/modules/app/utilities/collection/collection.types';
 import { cloneDeep } from 'lodash';
 import RandomGame from '@/modules/game/random-game.vue';
-import { useGames } from '@/modules/game/composables/useGames';
+import { useGame } from '@/modules/game/composables/useGame';
 import BaseSpinner from '@/modules/app/base/base-spinner.vue';
 
 export default defineComponent({
@@ -83,7 +83,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n();
-    const { countTotalAnalog } = useGames();
+    const { countTotalAnalog } = useGame();
 
     const filtersInitial: ServiceCollectionFilters = {
       isDigital: {
