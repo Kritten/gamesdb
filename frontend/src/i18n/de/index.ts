@@ -55,6 +55,13 @@ export default {
       1: 'mittel',
       2: 'groß',
     },
+    complexityFormatted: {
+      0: '1 (einfach)',
+      1: '2',
+      2: '3',
+      3: '4',
+      4: '5 (schwer)',
+    },
     infoPlaytime: '{minutesPlaytimeMin} Minuten | {minutesPlaytimeMin} bis {minutesPlaytimeMax} Minuten',
     infoCountPlayers: '{countPlayersMin} Spieler | {countPlayersMin} bis {countPlayersMax} Spieler',
     digital: {

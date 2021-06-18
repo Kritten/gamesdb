@@ -19,21 +19,21 @@ export class Game extends Entity implements GameInterface {
 
   description: string;
 
-  countPlayersMin: number;
+  countPlayersMin: number | null;
 
-  countPlayersMax: number;
+  countPlayersMax: number | null;
 
-  minutesPlaytimeMin: number;
+  minutesPlaytimeMin: number | null;
 
-  minutesPlaytimeMax: number;
+  minutesPlaytimeMax: number | null;
 
   isCoop: boolean;
 
   isDigital: boolean;
 
-  complexity: number;
+  complexity: number | null;
 
-  size: number;
+  size: number | null;
 
   ratingAverage: number | null;
 
@@ -59,14 +59,14 @@ export class Game extends Entity implements GameInterface {
     super(data);
     this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
     this.description = setDefaultIfNullOrUndefined<string>(data.description, '');
-    this.countPlayersMin = setDefaultIfNullOrUndefined<number>(data.countPlayersMin, 0);
-    this.countPlayersMax = setDefaultIfNullOrUndefined<number>(data.countPlayersMax, 0);
-    this.minutesPlaytimeMin = setDefaultIfNullOrUndefined<number>(data.minutesPlaytimeMin, 0);
-    this.minutesPlaytimeMax = setDefaultIfNullOrUndefined<number>(data.minutesPlaytimeMax, 0);
+    this.countPlayersMin = setDefaultIfNullOrUndefined<number | null>(data.countPlayersMin, null);
+    this.countPlayersMax = setDefaultIfNullOrUndefined<number | null>(data.countPlayersMax, null);
+    this.minutesPlaytimeMin = setDefaultIfNullOrUndefined<number | null>(data.minutesPlaytimeMin, null);
+    this.minutesPlaytimeMax = setDefaultIfNullOrUndefined<number | null>(data.minutesPlaytimeMax, null);
     this.isCoop = setDefaultIfNullOrUndefined<boolean>(data.isCoop, false);
     this.isDigital = setDefaultIfNullOrUndefined<boolean>(data.isDigital, false);
-    this.complexity = setDefaultIfNullOrUndefined<number>(data.complexity, 0);
-    this.size = setDefaultIfNullOrUndefined<number>(data.size, 0);
+    this.complexity = setDefaultIfNullOrUndefined<number | null>(data.complexity, null);
+    this.size = setDefaultIfNullOrUndefined<number | null>(data.size, null);
     this.ratingAverage = setDefaultIfNullOrUndefined<number | null>(data.ratingAverage, null);
     this.universes = setDefaultIfNullOrUndefined<Universe[]>(data.universes, []);
     this.categories = setDefaultIfNullOrUndefined<Category[]>(data.categories, []);
