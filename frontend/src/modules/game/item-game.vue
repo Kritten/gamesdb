@@ -89,23 +89,13 @@
         :validation="validation?.size"
       />
     </div>
+    <div class="col-12">
+      <input-select-universe
+        v-model="universesInternal"
+        :validation="validation?.universes"
+      />
+    </div>
   </div>
-<!--  <div>-->
-<!--    <label for="universes">{{ t('universe.label', 2) }}</label>-->
-<!--    <select-->
-<!--      id="universes"-->
-<!--      v-model="universesInternal"-->
-<!--      multiple-->
-<!--    >-->
-<!--      <option-->
-<!--        v-for="universe in store.state.moduleUniverse.universes"-->
-<!--        :key="universe.id"-->
-<!--        :value="universe.id"-->
-<!--      >-->
-<!--        {{ universe.name }}-->
-<!--      </option>-->
-<!--    </select>-->
-<!--  </div>-->
 <!--  <div>-->
 <!--    <label for="categories">{{ t('category.label', 2) }}</label>-->
 <!--    <select-->
@@ -197,6 +187,7 @@ import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import InputSelectComplexity from '@/modules/game/base/input-select-complexity.vue';
 import InputSelectSize from '@/modules/game/base/input-select-size.vue';
+import InputSelectUniverse from '@/modules/universe/base/input-select-universe.vue';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Image } from '../image/image.model';
 import { ServiceImage } from '../image/image.service';
@@ -204,7 +195,12 @@ import { ServiceImage } from '../image/image.service';
 export default defineComponent({
   name: 'ItemGame',
   components: {
-    InputSelectSize, InputSelectComplexity, BaseInputBoolean, BaseInputNumber, BaseInputText,
+    InputSelectUniverse,
+    InputSelectSize,
+    InputSelectComplexity,
+    BaseInputBoolean,
+    BaseInputNumber,
+    BaseInputText,
   },
   props: {
     name: {
@@ -318,16 +314,16 @@ export default defineComponent({
         props, emit, name: 'size',
       }),
       universesInternal: useModelWrapper<Array<Universe>>({
-        props, emit, name: 'universes', isEntity: true,
+        props, emit, name: 'universes',
       }),
       categoriesInternal: useModelWrapper<Array<Category>>({
-        props, emit, name: 'categories', isEntity: true,
+        props, emit, name: 'categories',
       }),
       mechanismsInternal: useModelWrapper<Array<Mechanism>>({
-        props, emit, name: 'mechanisms', isEntity: true,
+        props, emit, name: 'mechanisms',
       }),
       moodsInternal: useModelWrapper<Array<Mood>>({
-        props, emit, name: 'moods', isEntity: true,
+        props, emit, name: 'moods',
       }),
     };
   },
