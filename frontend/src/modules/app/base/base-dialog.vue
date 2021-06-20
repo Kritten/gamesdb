@@ -112,11 +112,11 @@ export default defineComponent({
       }
     };
 
-    watch(isOpen, () => {
-      if (isOpen.value === false && props.validation) {
-        props.validation.$reset();
-      }
-    });
+    // watch(isOpen, () => {
+    //   if (isOpen.value === false && props.validation) {
+    //     props.validation.$reset();
+    //   }
+    // });
 
     return {
       t,

@@ -6,6 +6,7 @@
         :validation="validation?.name"
         :options="{
           label: t('mood.name'),
+          autofocus: true,
         }"
       />
     </div>

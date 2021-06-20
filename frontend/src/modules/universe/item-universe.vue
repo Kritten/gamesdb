@@ -6,6 +6,7 @@
         :validation="validation?.name"
         :options="{
           label: t('universe.name'),
+          autofocus: true,
         }"
       />
     </div>

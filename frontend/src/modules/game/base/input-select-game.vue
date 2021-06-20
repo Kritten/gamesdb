@@ -10,6 +10,7 @@
       optionLabel:'name',
       loading: collectionGame.isLoading.value,
       clearable: true,
+      autofocus: true,
     }"
     :on-scroll="onScroll"
     :filter="filterFn"
