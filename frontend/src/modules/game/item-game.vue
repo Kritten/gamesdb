@@ -95,6 +95,12 @@
         :validation="validation?.universes"
       />
     </div>
+    <div class="col-12">
+      <input-select-category
+        v-model="categoriesInternal"
+        :validation="validation?.categories"
+      />
+    </div>
   </div>
 <!--  <div>-->
 <!--    <label for="categories">{{ t('category.label', 2) }}</label>-->
@@ -188,6 +194,7 @@ import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import InputSelectComplexity from '@/modules/game/base/input-select-complexity.vue';
 import InputSelectSize from '@/modules/game/base/input-select-size.vue';
 import InputSelectUniverse from '@/modules/universe/base/input-select-universe.vue';
+import InputSelectCategory from '@/modules/category/base/input-select-category.vue';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Image } from '../image/image.model';
 import { ServiceImage } from '../image/image.service';
@@ -195,6 +202,7 @@ import { ServiceImage } from '../image/image.service';
 export default defineComponent({
   name: 'ItemGame',
   components: {
+    InputSelectCategory,
     InputSelectUniverse,
     InputSelectSize,
     InputSelectComplexity,
