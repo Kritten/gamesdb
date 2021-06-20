@@ -107,23 +107,13 @@
         :validation="validation?.mechanisms"
       />
     </div>
+    <div class="col-12">
+      <input-select-mood
+        v-model="moodsInternal"
+        :validation="validation?.moods"
+      />
+    </div>
   </div>
-<!--  <div>-->
-<!--    <label for="moods">{{ t('mood.label', 2) }}</label>-->
-<!--    <select-->
-<!--      id="moods"-->
-<!--      v-model="moodsInternal"-->
-<!--      multiple-->
-<!--    >-->
-<!--      <option-->
-<!--        v-for="mood in store.state.moduleMood.moods"-->
-<!--        :key="mood.id"-->
-<!--        :value="mood.id"-->
-<!--      >-->
-<!--        {{ mood.name }}-->
-<!--      </option>-->
-<!--    </select>-->
-<!--  </div>-->
 <!--  <div>-->
 <!--    <label for="images">{{ t('image.label', 2) }}</label>-->
 <!--    <input-->
@@ -170,6 +160,7 @@ import InputSelectSize from '@/modules/game/base/input-select-size.vue';
 import InputSelectUniverse from '@/modules/universe/base/input-select-universe.vue';
 import InputSelectCategory from '@/modules/category/base/input-select-category.vue';
 import InputSelectMechanism from '@/modules/mechanism/base/input-select-mechanism.vue';
+import InputSelectMood from '@/modules/mood/base/input-select-mood.vue';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Image } from '../image/image.model';
 import { ServiceImage } from '../image/image.service';
@@ -177,6 +168,7 @@ import { ServiceImage } from '../image/image.service';
 export default defineComponent({
   name: 'ItemGame',
   components: {
+    InputSelectMood,
     InputSelectMechanism,
     InputSelectCategory,
     InputSelectUniverse,
