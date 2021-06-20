@@ -138,6 +138,7 @@ export default defineComponent({
         if (props.validation !== undefined) {
           const result = await props.validation.$validate();
           if (result) {
+            props.validation.$reset();
             emit('submit', close);
           }
         } else {
