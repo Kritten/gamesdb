@@ -16,6 +16,7 @@ export type TypeBaseUseCreateEntityParameters<T, P> = {
   mutation: DocumentNode,
   nameMutation: keyof P,
   nameVariable: string,
+  emits?: Array<string>,
 }
 
 export type TypeBaseUseUpdateEntityParameters<T, P> = {

@@ -2,6 +2,7 @@ import { Ref, ref } from 'vue';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { mutate } from '@/modules/app/utilities/helpers';
 import { TypeBaseUseCreateEntityParameters } from '@/modules/app/base/composables/baseEntity.types';
+import { queue } from '@/queue';
 
 export const baseUseCreateEntity = <T extends Entity, P>({
   cls,
@@ -9,6 +10,7 @@ export const baseUseCreateEntity = <T extends Entity, P>({
   mutation,
   nameMutation,
   nameVariable,
+  emits = [],
 }: TypeBaseUseCreateEntityParameters<T, P>) => {
   const entity = ref((new cls())) as Ref<T>;
 
@@ -22,6 +24,8 @@ export const baseUseCreateEntity = <T extends Entity, P>({
       const entityNew = (await cls.parseFromServer(response[nameMutation]));
 
       setEntity(entityNew);
+
+      emits.map((event) => queue.notify(event));
 
       entity.value = new cls();
 

@@ -23,6 +23,7 @@ import { useUniverse } from '@/modules/universe/composables/useUniverse';
 import { useMood } from '@/modules/mood/composables/useMood';
 import { useMechanism } from '@/modules/mechanism/composables/useMechanism';
 import { useCategory } from '@/modules/category/composables/useCategory';
+import { queue } from '@/queue';
 
 class ServiceAppClass {
   async initialize() {
@@ -33,6 +34,8 @@ class ServiceAppClass {
       setUser(response.user);
 
       await this.loadInitialData().then();
+
+      this.initializeEventListener();
 
       const router = useRouter();
       if ((router.currentRoute as unknown as {name: string}).name === 'login') {
@@ -59,6 +62,14 @@ class ServiceAppClass {
     }
 
     await store.dispatch('setUser', user);
+  }
+
+  initializeEventListener() {
+    for (const event of ['createdGame']) {
+      queue.listen(event, () => {
+        void useStatistics().loadStatisticsCounts();
+      });
+    }
   }
 
   async loadInitialData() {

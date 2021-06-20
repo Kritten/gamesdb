@@ -10,6 +10,7 @@ export const useCreateGame = () => {
     mutation: mutationCreateGame,
     nameMutation: 'createGame',
     nameVariable: 'game',
+    emits: ['createdGame'],
   });
 
   return {

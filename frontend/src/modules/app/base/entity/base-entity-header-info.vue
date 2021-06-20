@@ -58,6 +58,7 @@ export default defineComponent({
       type: Function,
     },
   },
+  emits: ['submitCreate'],
   setup() {
     const { t } = useI18n();
 
