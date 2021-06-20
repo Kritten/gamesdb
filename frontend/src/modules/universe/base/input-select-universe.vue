@@ -1,24 +1,24 @@
 <template>
-  <base-input-select
+  <base-input-select-entity
     v-model="universeInternal"
-    :options="optionsMerged"
     :validation="validation"
+    :items="universes"
+    i18n-prefix="universe"
   />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { Validation } from '@vuelidate/core';
-import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
-import { useI18n } from 'vue-i18n';
 import { useModelWrapper } from '@/modules/app/utilities/helpers';
 import { Universe } from '@/modules/universe/universe.model';
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
 import { TypeOptionsInput } from '@/modules/app/base/inputs/base-input';
+import BaseInputSelectEntity from '@/modules/app/base/inputs/base-input-select-entity.vue';
 
 export default defineComponent({
   name: 'InputSelectUniverse',
-  components: { BaseInputSelect },
+  components: { BaseInputSelectEntity },
   props: {
     modelValue: {
       required: false,
@@ -37,20 +37,10 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const { t } = useI18n();
     const { universes } = useUniverse();
 
     return {
-      t,
-      optionsMerged: computed(() => ({
-        label: t('universe.label', Array.isArray(props.modelValue) ? 2 : 1),
-        items: universes.value,
-        useInput: true,
-        optionValue: 'id',
-        optionLabel: 'name',
-        clearable: true,
-        ...props.options,
-      })),
+      universes,
       universeInternal: useModelWrapper({ props, emit }),
     };
   },
