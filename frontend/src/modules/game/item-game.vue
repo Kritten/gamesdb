@@ -101,39 +101,13 @@
         :validation="validation?.categories"
       />
     </div>
+    <div class="col-12">
+      <input-select-mechanism
+        v-model="mechanismsInternal"
+        :validation="validation?.mechanisms"
+      />
+    </div>
   </div>
-<!--  <div>-->
-<!--    <label for="categories">{{ t('category.label', 2) }}</label>-->
-<!--    <select-->
-<!--      id="categories"-->
-<!--      v-model="categoriesInternal"-->
-<!--      multiple-->
-<!--    >-->
-<!--      <option-->
-<!--        v-for="category in store.state.moduleCategory.categories"-->
-<!--        :key="category.id"-->
-<!--        :value="category.id"-->
-<!--      >-->
-<!--        {{ category.name }}-->
-<!--      </option>-->
-<!--    </select>-->
-<!--  </div>-->
-<!--  <div>-->
-<!--    <label for="mechanisms">{{ t('mechanism.label', 2) }}</label>-->
-<!--    <select-->
-<!--      id="mechanisms"-->
-<!--      v-model="mechanismsInternal"-->
-<!--      multiple-->
-<!--    >-->
-<!--      <option-->
-<!--        v-for="mechanism in store.state.moduleMechanism.mechanisms"-->
-<!--        :key="mechanism.id"-->
-<!--        :value="mechanism.id"-->
-<!--      >-->
-<!--        {{ mechanism.name }}-->
-<!--      </option>-->
-<!--    </select>-->
-<!--  </div>-->
 <!--  <div>-->
 <!--    <label for="moods">{{ t('mood.label', 2) }}</label>-->
 <!--    <select-->
@@ -195,6 +169,7 @@ import InputSelectComplexity from '@/modules/game/base/input-select-complexity.v
 import InputSelectSize from '@/modules/game/base/input-select-size.vue';
 import InputSelectUniverse from '@/modules/universe/base/input-select-universe.vue';
 import InputSelectCategory from '@/modules/category/base/input-select-category.vue';
+import InputSelectMechanism from '@/modules/mechanism/base/input-select-mechanism.vue';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Image } from '../image/image.model';
 import { ServiceImage } from '../image/image.service';
@@ -202,6 +177,7 @@ import { ServiceImage } from '../image/image.service';
 export default defineComponent({
   name: 'ItemGame',
   components: {
+    InputSelectMechanism,
     InputSelectCategory,
     InputSelectUniverse,
     InputSelectSize,
