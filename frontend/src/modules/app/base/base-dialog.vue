@@ -42,6 +42,8 @@
             name="buttons"
             :close="close"
           />
+          {{ validation?.$dirty }}
+          {{ validation?.$invalid }}
           <base-button-submit
             :label="textSubmit"
             :options="{
