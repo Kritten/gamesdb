@@ -13,30 +13,30 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.10.7",
     "@quasar/icongenie": "^2.4.0",
     "@types/lodash": "^4.14.170",
     "@vuelidate/core": "^2.0.0-alpha.19",
-    "@vuelidate/validators": "^2.0.0-alpha.16",
-    "core-js": "^3.6.5",
+    "@vuelidate/validators": "^2.0.0-alpha.17",
+    "core-js": "^3.15.1",
     "date-fns": "^2.22.1",
     "env-cmd": "^10.1.0",
     "lodash": "^4.17.21",
-    "quasar": "^2.0.0-beta.19",
+    "quasar": "^2.0.0",
     "vue-i18n": "^9.0.0-beta.0",
-    "vuedraggable": "^4.0.1"
+    "vuedraggable": "^4.0.3"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app": "^3.0.0-beta.28",
+    "@babel/eslint-parser": "^7.14.7",
+    "@quasar/app": "^3.0.0",
     "@quasar/quasar-app-extension-apollo": "^2.0.0-beta.1",
     "@types/node": "^10.17.15",
-    "@typescript-eslint/eslint-plugin": "^4.16.1",
-    "@typescript-eslint/parser": "^4.16.1",
-    "eslint": "^7.14.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-vue": "^7.0.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-vue": "^7.11.1",
     "workbox-webpack-plugin": "^6.1.5"
   },
   "browserslist": [
