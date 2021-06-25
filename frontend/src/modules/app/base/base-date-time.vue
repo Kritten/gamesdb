@@ -43,7 +43,7 @@ export default defineComponent({
       } else if (props.dateOnly) {
         formatUsed = formatDate;
       }
-      console.warn(formatUsed, 'formatUsed');
+
       return formatUsed;
     };
 
