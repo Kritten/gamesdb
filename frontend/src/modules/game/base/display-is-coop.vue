@@ -1,10 +1,10 @@
 <template>
-  {{ isCoop ? t('common.yes') : t('common.no') }}
+  {{ text }}
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { displayIsCoop } from '@/modules/app/utilities/helpers';
 
 export default defineComponent({
   name: 'DisplayIsCoop',
@@ -14,11 +14,9 @@ export default defineComponent({
       type: Boolean,
     },
   },
-  setup() {
-    const { t } = useI18n();
-
+  setup(props) {
     return {
-      t,
+      text: displayIsCoop(props.isCoop),
     };
   },
 });

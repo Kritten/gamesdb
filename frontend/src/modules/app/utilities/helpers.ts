@@ -4,6 +4,7 @@ import { DocumentNode } from 'graphql';
 
 import { apolloClients } from '@/boot/apollo';
 import { ErrorObject } from '@vuelidate/core';
+import { useI18n } from 'vue-i18n';
 
 type TypePropsSingle = Entity | number | string | boolean | Date;
 type TypeProps = TypePropsSingle | Array<TypePropsSingle>;
@@ -133,4 +134,9 @@ export const mutate = async <T, >(mutationPassed: DocumentNode, variables?: Reco
   });
 
   return response.data as unknown as T;
+};
+
+export const displayIsCoop = (isCoop: boolean) => {
+  const { t } = useI18n();
+  return isCoop ? t('common.yes') : t('common.no');
 };
