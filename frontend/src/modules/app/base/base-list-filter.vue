@@ -199,12 +199,14 @@ export default defineComponent({
         if (typeof valueNew === 'string') {
           if (valueNew.trim() === '') {
             emitValue(undefined);
+            return;
           }
-        } else if (valueNew === null) {
-          emitValue(undefined);
-        } else {
-          emitValue(valueNew);
         }
+        if (valueNew === null) {
+          emitValue(undefined);
+          return;
+        }
+        emitValue(valueNew);
       },
     });
 
