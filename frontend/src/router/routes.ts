@@ -4,7 +4,6 @@ import { RouteRecordRaw } from 'vue-router';
 // import Login from 'src/modules/app/login/login.vue';
 import Login from '@/modules/app/login/login.vue';
 import { User } from '@/modules/user/user.model';
-import { store } from '@/modules/app/app.store';
 import ViewDisplayWishlist from '@/modules/wishlist/views/display-wishlist.view.vue';
 import ViewApp from '@/modules/app/app.view.vue';
 import ViewDashboard from '@/modules/app/dashboard/dashboard.view.vue';

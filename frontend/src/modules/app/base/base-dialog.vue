@@ -33,6 +33,28 @@
           <slot />
         </q-card-section>
 
+        <!--        <q-card-section>-->
+        <!--          <table>-->
+        <!--            <tr>-->
+        <!--              <td colspan="2">-->
+        <!--                {{ validation }}-->
+        <!--              </td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--              <td>$dirty</td>-->
+        <!--              <td>{{ validation?.$dirty }}</td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--              <td>$anyDirty</td>-->
+        <!--              <td>{{ validation?.$anyDirty }}</td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--              <td>$invalid</td>-->
+        <!--              <td>{{ validation?.$invalid }}</td>-->
+        <!--            </tr>-->
+        <!--          </table>-->
+        <!--        </q-card-section>-->
+
         <q-card-actions align="right">
           <q-btn
             :label="t('common.cancel')"
@@ -42,8 +64,6 @@
             name="buttons"
             :close="close"
           />
-          {{ validation?.$dirty }}
-          {{ validation?.$invalid }}
           <base-button-submit
             :label="textSubmit"
             :options="{

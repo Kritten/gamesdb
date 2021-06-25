@@ -5,7 +5,7 @@ import { Quasar } from 'quasar';
 import messages from 'src/i18n';
 
 const i18n = createI18n({
-  locale: Quasar.lang.isoName,
+  locale: Quasar.lang.isoName || 'de',
   messages,
 });
 

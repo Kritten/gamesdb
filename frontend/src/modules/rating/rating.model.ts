@@ -1,6 +1,6 @@
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { RatingInterface } from '@/modules/rating/rating.types';
-import { store } from '@/modules/app/app.store';
+import { usePlayers } from '@/modules/player/composables/usePlayers';
 import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
 import { EntityInterface, ID } from '../app/utilities/entity/entity.types';
@@ -23,8 +23,9 @@ export class Rating extends Entity implements RatingInterface {
     const entity = (await super.parseFromServer(data)) as Rating;
 
     if (entity.player !== undefined) {
-      // @ts-ignore
-      entity.player = store.state.modulePlayer.players[entity.player.id as ID];
+      const { playerById } = usePlayers();
+
+      entity.player = playerById(entity.player.id as ID);
     }
 
     return entity;

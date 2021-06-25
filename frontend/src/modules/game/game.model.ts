@@ -8,7 +8,6 @@ import { Image } from '@/modules/image/image.model';
 import { Rating } from '@/modules/rating/rating.model';
 import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
-import { store } from '@/modules/app/app.store';
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
 import { useCategory } from '@/modules/category/composables/useCategory';
 import { useMechanism } from '@/modules/mechanism/composables/useMechanism';

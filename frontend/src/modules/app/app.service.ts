@@ -11,7 +11,6 @@ import { Player } from '@/modules/player/player.model';
 import { queryUniverses } from '@/modules/universe/graphql/universe.graphql';
 import { Universe } from '@/modules/universe/universe.model';
 import { UserInterface } from '@/modules/user/user.types';
-import { store } from '@/modules/app/app.store';
 import { query } from '@/modules/app/utilities/helpers';
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { useUser } from '@/modules/user/composables/useUser';
@@ -49,19 +48,6 @@ class ServiceAppClass {
     }
 
     useApp().setIsInitialized(true);
-  }
-
-  /**
-   * Set current user
-   */
-  async setCurrentUser(data: UserInterface | null) {
-    let user: User | null = null;
-
-    if (data !== null) {
-      user = new User(data);
-    }
-
-    await store.dispatch('setUser', user);
   }
 
   initializeEventListener() {
