@@ -1,13 +1,11 @@
 <template>
   <template v-if="game !== null">
     <div class="row q-col-gutter-md">
-      <div class="col-12 col-lg-6">
-        <q-card class="full-height">
-          <q-toolbar>
-            <q-toolbar-title>
-              {{ game.name }}
-            </q-toolbar-title>
-
+      <div class="col-12">
+        <base-card
+          :title="game.name"
+        >
+          <template #actions>
             <base-entity-update
               :entity="game"
               :i18n-prefix="'game'"
@@ -35,14 +33,14 @@
                 />
               </template>
             </base-entity-update>
-          </q-toolbar>
+          </template>
 
           <q-card-section>
             {{ game.description }}
           </q-card-section>
-        </q-card>
+        </base-card>
       </div>
-      <div class="col-12 col-lg-6">
+      <div class="col-12">
         <q-card>
           <q-card-section>
             <q-list>
@@ -71,15 +69,26 @@
           </q-card-section>
         </q-card>
       </div>
-    </div>
 
-    <div class="col-12 ">
-      <q-card>
-        <q-card-section>
-          <delete-game game="game" />
-        </q-card-section>
-      </q-card>
-    </div>
+      <div class="col-12">
+        <base-card
+          :title="`${t('session.label', 2)} (${countSessions === undefined ? '' : countSessions})`"
+          expandable
+        >
+          <list-session
+            :game="game"
+            @updated-count-items="countSessions = $event"
+          />
+        </base-card>
+      </div>
+
+      <div class="col-12 ">
+        <q-card>
+          <q-card-section>
+          <!--          <delete-game :game="game" />-->
+          </q-card-section>
+        </q-card>
+      </div>
 
     <!--    <details>-->
     <!--      <summary>Spiel bearbeiten</summary>-->
@@ -90,8 +99,8 @@
     <!--      <summary>Session anlegen</summary>-->
     <!--      <create-session :game="game" />-->
     <!--    </details>-->
-    <!--    <list-session :game="game" />-->
     <!--    <delete-game :game="game" />-->
+    </div>
   </template>
 </template>
 
@@ -115,10 +124,12 @@ import ItemGame from '@/modules/game/item-game.vue';
 import { required } from '@vuelidate/validators';
 import { useI18n } from 'vue-i18n';
 import { displayIsCoop } from '@/modules/app/utilities/helpers';
+import BaseCard from '@/modules/app/base/base-card.vue';
 
 export default defineComponent({
   name: 'ViewGame',
   components: {
+    BaseCard,
     ItemGame,
     BaseEntityUpdate,
     UpdateGame,
@@ -131,6 +142,7 @@ export default defineComponent({
     const route = useRoute();
     const idGame = route.params.id as string;
     const game = ref<Game | null>(null);
+    const countSessions = ref<number>();
 
     ServiceGame.getOrLoadGame(idGame).then((value: Game) => { game.value = value; });
 
@@ -211,6 +223,7 @@ export default defineComponent({
       properties,
       updateGame: useUpdateGame,
       validationRules,
+      countSessions,
     };
   },
 });
