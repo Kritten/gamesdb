@@ -28,6 +28,10 @@ export class CollectionService<T extends BaseEntity> {
       : this.service.optionsDefault.relations;
   }
 
+  private getAnnotations() {
+    return this.service.annotations;
+  }
+
   where(query: SelectQueryBuilder<T>, data: InputCollection) {
     let indexParams = 0;
     for (let i = 0; i < data.filters.length; i++) {
@@ -89,6 +93,12 @@ export class CollectionService<T extends BaseEntity> {
       } else {
         query[nameFunctionWhere](`entity.${filter.field} ${operation}`, params);
       }
+    }
+  }
+
+  private annotate(query: SelectQueryBuilder<T>, data: InputCollection) {
+    for (const annotation of this.getAnnotations()) {
+      annotation(query, data);
     }
   }
 
@@ -171,6 +181,8 @@ export class CollectionService<T extends BaseEntity> {
 
     this.join(query, data);
 
+    this.annotate(query, data);
+
     this.orderBy(query, data);
 
     this.paginate(query, data);
@@ -178,6 +190,22 @@ export class CollectionService<T extends BaseEntity> {
     // console.warn(query.getSql());
 
     const [items, count] = await query.getManyAndCount();
+    const resultRaw = await query.getRawMany();
+    console.warn(resultRaw.length, "resultRaw.length");
+
+    // TODO: after ORM change handle playtimeLast correctly
+    // if (this.service.annotations.length > 0) {
+    //   // console.warn(resultRaw, "resultRaw");
+    //
+    //   for (let i = 0; i < items.length; i += 1) {
+    //     console.log(items[i].id, resultRaw[i].entity_id, "items.[i].entity_id");
+    //     // console.log(resultRaw[i].playtimeLast, "resultRaw[i].playtimeLast");
+    //     // @ts-ignore
+    //     items[i].playtimeLast = resultRaw[i].playtimeLast;
+    //   }
+    //   // console.warn(resultRaw.map(item => item.playtimeLast), "items[0]");
+    //   console.log(items.map(item => ({ id: item.id, playtimeLast: item.playtimeLast })), "items.map(item => item.id)");
+    // }
     return {
       items,
       count,

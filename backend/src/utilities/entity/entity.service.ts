@@ -1,22 +1,26 @@
-import { Entity, getManager } from 'typeorm';
+import {Entity, getManager, SelectQueryBuilder} from 'typeorm';
 import { Injectable, NotFoundException, Optional } from '@nestjs/common';
 import { merge } from 'lodash';
 import { BaseEntity } from '../types';
 import { cloneDeep } from 'lodash';
 import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { ObjectType } from 'typeorm/common/ObjectType';
+import {InputCollection} from "../collection/collection.input";
 
 @Injectable()
 export class EntityService<T extends BaseEntity> {
   private readonly entityClass: ObjectType<T>;
   private readonly _optionsDefaultPassed: FindManyOptions<T>;
+  public readonly annotations: Array<(query: SelectQueryBuilder<T>, data: InputCollection) => void>;
 
   constructor(
     @Optional() cls: ObjectType<T>,
     @Optional() options: FindManyOptions<T> = {},
+    @Optional() annotations: Array<(query: SelectQueryBuilder<T>, data: InputCollection) => void> = [],
   ) {
     this.entityClass = cls;
     this._optionsDefaultPassed = options;
+    this.annotations = annotations;
   }
 
   public get optionsDefault() {
