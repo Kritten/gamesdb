@@ -1,21 +1,35 @@
 <template>
-  {{ collection.countItems.value }} {{ t('session.label', collection.countItems.value) }}
-  <table border="1">
-    <tr>
-      <th>ID</th>
-      <th>{{ t('session.isChallenge') }}</th>
-      <th>Spieler</th>
-      <th>Gewinner</th>
-      <th>Spielzeiten</th>
-      <th>{{ t('session.comment') }}</th>
-      <th />
-    </tr>
-    <list-item-session
-      v-for="session in collection.items.value"
-      :key="session.id"
-      :session="session"
-    />
-  </table>
+  <q-markup-table
+    border="1"
+    flat
+  >
+    <thead>
+      <tr>
+        <th class="text-left">
+          {{ t('player.label', 2) }}
+        </th>
+        <th class="text-left">
+          {{ t('winner.label', 2) }}
+        </th>
+        <th>{{ t('session.isChallenge') }}</th>
+        <th class="text-right">
+          {{ t('playtime.start') }}
+        </th>
+        <th class="text-right">
+          {{ t('playtime.end') }}
+        </th>
+        <th style="width: 1px" />
+      </tr>
+    </thead>
+    <tbody>
+      <list-item-session
+        v-for="(session, index) in collection.items.value"
+        :key="session.id"
+        v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
+        :session="session"
+      />
+    </tbody>
+  </q-markup-table>
   <button
     v-if="collection.hasNextPage.value"
     @click="collection.loadNextItems"
@@ -25,7 +39,6 @@
 </template>
 
 <script lang="ts">
-import { useStore } from 'vuex';
 import { ServiceSession } from '@/modules/session/session.service';
 import ListItemSession from '@/modules/session/list/list-item-session.vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
@@ -33,7 +46,7 @@ import { Session } from '@/modules/session/session.model';
 import { useI18n } from 'vue-i18n';
 import { Game } from '@/modules/game/game.model';
 import { queue } from '@/queue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 
 export default defineComponent({
@@ -45,7 +58,8 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  emits: ['updatedCountItems'],
+  setup(props, { emit }) {
     const { t } = useI18n();
     const filters = ref<ServiceCollectionFilters>({
       game: {
@@ -55,14 +69,25 @@ export default defineComponent({
         field: 'isVirtual', valueBoolean: false, operator: '=',
       },
     });
+
+    const sortBy = ref<string[]>(['entity.id']);
+    // const sortBy = ref<string[]>(['entity.playtime']);
+    const sortDesc = ref<boolean[]>([true]);
+
     const collection = useCollection<Session>(ServiceSession.loadPage, {
       inputCollectionData: {
-        sortBy: ref(['entity.id']),
+        sortBy,
+        sortDesc,
         filters,
+        count: 10,
       },
     });
 
-    for (const event of ['createdSession', 'deletedSession']) {
+    watch(collection.countItems, () => {
+      emit('updatedCountItems', collection.countItems.value);
+    });
+
+    for (const event of ['createdSession', 'updatedSession', 'deletedSession']) {
       queue.listen(event, () => {
         collection.reset();
       });

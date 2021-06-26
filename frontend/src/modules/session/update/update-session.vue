@@ -1,34 +1,22 @@
 <template>
-  <base-dialog
-    :title="`${t('session.label')} ${t('common.edit')}`"
-    :text-submit="t('common.edit')"
-    :validation="vuelidate"
-    @submit="submit"
+  <base-entity-update
+    :entity="session"
+    i18n-prefix="session"
+    :use-update-entity="useUpdateSession"
+    :validation-rules="validationRules"
   >
-    <template #activator="{ open }">
-      <q-btn
-        icon="fas fa-edit"
-        color="primary"
-        flat
-        round
-        @click="open"
-      >
-        <q-tooltip>
-          {{ t('session.label') }} {{ t('common.edit') }}
-        </q-tooltip>
-      </q-btn>
+    <template #item="{ entity, validation }">
+      <item-session
+        v-model:game="entity.value.game"
+        v-model:comment="entity.value.comment"
+        v-model:is-challenge="entity.value.isChallenge"
+        v-model:players="entity.value.players"
+        v-model:winners="entity.value.winners"
+        v-model:playtimes="entity.value.playtimes"
+        :validation="validation"
+      />
     </template>
-
-    <item-session
-      v-model:game="updateSession.entity.value.game"
-      v-model:comment="updateSession.entity.value.comment"
-      v-model:is-challenge="updateSession.entity.value.isChallenge"
-      v-model:players="updateSession.entity.value.players"
-      v-model:winners="updateSession.entity.value.winners"
-      v-model:playtimes="updateSession.entity.value.playtimes"
-      :validation="vuelidate"
-    />
-  </base-dialog>
+  </base-entity-update>
 </template>
 
 <script lang="ts">
@@ -36,16 +24,16 @@ import { useI18n } from 'vue-i18n';
 import { Session } from '@/modules/session/session.model';
 import ItemSession from '@/modules/session/item-session.vue';
 import { ServiceSession } from '@/modules/session/session.service';
-import { computed, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import { isEqual } from 'date-fns';
-import BaseDialog from '@/modules/app/base/base-dialog.vue';
-import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
+import { useUpdateSession } from '@/modules/session/composables/useUpdateSession';
 
 export default defineComponent({
   name: 'UpdateSession',
   components: {
-    BaseDialog,
+    BaseEntityUpdate,
     ItemSession,
   },
   props: {
@@ -58,21 +46,18 @@ export default defineComponent({
     const { t } = useI18n();
     const updateSession = ServiceSession.useUpdate(props.session);
 
-    const vuelidate = useVuelidate(computed(() => ({
+    const validationRules = {
       game: {
         required,
       },
-    })), updateSession.entity);
+    };
 
     return {
       t,
       updateSession,
-      vuelidate,
+      validationRules,
       isEqual,
-      async submit(close: () => void) {
-        await updateSession.update();
-        close();
-      },
+      useUpdateSession,
     };
   },
 });
