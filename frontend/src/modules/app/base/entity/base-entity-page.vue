@@ -1,32 +1,19 @@
 <template>
   <div class="row q-col-gutter-md">
     <div class="col-12">
-      <q-card>
-        <q-card-section class="q-py-none">
-          <div class="row items-center">
-            <div class="col">
-              {{ entities.length }} {{ t(`${i18nPrefix}.label`, 2) }}
-            </div>
-            <div class="col-shrink" />
-
-            <slot name="create">
-              <base-entity-create
-                :i18n-prefix="i18nPrefix"
-                :use-create-entity="useCreateEntity"
-                :validation-rules="validationRulesCreate ? validationRulesCreate : validationRules"
-                @submit="$emit('submitCreate', $event)"
-              >
-                <template #item="propsCreate">
-                  <slot
-                    name="item"
-                    v-bind="propsCreate"
-                  />
-                </template>
-              </base-entity-create>
-            </slot>
-          </div>
-        </q-card-section>
-      </q-card>
+      <base-entity-header-info
+        :i18n-prefix="i18nPrefix"
+        :count="entities.length"
+        :validation-rules="validationRulesCreate ? validationRulesCreate : validationRules"
+        :use-create-entity="useCreateEntity"
+      >
+        <template #item="propsCreate">
+          <slot
+            name="item"
+            v-bind="propsCreate"
+          />
+        </template>
+      </base-entity-header-info>
     </div>
 
     <div class="col-12">
@@ -77,10 +64,13 @@ import { useI18n } from 'vue-i18n';
 import BaseEntityCreate from '@/modules/app/base/entity/base-entity-create.vue';
 import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
 import BaseEntityDelete from '@/modules/app/base/entity/base-entity-delete.vue';
+import BaseEntityHeaderInfo from '@/modules/app/base/entity/base-entity-header-info.vue';
 
 export default defineComponent({
   name: 'BaseEntityPage',
-  components: { BaseEntityDelete, BaseEntityUpdate, BaseEntityCreate },
+  components: {
+    BaseEntityHeaderInfo, BaseEntityDelete, BaseEntityUpdate, BaseEntityCreate,
+  },
   props: {
     entities: {
       required: true,

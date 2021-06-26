@@ -3,6 +3,7 @@ import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { mutate } from '@/modules/app/utilities/helpers';
 import { cloneDeep } from 'lodash';
 import { TypeBaseUseUpdateEntityParameters } from '@/modules/app/base/composables/baseEntity.types';
+import { queue } from '@/queue';
 
 export const baseUseUpdateEntity = <T extends Entity, P>({
   entityPassed,
@@ -11,6 +12,7 @@ export const baseUseUpdateEntity = <T extends Entity, P>({
   mutation,
   nameMutation,
   nameVariable,
+  emits = [],
 }: TypeBaseUseUpdateEntityParameters<T, P>) => {
   const entity = ref(cloneDeep(entityPassed)) as Ref<T>;
 
@@ -24,6 +26,8 @@ export const baseUseUpdateEntity = <T extends Entity, P>({
       const playerNew = (await cls.parseFromServer(response[nameMutation]));
 
       setEntity(playerNew);
+
+      emits.map((event) => queue.notify(event));
 
       entity.value = cloneDeep(playerNew);
     },

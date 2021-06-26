@@ -25,7 +25,7 @@ export class Session extends Entity implements SessionInterface {
 
   playtimes: Playtime[];
 
-  constructor(data: SessionInterface) {
+  constructor(data: SessionInterface = {}) {
     super(data);
     this.comment = setDefaultIfNullOrUndefined<string | null>(data.comment, null);
     this.isChallenge = setDefaultIfNullOrUndefined<boolean>(data.isChallenge, false);

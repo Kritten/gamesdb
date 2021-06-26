@@ -133,6 +133,9 @@ export default {
     continue: 'Weiter',
     comment: 'Kommentar',
     isChallenge: 'Herausforderung',
+    confirm: {
+      delete: 'Soll die Session wirklich gelöscht werden?',
+    },
   },
   rating: {
     label: 'Bewertung | Bewertungen',

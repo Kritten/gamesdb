@@ -1,32 +1,25 @@
 <template>
   <div class="row">
     <div class="col">
-      <q-card>
-        <q-card-section class="q-py-none">
-          <div class="row items-center">
-            <div class="col">
-              {{ count }} {{ t(`${i18nPrefix}.label`, 2) }}
-            </div>
-            <div class="col-shrink" />
-
-            <slot name="create">
-              <base-entity-create
-                :i18n-prefix="i18nPrefix"
-                :use-create-entity="useCreateEntity"
-                :validation-rules="validationRules"
-                @submit="$emit('submitCreate', $event)"
-              >
-                <template #item="propsCreate">
-                  <slot
-                    name="item"
-                    v-bind="propsCreate"
-                  />
-                </template>
-              </base-entity-create>
-            </slot>
-          </div>
-        </q-card-section>
-      </q-card>
+      <base-card :title="`${count} ${t(`${i18nPrefix}.label`, count)}`">
+        <template #actions>
+          <slot name="create">
+            <base-entity-create
+              :i18n-prefix="i18nPrefix"
+              :use-create-entity="useCreateEntity"
+              :validation-rules="validationRules"
+              @submit="$emit('submitCreate', $event)"
+            >
+              <template #item="propsCreate">
+                <slot
+                  name="item"
+                  v-bind="propsCreate"
+                />
+              </template>
+            </base-entity-create>
+          </slot>
+        </template>
+      </base-card>
     </div>
   </div>
 </template>
@@ -35,10 +28,11 @@
 import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseEntityCreate from '@/modules/app/base/entity/base-entity-create.vue';
+import BaseCard from '@/modules/app/base/base-card.vue';
 
 export default defineComponent({
   name: 'BaseEntityHeaderInfo',
-  components: { BaseEntityCreate },
+  components: { BaseCard, BaseEntityCreate },
   props: {
     i18nPrefix: {
       required: true,

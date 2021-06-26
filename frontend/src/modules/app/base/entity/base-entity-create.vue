@@ -4,7 +4,8 @@
     :text-submit="t('common.create')"
     :options-button="{
       label: `${t(`${i18nPrefix}.label`)} ${t('common.create')}`,
-      color: 'primary'
+      color: 'primary',
+      icon: 'fa fa-plus',
     }"
     :validation="validation"
     @submit="submit"

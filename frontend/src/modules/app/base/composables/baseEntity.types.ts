@@ -26,11 +26,13 @@ export type TypeBaseUseUpdateEntityParameters<T, P> = {
   mutation: DocumentNode,
   nameMutation: keyof P,
   nameVariable: string,
+  emits?: Array<string>,
 }
 
 export type TypeBaseUseDeleteEntityParameters<T> = {
   deleteEntity: TypeBaseUseEntityDeleteEntiy<T>,
   mutation: DocumentNode,
+  emits?: Array<string>,
 }
 
 export type TypeBaseUseEntity<T> = (data: TypeBaseUseEntityParameters<T>) => {
