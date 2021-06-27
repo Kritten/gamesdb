@@ -33,7 +33,6 @@ import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import DeleteWishlistItem from '@/modules/wishlist/delete/delete-wishlist-item.vue';
 
 import UpdateWishlistItem from '@/modules/wishlist/update/update-wishlist-item.vue';
-import { store } from '@/modules/app/app.store';
 import DisplayPriceRange from '@/modules/wishlist/display/display-price-range.vue';
 import DisplayGiftFor from '@/modules/wishlist/display/display-gift-for.vue';
 
@@ -52,7 +51,9 @@ export default defineComponent({
     return {
       t,
       // @ts-ignore
-      wishlistItem: computed(() => store.state.moduleWishlist.wishlistItems[idWishlist]),
+      // TODO
+      wishlistItem: {},
+      // wishlistItem: computed(() => store.state.moduleWishlist.wishlistItems[idWishlist]),
       deleted() {
         const router = useRouter();
         void router.push({ name: 'wishlist' });

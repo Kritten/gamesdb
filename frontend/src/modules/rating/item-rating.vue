@@ -51,7 +51,6 @@
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { defineComponent, ref } from 'vue';
-import { useStore } from 'vuex';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Game } from '../game/game.model';
@@ -77,7 +76,6 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { t } = useI18n();
-    const store = useStore();
 
     const filtersGame = ref<ServiceCollectionFilters>({
       name: {
@@ -88,14 +86,15 @@ export default defineComponent({
 
     return {
       t,
-      store,
       collectionGame,
       filtersGame,
       ratingInternal: useModelWrapper({
         props, emit, name: 'rating',
       }),
       playerInternal: useModelWrapper({
-        props, emit, name: 'player', isEntity: true, entities: store.state.modulePlayer.players,
+        // Todo
+        // props, emit, name: 'player', isEntity: true, entities: store.state.modulePlayer.players,
+        props, emit, name: 'player', isEntity: true,
       }),
     };
   },

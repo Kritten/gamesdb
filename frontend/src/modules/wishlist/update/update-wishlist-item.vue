@@ -28,7 +28,6 @@ import { defineComponent } from 'vue';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
 import ItemWishlist from '@/modules/wishlist/item-wishlist.vue';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
-import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'UpdateWishlistItem',
@@ -41,12 +40,10 @@ export default defineComponent({
   },
   setup(context) {
     const { t } = useI18n();
-    const { state } = useStore();
     const updateWishlistItem = ServiceWishlist.useUpdate(context.wishlistItem);
 
     return {
       t,
-      state,
       updateWishlistItem,
     };
   },

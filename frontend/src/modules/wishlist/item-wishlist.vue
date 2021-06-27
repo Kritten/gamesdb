@@ -58,7 +58,6 @@
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { defineComponent, PropType, ref } from 'vue';
-import { useStore } from 'vuex';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
@@ -118,7 +117,6 @@ export default defineComponent({
   emits: ['update:name', 'update:price', 'update:taken', 'update:link', 'update:giftFor', 'update:images'],
   setup(props, { emit }) {
     const { t } = useI18n();
-    const store = useStore();
 
     const filtersWishlist = ref<ServiceCollectionFilters>({
       name: {
@@ -132,7 +130,6 @@ export default defineComponent({
 
     return {
       t,
-      store,
       collectionGame,
       nameInternal: useModelWrapper<string>({
         props, emit, name: 'name',

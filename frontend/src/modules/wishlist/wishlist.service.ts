@@ -12,7 +12,6 @@ import {
   queryPageWishlist,
   queryWishlistItem,
 } from '@/modules/wishlist/graphql/wishlist.graphql';
-import { store } from '@/modules/app/app.store';
 import { GIFT_FOR, PRICE_RANGE } from '@/modules/wishlist/wishlist.constants';
 import { useI18n } from 'vue-i18n';
 import {
@@ -80,7 +79,8 @@ implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist
 
     const wishlistNew = await Wishlist.parseFromServer(response.data.updateWishlist);
 
-    store.commit('moduleWishlist/addWishlistItem', wishlistNew);
+    // TODO
+    // store.commit('moduleWishlist/addWishlistItem', wishlistNew);
 
     queue.notify('updatedWishlist', wishlistNew);
 
@@ -97,7 +97,8 @@ implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist
 
     const wishlistNew = await Wishlist.parseFromServer(response.data.updateWishlist);
 
-    store.commit('moduleWishlist/addWishlistItem', wishlistNew);
+    // TODO
+    // store.commit('moduleWishlist/addWishlistItem', wishlistNew);
 
     queue.notify('updatedWishlist', wishlistNew);
 
@@ -128,7 +129,8 @@ implements ServiceCollectionInterface<Wishlist>, ServiceEntityInterface<Wishlist
 
       wishlistItem = await Wishlist.parseFromServer(response.wishlist);
 
-      store.commit('moduleWishlist/addWishlistItem', wishlistItem);
+      // TODO
+      // store.commit('moduleWishlist/addWishlistItem', wishlistItem);
     }
 
     return wishlistItem;
