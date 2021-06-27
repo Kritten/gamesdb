@@ -23,7 +23,11 @@
           {{ title }}
         </q-toolbar-title>
 
-        <create-session />
+        <create-session
+          :options-button="{
+            color: 'white',
+          }"
+        />
 
         <q-separator
           dark

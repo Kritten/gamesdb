@@ -96,7 +96,11 @@ export default defineComponent({
     return {
       t,
       collection,
-      store: useStore(),
+      onIntersection(entry: {isIntersecting: boolean}) {
+        if (entry.isIntersecting === true && collection.hasNextPage.value) {
+          void collection.loadNextItems();
+        }
+      },
     };
   },
 });

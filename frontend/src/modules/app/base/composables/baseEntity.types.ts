@@ -12,11 +12,12 @@ export type TypeBaseUseEntityParameters<T> = {
 
 export type TypeBaseUseCreateEntityParameters<T, P> = {
   setEntity: TypeBaseUseEntitySetEntity<T>
-  cls: { new(): T, parseFromServer: (data: EntityInterface) => Promise<T> },
+  cls: { new(data: EntityInterface): T, parseFromServer: (data: EntityInterface) => Promise<T> },
   mutation: DocumentNode,
   nameMutation: keyof P,
   nameVariable: string,
   emits?: Array<string>,
+  valuesInitial?: Record<string, unknown>,
 }
 
 export type TypeBaseUseUpdateEntityParameters<T, P> = {

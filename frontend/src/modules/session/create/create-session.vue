@@ -1,38 +1,32 @@
 <template>
-  <base-dialog
-    :title="`${t('session.label')} ${t('common.create')}`"
-    :validation="vuelidateCreate"
-    @submit="submit"
+  <base-entity-create
+    i18n-prefix="session"
+    :validation-rules="validationRules"
+    :use-create-entity="useCreateEntity"
+    :options-button="optionsButton"
+    :values-initial="{ game }"
   >
-    <item-session
-      v-model:game="createSession.entity.value.game"
-      v-model:comment="createSession.entity.value.comment"
-      v-model:is-challenge="createSession.entity.value.isChallenge"
-      v-model:players="createSession.entity.value.players"
-      v-model:winners="createSession.entity.value.winners"
-      v-model:playtimes="createSession.entity.value.playtimes"
-      :validation="vuelidateCreate"
-      :hide-game="game !== undefined"
-    />
-
-    <template #activator="{ open }">
-      <q-btn
-        :label="$q.screen.gt.xs ? `${t('session.label')} ${t('common.create')}`: undefined"
-        icon="fas fa-plus"
-        flat
-        stretch
-        @click="open"
+    <template #item="{ entity, validation }">
+      <item-session
+        v-model:game="entity.value.game"
+        v-model:comment="entity.value.comment"
+        v-model:is-challenge="entity.value.isChallenge"
+        v-model:players="entity.value.players"
+        v-model:winners="entity.value.winners"
+        v-model:playtimes="entity.value.playtimes"
+        :validation="validation"
+        :hide-game="game !== undefined"
       />
     </template>
 
-    <template #buttons="{ close }">
+    <template #buttons="{ close, entity, validation }">
       <q-btn
         :label="t('session.start')"
         color="secondary"
-        @click="start(close)"
+        @click="start(close, entity, validation)"
       />
     </template>
-  </base-dialog>
+  </base-entity-create>
 </template>
 
 <script lang="ts">
@@ -41,16 +35,18 @@ import { ServiceSession } from '@/modules/session/session.service';
 import { Game } from '@/modules/game/game.model';
 import ItemSession from '@/modules/session/item-session.vue';
 import {
-  computed, defineComponent,
+  computed, defineComponent, Ref,
 } from 'vue';
-import BaseDialog from '@/modules/app/base/base-dialog.vue';
-import useVuelidate from '@vuelidate/core';
+import useVuelidate, { Validation } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import BaseEntityCreate from '@/modules/app/base/entity/base-entity-create.vue';
+import { useCreateSession } from '@/modules/session/composables/useCreateSession';
+import { Session } from '@/modules/session/session.model';
 
 export default defineComponent({
   name: 'CreateSession',
   components: {
-    BaseDialog,
+    BaseEntityCreate,
     ItemSession,
   },
   props: {
@@ -59,14 +55,18 @@ export default defineComponent({
       required: false,
       default: undefined,
     },
+    optionsButton: {
+      required: false,
+      type: Object,
+      default: () => ({}),
+    },
   },
   setup(props) {
     const { t } = useI18n();
 
-    const createSession = ServiceSession.useCreate();
     const useTrackSession = ServiceSession.useTrackSession();
 
-    const vuelidateCreate = useVuelidate(computed(() => ({
+    const validationRules = {
       game: {
         required,
       },
@@ -76,33 +76,28 @@ export default defineComponent({
       playtimes: {
         required,
       },
-    })), createSession.entity);
-
-    const vuelidateStart = useVuelidate(computed(() => ({
-      game: {
-        required,
-      },
-    })), createSession.entity);
+    };
 
     return {
       t,
-      createSession,
-      useTrackSession,
-      vuelidateCreate,
-      async submit(close: () => void) {
-        await createSession.create(props.game);
-        close();
-      },
-      async start(close: () => void) {
-        vuelidateCreate.value.$reset();
+      validationRules,
+      useCreateEntity: useCreateSession,
+      async start(close: () => void, entity: Ref<Session>, validation: Validation) {
+        validation.$reset();
+
+        const vuelidateStart = useVuelidate(computed(() => ({
+          game: {
+            required,
+          },
+        })), entity);
 
         const result = await vuelidateStart.value.$validate();
 
         if (result) {
-          await useTrackSession.start(createSession.entity, props.game);
+          await useTrackSession.start(entity, props.game as Game);
           close();
         } else {
-          vuelidateCreate.value.game.$touch();
+          validation.game.$touch();
         }
       },
     };

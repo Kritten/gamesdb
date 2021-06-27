@@ -2,11 +2,7 @@
   <base-dialog
     :title="`${t(`${i18nPrefix}.label`)} ${t('common.create')}`"
     :text-submit="t('common.create')"
-    :options-button="{
-      label: `${t(`${i18nPrefix}.label`)} ${t('common.create')}`,
-      color: 'primary',
-      icon: 'fa fa-plus',
-    }"
+    :options-button="optionsButtonMerged"
     :validation="validation"
     @submit="submit"
   >
@@ -15,6 +11,15 @@
       :entity="createEntity.entity"
       :validation="validation"
     />
+
+    <template #buttons="props">
+      <slot
+        name="buttons"
+        :entity="createEntity.entity"
+        :validation="validation"
+        v-bind="props"
+      />
+    </template>
   </base-dialog>
 </template>
 
@@ -25,7 +30,7 @@ import {
 } from 'vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import { useI18n } from 'vue-i18n';
-import useVuelidate, { Validation } from '@vuelidate/core';
+import useVuelidate from '@vuelidate/core';
 
 export default defineComponent({
   name: 'BaseEntityCreate',
@@ -44,12 +49,22 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    optionsButton: {
+      required: false,
+      type: Object,
+      default: () => ({}),
+    },
+    valuesInitial: {
+      required: false,
+      type: Object,
+      default: () => ({}),
+    },
   },
   emits: ['submit'],
   setup(props, { emit }) {
     const { t } = useI18n();
 
-    const createEntity = props.useCreateEntity();
+    const createEntity = props.useCreateEntity({ valuesInitial: props.valuesInitial });
 
     const validation = useVuelidate(computed(() => (props.validationRules)), createEntity.entity, { $stopPropagation: true });
 
@@ -62,6 +77,12 @@ export default defineComponent({
         close();
         emit('submit', close);
       },
+      optionsButtonMerged: computed(() => ({
+        label: `${t(`${props.i18nPrefix}.label`)} ${t('common.create')}`,
+        color: 'primary',
+        icon: 'fa fa-plus',
+        ...props.optionsButton,
+      })),
     };
   },
 });

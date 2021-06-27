@@ -14,9 +14,8 @@ import {
   InputCollection, ServiceCollectionLoadPage,
 } from '@/modules/app/utilities/collection/collection.types';
 import { queue } from '@/queue';
-import { Ref, ref } from 'vue';
+import { ref } from 'vue';
 import { cloneDeep } from 'lodash';
-import { store } from '@/modules/app/app.store';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import type { GameInterface } from '@/modules/game/game.types';
 import { query } from '@/modules/app/utilities/helpers';
@@ -91,7 +90,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
 
     const gameNew = await Game.parseFromServer(response.data.createGame);
 
-    store.commit('moduleGame/addGame', gameNew);
+    useGame().setGame(gameNew);
 
     queue.notify('createdGame', gameNew);
 
@@ -109,7 +108,7 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
 
     const gameNew = await Game.parseFromServer(response.data.updateGame);
 
-    store.commit('moduleGame/addGame', gameNew);
+    useGame().setGame(gameNew);
 
     queue.notify('updatedGame', gameNew);
 
@@ -142,13 +141,13 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
         ),
         count: response.games.count,
       }),
-      after: ({ items }) => store.commit(
-        'moduleGame/addGames',
-        items.reduce((obj, entity) => {
-          obj[entity.id as ID] = entity;
-          return obj;
-        }, {} as { [key: string]: Game }),
-      ),
+      after: ({ items }) => {
+        const { setGame } = useGame();
+
+        for (let i = 0; i < items.length; i += 1) {
+          setGame(items[i]);
+        }
+      },
     });
   }
 
@@ -161,9 +160,9 @@ class ServiceGameClass implements ServiceCollectionInterface<Game>, ServiceEntit
       },
     });
 
-    queue.notify('deletedGame', game);
+    useGame().deleteGame(game);
 
-    store.commit('moduleGame/deleteGame', game);
+    queue.notify('deletedGame', game);
 
     return response.data.deleteGame;
   }

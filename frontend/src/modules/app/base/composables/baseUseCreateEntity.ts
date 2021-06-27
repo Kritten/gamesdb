@@ -11,8 +11,9 @@ export const baseUseCreateEntity = <T extends Entity, P>({
   nameMutation,
   nameVariable,
   emits = [],
+  valuesInitial = {},
 }: TypeBaseUseCreateEntityParameters<T, P>) => {
-  const entity = ref((new cls())) as Ref<T>;
+  const entity = ref((new cls(valuesInitial))) as Ref<T>;
 
   return {
     entity,
@@ -27,7 +28,7 @@ export const baseUseCreateEntity = <T extends Entity, P>({
 
       emits.map((event) => queue.notify(event));
 
-      entity.value = new cls();
+      entity.value = new cls(valuesInitial);
 
       return entityNew;
     },

@@ -212,7 +212,10 @@ export default defineComponent({
       playtimeAdd,
       playtimeRemove,
       errorMessagePlaytimes: computed(() => {
-        if ((props as {validation: Validation}).validation.playtimes?.$errors.length > 0) {
+        // todo
+        // @ts-ignore
+        if (props.validation.playtimes?.$errors.length > 0) {
+          // @ts-ignore
           return translate((props as {validation: Validation}).validation.playtimes?.$errors[0], t).$message;
         }
         return '';

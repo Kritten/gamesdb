@@ -1,6 +1,5 @@
 import { Ref, ref } from 'vue';
 import { useMutation } from '@vue/apollo-composable';
-import { store } from '@/modules/app/app.store';
 import { Session } from '@/modules/session/session.model';
 import {
   mutationCreateSession,
@@ -21,6 +20,7 @@ import { compareAsc } from 'date-fns';
 import { Game } from '@/modules/game/game.model';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import { mutate } from '@/modules/app/utilities/helpers';
+import { useSession } from '@/modules/session/composables/useSession';
 
 class ServiceSessionClass
 implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
@@ -182,13 +182,13 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
         ),
         count: response.sessions.count,
       }),
-      after: ({ items }) => store.commit(
-        'moduleSession/setSessionsIfNotExisting',
-        items.reduce((obj, entity) => {
-          obj[entity.id as ID] = entity;
-          return obj;
-        }, {} as Partial<{ [key in ID]: Entity }>),
-      ),
+      after: ({ items }) => {
+        const { setSession } = useSession();
+
+        for (let i = 0; i < items.length; i += 1) {
+          setSession(items[i]);
+        }
+      },
     });
   }
 

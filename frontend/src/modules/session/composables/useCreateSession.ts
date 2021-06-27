@@ -3,7 +3,7 @@ import { Session } from '@/modules/session/session.model';
 import { useSession } from '@/modules/session/composables/useSession';
 import { mutationCreateSession } from '@/modules/session/graphql/session.graphql';
 
-export const useCreateSession = () => {
+export const useCreateSession = ({ valuesInitial = {} }: { valuesInitial?: Record<string, unknown> } = {}) => {
   const useCreateEntity = baseUseCreateEntity<Session, { createSession: Session }>({
     cls: Session,
     setEntity: useSession().setSession,
@@ -11,6 +11,7 @@ export const useCreateSession = () => {
     nameMutation: 'createSession',
     nameVariable: 'session',
     emits: ['createdSession'],
+    valuesInitial,
   });
 
   return {

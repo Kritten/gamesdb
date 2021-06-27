@@ -75,6 +75,10 @@
           :title="`${t('session.label', 2)} (${countSessions === undefined ? '' : countSessions})`"
           expandable
         >
+          <template #actions>
+            <create-session :game="game" />
+          </template>
+
           <list-session
             :game="game"
             @updated-count-items="countSessions = $event"
