@@ -16,7 +16,10 @@ import { User } from './modules/user/user.entity';
 
 @Console()
 export class MyCommands {
-  constructor(private userService: UserEntityService) {}
+  constructor(
+    private userService: UserEntityService,
+    private imageService: ImageEntityService,
+  ) {}
 
   @Command({
     command: 'createuser <name> <password>',
@@ -29,6 +32,28 @@ export class MyCommands {
         password,
       }),
     );
+  }
+
+  @Command({
+    command: 'export-images',
+    description: 'Exports images',
+  })
+  async exportImages(name: string, password: string): Promise<void> {
+    const response = await this.imageService.find();
+
+    const images = [];
+
+    for (let i = 0; i < response.length; i += 1) {
+      const image = response[i];
+      if (image.games.length === 1) {
+        images.push({
+          link: image.link,
+          game: image.games[0].id
+        })
+      }
+    }
+
+    fs.writeFileSync('images.json', JSON.stringify(images));
   }
 
   @Command({
