@@ -1,4 +1,4 @@
-import { Field, ID, InputType, Int, PartialType } from '@nestjs/graphql';
+import {Field, Float, ID, InputType, Int, PartialType} from '@nestjs/graphql';
 
 @InputType()
 export class GameInput {
@@ -8,6 +8,12 @@ export class GameInput {
   name: string;
 
   description?: string;
+
+  @Field(() => Int)
+  idBGG?: number;
+
+  @Field(() => Float)
+  ratingBGG?: number;
 
   @Field(() => Int)
   countPlayersMin?: number;

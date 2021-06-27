@@ -50,7 +50,8 @@ export class GameResolver extends EntityResolver {
     const game = new Game();
     game.name = gameData.name;
     game.description = gameData.description;
-    game.description = gameData.description;
+    game.idBGG = gameData.idBGG;
+    game.ratingBGG = gameData.ratingBGG;
     game.countPlayersMin = gameData.countPlayersMin;
     game.countPlayersMax = gameData.countPlayersMax;
     game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
@@ -113,7 +114,8 @@ export class GameResolver extends EntityResolver {
     const game = new Game();
     game.id = parseInt(gameData.id, 10);
     game.name = gameData.name;
-    game.description = gameData.description;
+    game.idBGG = gameData.idBGG;
+    game.ratingBGG = gameData.ratingBGG;
     game.description = gameData.description;
     game.countPlayersMin = gameData.countPlayersMin;
     game.countPlayersMax = gameData.countPlayersMax;

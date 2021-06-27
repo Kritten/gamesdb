@@ -3,7 +3,11 @@
     v-model.number="modelInternal"
     :validation="validation"
     :options="optionsMerged"
-  />
+  >
+    <template #after>
+      <slot name="after" />
+    </template>
+  </base-input-text>
 </template>
 
 <script lang="ts">

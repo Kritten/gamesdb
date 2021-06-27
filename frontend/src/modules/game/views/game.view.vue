@@ -14,6 +14,7 @@
             >
               <template #item="propsUpdate">
                 <item-game
+                  v-model:id-b-g-g="propsUpdate.entity.value.idBGG"
                   v-model:name="propsUpdate.entity.value.name"
                   v-model:description="propsUpdate.entity.value.description"
                   v-model:countPlayersMin="propsUpdate.entity.value.countPlayersMin"
@@ -21,6 +22,7 @@
                   v-model:minutesPlaytimeMin="propsUpdate.entity.value.minutesPlaytimeMin"
                   v-model:minutesPlaytimeMax="propsUpdate.entity.value.minutesPlaytimeMax"
                   v-model:isCoop="propsUpdate.entity.value.isCoop"
+                  v-model:rating-b-g-g="propsUpdate.entity.value.ratingBGG"
                   v-model:isDigital="propsUpdate.entity.value.isDigital"
                   v-model:complexity="propsUpdate.entity.value.complexity"
                   v-model:size="propsUpdate.entity.value.size"

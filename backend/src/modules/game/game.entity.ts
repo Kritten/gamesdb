@@ -12,7 +12,7 @@ import { Mechanism } from '../mechanism/mechanism.entity';
 import { Mood } from '../mood/mood.entity';
 import { Universe } from '../universe/universe.entity';
 import { Session } from '../session/session.entity';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import {Field, Float, ID, Int, ObjectType} from '@nestjs/graphql';
 import { Rating } from '../rating/rating.entity';
 import { Image } from '../image/image.entity';
 
@@ -29,6 +29,21 @@ export class Game {
     unique: true,
   })
   name: string;
+
+  @Column({
+    type: 'int',
+    nullable: true,
+    unique: true,
+  })
+  @Field(() => Int)
+  idBGG?: number;
+
+  @Column({
+    type: 'float',
+    nullable: true,
+  })
+  @Field(() => Float)
+  ratingBGG?: number;
 
   @Column({
     type: 'text',

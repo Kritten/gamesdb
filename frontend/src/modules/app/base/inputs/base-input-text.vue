@@ -5,7 +5,11 @@
     :error="baseInput.errorMessage.value !== ''"
     :error-message="baseInput.errorMessage.value"
     @update:model-value="baseInput.input"
-  />
+  >
+    <template #after>
+      <slot name="after" />
+    </template>
+  </q-input>
 </template>
 
 <script lang="ts">

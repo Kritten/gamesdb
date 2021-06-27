@@ -18,6 +18,8 @@ export class Game extends Entity implements GameInterface {
 
   description: string;
 
+  idBGG: number | null;
+
   countPlayersMin: number | null;
 
   countPlayersMax: number | null;
@@ -31,6 +33,8 @@ export class Game extends Entity implements GameInterface {
   isDigital: boolean;
 
   complexity: number | null;
+
+  ratingBGG: number | null;
 
   size: number | null;
 
@@ -56,6 +60,7 @@ export class Game extends Entity implements GameInterface {
 
   constructor(data: GameInterface = {}) {
     super(data);
+    this.idBGG = setDefaultIfNullOrUndefined<number | null>(data.idBGG, null);
     this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
     this.description = setDefaultIfNullOrUndefined<string>(data.description, '');
     this.countPlayersMin = setDefaultIfNullOrUndefined<number | null>(data.countPlayersMin, null);
@@ -65,6 +70,7 @@ export class Game extends Entity implements GameInterface {
     this.isCoop = setDefaultIfNullOrUndefined<boolean>(data.isCoop, false);
     this.isDigital = setDefaultIfNullOrUndefined<boolean>(data.isDigital, false);
     this.complexity = setDefaultIfNullOrUndefined<number | null>(data.complexity, null);
+    this.ratingBGG = setDefaultIfNullOrUndefined<number | null>(data.ratingBGG, null);
     this.size = setDefaultIfNullOrUndefined<number | null>(data.size, null);
     this.ratingAverage = setDefaultIfNullOrUndefined<number | null>(data.ratingAverage, null);
     this.universes = setDefaultIfNullOrUndefined<Universe[]>(data.universes, []);
@@ -117,6 +123,7 @@ export class Game extends Entity implements GameInterface {
   prepareForServer() {
     const data = super.prepareForServer();
 
+    data.idBGG = this.idBGG;
     data.name = this.name;
     data.description = this.description;
     data.countPlayersMin = this.countPlayersMin;
@@ -126,6 +133,7 @@ export class Game extends Entity implements GameInterface {
     data.isCoop = this.isCoop;
     data.isDigital = this.isDigital;
     data.complexity = this.complexity;
+    data.ratingBGG = this.ratingBGG;
     data.size = this.size;
     data.universes = this.universes.map((universe) => universe.id);
     data.categories = this.categories.map((category) => category.id);

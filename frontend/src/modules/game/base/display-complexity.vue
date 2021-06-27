@@ -1,6 +1,6 @@
 <template>
   <q-rating
-    :model-value="complexity"
+    :model-value="complexity + 1"
     icon="fas fa-weight-hanging"
     color="black"
     readonly

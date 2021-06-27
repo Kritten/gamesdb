@@ -9,6 +9,7 @@
       >
         <template #item="{ entity, validation }">
           <item-game
+            v-model:id-b-g-g="entity.value.idBGG"
             v-model:name="entity.value.name"
             v-model:description="entity.value.description"
             v-model:countPlayersMin="entity.value.countPlayersMin"
@@ -16,6 +17,7 @@
             v-model:minutesPlaytimeMin="entity.value.minutesPlaytimeMin"
             v-model:minutesPlaytimeMax="entity.value.minutesPlaytimeMax"
             v-model:isCoop="entity.value.isCoop"
+            v-model:rating-b-g-g="entity.value.ratingBGG"
             v-model:isDigital="entity.value.isDigital"
             v-model:complexity="entity.value.complexity"
             v-model:size="entity.value.size"
@@ -25,6 +27,7 @@
             v-model:moods="entity.value.moods"
             v-model:images="entity.value.images"
             :validation="validation"
+            apply-info-b-g-g-immediately
           />
         </template>
       </base-entity-header-info>

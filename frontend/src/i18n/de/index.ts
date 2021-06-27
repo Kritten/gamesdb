@@ -38,6 +38,7 @@ export default {
   },
   game: {
     label: 'Spiel | Spiele',
+    idBGG: 'BGG ID',
     name: 'Name',
     description: 'Beschreibung',
     countPlayersMin: 'Spieler (min)',
@@ -47,6 +48,7 @@ export default {
     isCoop: 'Koop',
     isDigital: 'Digital',
     complexity: 'Schwierigkeit',
+    ratingBGG: 'Bewertung von BGG',
     size: 'Größe',
     countPlayed: 'Spielhäufigkeit',
     timePlayed: 'Spielzeit',

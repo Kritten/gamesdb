@@ -4,6 +4,7 @@ export const fragments = {
   game: gql`
     fragment game on Game {
       id
+      idBGG
       name
       description
       countPlayersMin
@@ -13,6 +14,7 @@ export const fragments = {
       isCoop
       isDigital
       complexity
+      ratingBGG
       size
       ratingAverage
       universes {

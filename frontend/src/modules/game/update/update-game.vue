@@ -1,6 +1,7 @@
 <template>
   <form @submit.prevent="updateGame.update">
     <item-game
+      v-model:id-b-g-g="updateGame.entity.value.idBGG"
       v-model:name="updateGame.entity.value.name"
       v-model:description="updateGame.entity.value.description"
       v-model:countPlayersMin="updateGame.entity.value.countPlayersMin"
@@ -8,6 +9,7 @@
       v-model:minutesPlaytimeMin="updateGame.entity.value.minutesPlaytimeMin"
       v-model:minutesPlaytimeMax="updateGame.entity.value.minutesPlaytimeMax"
       v-model:isCoop="updateGame.entity.value.isCoop"
+      v-model:rating-b-g-g="updateGame.entity.value.ratingBGG"
       v-model:isDigital="updateGame.entity.value.isDigital"
       v-model:complexity="updateGame.entity.value.complexity"
       v-model:size="updateGame.entity.value.size"

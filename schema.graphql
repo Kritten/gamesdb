@@ -24,6 +24,7 @@ type Game {
     description: String
     expansions: [Game!]!
     id: ID!
+    idBGG: Int
     images: [Image!]!
     isCoop: Boolean
     isDigital: Boolean!
@@ -35,6 +36,7 @@ type Game {
     name: String!
     playableWith: [Game!]!
     ratingAverage: Float
+    ratingBGG: Float
     ratings: [Rating!]!
     sessions: [Session!]!
     size: Int
@@ -273,6 +275,7 @@ input GameInput {
     description: String
     expansions: [ID!]
     id: ID
+    idBGG: Int
     images: [ID!]
     isCoop: Boolean
     isDigital: Boolean
@@ -283,6 +286,7 @@ input GameInput {
     moods: [ID!]
     name: String!
     playableWith: [ID!]
+    ratingBGG: Float
     ratings: [ID!]
     size: Int
     universes: [ID!]
@@ -385,6 +389,7 @@ input UpdateGameInput {
     description: String
     expansions: [ID!]
     id: ID!
+    idBGG: Int
     images: [ID!]
     isCoop: Boolean
     isDigital: Boolean
@@ -395,6 +400,7 @@ input UpdateGameInput {
     moods: [ID!]
     name: String
     playableWith: [ID!]
+    ratingBGG: Float
     ratings: [ID!]
     size: Int
     universes: [ID!]

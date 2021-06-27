@@ -10,6 +10,7 @@ import { Category } from '@/modules/category/category.model';
 export interface GameInterface extends EntityInterface {
   name?: string;
   description?: string;
+  idBGG?: number | null;
   countPlayersMin?: number | null;
   countPlayersMax?: number | null;
   minutesPlaytimeMin?: number | null;
@@ -17,6 +18,7 @@ export interface GameInterface extends EntityInterface {
   isCoop?: boolean;
   isDigital?: boolean;
   complexity?: number | null;
+  ratingBGG?: number | null;
   size?: number | null;
   ratingAverage?: number | null;
   universes?: Universe[];
