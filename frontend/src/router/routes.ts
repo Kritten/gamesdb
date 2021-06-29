@@ -14,7 +14,6 @@ import ViewCategory from '@/modules/category/category.view.vue';
 import ViewMechanism from '@/modules/mechanism/mechanism.view.vue';
 import ViewMood from '@/modules/mood/mood.view.vue';
 import ViewPlayer from '@/modules/player/player.view.vue';
-import ViewImage from '@/modules/image/image.view.vue';
 import ViewUniverse from '@/modules/universe/universe.view.vue';
 import ViewRating from '@/modules/rating/rating.view.vue';
 import ViewWishlist from '@/modules/wishlist/views/wishlist.view.vue';
@@ -130,11 +129,6 @@ const routes: RouteRecordRaw[] = [
         path: 'players',
         name: 'players',
         component: ViewPlayer,
-      },
-      {
-        path: 'images',
-        name: 'images',
-        component: ViewImage,
       },
       {
         path: 'universes',

@@ -126,7 +126,9 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n();
     const autoplay = ref(true);
-    const slide = ref(props.game.images[0]?.id);
+    // TODO fix
+    // const slide = ref(props.game.images[0]?.id);
+    const slide = ref();
 
     return {
       t,

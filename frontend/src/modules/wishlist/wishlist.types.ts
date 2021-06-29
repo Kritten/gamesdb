@@ -1,12 +1,11 @@
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import { Image } from '@/modules/image/image.model';
 
 export interface WishlistInterface extends EntityInterface {
   name?: string;
   price?: number;
   description?: string;
   link?: string;
-  images?: Image[];
+  images?: Array<string>;
   taken?: boolean;
   giftFor?: number;
 }

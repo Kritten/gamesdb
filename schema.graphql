@@ -25,7 +25,7 @@ type Game {
     expansions: [Game!]!
     id: ID!
     idBGG: Int
-    images: [Image!]!
+    images: String!
     isCoop: Boolean
     isDigital: Boolean!
     isExpansionOf: Game
@@ -91,19 +91,6 @@ type GraphItem {
     data: [Int!]!
 }
 
-type Image {
-    games: [Game!]!
-    id: ID!
-    link: String!
-    name: String!
-    wishlists: [Wishlist!]!
-}
-
-type ImageCollectionData {
-    count: Int!
-    items: [Image!]!
-}
-
 type Mechanism {
     games: [Game!]!
     id: ID!
@@ -119,7 +106,6 @@ type Mood {
 type Mutation {
     createCategory(categoryData: CategoryInput!): Category!
     createGame(gameData: GameInput!): Game!
-    createImage(imageData: ImageInput!): Image!
     createMechanism(mechanismData: MechanismInput!): Mechanism!
     createMood(moodData: MoodInput!): Mood!
     createPlayer(playerData: PlayerInput!): Player!
@@ -130,7 +116,6 @@ type Mutation {
     createWishlist(wishlistData: WishlistInput!): Wishlist!
     deleteCategory(id: ID!): Boolean!
     deleteGame(id: ID!): Boolean!
-    deleteImage(id: ID!): Boolean!
     deleteMechanism(id: ID!): Boolean!
     deleteMood(id: ID!): Boolean!
     deletePlayer(id: ID!): Boolean!
@@ -141,7 +126,6 @@ type Mutation {
     deleteWishlist(id: ID!): Boolean!
     updateCategory(categoryData: UpdateCategoryInput!): Category!
     updateGame(gameData: UpdateGameInput!): Game!
-    updateImage(imageData: UpdateImageInput!): Image!
     updateMechanism(mechanismData: UpdateMechanismInput!): Mechanism!
     updateMood(moodData: UpdateMoodInput!): Mood!
     updatePlayer(playerData: UpdatePlayerInput!): Player!
@@ -179,8 +163,6 @@ type Query {
     category(id: ID!): Category!
     game(id: ID!): Game!
     games(gameData: InputCollection!): GameCollectionData!
-    image(id: ID!): Image!
-    images(imageData: InputCollection!): ImageCollectionData!
     mechanism(id: ID!): Mechanism!
     mechanisms: [Mechanism!]!
     mood(id: ID!): Mood!
@@ -249,7 +231,7 @@ type Wishlist {
     description: String!
     giftFor: Float!
     id: ID!
-    images: [Image!]!
+    images: String!
     link: String!
     name: String!
     price: Int!
@@ -276,7 +258,7 @@ input GameInput {
     expansions: [ID!]
     id: ID
     idBGG: Int
-    images: [ID!]
+    images: String
     isCoop: Boolean
     isDigital: Boolean
     isExpansionOf: ID
@@ -290,14 +272,6 @@ input GameInput {
     ratings: [ID!]
     size: Int
     universes: [ID!]
-}
-
-input ImageInput {
-    games: [ID!]
-    id: ID
-    link: String!
-    name: String!
-    wishlists: [ID!]
 }
 
 input InputCollection {
@@ -390,7 +364,7 @@ input UpdateGameInput {
     expansions: [ID!]
     id: ID!
     idBGG: Int
-    images: [ID!]
+    images: String
     isCoop: Boolean
     isDigital: Boolean
     isExpansionOf: ID
@@ -404,14 +378,6 @@ input UpdateGameInput {
     ratings: [ID!]
     size: Int
     universes: [ID!]
-}
-
-input UpdateImageInput {
-    games: [ID!]
-    id: ID!
-    link: String
-    name: String
-    wishlists: [ID!]
 }
 
 input UpdateMechanismInput {
@@ -467,7 +433,7 @@ input UpdateWishlistInput {
     description: String
     giftFor: Int
     id: ID!
-    images: [ID!]
+    images: String
     link: String
     name: String
     price: Int
@@ -478,7 +444,7 @@ input WishlistInput {
     description: String!
     giftFor: Int!
     id: ID
-    images: [ID!]
+    images: String
     link: String!
     name: String!
     price: Int!

@@ -14,7 +14,6 @@ import { Universe } from '../universe/universe.entity';
 import { Session } from '../session/session.entity';
 import {Field, Float, ID, Int, ObjectType} from '@nestjs/graphql';
 import { Rating } from '../rating/rating.entity';
-import { Image } from '../image/image.entity';
 
 @Entity()
 @ObjectType()
@@ -105,6 +104,12 @@ export class Game {
   @Field(() => Int)
   size?: number;
 
+  @Column({
+    type: 'text',
+    default: '[]'
+  })
+  images: string;
+
   @ManyToMany(
     () => Universe,
     universe => universe.games,
@@ -136,14 +141,6 @@ export class Game {
   @JoinTable()
   @Field(() => [Mood], { defaultValue: [] })
   moods: Mood[];
-
-  @ManyToMany(
-    () => Image,
-    image => image.games,
-  )
-  @JoinTable()
-  @Field(() => [Image], { defaultValue: [] })
-  images: Image[];
 
   @ManyToMany(() => Game)
   @JoinTable()

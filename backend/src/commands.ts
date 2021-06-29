@@ -6,8 +6,6 @@ import { Mood } from './modules/mood/mood.entity';
 import { MoodEntityService } from './modules/mood/mood.entity.service';
 import { CategoryEntityService } from './modules/category/category.entity.service';
 import { Category } from './modules/category/category.entity';
-import { Image } from './modules/image/image.entity';
-import { ImageEntityService } from './modules/image/image.entity.service';
 import { Game } from './modules/game/game.entity';
 import { GameEntityService } from './modules/game/game.entity.service';
 import { getManager, In } from 'typeorm/index';
@@ -18,7 +16,6 @@ import { User } from './modules/user/user.entity';
 export class MyCommands {
   constructor(
     private userService: UserEntityService,
-    private imageService: ImageEntityService,
   ) {}
 
   @Command({
@@ -39,21 +36,21 @@ export class MyCommands {
     description: 'Exports images',
   })
   async exportImages(name: string, password: string): Promise<void> {
-    const response = await this.imageService.find();
-
-    const images = [];
-
-    for (let i = 0; i < response.length; i += 1) {
-      const image = response[i];
-      if (image.games.length === 1) {
-        images.push({
-          link: image.link,
-          game: image.games[0].id
-        })
-      }
-    }
-
-    fs.writeFileSync('images.json', JSON.stringify(images));
+    // const response = await this.imageService.find();
+    //
+    // const images = [];
+    //
+    // for (let i = 0; i < response.length; i += 1) {
+    //   const image = response[i];
+    //   if (image.games.length === 1) {
+    //     images.push({
+    //       link: image.link,
+    //       game: image.games[0].id
+    //     })
+    //   }
+    // }
+    //
+    // fs.writeFileSync('images.json', JSON.stringify(images));
   }
 
   @Command({
@@ -64,7 +61,6 @@ export class MyCommands {
     const mechanismService = new MechanismEntityService();
     const moodService = new MoodEntityService();
     const categoryService = new CategoryEntityService();
-    const imageService = new ImageEntityService();
     const gameService = new GameEntityService();
     const spin = createSpinner();
     spin.start(`Import database`);
@@ -124,10 +120,10 @@ export class MyCommands {
       const newItem = new Image();
       newItem.id = item.id;
       newItem.name = item.label;
-      newItem.link = item.link;
+      // newItem.link = item.link;
       items.push(newItem);
     }
-    await imageService.create(items);
+    // await imageService.create(items);
     /**
      * Games
      */
@@ -208,16 +204,16 @@ export class MyCommands {
       }, []);
       console.warn(arr, 'arr');
 
-      if (arr.length > 0) {
-        newItem.images = await imageService.find({
-          where: {
-            id: In(arr),
-          },
-        });
-      } else {
-        newItem.images = [];
-      }
-      items.push(newItem);
+      // if (arr.length > 0) {
+      //   newItem.images = await imageService.find({
+      //     where: {
+      //       id: In(arr),
+      //     },
+      //   });
+      // } else {
+      //   newItem.images = [];
+      // }
+      // items.push(newItem);
     }
     // console.warn(
     //   items.map((item: Game) => item.moods),

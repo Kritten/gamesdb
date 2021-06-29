@@ -66,7 +66,6 @@ import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import BaseInputImages from '@/modules/app/base/inputs/base-input-images.vue';
-import { Image } from '@/modules/image/image.model';
 import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import { useCollection } from '../app/utilities/collection/collection';
 
@@ -101,7 +100,7 @@ export default defineComponent({
       required: true,
     },
     images: {
-      type: Array as PropType<Array<Image>>,
+      type: Array as PropType<Array<string>>,
       required: true,
     },
     hideTaken: {

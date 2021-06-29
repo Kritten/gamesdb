@@ -22,8 +22,8 @@ export class WishlistInput {
   @Field(() => Int)
   giftFor: number;
 
-  @Field(() => [ID])
-  images?: string[];
+  @Field(() => String)
+  images?: string;
 }
 
 @InputType()

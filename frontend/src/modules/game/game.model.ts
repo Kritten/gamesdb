@@ -4,7 +4,6 @@ import { Universe } from '@/modules/universe/universe.model';
 import { Category } from '@/modules/category/category.model';
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
 import { Mood } from '@/modules/mood/mood.model';
-import { Image } from '@/modules/image/image.model';
 import { Rating } from '@/modules/rating/rating.model';
 import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
@@ -48,7 +47,7 @@ export class Game extends Entity implements GameInterface {
 
   moods: Mood[];
 
-  images: Image[];
+  images: Array<string>;
 
   playableWith: Game[];
 
@@ -77,7 +76,7 @@ export class Game extends Entity implements GameInterface {
     this.categories = setDefaultIfNullOrUndefined<Category[]>(data.categories, []);
     this.mechanisms = setDefaultIfNullOrUndefined<Mechanism[]>(data.mechanisms, []);
     this.moods = setDefaultIfNullOrUndefined<Mood[]>(data.moods, []);
-    this.images = setDefaultIfNullOrUndefined<Image[]>(data.images, []);
+    this.images = setDefaultIfNullOrUndefined<Array<string>>(data.images, []);
     this.playableWith = setDefaultIfNullOrUndefined<Game[]>(data.playableWith, []);
     this.isExpansionOf = setDefaultIfNullOrUndefined<Game | null>(data.isExpansionOf, null);
     this.expansions = setDefaultIfNullOrUndefined<Game[]>(data.expansions, []);
@@ -139,7 +138,7 @@ export class Game extends Entity implements GameInterface {
     data.categories = this.categories.map((category) => category.id);
     data.mechanisms = this.mechanisms.map((mechanism) => mechanism.id);
     data.moods = this.moods.map((mood) => mood.id);
-    data.images = this.images.map((image) => image.id);
+    data.images = JSON.stringify(this.images);
     data.playableWith = this.playableWith.map((game) => game.id);
     data.isExpansionOf = this.isExpansionOf;
     data.expansions = this.expansions.map((game) => game.id);

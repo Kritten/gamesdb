@@ -356,7 +356,7 @@
 import { useI18n } from 'vue-i18n';
 import { getValidator, useModelWrapper } from '@/modules/app/utilities/helpers';
 import {
-  computed, defineComponent, PropType, ref,
+  defineComponent, PropType, ref,
 } from 'vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { Universe } from '@/modules/universe/universe.model';
@@ -378,9 +378,6 @@ import { BggThingDto } from 'boardgamegeekclient/dist/dto';
 import DisplayComplexity from '@/modules/game/base/display-complexity.vue';
 import InputSelectRating from '@/modules/game/base/input-select-rating.vue';
 import DisplayRating from '@/modules/rating/base/display-rating.vue';
-import { useCollection } from '../app/utilities/collection/collection';
-import { Image } from '../image/image.model';
-import { ServiceImage } from '../image/image.service';
 
 export default defineComponent({
   name: 'ItemGame',
@@ -464,7 +461,7 @@ export default defineComponent({
       required: true,
     },
     images: {
-      type: Array as PropType<Array<Image>>,
+      type: Array as PropType<Array<string>>,
       required: true,
     },
     validation: {
@@ -486,7 +483,6 @@ export default defineComponent({
         field: 'name', valueString: undefined, operator: 'like',
       },
     });
-    const collectionImage = useCollection<Image>(ServiceImage.loadPage, { inputCollectionData: { count: 5, filters } });
 
     const infoForGame = ref<BggThingDto | null>(null);
     const loadingInfoForGame = ref(false);
@@ -547,7 +543,6 @@ export default defineComponent({
 
     return {
       t,
-      collectionImage,
       filters,
       infoForGame,
       loadingInfoForGame,

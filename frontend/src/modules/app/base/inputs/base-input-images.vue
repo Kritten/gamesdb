@@ -29,18 +29,15 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
 import { Validation } from '@vuelidate/core';
-import { Image } from '@/modules/image/image.model';
 import { useI18n } from 'vue-i18n';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
-import { useCollection } from '@/modules/app/utilities/collection/collection';
-import { ServiceImage } from '@/modules/image/image.service';
 
 export default defineComponent({
   name: 'BaseInputImages',
   props: {
     modelValue: {
       required: true,
-      type: Array as PropType<Array<Image>>,
+      type: Array as PropType<Array<string>>,
     },
     validation: {
       required: false,
@@ -61,12 +58,10 @@ export default defineComponent({
         field: 'name', valueString: undefined, operator: 'like',
       },
     });
-    const collectionImage = useCollection<Image>(ServiceImage.loadPage, { inputCollectionData: { count: 5, filters } });
 
     return {
       t,
       filters,
-      collectionImage,
     };
   },
 });

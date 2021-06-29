@@ -8,14 +8,12 @@ import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { WishlistCollectionService } from './collection/rating.collection.service';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { WishlistCollectionData } from './collection/rating.collectionData';
-import { ImageEntityService } from '../image/image.entity.service';
 
 @Resolver(() => Wishlist)
 export class WishlistResolver extends EntityResolver {
   constructor(
     private wishlistService: WishlistEntityService,
     private wishlistCollectionService: WishlistCollectionService,
-    private imageEntityService: ImageEntityService,
   ) {
     super();
   }
@@ -55,12 +53,7 @@ export class WishlistResolver extends EntityResolver {
     wishlist.description = wishlistData.description;
     wishlist.link = wishlistData.link;
     wishlist.giftFor = wishlistData.giftFor;
-    await this.handleRelation(
-      'images',
-      wishlist,
-      wishlistData,
-      this.imageEntityService,
-    );
+    wishlist.images = wishlistData.images;
 
     return await this.wishlistService.create(wishlist);
   }
@@ -79,12 +72,7 @@ export class WishlistResolver extends EntityResolver {
     wishlist.description = wishlistData.description;
     wishlist.link = wishlistData.link;
     wishlist.giftFor = wishlistData.giftFor;
-    await this.handleRelation(
-      'images',
-      wishlist,
-      wishlistData,
-      this.imageEntityService,
-    );
+    wishlist.images = wishlistData.images;
 
     return await this.wishlistService.update(wishlist);
   }

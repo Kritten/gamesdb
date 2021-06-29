@@ -17,7 +17,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RatingModule } from './modules/rating/rating.module';
 import { ConsoleModule } from 'nestjs-console';
 import { MyCommands } from './commands';
-import { ImageModule } from './modules/image/image.module';
 import { PlaytimeModule } from './modules/playtime/playtime.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
 import { CollectionModule } from './utilities/collection/collection.module';
@@ -64,7 +63,6 @@ import { CollectionModule } from './utilities/collection/collection.module';
     MechanismModule,
     AuthModule,
     RatingModule,
-    ImageModule,
     PlaytimeModule,
     StatisticsModule,
     CollectionModule,

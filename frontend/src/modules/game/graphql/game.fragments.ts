@@ -17,6 +17,7 @@ export const fragments = {
       ratingBGG
       size
       ratingAverage
+      images
       universes {
         id
       }
@@ -28,11 +29,6 @@ export const fragments = {
       }
       moods {
         id
-      }
-      images {
-        id
-        name
-        link
       }
       playableWith {
         id

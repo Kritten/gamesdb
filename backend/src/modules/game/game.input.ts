@@ -49,8 +49,8 @@ export class GameInput {
   @Field(() => [ID])
   moods?: string[];
 
-  @Field(() => [ID])
-  images?: string[];
+  @Field(() => String)
+  images?: string;
 
   @Field(() => [ID])
   ratings?: string[];

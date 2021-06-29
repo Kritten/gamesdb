@@ -2,8 +2,6 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
 import {
   Field,
@@ -12,7 +10,6 @@ import {
   Int,
   ObjectType,
 } from '@nestjs/graphql';
-import { Image } from '../image/image.entity';
 
 @Entity()
 @ObjectType()
@@ -55,11 +52,9 @@ export class Wishlist {
   })
   giftFor: number;
 
-  @ManyToMany(
-    () => Image,
-    image => image.wishlists,
-  )
-  @JoinTable()
-  @Field(() => [Image], { defaultValue: [] })
-  images: Image[];
+  @Column({
+    type: 'text',
+    default: '[]'
+  })
+  images: string;
 }

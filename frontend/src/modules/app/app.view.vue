@@ -103,7 +103,7 @@ import {
   fasGamepad,
   fasGift,
   fasGifts, fasGlobeAmericas,
-  fasImages, fasSignOutAlt, fasSmile,
+  fasSignOutAlt, fasSmile,
   fasStarHalfAlt,
   fasTachometerAlt,
   fasTags,
@@ -161,11 +161,6 @@ export default defineComponent({
         label: t('player.label', 2),
         name: 'players',
         icon: fasUsers,
-      },
-      {
-        label: t('image.label', 2),
-        name: 'images',
-        icon: fasImages,
       },
       {
         label: t('rating.label', 2),

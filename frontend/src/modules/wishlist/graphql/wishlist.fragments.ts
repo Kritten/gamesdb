@@ -10,11 +10,7 @@ export const fragments = {
       link
       taken
       giftFor
-      images {
-        id
-        name
-        link
-      }
+      images
     }
   `,
 };
