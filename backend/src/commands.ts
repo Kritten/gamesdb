@@ -16,6 +16,7 @@ import { User } from './modules/user/user.entity';
 export class MyCommands {
   constructor(
     private userService: UserEntityService,
+    private gameService: GameEntityService,
   ) {}
 
   @Command({
@@ -35,7 +36,7 @@ export class MyCommands {
     command: 'export-images',
     description: 'Exports images',
   })
-  async exportImages(name: string, password: string): Promise<void> {
+  async exportImages(): Promise<void> {
     // const response = await this.imageService.find();
     //
     // const images = [];
@@ -51,6 +52,25 @@ export class MyCommands {
     // }
     //
     // fs.writeFileSync('images.json', JSON.stringify(images));
+  }
+
+  @Command({
+    command: 'import-images',
+    description: 'Imports images',
+  })
+  async importImages(): Promise<void> {
+    const file = fs.readFileSync('images.json');
+    const images: Array<{link: string, game: number}> = JSON.parse(file.toString());
+
+    for (let i = 0; i < images.length; i += 1) {
+      const image = images[i];
+      const game = await this.gameService.findOne(image.game);
+
+      const foo = JSON.parse(game.images);
+      foo.push(image.link);
+      game.images = JSON.stringify(foo);
+      this.gameService.update(game);
+    }
   }
 
   @Command({

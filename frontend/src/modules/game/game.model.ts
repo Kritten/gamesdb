@@ -116,6 +116,8 @@ export class Game extends Entity implements GameInterface {
       entity.moods = entity.moods.map((mood) => moodById(mood.id as ID));
     }
 
+    entity.images = JSON.parse(entity.images as unknown as string) as Array<string>;
+
     return entity;
   }
 

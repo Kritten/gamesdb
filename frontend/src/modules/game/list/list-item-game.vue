@@ -24,12 +24,12 @@
             @mouseleave="autoplay = true"
           >
             <q-carousel-slide
-              v-for="image in game.images"
-              :key="image.id"
-              :name="image.id"
+              v-for="(image, index) in game.images"
+              :key="index"
+              :name="index"
             >
               <q-img
-                :src="image.link"
+                :src="image"
                 fit="contain"
                 height="14rem"
               />
@@ -126,9 +126,7 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n();
     const autoplay = ref(true);
-    // TODO fix
-    // const slide = ref(props.game.images[0]?.id);
-    const slide = ref();
+    const slide = ref(0);
 
     return {
       t,

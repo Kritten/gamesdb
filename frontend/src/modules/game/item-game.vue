@@ -317,6 +317,13 @@
                     :validation="validation?.moods"
                   />
                 </div>
+
+                <div class="col-12">
+                  <base-input-images
+                    v-model="imagesInternal"
+                    :validation="validation?.images"
+                  />
+                </div>
               </div>
             <!--  <div>-->
             <!--    <label for="images">{{ t('image.label', 2) }}</label>-->
@@ -378,10 +385,12 @@ import { BggThingDto } from 'boardgamegeekclient/dist/dto';
 import DisplayComplexity from '@/modules/game/base/display-complexity.vue';
 import InputSelectRating from '@/modules/game/base/input-select-rating.vue';
 import DisplayRating from '@/modules/rating/base/display-rating.vue';
+import BaseInputImages from '@/modules/app/base/inputs/base-input-images.vue';
 
 export default defineComponent({
   name: 'ItemGame',
   components: {
+    BaseInputImages,
     DisplayRating,
     InputSelectRating,
     DisplayComplexity,
@@ -535,11 +544,13 @@ export default defineComponent({
     const moodsInternal = useModelWrapper<Array<Mood>>({
       props, emit, name: 'moods',
     });
+    const imagesInternal = useModelWrapper<Array<Mood>>({
+      props, emit, name: 'images',
+    });
 
     const complexityFromBGG = (complexity: number) => Math.round(complexity) - 1;
 
     const ratingFromBGG = (rating: number) => Math.round(rating) - 1;
-    // 1927
 
     return {
       t,
@@ -562,6 +573,7 @@ export default defineComponent({
       categoriesInternal,
       mechanismsInternal,
       moodsInternal,
+      imagesInternal,
       complexityFromBGG,
       ratingFromBGG,
       async loadInfoForGame() {

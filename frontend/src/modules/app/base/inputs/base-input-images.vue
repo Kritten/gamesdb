@@ -1,39 +1,57 @@
 <template>
-  <details>
-    <summary>{{ t('image.label', 2) }}</summary>
-
-    <input
-      v-model="filters.name.valueString"
+  <div class="row">
+    <div class="col">
+      <base-input-text
+        v-model="imageNew"
+        :options="{
+          label: t('image.new')
+        }"
+      />
+    </div>
+    <div class="col-shrink">
+      <q-btn
+        flat
+        :disable="imageNew.trim() === ''"
+        color="primary"
+        icon="fa fa-plus"
+        :label="t('common.add')"
+        @click="addImage"
+      />
+    </div>
+  </div>
+  <div class="row q-col-gutter-md">
+    <div
+      v-for="image in modelValue"
+      :key="image"
+      class="col-4"
     >
-    <div v-for="image in collectionImage.items.value">
-      {{ image.name }} <button
-        type="button"
-        @click="$emit('update:modelValue', [...modelValue, image])"
-      >
-        {{ t('common.add') }}
-      </button>
+      <q-img
+        :src="image"
+        height="100px"
+        fit="contain"
+      />
+      <q-btn
+        class="button-delete-image"
+        icon="fa fa-times"
+        color="negative"
+        flat
+        round
+        size="sm"
+        @click="removeImage(image)"
+      />
     </div>
-
-    <h3>Hinzugefügte Bilder</h3>
-    <div v-for="image in modelValue">
-      {{ image.name }} <button
-        type="button"
-        @click="$emit('update:modelValue', modelValue.filter(img => img.id !== image.id))"
-      >
-        {{ t('common.delete') }}
-      </button>
-    </div>
-  </details>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
 import { Validation } from '@vuelidate/core';
 import { useI18n } from 'vue-i18n';
-import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
+import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 
 export default defineComponent({
   name: 'BaseInputImages',
+  components: { BaseInputText },
   props: {
     modelValue: {
       required: true,
@@ -50,23 +68,31 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  setup() {
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
     const { t } = useI18n();
-
-    const filters = ref<ServiceCollectionFilters>({
-      name: {
-        field: 'name', valueString: undefined, operator: 'like',
-      },
-    });
+    const imageNew = ref('');
 
     return {
       t,
-      filters,
+      imageNew,
+      addImage() {
+        if (props.modelValue.find((image) => image === imageNew.value) === undefined) {
+          emit('update:modelValue', [...props.modelValue, imageNew.value]);
+          imageNew.value = '';
+        }
+      },
+      removeImage(imageToBeDeleted: string) {
+        emit('update:modelValue', props.modelValue.filter((image) => imageToBeDeleted !== image));
+      },
     };
   },
 });
 </script>
 
 <style scoped>
+.button-delete-image {
+  position: absolute;
+}
 
 </style>

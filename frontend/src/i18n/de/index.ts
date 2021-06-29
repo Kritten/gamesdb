@@ -116,6 +116,7 @@ export default {
   },
   image: {
     label: 'Bild | Bilder',
+    new: 'Neues Bild',
   },
   universe: {
     label: 'Universum | Universen',
