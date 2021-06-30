@@ -2,27 +2,10 @@
   <base-dialog
     :title="`${t(`${i18nPrefix}.label`)} ${t('common.edit')}`"
     :text-submit="t('common.edit')"
-    :options-button="{
-      label: `${t(`${i18nPrefix}.label`)} ${t('common.edit')}`,
-    }"
+    :options-button="optionsButtonMerged"
     :validation="validation"
     @submit="submit"
   >
-    <template #activator="{ open }">
-      <q-btn
-        icon="fas fa-edit"
-        color="primary"
-        flat
-        size="sm"
-        round
-        @click="open"
-      >
-        <q-tooltip>
-          {{ t(`${i18nPrefix}.label`) }} {{ t('common.edit') }}
-        </q-tooltip>
-      </q-btn>
-    </template>
-
     <slot
       name="item"
       :entity="updateEntity.entity"
@@ -56,6 +39,11 @@ export default defineComponent({
       required: true,
       type: Function,
     },
+    optionsButton: {
+      required: false,
+      type: Object,
+      default: () => ({}),
+    },
     validationRules: {
       required: false,
       type: Object,
@@ -79,6 +67,12 @@ export default defineComponent({
         close();
         emit('submit', close);
       },
+      optionsButtonMerged: computed(() => ({
+        label: `${t(`${props.i18nPrefix}.label`)} ${t('common.edit')}`,
+        color: 'primary',
+        icon: 'fa fa-edit',
+        ...props.optionsButton,
+      })),
     };
   },
 });

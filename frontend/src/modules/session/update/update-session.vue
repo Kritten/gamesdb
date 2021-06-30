@@ -4,6 +4,7 @@
     i18n-prefix="session"
     :use-update-entity="useUpdateSession"
     :validation-rules="validationRules"
+    :options-button="{ label: undefined }"
   >
     <template #item="{ entity, validation }">
       <item-session
