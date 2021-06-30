@@ -36,7 +36,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = useI18n();
 
-    const items = [0, 1, 2, 3, 4].map((value) => ({
+    const items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => ({
       label: (value + 1).toString(),
       // label: t(`game.complexityFormatted.${value}`),
       value,

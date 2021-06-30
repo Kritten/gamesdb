@@ -1,7 +1,7 @@
 <template>
   <q-rating
     v-if="rating !== null"
-    :model-value="rating / 2.0"
+    :model-value="(rating + 1) / 2.0"
     readonly
     size="1.5rem"
     icon="far fa-star"
