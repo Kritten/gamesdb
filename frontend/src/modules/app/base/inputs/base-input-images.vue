@@ -24,6 +24,7 @@
       v-for="image in modelValue"
       :key="image"
       class="col-4"
+      style="position: relative"
     >
       <q-img
         :src="image"
@@ -34,7 +35,6 @@
         class="button-delete-image"
         icon="fa fa-times"
         color="negative"
-        flat
         round
         size="sm"
         @click="removeImage(image)"
@@ -93,6 +93,6 @@ export default defineComponent({
 <style scoped>
 .button-delete-image {
   position: absolute;
+  right: 0;
 }
-
 </style>
