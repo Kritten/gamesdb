@@ -4,10 +4,13 @@
   >
     <q-card class="column full-height">
       <q-card-section class="row col-grow">
-        <div class="col-12">
+        <div class="col">
           <span class="text-h6">
             {{ game.name }}
           </span>
+        </div>
+        <div class="col-shrink">
+          <update-game :game="game" />
         </div>
       </q-card-section>
       <q-card-section class="row">
@@ -107,10 +110,12 @@ import DisplaySize from '@/modules/game/base/display-size.vue';
 import DisplayRating from '@/modules/rating/base/display-rating.vue';
 import DisplayPlaytimeGame from '@/modules/game/base/display-playtime-game.vue';
 import DisplayIsCoop from '@/modules/game/base/display-is-coop.vue';
+import UpdateGame from '@/modules/game/update/update-game.vue';
 
 export default defineComponent({
   name: 'ListItemGame',
   components: {
+    UpdateGame,
     DisplayIsCoop,
     DisplayPlaytimeGame,
     DisplayRating,

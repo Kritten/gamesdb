@@ -6,35 +6,7 @@
           :title="game.name"
         >
           <template #actions>
-            <base-entity-update
-              :entity="game"
-              :i18n-prefix="'game'"
-              :use-update-entity="updateGame"
-              :validation-rules="validationRules"
-            >
-              <template #item="propsUpdate">
-                <item-game
-                  v-model:id-b-g-g="propsUpdate.entity.value.idBGG"
-                  v-model:name="propsUpdate.entity.value.name"
-                  v-model:description="propsUpdate.entity.value.description"
-                  v-model:countPlayersMin="propsUpdate.entity.value.countPlayersMin"
-                  v-model:countPlayersMax="propsUpdate.entity.value.countPlayersMax"
-                  v-model:minutesPlaytimeMin="propsUpdate.entity.value.minutesPlaytimeMin"
-                  v-model:minutesPlaytimeMax="propsUpdate.entity.value.minutesPlaytimeMax"
-                  v-model:isCoop="propsUpdate.entity.value.isCoop"
-                  v-model:rating-b-g-g="propsUpdate.entity.value.ratingBGG"
-                  v-model:isDigital="propsUpdate.entity.value.isDigital"
-                  v-model:complexity="propsUpdate.entity.value.complexity"
-                  v-model:size="propsUpdate.entity.value.size"
-                  v-model:universes="propsUpdate.entity.value.universes"
-                  v-model:categories="propsUpdate.entity.value.categories"
-                  v-model:mechanisms="propsUpdate.entity.value.mechanisms"
-                  v-model:moods="propsUpdate.entity.value.moods"
-                  v-model:images="propsUpdate.entity.value.images"
-                  :validation="propsUpdate.validation"
-                />
-              </template>
-            </base-entity-update>
+            <update-game :game="game" />
           </template>
 
           <q-card-section>
@@ -152,15 +124,6 @@ export default defineComponent({
 
     ServiceGame.getOrLoadGame(idGame).then((value: Game) => { game.value = value; });
 
-    const validationRules = {
-      name: {
-        required,
-      },
-      countPlayersMin: {
-        required,
-      },
-    };
-
     const properties: Ref<Array<{
       label: string,
       value?: string,
@@ -227,8 +190,6 @@ export default defineComponent({
       t,
       game,
       properties,
-      updateGame: useUpdateGame,
-      validationRules,
       countSessions,
     };
   },

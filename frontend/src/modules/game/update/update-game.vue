@@ -1,55 +1,69 @@
 <template>
-  <form @submit.prevent="updateGame.update">
-    <item-game
-      v-model:id-b-g-g="updateGame.entity.value.idBGG"
-      v-model:name="updateGame.entity.value.name"
-      v-model:description="updateGame.entity.value.description"
-      v-model:countPlayersMin="updateGame.entity.value.countPlayersMin"
-      v-model:countPlayersMax="updateGame.entity.value.countPlayersMax"
-      v-model:minutesPlaytimeMin="updateGame.entity.value.minutesPlaytimeMin"
-      v-model:minutesPlaytimeMax="updateGame.entity.value.minutesPlaytimeMax"
-      v-model:isCoop="updateGame.entity.value.isCoop"
-      v-model:rating-b-g-g="updateGame.entity.value.ratingBGG"
-      v-model:isDigital="updateGame.entity.value.isDigital"
-      v-model:complexity="updateGame.entity.value.complexity"
-      v-model:size="updateGame.entity.value.size"
-      v-model:universes="updateGame.entity.value.universes"
-      v-model:categories="updateGame.entity.value.categories"
-      v-model:mechanisms="updateGame.entity.value.mechanisms"
-      v-model:moods="updateGame.entity.value.moods"
-      v-model:images="updateGame.entity.value.images"
-    />
-    <div>
-      <button type="submit">
-        {{ t('common.edit') }}
-      </button>
-    </div>
-  </form>
+  <base-entity-update
+    :entity="game"
+    :i18n-prefix="'game'"
+    :use-update-entity="updateGame"
+    :validation-rules="validationRules"
+  >
+    <template #item="propsUpdate">
+      <item-game
+        v-model:id-b-g-g="propsUpdate.entity.value.idBGG"
+        v-model:name="propsUpdate.entity.value.name"
+        v-model:description="propsUpdate.entity.value.description"
+        v-model:countPlayersMin="propsUpdate.entity.value.countPlayersMin"
+        v-model:countPlayersMax="propsUpdate.entity.value.countPlayersMax"
+        v-model:minutesPlaytimeMin="propsUpdate.entity.value.minutesPlaytimeMin"
+        v-model:minutesPlaytimeMax="propsUpdate.entity.value.minutesPlaytimeMax"
+        v-model:isCoop="propsUpdate.entity.value.isCoop"
+        v-model:rating-b-g-g="propsUpdate.entity.value.ratingBGG"
+        v-model:isDigital="propsUpdate.entity.value.isDigital"
+        v-model:complexity="propsUpdate.entity.value.complexity"
+        v-model:size="propsUpdate.entity.value.size"
+        v-model:universes="propsUpdate.entity.value.universes"
+        v-model:categories="propsUpdate.entity.value.categories"
+        v-model:mechanisms="propsUpdate.entity.value.mechanisms"
+        v-model:moods="propsUpdate.entity.value.moods"
+        v-model:images="propsUpdate.entity.value.images"
+        :validation="propsUpdate.validation"
+      />
+    </template>
+  </base-entity-update>
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import ItemGame from '@/modules/game/item-game.vue';
-import { ServiceGame } from '@/modules/game/game.service';
 import { Game } from '@/modules/game/game.model';
 import { defineComponent } from 'vue';
+import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
+import { useUpdateGame } from '@/modules/game/composables/useUpdateGame';
+import { required } from '@vuelidate/validators';
 
 export default defineComponent({
   name: 'UpdateGame',
-  components: { ItemGame },
+  components: { BaseEntityUpdate, ItemGame },
   props: {
     game: {
       required: true,
       type: Game,
     },
   },
-  setup(context) {
+  setup() {
     const { t } = useI18n();
-    const updateGame = ServiceGame.useUpdate(context.game);
+
+    const validationRules = {
+      name: {
+        required,
+      },
+      countPlayersMin: {
+        required,
+      },
+    };
 
     return {
       t,
-      updateGame,
+      updateGame: useUpdateGame,
+      validationRules,
     };
   },
 });
