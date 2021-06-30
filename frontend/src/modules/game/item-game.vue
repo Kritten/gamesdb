@@ -380,8 +380,7 @@ import InputSelectUniverse from '@/modules/universe/base/input-select-universe.v
 import InputSelectCategory from '@/modules/category/base/input-select-category.vue';
 import InputSelectMechanism from '@/modules/mechanism/base/input-select-mechanism.vue';
 import InputSelectMood from '@/modules/mood/base/input-select-mood.vue';
-import { useBGG } from '@/modules/game/composables/useBGG';
-import { BggThingDto } from 'boardgamegeekclient/dist/dto';
+import { TypeBGGGame, useBGG } from '@/modules/game/composables/useBGG';
 import DisplayComplexity from '@/modules/game/base/display-complexity.vue';
 import InputSelectRating from '@/modules/game/base/input-select-rating.vue';
 import DisplayRating from '@/modules/rating/base/display-rating.vue';
@@ -493,7 +492,7 @@ export default defineComponent({
       },
     });
 
-    const infoForGame = ref<BggThingDto | null>(null);
+    const infoForGame = ref<TypeBGGGame | null>(null);
     const loadingInfoForGame = ref(false);
 
     const idBGGInternal = useModelWrapper<number>({
@@ -598,7 +597,6 @@ export default defineComponent({
         } else {
           infoForGame.value = response;
         }
-        console.warn(response, 'response');
       },
     };
   },
