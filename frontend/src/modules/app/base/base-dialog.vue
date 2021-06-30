@@ -79,7 +79,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, PropType, ref, watch,
+  computed, defineComponent, PropType, ref,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
@@ -146,12 +146,20 @@ export default defineComponent({
       isOpen,
       open,
       close,
-      optionsButtonMerged: computed(() => ({
-        flat: true,
-        stretch: true,
-        label: t('common.open'),
-        ...props.optionsButton,
-      })),
+      optionsButtonMerged: computed(() => {
+        const result = {
+          flat: true,
+          stretch: true,
+          label: t('common.open'),
+          ...props.optionsButton,
+        };
+
+        if (screen.lt.sm) {
+          result.label = '';
+        }
+
+        return result;
+      }),
       style: computed(() => (screen.lt.sm ? {} : {
         width: '700px',
         maxWidth: '80vw',
