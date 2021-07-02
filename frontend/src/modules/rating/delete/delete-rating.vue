@@ -1,40 +1,29 @@
 <template>
-  <button @click="confirmDelete">
-    {{ t('common.delete') }}
-  </button>
+  <base-entity-delete
+    :entity="rating"
+    i18n-prefix="rating"
+    :use-delete-entity="useDeleteRating"
+  />
 </template>
 
 <script lang="ts">
-import { ServiceRating } from '@/modules/rating/rating.service';
-import { useI18n } from 'vue-i18n';
 import { Rating } from '@/modules/rating/rating.model';
 import { defineComponent } from 'vue';
-import { Player } from '@/modules/player/player.model';
+import { useDeleteRating } from '@/modules/rating/composables/useDeleteRating';
+import BaseEntityDelete from '@/modules/app/base/entity/base-entity-delete.vue';
 
 export default defineComponent({
   name: 'DeleteRating',
+  components: { BaseEntityDelete },
   props: {
     rating: {
       required: true,
       type: Rating,
     },
   },
-  setup(context) {
-    const { t } = useI18n();
-    const deleteRating = ServiceRating.useDelete();
-
-    const confirmDelete = () => {
-      const confirmed = confirm(`Bewertung von ${(context.rating.player as Player).name} löschen?`);
-
-      if (confirmed) {
-        deleteRating.delete(context.rating);
-      }
-    };
-
+  setup() {
     return {
-      t,
-      deleteRating,
-      confirmDelete,
+      useDeleteRating,
     };
   },
 });

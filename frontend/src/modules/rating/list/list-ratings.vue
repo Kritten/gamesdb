@@ -1,42 +1,50 @@
 <template>
-  <details>
-    <summary>
-      {{ t('rating.label') }} anlegen
-    </summary>
-    <create-rating />
-  </details>
-  <list-filters-rating
-    v-model="filters"
-    @reset="resetFilters"
-    @update-filter="updateFilter"
-  />
-  <hr>
-  <base-list-sort
-    v-model:sort-by="sortBy"
-    v-model:sort-desc="sortDesc"
-    :options-sort-by="optionsSortBy"
-  />
-  <h2>
-    {{ collection.countItems.value }} {{ t('rating.label', collection.countItems.value) }}
-  </h2>
-  <table>
-    <tr>
-      <th>{{ t('rating.label') }}</th>
-      <th>{{ t('player.label') }}</th>
-      <th>{{ t('game.label') }}</th>
-    </tr>
-    <list-item-rating
-      v-for="rating in collection.items.value"
-      :key="rating.id"
-      :rating="rating"
-    />
-  </table>
-  <button
-    v-if="collection.hasNextPage.value"
-    @click="collection.loadNextItems"
-  >
-    Mehr laden
-  </button>
+  <div class="row q-col-gutter-md">
+    <div class="col-12">
+      <list-filters-rating
+        v-model="filters"
+        @reset="resetFilters"
+        @update-filter="updateFilter"
+      />
+    </div>
+    <div class="col-12">
+      <base-list-sort
+        v-model:sort-by="sortBy"
+        v-model:sort-desc="sortDesc"
+        :options-sort-by="optionsSortBy"
+      />
+    </div>
+    <div class="col-12">
+      <q-markup-table
+        border="1"
+      >
+        <thead>
+          <tr>
+            <th class="text-left">
+              {{ t('player.label') }}
+            </th>
+            <th class="text-left">
+              {{ t('game.label') }}
+            </th>
+            <th
+              class="text-left"
+            >
+              {{ t('rating.label') }}
+            </th>
+            <th style="width: 1px" />
+          </tr>
+        </thead>
+        <tbody>
+          <list-item-rating
+            v-for="(rating, index) in collection.items.value"
+            :key="rating.id"
+            v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
+            :rating="rating"
+          />
+        </tbody>
+      </q-markup-table>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -74,7 +82,8 @@ export default defineComponent({
 
     const collection = useCollection<Rating>(ServiceRating.loadPage, {
       inputCollectionData: {
-      // sortBy: ref(['entity.id']),
+        count: 30,
+        // sortBy: ref(['entity.id']),
         sortBy,
         sortDesc,
         filters,
@@ -127,6 +136,11 @@ export default defineComponent({
       optionsSortBy,
       resetFilters,
       updateFilter,
+      onIntersection(entry: {isIntersecting: boolean}) {
+        if (entry.isIntersecting === true && collection.hasNextPage.value) {
+          void collection.loadNextItems();
+        }
+      },
     };
   },
 });

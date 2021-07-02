@@ -4,4 +4,5 @@ import { ObjectType } from '@nestjs/graphql';
 export class CountsModel {
   gamesDigital: number
   gamesAnalog: number
+  ratings: number
 }

@@ -28,6 +28,10 @@ export class Rating extends Entity implements RatingInterface {
       entity.player = playerById(entity.player.id as ID);
     }
 
+    if (entity.game !== undefined) {
+      entity.game = new Game(entity.game);
+    }
+
     return entity;
   }
 

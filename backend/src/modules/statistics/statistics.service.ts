@@ -5,6 +5,7 @@ import { CollectionService } from '../../utilities/collection/collection.service
 import { Inject } from '@nestjs/common';
 import { Playtime } from '../playtime/playtime.entity';
 import { annotationsStatistics } from './statistics.annotations';
+import {Rating} from "../rating/rating.entity";
 
 export class StatisticsService {
   constructor(
@@ -24,11 +25,13 @@ export class StatisticsService {
           isDigital: false
         }
       }),
+      await getManager().count(Rating),
     ]);
 
     return {
       gamesDigital: results[0],
       gamesAnalog: results[1],
+      ratings: results[2],
     };
   }
 

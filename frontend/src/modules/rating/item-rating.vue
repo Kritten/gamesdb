@@ -1,57 +1,36 @@
 <template>
-  <div>
-    <label for="rating">{{ t('rating.label') }}</label>
-    <select
-      id="rating"
-      v-model="ratingInternal"
-    >
-      <option
-        v-for="ratingLocal in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
-        :key="ratingLocal"
-        :value="ratingLocal"
-      >
-        {{ ratingLocal }}
-      </option>
-    </select>
-  </div>
-  <div>
-    <label for="playerInput">{{ t('player.label') }}</label>
-    <select
-      id="playerInput"
-      v-model="playerInternal"
-    >
-      <option
-        v-for="playerLocal in store.state.modulePlayer.players"
-        :key="playerLocal.id"
-        :value="playerLocal.id"
-      >
-        {{ playerLocal.name }}
-      </option>
-    </select>
-  </div>
-  <div>
-    <label for="game">{{ t('game.label', 2) }}</label>
-    <input
-      id="game"
-      v-model="filtersGame.name.valueString"
-    >
-    <div>
-      <div v-for="gameLocal in collectionGame.items.value">
-        {{ gameLocal.name }} <button
-          type="button"
-          @click="$emit('update:game', gameLocal)"
-        >
-          {{ t('common.select') }}
-        </button>
-      </div>
+  <div class="row q-col-gutter-md">
+    <div class="col-12">
+      <input-select-player
+        v-model="playerInternal"
+        :validation="validation?.player"
+      />
+    </div>
+
+    <div class="col-12">
+      <input-select-game
+        v-model="gameInternal"
+        :validation="validation?.game"
+      />
+    </div>
+
+    <div class="col-12">
+      <input-select-rating
+        v-model="ratingInternal"
+        :validation="validation?.rating"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
+import InputSelectRating from '@/modules/game/base/input-select-rating.vue';
+import InputSelectGame from '@/modules/game/base/input-select-game.vue';
+import InputSelectPlayer from '@/modules/player/base/input-select-player.vue';
+import { Validation } from '@vuelidate/core';
 import { useCollection } from '../app/utilities/collection/collection';
 import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
@@ -60,6 +39,7 @@ import { ServiceGame } from '../game/game.service';
 
 export default defineComponent({
   name: 'ItemRating',
+  components: { InputSelectPlayer, InputSelectGame, InputSelectRating },
   props: {
     rating: {
       validator: (value) => Number.isInteger(value) || value === undefined,
@@ -72,6 +52,11 @@ export default defineComponent({
     game: {
       validator: (value) => value instanceof Game || value === undefined,
       required: true,
+    },
+    validation: {
+      required: false,
+      type: Object as PropType<Validation>,
+      default: undefined,
     },
   },
   setup(props, { emit }) {
@@ -91,10 +76,11 @@ export default defineComponent({
       ratingInternal: useModelWrapper({
         props, emit, name: 'rating',
       }),
+      gameInternal: useModelWrapper({
+        props, emit, name: 'game',
+      }),
       playerInternal: useModelWrapper({
-        // Todo
-        // props, emit, name: 'player', isEntity: true, entities: store.state.modulePlayer.players,
-        props, emit, name: 'player', isEntity: true,
+        props, emit, name: 'player',
       }),
     };
   },

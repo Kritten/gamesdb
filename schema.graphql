@@ -14,6 +14,7 @@ type Category {
 type CountsModel {
     gamesAnalog: Float!
     gamesDigital: Float!
+    ratings: Float!
 }
 
 type Game {

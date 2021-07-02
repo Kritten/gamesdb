@@ -33,7 +33,6 @@
       </base-entity-header-info>
     </div>
     <div class="col-12">
-      <!--    <create-game />-->
       <list-games analog-only />
     </div>
   </div>

@@ -142,6 +142,9 @@ export default {
   },
   rating: {
     label: 'Bewertung | Bewertungen',
+    confirm: {
+      delete: 'Soll die Bewertung wirklich gelöscht werden?',
+    },
   },
   playtime: {
     label: 'Spielzeit | Spielzeiten',

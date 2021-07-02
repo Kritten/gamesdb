@@ -30,12 +30,6 @@
       />
     </tbody>
   </q-markup-table>
-  <button
-    v-if="collection.hasNextPage.value"
-    @click="collection.loadNextItems"
-  >
-    Mehr laden
-  </button>
 </template>
 
 <script lang="ts">

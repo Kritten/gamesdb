@@ -22,6 +22,7 @@
             </div>
           </div>
         </q-card-section>
+
         <q-card-section>
           <div class="row q-col-gutter-md">
             <div class="col-12 col-md-6">

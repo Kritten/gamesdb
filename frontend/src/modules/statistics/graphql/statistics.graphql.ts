@@ -5,6 +5,7 @@ export const queryStatisticsCounts = gql`
       statisticsCounts {
         gamesAnalog
         gamesDigital
+        ratings
       }
     }
 `;

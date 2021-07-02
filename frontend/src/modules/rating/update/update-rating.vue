@@ -1,41 +1,59 @@
 <template>
-  <form @submit.prevent="updateRating.update">
-    <div>
-      <label for="name">{{ t('rating.label') }}</label>
-      <input
-        id="name"
-        v-model="updateRating.rating.value.name"
-      >
-    </div>
-    <div>
-      <button type="submit">
-        {{ t('common.edit') }}
-      </button>
-    </div>
-  </form>
+  <base-entity-update
+    :entity="rating"
+    i18n-prefix="rating"
+    :use-update-entity="useUpdateRating"
+    :validation-rules="validationRules"
+    :options-button="{ label: undefined }"
+  >
+    <template #item="{ entity, validation }">
+      <item-rating
+        v-model:player="entity.value.player"
+        v-model:game="entity.value.game"
+        v-model:rating="entity.value.rating"
+        :validation="validation"
+      />
+    </template>
+  </base-entity-update>
 </template>
 
 <script lang="ts">
-import { ServiceRating } from '@/modules/rating/rating.service';
 import { useI18n } from 'vue-i18n';
 import { Rating } from '@/modules/rating/rating.model';
 import { defineComponent } from 'vue';
+import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
+import ItemRating from '@/modules/rating/item-rating.vue';
+import { useUpdateRating } from '@/modules/rating/composables/useUpdateRating';
+import { required } from '@vuelidate/validators';
 
 export default defineComponent({
   name: 'UpdateRating',
+  components: { ItemRating, BaseEntityUpdate },
   props: {
     rating: {
       required: true,
       type: Rating,
     },
   },
-  setup(context) {
+  setup() {
     const { t } = useI18n();
-    const updateRating = ServiceRating.useUpdate(context.rating);
+
+    const validationRules = {
+      player: {
+        required,
+      },
+      game: {
+        required,
+      },
+      rating: {
+        required,
+      },
+    };
 
     return {
       t,
-      updateRating,
+      validationRules,
+      useUpdateRating,
     };
   },
 });

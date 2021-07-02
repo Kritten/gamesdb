@@ -51,7 +51,7 @@ class ServiceAppClass {
   }
 
   initializeEventListener() {
-    for (const event of ['createdGame']) {
+    for (const event of ['createdGame', 'createdRating', 'deletedGame', 'deletedRating']) {
       queue.listen(event, () => {
         void useStatistics().loadStatisticsCounts();
       });
