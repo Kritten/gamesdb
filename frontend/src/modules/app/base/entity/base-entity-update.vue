@@ -49,12 +49,29 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    label: {
+      required: false,
+      type: [String, Boolean],
+      default: undefined,
+    },
   },
   emits: ['submit'],
   setup(props, { emit }) {
     const { t } = useI18n();
 
     const updateEntity = props.useUpdateEntity(props.entity);
+
+    const labelInternal = computed(() => {
+      if (props.label === true || props.label === '') {
+        return `${t(`${props.i18nPrefix}.label`)} ${t('common.edit')}`;
+      }
+
+      if (typeof props.label === 'string') {
+        return props.label;
+      }
+
+      return undefined;
+    });
 
     const validation = useVuelidate(computed(() => (props.validationRules)), updateEntity.entity, { $stopPropagation: true });
 
@@ -68,7 +85,7 @@ export default defineComponent({
         emit('submit', close);
       },
       optionsButtonMerged: computed(() => ({
-        label: `${t(`${props.i18nPrefix}.label`)} ${t('common.edit')}`,
+        label: labelInternal.value,
         color: 'primary',
         icon: 'fa fa-edit',
         ...props.optionsButton,
