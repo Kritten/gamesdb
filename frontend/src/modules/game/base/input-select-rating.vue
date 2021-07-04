@@ -3,7 +3,7 @@
     v-model="ratingBGGInternal"
     :validation="validation"
     :options="{
-      label: t('game.ratingBGG'),
+      label: labelInternal,
       items: items,
       emitValue: true,
       mapOptions: true,
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import { Validation } from '@vuelidate/core';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import { useI18n } from 'vue-i18n';
@@ -32,6 +32,11 @@ export default defineComponent({
       type: Object as PropType<Validation>,
       default: undefined,
     },
+    label: {
+      required: false,
+      type: String,
+      default: undefined,
+    },
   },
   setup(props, { emit }) {
     const { t } = useI18n();
@@ -42,9 +47,12 @@ export default defineComponent({
       value,
     }));
 
+    const labelInternal = computed(() => (props.label === undefined ? t('rating.label') : props.label));
+
     return {
       t,
       items,
+      labelInternal,
       ratingBGGInternal: useModelWrapper({ props, emit }),
     };
   },

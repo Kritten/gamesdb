@@ -229,6 +229,7 @@
                   <input-select-rating
                     v-model="ratingBGGInternal"
                     :validation="validation?.ratingBGG"
+                    :label="t('game.ratingBGG')"
                   />
                 </div>
 
