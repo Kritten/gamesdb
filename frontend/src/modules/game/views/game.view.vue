@@ -63,21 +63,10 @@
       <div class="col-12 ">
         <q-card>
           <q-card-section>
-          <!--          <delete-game :game="game" />-->
+            <delete-game :game="game" />
           </q-card-section>
         </q-card>
       </div>
-
-    <!--    <details>-->
-    <!--      <summary>Spiel bearbeiten</summary>-->
-    <!--      <update-game :game="game" />-->
-    <!--    </details>-->
-    <!--    <h2>Sessions</h2>-->
-    <!--    <details>-->
-    <!--      <summary>Session anlegen</summary>-->
-    <!--      <create-session :game="game" />-->
-    <!--    </details>-->
-    <!--    <delete-game :game="game" />-->
     </div>
   </template>
 </template>

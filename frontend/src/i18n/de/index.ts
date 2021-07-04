@@ -79,6 +79,9 @@ export default {
       minutesPlaytimeMin: 'Spielzeit (min)',
       minutesPlaytimeMax: 'Spielzeit (max)',
     },
+    confirm: {
+      delete: "Soll das Spiel '{name}' wirklich gelöscht werden?",
+    },
   },
   category: {
     label: 'Kategorie | Kategorien',

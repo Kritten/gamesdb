@@ -13,7 +13,8 @@
         color="negative"
         flat
         size="sm"
-        round
+        :round="label === undefined"
+        :label="labelInternal"
         @click="open"
       >
         <q-tooltip>
@@ -28,6 +29,7 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent, PropType,
 } from 'vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
@@ -50,6 +52,11 @@ export default defineComponent({
       required: true,
       type: Function,
     },
+    label: {
+      required: false,
+      type: [String, Boolean],
+      default: undefined,
+    },
   },
   emits: ['submit'],
   setup(props, { emit }) {
@@ -57,8 +64,21 @@ export default defineComponent({
 
     const deleteEntity = props.useDeleteEntity();
 
+    const labelInternal = computed(() => {
+      if (props.label === true || props.label === '') {
+        return `${t(`${props.i18nPrefix}.label`)} ${t('common.delete')}`;
+      }
+
+      if (typeof props.label === 'string') {
+        return props.label;
+      }
+
+      return undefined;
+    });
+
     return {
       t,
+      labelInternal,
       async submit(close: () => void) {
         await deleteEntity.delete(props.entity);
         close();

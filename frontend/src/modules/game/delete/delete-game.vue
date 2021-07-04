@@ -1,38 +1,35 @@
 <template>
-  <button @click="confirmDelete">
-    {{ t('common.delete') }}
-  </button>
+  <base-entity-delete
+    :entity="game"
+    i18n-prefix="game"
+    :use-delete-entity="useDeleteGame"
+    label
+    @submit="deletedGame"
+  />
 </template>
 
 <script lang="ts">
-import { useI18n } from 'vue-i18n';
-import { ServiceGame } from '@/modules/game/game.service';
 import { Game } from '@/modules/game/game.model';
 import { defineComponent } from 'vue';
+import BaseEntityDelete from '@/modules/app/base/entity/base-entity-delete.vue';
+import { useDeleteGame } from '@/modules/game/composables/useDeleteGame';
+import { useRouter } from '@/router';
 
 export default defineComponent({
   name: 'DeleteGame',
+  components: { BaseEntityDelete },
   props: {
     game: {
       required: true,
       type: Game,
     },
   },
-  setup(context) {
-    const { t } = useI18n();
-    const deleteGame = ServiceGame.useDelete();
-
-    const confirmDelete = () => {
-      const confirmed = confirm(`Spiel ${context.game.name} löschen?`);
-
-      if (confirmed) {
-        deleteGame.delete(context.game);
-      }
-    };
-
+  setup() {
     return {
-      t,
-      confirmDelete,
+      useDeleteGame,
+      deletedGame() {
+        void useRouter().push({ name: 'games' });
+      },
     };
   },
 });
