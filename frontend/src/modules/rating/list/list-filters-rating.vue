@@ -44,6 +44,16 @@
                 @update-filter="$emit('update-filter', $event)"
               />
             </div>
+
+            <div class="col-12 col-md-6">
+              <base-list-filter
+                :filters="filters"
+                label="game.isDigital"
+                name="game.isDigital"
+                type="boolean"
+                @update-filter="$emit('update-filter', $event)"
+              />
+            </div>
           </div>
         </q-card-section>
       </q-card>

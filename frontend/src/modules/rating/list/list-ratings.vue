@@ -49,7 +49,6 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, ref } from 'vue';
-import CreateRating from '@/modules/rating/create/create-rating.vue';
 import ListItemRating from '@/modules/rating/list/list-item-rating.vue';
 import ListFiltersRating from '@/modules/rating/list/list-filters-rating.vue';
 import BaseListSort from '@/modules/app/base/base-list-sort.vue';
@@ -64,7 +63,7 @@ import { cloneDeep } from 'lodash';
 export default defineComponent({
   name: 'ListRatings',
   components: {
-    ListItemRating, CreateRating, ListFiltersRating, BaseListSort,
+    ListItemRating, ListFiltersRating, BaseListSort,
   },
   setup() {
     const { t } = useI18n();
