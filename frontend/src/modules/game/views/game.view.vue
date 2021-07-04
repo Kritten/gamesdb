@@ -4,6 +4,7 @@
       <div class="col-12">
         <base-card
           :title="game.name"
+          opened
         >
           <template #actions>
             <update-game :game="game" />
@@ -84,11 +85,10 @@ import DeleteGame from '@/modules/game/delete/delete-game.vue';
 import UpdateGame from '@/modules/game/update/update-game.vue';
 import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
 import DisplayComplexity from '@/modules/game/base/display-complexity.vue';
+import DisplayRating from '@/modules/rating/base/display-rating.vue';
 import DisplaySize from '@/modules/game/base/display-size.vue';
 import DisplayPlaytimeGame from '@/modules/game/base/display-playtime-game.vue';
-import { useUpdateGame } from '@/modules/game/composables/useUpdateGame';
 import ItemGame from '@/modules/game/item-game.vue';
-import { required } from '@vuelidate/validators';
 import { useI18n } from 'vue-i18n';
 import { displayIsCoop } from '@/modules/app/utilities/helpers';
 import BaseCard from '@/modules/app/base/base-card.vue';
@@ -147,6 +147,20 @@ export default defineComponent({
           component: DisplayComplexity,
           props: {
             complexity: game.value.complexity,
+          },
+        },
+        {
+          label: t('rating.label'),
+          component: DisplayRating,
+          props: {
+            rating: game.value.ratingAverage,
+          },
+        },
+        {
+          label: t('game.ratingBGG'),
+          component: DisplayRating,
+          props: {
+            rating: game.value.ratingBGG,
           },
         },
         {

@@ -3,6 +3,7 @@
     <q-expansion-item
       expand-icon-toggle
       expand-icon-class="base-card-expand-icon"
+      :default-opened="opened"
       :class="{
         'base-card-hide-expand-icon': !expandable,
       }"
@@ -36,6 +37,11 @@ export default defineComponent({
       type: String,
     },
     expandable: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
+    opened: {
       required: false,
       type: Boolean,
       default: false,
