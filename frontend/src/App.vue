@@ -17,11 +17,11 @@ export default defineComponent({
     void ServiceApp.initialize();
     const { isInitialized } = useApp();
 
-    navigator.serviceWorker.addEventListener(
-      'controllerchange', () => {
-        window.location.reload();
-      },
-    );
+    // navigator.serviceWorker.addEventListener(
+    //   'controllerchange', () => {
+    //     window.location.reload();
+    //   },
+    // );
 
     return { isInitialized };
   },
