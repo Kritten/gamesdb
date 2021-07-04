@@ -16,7 +16,7 @@
         >
           <q-date
             v-model="valueInternal"
-            mask="YYYY-MM-DD HH:mm"
+            mask="YYYY-MM-DDTHH:mm"
           >
             <div class="row items-center justify-end">
               <q-btn
@@ -42,7 +42,7 @@
         >
           <q-time
             v-model="valueInternal"
-            mask="YYYY-MM-DD HH:mm"
+            mask="YYYY-MM-DDTHH:mm"
             format24h
           >
             <div class="row items-center justify-end">
@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import { format } from 'date-fns';
+import { format, subMinutes } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { configBaseInput, TypeOptionsInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
 import { Validation } from '@vuelidate/core';
@@ -71,7 +71,7 @@ export default defineComponent({
   name: 'BaseInputDatetime',
   props: {
     modelValue: {
-      type: Date,
+      type: Object as PropType<Date>,
       required: true,
     },
     validation: {
@@ -97,7 +97,10 @@ export default defineComponent({
 
     const valueInternal = computed({
       // @ts-ignore
-      get: () => props.modelValue.toISOString().substring(0, 16),
+      get: () => {
+        const timezoneOffsetInMinutes = props.modelValue.getTimezoneOffset();
+        return subMinutes(props.modelValue, timezoneOffsetInMinutes).toISOString().substring(0, 16);
+      },
       set: (value) => emit('update:modelValue', new Date(value)),
     });
 

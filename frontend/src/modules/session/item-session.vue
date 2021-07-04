@@ -61,8 +61,8 @@
             <template v-if="playtime.end !== null">
               <td>
                 <item-playtime
-                  :start="playtime.start"
-                  :end="playtime.end"
+                  v-model:start="playtime.start"
+                  v-model:end="playtime.end"
                 />
               </td>
               <td>
@@ -91,8 +91,8 @@
           <tr>
             <td>
               <item-playtime
-                :start="playtimeNew.start"
-                :end="playtimeNew.end"
+                v-model:start="playtimeNew.start"
+                v-model:end="playtimeNew.end"
               />
             </td>
             <td
