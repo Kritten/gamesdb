@@ -74,14 +74,15 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
 
-    const cardsDataOrder = ['listSessionsVirtual'];
+    const cardsDataOrder: Array<string> = [];
+    // const cardsDataOrder = ['listSessionsVirtual'];
 
     const cardsData: Record<string, TypeCardData> = {
-      listSessionsVirtual: {
-        header: t('session.virtual.label', 2),
-        component: ListSessionsVirtual,
-        cols: 6,
-      },
+      // listSessionsVirtual: {
+      //   header: t('session.virtual.label', 2),
+      //   component: ListSessionsVirtual,
+      //   cols: 6,
+      // },
     };
 
     const cardsDataOrdered = computed(() => cardsDataOrder.map((id) => {

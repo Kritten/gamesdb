@@ -23,6 +23,23 @@
           {{ title }}
         </q-toolbar-title>
 
+        <base-dialog
+          :title="t('session.virtual.label', 2)"
+          :options-button="{
+            label: t('session.virtual.label', 2),
+            icon: 'fas fa-list'
+          }"
+          hide-actions
+          remove-padding-content
+        >
+          <list-sessions-virtual />
+        </base-dialog>
+
+        <q-separator
+          dark
+          vertical
+        />
+
         <create-session
           :options-button="{
             color: 'white',
@@ -111,10 +128,12 @@ import {
 } from '@quasar/extras/fontawesome-v5';
 import CreateSession from '@/modules/session/create/create-session.vue';
 import { useRouter } from 'vue-router';
+import ListSessionsVirtual from '@/modules/session/list/list-sessions-virtual.vue';
+import BaseDialog from '@/modules/app/base/base-dialog.vue';
 
 export default defineComponent({
   name: 'ViewApp',
-  components: { CreateSession },
+  components: { BaseDialog, ListSessionsVirtual, CreateSession },
   setup() {
     const { t } = useI18n();
     const { user } = useUser();

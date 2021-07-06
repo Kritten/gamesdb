@@ -29,7 +29,11 @@
           />
         </q-toolbar>
 
-        <q-card-section>
+        <q-card-section
+          :class="{
+            'q-pa-none': removePaddingContent,
+          }"
+        >
           <slot />
         </q-card-section>
 
@@ -55,7 +59,10 @@
         <!--          </table>-->
         <!--        </q-card-section>-->
 
-        <q-card-actions align="right">
+        <q-card-actions
+          v-if="hideActions === false"
+          align="right"
+        >
           <q-btn
             :label="t('common.cancel')"
             @click="close"
@@ -115,6 +122,16 @@ export default defineComponent({
       required: false,
       type: Object as PropType<Validation>,
       default: undefined,
+    },
+    hideActions: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
+    removePaddingContent: {
+      required: false,
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['submit'],

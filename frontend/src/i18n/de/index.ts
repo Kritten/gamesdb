@@ -131,7 +131,7 @@ export default {
   session: {
     label: 'Session | Sessions',
     virtual: {
-      label: 'Virtuelle Session | Virtuelle Sessions',
+      label: 'Laufende Session | Laufende Sessions',
     },
     start: 'Start',
     pause: 'Pause',
