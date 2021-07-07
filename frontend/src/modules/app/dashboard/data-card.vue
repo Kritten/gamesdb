@@ -1,7 +1,8 @@
 <template>
   <div
+    class="col-12"
     :class="{
-      [card.cols === undefined ? 'col' : `col-${card.cols}`]: true,
+      [card.cols === undefined ? 'col' : `col-md-${card.cols}`]: true,
     }"
   >
     <q-card>
