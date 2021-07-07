@@ -19,6 +19,7 @@ export default {
     logout: 'Logout',
     required: 'Pflichtfeld',
     details: 'Details',
+    count: 'Anzahl',
   },
   login: {
     name: 'Name',
@@ -28,6 +29,10 @@ export default {
   },
   dashboard: {
     label: 'Dashboard',
+    game: {
+      mostPlayedAnalog: 'Meist gespielte analoge Spiele',
+      mostPlayedDigital: 'Meist gespielte digitale Spiele',
+    },
   },
   filter: {
     label: 'Filter',

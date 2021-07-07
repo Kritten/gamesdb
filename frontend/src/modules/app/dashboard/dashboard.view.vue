@@ -4,7 +4,7 @@
     v-bind="{ animation: 150 }"
     handle=".v-card__title .card-handler"
     item-key="id"
-    class="row"
+    class="row q-col-gutter-md"
   >
     <template #item="{ element }">
       <data-card
@@ -57,6 +57,7 @@ type TypeCardData = {
   header: string,
   component: Component,
   cols: number,
+  props?: Record<string, unknown>
 }
 
 export default defineComponent({
@@ -74,15 +75,28 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
 
-    const cardsDataOrder: Array<string> = [];
-    // const cardsDataOrder = ['listSessionsVirtual'];
+    const cardsDataOrder = [
+      'listGamesByCountPlayedAnalog',
+      'listGamesByCountPlayedDigital',
+    ];
 
     const cardsData: Record<string, TypeCardData> = {
-      // listSessionsVirtual: {
-      //   header: t('session.virtual.label', 2),
-      //   component: ListSessionsVirtual,
-      //   cols: 6,
-      // },
+      listGamesByCountPlayedAnalog: {
+        header: t('dashboard.game.mostPlayedAnalog'),
+        component: GamesCountPlayed,
+        props: {
+          analogOnly: true,
+        },
+        cols: 6,
+      },
+      listGamesByCountPlayedDigital: {
+        header: t('dashboard.game.mostPlayedDigital'),
+        component: GamesCountPlayed,
+        props: {
+          digitalOnly: true,
+        },
+        cols: 6,
+      },
     };
 
     const cardsDataOrdered = computed(() => cardsDataOrder.map((id) => {

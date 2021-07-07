@@ -1,5 +1,9 @@
 <template>
-  <div class="col">
+  <div
+    :class="{
+      [card.cols === undefined ? 'col' : `col-${card.cols}`]: true,
+    }"
+  >
     <q-card>
       <q-card-section horizontal>
         <q-toolbar>
@@ -12,6 +16,7 @@
       <!--      <q-card-section>-->
       <component
         :is="card.component"
+        v-bind="card.props"
       />
       <!--      </q-card-section>-->
     </q-card>
