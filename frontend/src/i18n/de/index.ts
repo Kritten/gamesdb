@@ -161,6 +161,7 @@ export default {
     start: 'Anfang',
     end: 'Ende',
     pending: 'Laufende Spielzeit seit ',
+    unplayed: 'Ungespielt',
   },
   wishlist: {
     label: 'Wunschliste | Wunschlisten',
