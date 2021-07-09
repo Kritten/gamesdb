@@ -3,7 +3,7 @@
     class="col-12"
     :class="classes"
   >
-    <q-card>
+    <q-card class="full-height">
       <q-card-section horizontal>
         <q-toolbar>
           <q-toolbar-title>
