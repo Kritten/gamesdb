@@ -1,9 +1,7 @@
 <template>
   <div
     class="col-12"
-    :class="{
-      [card.cols === undefined ? 'col' : `col-md-${card.cols}`]: true,
-    }"
+    :class="classes"
   >
     <q-card>
       <q-card-section horizontal>
@@ -25,14 +23,17 @@
 </template>
 
 <script lang=ts>
-import { Component, defineComponent, ref } from 'vue';
+import {
+  Component, computed, defineComponent, PropType, ref,
+} from 'vue';
+import { TypeCardData } from '@/modules/app/dashboard/dashboard.types';
 
 export default defineComponent({
   name: 'DataCard',
   props: {
     card: {
       required: true,
-      type: Object,
+      type: Object as PropType<TypeCardData>,
     },
   },
   setup(props) {
@@ -83,7 +84,22 @@ export default defineComponent({
       headerActions.value = headerActionsPassed;
     };
 
+    const classes = computed(() => {
+      const result: Array<string> = [];
+
+      if (props.card.cols !== undefined) {
+        result.push(`col-md-${props.card.cols}`);
+      }
+
+      if (props.card.colsXl !== undefined) {
+        result.push(`col-xl-${props.card.colsXl}`);
+      }
+
+      return result;
+    });
+
     return {
+      classes,
       updateTitle,
       updateHeaderActions,
       title,

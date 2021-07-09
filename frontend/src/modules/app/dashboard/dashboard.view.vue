@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Component } from 'vue';
+import { computed, defineComponent } from 'vue';
 import draggable from 'vuedraggable';
 import GamesCountPlayed from '@/modules/statistics/components/games-count-played.vue';
 import GamesTimePlayed from '@/modules/statistics/components/games-time-played.vue';
@@ -41,14 +41,7 @@ import LastSession from '@/modules/statistics/components/last-session.vue';
 import ListSessionsVirtual from '@/modules/session/list/list-sessions-virtual.vue';
 import { useI18n } from 'vue-i18n';
 import DataCard from '@/modules/app/dashboard/data-card.vue';
-
-type TypeCardData = {
-  id?: string,
-  header: string,
-  component: Component,
-  cols: number,
-  props?: Record<string, unknown>
-}
+import type { TypeCardData } from '@/modules/app/dashboard/dashboard.types';
 
 export default defineComponent({
   name: 'ViewDashboard',
@@ -78,6 +71,7 @@ export default defineComponent({
           analogOnly: true,
         },
         cols: 6,
+        colsXl: 3,
       },
       listGamesByCountPlayedDigital: {
         header: t('dashboard.game.mostPlayedDigital'),
@@ -86,6 +80,7 @@ export default defineComponent({
           digitalOnly: true,
         },
         cols: 6,
+        colsXl: 3,
       },
       listGamesByTimePlayedAnalog: {
         header: t('dashboard.game.longestPlayedAnalog'),
@@ -94,6 +89,7 @@ export default defineComponent({
           analogOnly: true,
         },
         cols: 6,
+        colsXl: 3,
       },
       listGamesByTimePlayedDigital: {
         header: t('dashboard.game.longestPlayedDigital'),
@@ -102,6 +98,7 @@ export default defineComponent({
           digitalOnly: true,
         },
         cols: 6,
+        colsXl: 3,
       },
     };
 

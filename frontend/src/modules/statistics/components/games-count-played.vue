@@ -66,6 +66,7 @@ export default defineComponent({
         inputCollectionData: {
           sortBy: ref(['countPlayed']),
           sortDesc: ref([true]),
+          count: 5,
         },
         payload: {
           analogOnly: props.analogOnly,

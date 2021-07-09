@@ -8,7 +8,7 @@
           {{ t('game.label') }}
         </th>
         <th class="text-right">
-          {{ t('common.count') }}
+          {{ t('playtime.label') }}
         </th>
       </tr>
     </thead>
@@ -68,6 +68,7 @@ export default defineComponent({
         inputCollectionData: {
           sortBy: ref(['timePlayed']),
           sortDesc: ref([true]),
+          count: 5,
         },
         payload: {
           analogOnly: props.analogOnly,
