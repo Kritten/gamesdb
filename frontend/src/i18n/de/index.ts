@@ -32,6 +32,8 @@ export default {
     game: {
       mostPlayedAnalog: 'Meist gespielte analoge Spiele',
       mostPlayedDigital: 'Meist gespielte digitale Spiele',
+      longestPlayedAnalog: 'Am längsten gespielte analoge Spiele',
+      longestPlayedDigital: 'Am längsten gespielte digitale Spiele',
     },
   },
   filter: {

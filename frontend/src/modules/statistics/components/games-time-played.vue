@@ -1,21 +1,39 @@
 <template>
-  <table border="1">
-    <tr
-      v-for="(data, index) in collectionStatisticsGamesTimePlayed.items.value"
-      :key="index"
-    >
-      <td>{{ data.name }}</td>
-      <td><base-display-duration :value="data.timePlayed" /></td>
-    </tr>
-  </table>
-
-  <button
-    v-if="collectionStatisticsGamesTimePlayed.hasNextPage.value"
-    :disabled="collectionStatisticsGamesTimePlayed.isLoading.value === true"
-    @click="collectionStatisticsGamesTimePlayed.loadNextItems"
+  <q-markup-table
+    dense
   >
-    Mehr laden
-  </button>
+    <thead>
+      <tr>
+        <th class="text-left">
+          {{ t('game.label') }}
+        </th>
+        <th class="text-right">
+          {{ t('common.count') }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="(data, index) in collectionStatisticsGamesTimePlayed.items.value"
+        :key="index"
+      >
+        <td class="text-left">
+          {{ data.name }}
+        </td>
+        <td class="text-right">
+          <base-display-duration :value="data.timePlayed" />
+        </td>
+      </tr>
+    </tbody>
+  </q-markup-table>
+
+<!--  <button-->
+<!--    v-if="collectionStatisticsGamesTimePlayed.hasNextPage.value"-->
+<!--    :disabled="collectionStatisticsGamesTimePlayed.isLoading.value === true"-->
+<!--    @click="collectionStatisticsGamesTimePlayed.loadNextItems"-->
+<!--  >-->
+<!--    Mehr laden-->
+<!--  </button>-->
 </template>
 
 <script lang="ts">
@@ -24,6 +42,7 @@ import { useCollection } from '@/modules/app/utilities/collection/collection';
 import BaseDisplayDuration from '@/modules/app/base/base-display-duration.vue';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
 import { GamesTimePlayedItem } from '@/modules/statistics/statistics.types';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'GamesTimePlayed',
@@ -41,6 +60,8 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { t } = useI18n();
+
     const collectionStatisticsGamesTimePlayed = useCollection<GamesTimePlayedItem>(
       ServiceStatistics.loadPageStatisticsGamesTimePlayed,
       {
@@ -56,6 +77,7 @@ export default defineComponent({
     );
 
     return {
+      t,
       collectionStatisticsGamesTimePlayed,
     };
   },
