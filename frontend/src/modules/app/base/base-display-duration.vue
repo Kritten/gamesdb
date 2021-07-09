@@ -1,8 +1,11 @@
 <template>
   <span
     v-if="value !==0"
-    :title="dateFormattedStrict"
-  >{{ dateFormatted }}</span>
+  >{{ dateFormatted }}
+    <q-tooltip>
+      {{ dateFormattedStrict }}
+    </q-tooltip>
+  </span>
   <span
     v-else
   > {{ t('playtime.unplayed') }}</span>
