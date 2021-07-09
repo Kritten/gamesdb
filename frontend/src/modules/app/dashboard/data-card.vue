@@ -12,12 +12,12 @@
         </q-toolbar>
       </q-card-section>
 
-      <!--      <q-card-section>-->
-      <component
-        :is="card.component"
-        v-bind="card.props"
-      />
-      <!--      </q-card-section>-->
+      <q-card-section :class="{'q-pa-none': card.padding !== true}">
+        <component
+          :is="card.component"
+          v-bind="card.props"
+        />
+      </q-card-section>
     </q-card>
   </div>
 </template>

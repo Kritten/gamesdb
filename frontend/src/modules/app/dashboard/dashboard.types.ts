@@ -6,5 +6,6 @@ export type TypeCardData = {
   component: Component,
   cols?: number,
   colsXl?: number,
-  props?: Record<string, unknown>
+  props?: Record<string, unknown>,
+  padding?: boolean,
 }

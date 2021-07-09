@@ -1,6 +1,7 @@
 <template>
   <q-markup-table
     dense
+    flat
   >
     <thead>
       <tr>

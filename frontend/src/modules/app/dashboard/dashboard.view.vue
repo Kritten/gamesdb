@@ -51,12 +51,13 @@ export default defineComponent({
     GamesBestRated,
     LastSession,
     ListSessionsVirtual,
-    PlaytimesPerDay,
   },
   setup() {
     const { t } = useI18n();
 
     const cardsDataOrder = [
+      'playtimesPerDayAnalog',
+      'playtimesPerDayDigital',
       'listGamesByCountPlayedAnalog',
       'listGamesByCountPlayedDigital',
       'listGamesByTimePlayedAnalog',
@@ -64,6 +65,26 @@ export default defineComponent({
     ];
 
     const cardsData: Record<string, TypeCardData> = {
+      playtimesPerDayAnalog: {
+        header: t('dashboard.game.playtimesPerDayAnalog'),
+        component: PlaytimesPerDay,
+        props: {
+          analogOnly: true,
+        },
+        cols: 6,
+        colsXl: 3,
+        padding: true,
+      },
+      playtimesPerDayDigital: {
+        header: t('dashboard.game.playtimesPerDayDigital'),
+        component: PlaytimesPerDay,
+        props: {
+          digitalOnly: true,
+        },
+        cols: 6,
+        colsXl: 3,
+        padding: true,
+      },
       listGamesByCountPlayedAnalog: {
         header: t('dashboard.game.mostPlayedAnalog'),
         component: GamesCountPlayed,

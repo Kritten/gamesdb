@@ -1,6 +1,18 @@
 <template>
-  <div class="wrapper-playtimes-per-day">
-    <div class="labels-day">
+  <div class="row">
+    <div class="col-shrink q-mr-sm labels-day">
+      <div class="text-center">
+        <q-btn
+          v-if="collectionStatisticsPlaytimesPerDay.hasNextPage.value === true"
+          icon="fas fa-arrow-left"
+          flat
+          round
+          size="xs"
+          color="primary"
+          :disabled="collectionStatisticsPlaytimesPerDay.isLoading.value === true"
+          @click="collectionStatisticsPlaytimesPerDay.loadNextItems"
+        />
+      </div>
       <div>Montag</div>
       <div />
       <div>Mittwoch</div>
@@ -9,58 +21,68 @@
       <div />
       <div>Sonntag</div>
     </div>
-    <div>
-      <div class="labels-month">
-        <span
-          v-for="label in labelsMonth"
-          :key="label.day.date"
-          style="position: absolute"
-          :style="{left: `${label.index * 21}px`}"
-        >{{ label.monthFormatted }}</span>
-      </div>
-      <div class="boxes">
-        <div
-          v-for="(week, index) in weeks"
-          :key="week[0].date"
-          :class="{firstWeek: index === 0}"
-        >
-          <template
-            v-for="day in week"
-            :key="day.date"
-          >
-            <div
-              class="box"
-              :title="day.date"
-              :style="{
-                backgroundColor: calculateBackgroundColor(day.seconds),
-              }"
-              :class="{'first-of-month': day.isFirstDayOfMonth === true}"
-            />
-          </template>
+
+    <div class="col">
+      <q-scroll-area style="height: 12rem">
+        <div class="row">
+          <div class="col labels-month">
+            <span
+              v-for="label in labelsMonth"
+              :key="label.day.date"
+              style="position: absolute"
+              :style="{left: `${label.index * 1.6}rem`}"
+            >{{ label.monthFormatted }}</span>
+          </div>
         </div>
-      </div>
+
+        <div class="row">
+          <div class="col boxes">
+            <div
+              v-for="(week, index) in weeks"
+              :key="week[0].date"
+              :class="{firstWeek: index === 0}"
+            >
+              <template
+                v-for="day in week"
+                :key="day.date"
+              >
+                <div
+                  class="box"
+                  :style="{
+                    backgroundColor: calculateBackgroundColor(day.seconds),
+                  }"
+                  :class="{'first-of-month': day.isFirstDayOfMonth === true}"
+                >
+                  <q-tooltip>
+                    {{ day.date }}
+                  </q-tooltip>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </q-scroll-area>
     </div>
   </div>
 
-  <div class="controls">
-    <button
-      v-if="collectionStatisticsPlaytimesPerDay.hasNextPage.value === true"
-      :disabled="collectionStatisticsPlaytimesPerDay.isLoading.value === true"
-      @click="collectionStatisticsPlaytimesPerDay.loadNextItems"
-    >
-      Mehr laden
-    </button>
-    <div class="legend">
-      <div>Weniger</div>
-      <div
-        v-for="color in ratioMapping"
-        :key="color"
-        class="box"
-        :style="{
-          backgroundColor: color,
-        }"
-      />
-      <div>Mehr</div>
+  <div class="row justify-end">
+    <div class="col-shrink">
+      <div class="legend">
+        <div class="q-mr-xs">
+          Weniger
+        </div>
+        <div
+          v-for="color in ratioMapping"
+          :key="color"
+          class="box"
+          :style="{
+            backgroundColor: color,
+          }"
+        />
+        <div class="q-ml-xs">
+          Mehr
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -75,9 +97,12 @@ import {
   getDaysInMonth, isAfter, isMonday, parse, parseISO, startOfMonth, subMonths,
 } from 'date-fns';
 import { chunk } from 'lodash';
+import { de } from 'date-fns/locale';
+import BaseDateTime from '@/modules/app/base/base-date-time.vue';
 
 export default defineComponent({
   name: 'PlaytimesPerDay',
+  components: { BaseDateTime },
   props: {
     analogOnly: {
       required: false,
@@ -172,7 +197,7 @@ export default defineComponent({
           result.push({
             index: i,
             day: weekDay,
-            monthFormatted: format(parse(weekDay.date, 'yyyy-MM-dd HH:mm:ss', 0), 'MMM'),
+            monthFormatted: format(parse(weekDay.date, 'yyyy-MM-dd HH:mm:ss', 0), 'MMMM', { locale: de }),
           });
         }
       }
@@ -217,34 +242,34 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$dimension-box: 15px;
-$margin-box: 2px;
+$dimension-box: 1.2rem;
+$margin-box: 0.2rem;
 $border-box: 1px;
-$computed-height: $dimension-box + $margin-box + 2 * $border-box;
+$computed-height: $dimension-box + $margin-box;
 
-.wrapper-playtimes-per-day {
+.labels-day {
+  //margin-top: $computed-height + 10px;
+
+  div {
+    height: $computed-height;
+  }
+
+  div:first-of-type {
+    height: unset;
+  }
+}
+
+.labels-month {
+  position: relative;
+  height: $computed-height;
+}
+
+.boxes {
   display: flex;
+}
 
-  .labels-day {
-    margin-top: $computed-height + 10px;
-
-    div {
-      height: $computed-height;
-    }
-  }
-
-  .labels-month {
-    position: relative;
-    height: $computed-height + 10px;
-  }
-
-  .boxes {
-    display: flex;
-  }
-
-  .firstWeek {
-    align-self: flex-end;
-  }
+.firstWeek {
+  align-self: flex-end;
 }
 
 .box {
@@ -258,26 +283,14 @@ $computed-height: $dimension-box + $margin-box + 2 * $border-box;
   }
 }
 
-.controls {
+.legend {
   display: flex;
-  margin-top: 10px;
-  min-height: 22px;
+  align-items: center;
+  font-size: 0.8rem;
 
-  button {
-    padding: 2px 6px;
-    margin: 0;
-  }
-
-  .legend {
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
-    font-size: 0.75rem;
-
-    .box {
-      height: $dimension-box * 0.5;
-      width: $dimension-box * 0.5;
-    }
+  .box {
+    height: $dimension-box * 0.7;
+    width: $dimension-box * 0.7;
   }
 }
 </style>
