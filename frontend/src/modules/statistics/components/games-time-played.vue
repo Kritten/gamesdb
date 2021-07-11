@@ -18,8 +18,10 @@
         v-for="(data, index) in collectionStatisticsGamesTimePlayed.items.value"
         :key="index"
       >
-        <td class="text-left">
-          {{ data.name }}
+        <td
+          class="text-left"
+        >
+          <link-game :game="data.game" />
         </td>
         <td class="text-right">
           <base-display-duration :value="data.timePlayed" />
@@ -44,10 +46,11 @@ import BaseDisplayDuration from '@/modules/app/base/base-display-duration.vue';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
 import { GamesTimePlayedItem } from '@/modules/statistics/statistics.types';
 import { useI18n } from 'vue-i18n';
+import LinkGame from '@/modules/game/base/link-game.vue';
 
 export default defineComponent({
   name: 'GamesTimePlayed',
-  components: { BaseDisplayDuration },
+  components: { LinkGame, BaseDisplayDuration },
   props: {
     analogOnly: {
       required: false,

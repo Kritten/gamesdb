@@ -18,8 +18,10 @@
         v-for="(data, index) in collectionStatisticsGamesCountPlayed.items.value"
         :key="index"
       >
-        <td class="text-left">
-          {{ data.name }}
+        <td
+          class="text-left"
+        >
+          <link-game :game="data.game" />
         </td>
         <td class="text-right">
           {{ data.countPlayed }}
@@ -43,9 +45,11 @@ import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
 import { GamesCountPlayedItem } from '@/modules/statistics/statistics.types';
 import { useI18n } from 'vue-i18n';
+import LinkGame from '@/modules/game/base/link-game.vue';
 
 export default defineComponent({
   name: 'GamesCountPlayed',
+  components: { LinkGame },
   props: {
     analogOnly: {
       required: false,
