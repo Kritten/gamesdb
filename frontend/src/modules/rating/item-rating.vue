@@ -25,17 +25,14 @@
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { defineComponent, PropType, ref } from 'vue';
-import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
+import { defineComponent, PropType } from 'vue';
 import InputSelectRating from '@/modules/game/base/input-select-rating.vue';
 import InputSelectGame from '@/modules/game/base/input-select-game.vue';
 import InputSelectPlayer from '@/modules/player/base/input-select-player.vue';
 import { Validation } from '@vuelidate/core';
-import { useCollection } from '../app/utilities/collection/collection';
 import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
 import { useModelWrapper } from '../app/utilities/helpers';
-import { ServiceGame } from '../game/game.service';
 
 export default defineComponent({
   name: 'ItemRating',
@@ -62,17 +59,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = useI18n();
 
-    const filtersGame = ref<ServiceCollectionFilters>({
-      name: {
-        field: 'name', valueString: undefined, operator: 'like',
-      },
-    });
-    const collectionGame = useCollection<Game>(ServiceGame.loadPage, { inputCollectionData: { count: 5, filters: filtersGame } });
-
     return {
       t,
-      collectionGame,
-      filtersGame,
       ratingInternal: useModelWrapper({
         props, emit, name: 'rating',
       }),
