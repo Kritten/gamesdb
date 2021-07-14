@@ -5,6 +5,9 @@ import { Mood } from '@/modules/mood/mood.model';
 import { Game } from '@/modules/game/game.model';
 import { Universe } from '@/modules/universe/universe.model';
 import { Category } from '@/modules/category/category.model';
+import { Ref } from 'vue';
+
+export type GameLoading = Ref<Game | null>;
 
 export interface GameInterface extends EntityInterface {
   name?: string;

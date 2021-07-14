@@ -23,9 +23,10 @@ import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import { InputCollection, ServiceCollectionLoadPage } from '@/modules/app/utilities/collection/collection.types';
 import {
   GamesBestRatedItem,
-  GamesCountPlayedItem,
-  GamesTimePlayedItem,
+  GamesCountPlayedItem, GamesCountPlayedItemServer,
+  GamesTimePlayedItem, GamesTimePlayedItemServer,
 } from '@/modules/statistics/statistics.types';
+import { useGame } from '@/modules/game/composables/useGame';
 
 class ServiceStatisticsClass {
   async loadPageStatisticsGamesCountPlayed(data: InputCollection, payload: unknown = {}) {
@@ -48,12 +49,17 @@ class ServiceStatisticsClass {
       });
     }
 
-    return loadPageBase<GamesCountPlayedItem, {statisticsGamesCountPlayed: ServiceCollectionLoadPage<GamesCountPlayedItem>}>({
+    const { getOrLoad } = useGame();
+
+    return loadPageBase<GamesCountPlayedItem, {statisticsGamesCountPlayed: ServiceCollectionLoadPage<GamesCountPlayedItemServer>}>({
       data,
       query: queryStatisticsGamesCountPlayed,
       parseResult: async (response) => ({
         count: response.statisticsGamesCountPlayed.count,
-        items: response.statisticsGamesCountPlayed.items,
+        items: response.statisticsGamesCountPlayed.items.map((item) => ({
+          countPlayed: item.countPlayed,
+          game: getOrLoad(item.id),
+        })),
       }),
     });
   }
@@ -78,12 +84,14 @@ class ServiceStatisticsClass {
       });
     }
 
-    return loadPageBase<GamesTimePlayedItem, {statisticsGamesTimePlayed: ServiceCollectionLoadPage<GamesTimePlayedItem>}>({
+    const { getOrLoad } = useGame();
+
+    return loadPageBase<GamesTimePlayedItem, {statisticsGamesTimePlayed: ServiceCollectionLoadPage<GamesTimePlayedItemServer>}>({
       data,
       query: queryStatisticsGamesTimePlayed,
       parseResult: async (response) => ({
         count: response.statisticsGamesTimePlayed.count,
-        items: response.statisticsGamesTimePlayed.items,
+        items: response.statisticsGamesTimePlayed.items.map((item) => ({ timePlayed: item.timePlayed, game: getOrLoad(item.id) })),
       }),
     });
   }

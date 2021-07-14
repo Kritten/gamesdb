@@ -1,12 +1,23 @@
-export type GamesCountPlayedItem = {
-  id: number;
-  name: string;
+import type { ID } from '@/modules/app/utilities/entity/entity.types';
+import { GameLoading } from '@/modules/game/game.types';
+
+export type GamesCountPlayedItemServer = {
+  id: ID;
   countPlayed: number;
 };
 
+export type GamesCountPlayedItem = {
+  game: GameLoading;
+  countPlayed: number;
+};
+
+export type GamesTimePlayedItemServer = {
+  id: ID;
+  timePlayed: number;
+};
+
 export type GamesTimePlayedItem = {
-  id: number;
-  name: string;
+  game: GameLoading;
   timePlayed: number;
 };
 

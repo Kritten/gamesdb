@@ -30,7 +30,6 @@ export const queryStatisticsGamesCountPlayed = gql`
       count
       items {
         id
-        name
         countPlayed
       }
     }
@@ -57,7 +56,6 @@ export const queryStatisticsGamesTimePlayed = gql`
       count
       items {
         id
-        name
         timePlayed
       }
     }
