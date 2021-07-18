@@ -1,18 +1,22 @@
 <template>
-  <el-form-item :label="optionsMerged.label">
-    <el-slider
-      v-model="modelValueInternal"
-      v-bind="optionsMerged"
-      range
-    />
-  </el-form-item>
+  <div class="row">
+    <div class="col-shrink q-mr-md">
+      {{ baseInput.label.value }}
+    </div>
+    <div class="col">
+      <q-range
+        v-model="modelValueInternal"
+        v-bind="optionsMerged"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import {
   computed, defineComponent, PropType,
 } from 'vue';
-import { getValidator, useModelWrapper } from '@/modules/app/utilities/helpers';
+import { getValidator } from '@/modules/app/utilities/helpers';
 import { configBaseInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
 import { Validation } from '@vuelidate/core';
 
@@ -58,18 +62,38 @@ export default defineComponent({
         emit,
       );
 
+    const modelValueInternal = computed<{min: number, max: number}>({
+      get: () => {
+        if (Array.isArray(props.modelValue)) {
+          return {
+            min: props.modelValue[0] as number,
+            max: props.modelValue[1] as number,
+          };
+        }
+        return {
+          min: 0,
+          max: 100,
+        };
+      },
+      set(value) {
+        emit('update:modelValue', [value.min, value.max]);
+      },
+    });
+
     return {
-      modelValueInternal: useModelWrapper({
-        // @ts-ignore
-        props,
-        emit,
-        name: 'modelValue',
+      modelValueInternal,
+      baseInput,
+      optionsMerged: computed(() => {
+        const result = {
+          ...configBaseInput,
+          ...props.options,
+        };
+
+        // @ts-ignore Spezialfall für QRange
+        result.label = true;
+
+        return result;
       }),
-      optionsMerged: computed(() => ({
-        ...configBaseInput,
-        ...props.options,
-        label: baseInput.label.value,
-      })),
     };
   },
 });

@@ -6,6 +6,7 @@ import { Inject } from '@nestjs/common';
 import { Playtime } from '../playtime/playtime.entity';
 import { annotationsStatistics } from './statistics.annotations';
 import {Rating} from "../rating/rating.entity";
+import {Wishlist} from "../wishlist/wishlist.entity";
 
 export class StatisticsService {
   constructor(
@@ -26,12 +27,14 @@ export class StatisticsService {
         }
       }),
       await getManager().count(Rating),
+      await getManager().count(Wishlist),
     ]);
 
     return {
       gamesDigital: results[0],
       gamesAnalog: results[1],
       ratings: results[2],
+      wishlists: results[3],
     };
   }
 

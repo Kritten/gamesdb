@@ -1,25 +1,25 @@
 <template>
-  <el-form
-    v-bind="state.optionsForm"
-    style="margin-top: 1rem;"
-    @submit.prevent="updateWishlistItem.update"
+  <base-entity-update
+    :entity="wishlistItem"
+    i18n-prefix="wishlist"
+    :use-update-entity="useUpdateEntity"
+    :validation-rules="validationRules"
+    :options-button="{ label: undefined }"
   >
-    <item-wishlist
-      v-model:name="updateWishlistItem.entity.value.name"
-      v-model:price="updateWishlistItem.entity.value.price"
-      v-model:taken="updateWishlistItem.entity.value.taken"
-      v-model:description="updateWishlistItem.entity.value.description"
-      v-model:link="updateWishlistItem.entity.value.link"
-      v-model:images="updateWishlistItem.entity.value.images"
-      v-model:gift-for="updateWishlistItem.entity.value.giftFor"
-      :hide-taken="true"
-    />
-    <div>
-      <button type="submit">
-        {{ t('common.edit') }}
-      </button>
-    </div>
-  </el-form>
+    <template #item="{ entity, validation }">
+      <item-wishlist
+        v-model:name="entity.value.name"
+        v-model:price="entity.value.price"
+        v-model:taken="entity.value.taken"
+        v-model:description="entity.value.description"
+        v-model:link="entity.value.link"
+        v-model:images="entity.value.images"
+        v-model:gift-for="entity.value.giftFor"
+        :validation="validation"
+        :hide-taken="true"
+      />
+    </template>
+  </base-entity-update>
 </template>
 
 <script lang="ts">
@@ -27,24 +27,28 @@ import { useI18n } from 'vue-i18n';
 import { defineComponent } from 'vue';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
 import ItemWishlist from '@/modules/wishlist/item-wishlist.vue';
-import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
+import { useUpdateWishlist } from '@/modules/wishlist/composables/useUpdateWishlist';
+import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
 
 export default defineComponent({
   name: 'UpdateWishlistItem',
-  components: { ItemWishlist },
+  components: { BaseEntityUpdate, ItemWishlist },
   props: {
     wishlistItem: {
       required: true,
       type: Wishlist,
     },
   },
-  setup(context) {
+  setup() {
     const { t } = useI18n();
-    const updateWishlistItem = ServiceWishlist.useUpdate(context.wishlistItem);
+
+    const validationRules = {
+    };
 
     return {
       t,
-      updateWishlistItem,
+      useUpdateEntity: useUpdateWishlist,
+      validationRules,
     };
   },
 });

@@ -1,36 +1,47 @@
 <template>
-  <list-wishlist-filters
-    v-model="filters"
-    @reset="resetFilters"
-    @update-filter="updateFilter"
-  />
-<!--  <base-list-sort-->
-<!--    v-model:sort-by="sortBy"-->
-<!--    v-model:sort-desc="sortDesc"-->
-<!--    :options-sort-by="optionsSortBy"-->
-<!--  />-->
-  <h2>{{ collection.countItems.value }} {{ t('wishlist.item.label', collection.countItems.value) }}</h2>
-  <slot
-    name="items"
-    :wishlistItems="collection.items.value"
-  >
-    <table>
-      <tr>
-        <th>{{ t('wishlist.item.label') }}</th>
-      </tr>
-      <list-wishlist-item
-        v-for="wishlist in collection.items.value"
-        :key="wishlist.id"
-        :wishlist="wishlist"
+  <div class="row q-col-gutter-md">
+    <div class="col-12">
+      <list-wishlist-filters
+        v-model="filters"
+        @reset="resetFilters"
+        @update-filter="updateFilter"
       />
-    </table>
-  </slot>
-  <button
-    v-if="collection.hasNextPage.value"
-    @click="collection.loadNextItems"
-  >
-    Mehr laden
-  </button>
+    </div>
+    <div class="col-12">
+      <base-list-sort
+        v-model:sort-by="sortBy"
+        v-model:sort-desc="sortDesc"
+        :options-sort-by="optionsSortBy"
+      />
+    </div>
+    <div class="col-12">
+      <div
+        class="row q-col-gutter-lg"
+      >
+        <list-wishlist-item
+          v-for="(wishlist, index) in collection.items.value"
+          :key="wishlist.id"
+          v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
+          :wishlist="wishlist"
+        />
+      <!--        <slot-->
+      <!--          name="items"-->
+      <!--          :wishlistItems="collection.items.value"-->
+      <!--        >-->
+      <!--          <table>-->
+      <!--            <tr>-->
+      <!--              <th>{{ t('wishlist.item.label') }}</th>-->
+      <!--            </tr>-->
+      <!--            <list-wishlist-item-->
+      <!--              v-for="wishlist in collection.items.value"-->
+      <!--              :key="wishlist.id"-->
+      <!--              :wishlist="wishlist"-->
+      <!--            />-->
+      <!--          </table>-->
+      <!--        </slot>-->
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

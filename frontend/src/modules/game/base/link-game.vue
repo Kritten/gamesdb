@@ -21,6 +21,7 @@
         >
           {{ game.name }}
         </span>
+        <!--        TODO Replace with <base-link>-->
         <router-link
           v-else
           :to="{name: 'game', params: {id: game.id}}"

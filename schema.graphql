@@ -15,6 +15,7 @@ type CountsModel {
     gamesAnalog: Float!
     gamesDigital: Float!
     ratings: Float!
+    wishlists: Float!
 }
 
 type Game {

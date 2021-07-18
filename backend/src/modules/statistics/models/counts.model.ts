@@ -5,4 +5,5 @@ export class CountsModel {
   gamesDigital: number
   gamesAnalog: number
   ratings: number
+  wishlists: number
 }

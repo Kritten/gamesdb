@@ -9,6 +9,10 @@
     <template #after>
       <slot name="after" />
     </template>
+
+    <template #append>
+      <slot name="append" />
+    </template>
   </q-input>
 </template>
 

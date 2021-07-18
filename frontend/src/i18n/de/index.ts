@@ -206,6 +206,7 @@ export default {
       giftFor: 'Geschenk für',
     },
     confirm: {
+      delete: 'Soll der Wunschlisteneintrag wirklich gelöscht werden?',
       take:
         'Soll dieses Produkt wirklich von der Wunschliste gestrichen werden?',
       giveBack:

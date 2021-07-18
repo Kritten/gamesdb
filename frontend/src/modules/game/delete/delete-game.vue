@@ -4,7 +4,7 @@
     i18n-prefix="game"
     :use-delete-entity="useDeleteGame"
     label
-    @submit="deletedGame"
+    @submit="deleted"
   />
 </template>
 
@@ -27,7 +27,7 @@ export default defineComponent({
   setup() {
     return {
       useDeleteGame,
-      deletedGame() {
+      deleted() {
         void useRouter().push({ name: 'games' });
       },
     };

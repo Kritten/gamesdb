@@ -1,17 +1,23 @@
 <template>
-  <button @click="confirmDelete">
-    {{ t('common.delete') }}
-  </button>
+  <base-entity-delete
+    :entity="wishlistItem"
+    i18n-prefix="wishlist"
+    :use-delete-entity="useDeleteEntity"
+    label
+    @submit="deleted"
+  />
 </template>
 
 <script lang="ts">
-import { useI18n } from 'vue-i18n';
-import { defineComponent, PropType } from 'vue';
+import { defineComponent } from 'vue';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
-import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
+import { useDeleteWishlist } from '@/modules/wishlist/composables/useDeleteWishlist';
+import BaseEntityDelete from '@/modules/app/base/entity/base-entity-delete.vue';
+import { useRouter } from '@/router';
 
 export default defineComponent({
   name: 'DeleteWishlistItem',
+  components: { BaseEntityDelete },
   props: {
     wishlistItem: {
       required: true,
@@ -19,23 +25,12 @@ export default defineComponent({
     },
   },
   emits: ['deleted'],
-  setup(props, { emit }) {
-    const { t } = useI18n();
-    const deleteWishlistItem = ServiceWishlist.useDelete();
-
-    const confirmDelete = () => {
-      const confirmed = confirm(`Wunschlisteintrag ${props.wishlistItem.name} löschen?`);
-
-      if (confirmed) {
-        deleteWishlistItem.delete(props.wishlistItem).then(() => {
-          emit('deleted');
-        });
-      }
-    };
-
+  setup() {
     return {
-      t,
-      confirmDelete,
+      useDeleteEntity: useDeleteWishlist,
+      deleted() {
+        void useRouter().push({ name: 'wishlist' });
+      },
     };
   },
 });

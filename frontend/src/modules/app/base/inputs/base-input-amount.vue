@@ -1,29 +1,26 @@
 <template>
-  <base-input-text
-    v-model.number="modelInternal"
+  <base-input-number
+    v-model="modelInternal"
     :validation="validation"
     :options="optionsMerged"
   >
-    <template #after>
-      <slot name="after" />
-    </template>
-
     <template #append>
-      <slot name="append" />
+      <slot name="append">
+        {{ `€` }}
+      </slot>
     </template>
-  </base-input-text>
+  </base-input-number>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
 import { getValidator, useModelWrapper } from '@/modules/app/utilities/helpers';
 import { Validation } from '@vuelidate/core';
-import { useBaseInput } from '@/modules/app/base/inputs/base-input';
-import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
+import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 
 export default defineComponent({
-  name: 'BaseInputNumber',
-  components: { BaseInputText },
+  name: 'BaseInputAmount',
+  components: { BaseInputNumber },
   props: {
     modelValue: {
       required: true,
@@ -44,15 +41,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
-    const baseInput = useBaseInput<
-      string | null,
-      string | number | null
-      >(
-        props,
-        emit,
-      );
     return {
-      baseInput,
       modelInternal: useModelWrapper<number>({
         props, emit, name: 'modelValue',
       }),

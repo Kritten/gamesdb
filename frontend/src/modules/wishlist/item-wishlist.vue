@@ -1,57 +1,77 @@
 <template>
-  <div>
-    <base-input-text
-      v-model="nameInternal"
-      :options="{
-        label: t('wishlist.name'),
-      }"
-    />
-  </div>
-  <div>
-    <base-input-number
-      v-model="priceInternal"
-      :options="{
-        label: t('wishlist.price')
-      }"
-    />
-  </div>
-  <div v-if="hideTaken === false">
-    <base-input-boolean
-      v-model="takenInternal"
-      :options="{
-        label: t('wishlist.taken'),
-      }"
-    />
-  </div>
-  <div>
-    <base-input-text
-      v-model="descriptionInternal"
-      :options="{
-        label: t('wishlist.description'),
-      }"
-    />
-  </div>
-  <div>
-    <base-input-text
-      v-model="linkInternal"
-      :options="{
-        label: t('wishlist.link'),
-      }"
-    />
-  </div>
-  <div>
-    <base-input-select
-      v-model="giftForInternal"
-      :options="{
-        label: t('wishlist.giftFor'),
-        items: itemsGiftFor,
-      }"
-    />
-  </div>
-  <div>
-    <base-input-images
-      v-model="imagesInternal"
-    />
+  <div class="row q-col-gutter-md">
+    <div class="col-12">
+      <base-input-text
+        v-model="nameInternal"
+        :validation="validation?.name"
+        :options="{
+          label: t('wishlist.name'),
+        }"
+      />
+    </div>
+
+    <div class="col-12">
+      <base-input-amount
+        v-model="priceInternal"
+        :validation="validation?.price"
+        :options="{
+          label: t('wishlist.price')
+        }"
+      />
+    </div>
+
+    <div
+      v-if="hideTaken === false"
+      class="col-12"
+    >
+      <base-input-boolean
+        v-model="takenInternal"
+        :validation="validation?.taken"
+        :options="{
+          label: t('wishlist.taken'),
+        }"
+      />
+    </div>
+
+    <div class="col-12">
+      <base-input-text
+        v-model="descriptionInternal"
+        :validation="validation?.description"
+        :options="{
+          label: t('wishlist.description'),
+        }"
+      />
+    </div>
+
+    <div class="col-12">
+      <base-input-text
+        v-model="linkInternal"
+        :validation="validation?.link"
+        :options="{
+          label: t('wishlist.link'),
+        }"
+      />
+    </div>
+
+    <div class="col-12">
+      <base-input-select
+        v-model="giftForInternal"
+        :validation="validation?.giftFor"
+        :options="{
+          label: t('wishlist.giftFor'),
+          items: itemsGiftFor,
+          mapOptions: true,
+          emitValue: true
+        }"
+      />
+    </div>
+
+    <div class="col-12">
+      <base-input-images
+        v-model="imagesInternal"
+        :validation="validation?.images"
+      />
+    </div>
   </div>
 </template>
 
@@ -66,13 +86,14 @@ import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import BaseInputImages from '@/modules/app/base/inputs/base-input-images.vue';
-import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
+import { Validation } from '@vuelidate/core';
+import BaseInputAmount from '@/modules/app/base/inputs/base-input-amount.vue';
 import { useCollection } from '../app/utilities/collection/collection';
 
 export default defineComponent({
   name: 'ItemWishlist',
   components: {
-    BaseInputNumber,
+    BaseInputAmount,
     BaseInputImages,
     BaseInputSelect,
     BaseInputBoolean,
@@ -111,6 +132,11 @@ export default defineComponent({
     giftFor: {
       type: Number,
       required: true,
+    },
+    validation: {
+      required: false,
+      type: Object as PropType<Validation>,
+      default: undefined,
     },
   },
   emits: ['update:name', 'update:price', 'update:taken', 'update:link', 'update:giftFor', 'update:images'],
@@ -152,7 +178,6 @@ export default defineComponent({
         props, emit, name: 'giftFor', parse: (value) => toNumber(value as string),
       }),
       itemsGiftFor: ServiceWishlist.getItemsGiftFor(),
-      itemsPriceRange: ServiceWishlist.getItemsPriceRange(),
     };
   },
 });

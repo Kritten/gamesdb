@@ -32,7 +32,7 @@ export class Wishlist extends Entity implements WishlistInterface {
   static async parseFromServer(data: EntityInterface): Promise<Wishlist> {
     const entity = (await super.parseFromServer(data)) as Wishlist;
 
-    // TODO: handle images
+    entity.images = JSON.parse(entity.images as unknown as string) as Array<string>;
 
     return entity;
   }

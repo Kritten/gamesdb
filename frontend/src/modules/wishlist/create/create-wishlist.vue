@@ -1,39 +1,54 @@
 <template>
-  <form @submit.prevent="createWishlist.create">
-    <item-wishlist
-      v-model:name="createWishlist.entity.value.name"
-      v-model:price="createWishlist.entity.value.price"
-      v-model:taken="createWishlist.entity.value.taken"
-      v-model:description="createWishlist.entity.value.description"
-      v-model:link="createWishlist.entity.value.link"
-      v-model:images="createWishlist.entity.value.images"
-      v-model:gift-for="createWishlist.entity.value.giftFor"
-      :hide-taken="true"
-    />
-    <div>
-      <button type="submit">
-        {{ t('common.create') }}
-      </button>
-    </div>
-  </form>
+  <base-entity-create
+    i18n-prefix="wishlist"
+    :validation-rules="validationRules"
+    :use-create-entity="useCreateEntity"
+    :options-button="optionsButton"
+  >
+    <template #item="{ entity, validation }">
+      <item-wishlist
+        v-model:name="entity.value.name"
+        v-model:price="entity.value.price"
+        v-model:taken="entity.value.taken"
+        v-model:description="entity.value.description"
+        v-model:link="entity.value.link"
+        v-model:images="entity.value.images"
+        v-model:gift-for="entity.value.giftFor"
+        :validation="validation"
+        :hide-taken="true"
+      />
+    </template>
+  </base-entity-create>
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { defineComponent } from 'vue';
-import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import ItemWishlist from '@/modules/wishlist/item-wishlist.vue';
+import BaseEntityCreate from '@/modules/app/base/entity/base-entity-create.vue';
+import { useCreateWishlist } from '@/modules/wishlist/composables/useCreateWishlist';
+import { useWishlist } from '@/modules/wishlist/composables/useWishlist';
 
 export default defineComponent({
   name: 'CreateWishlist',
-  components: { ItemWishlist },
+  components: { BaseEntityCreate, ItemWishlist },
+  props: {
+    optionsButton: {
+      required: false,
+      type: Object,
+      default: () => ({}),
+    },
+  },
   setup() {
     const { t } = useI18n();
-    const createWishlist = ServiceWishlist.useCreate();
+    const { validation } = useWishlist();
+
+    const validationRules = validation.create();
 
     return {
       t,
-      createWishlist,
+      useCreateEntity: useCreateWishlist,
+      validationRules,
     };
   },
 });

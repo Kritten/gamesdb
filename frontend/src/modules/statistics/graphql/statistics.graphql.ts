@@ -6,6 +6,7 @@ export const queryStatisticsCounts = gql`
         gamesAnalog
         gamesDigital
         ratings
+        wishlists
       }
     }
 `;
