@@ -21,9 +21,12 @@ import { Game } from '@/modules/game/game.model';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import { mutate } from '@/modules/app/utilities/helpers';
 import { useSession } from '@/modules/session/composables/useSession';
+import { GameLoading } from '@/modules/game/game.types';
+import { useCreateSession } from '@/modules/session/composables/useCreateSession';
+import { useUpdateSession } from '@/modules/session/composables/useUpdateSession';
 
 class ServiceSessionClass
-implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> {
+implements ServiceCollectionInterface<Session> {
   useLastSession({
     analogOnly = false,
     digitalOnly = false,
@@ -70,43 +73,9 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
     };
   }
 
-  useCreate() {
-    const session = ref(new Session({ isChallenge: false }));
-
-    return {
-      entity: session,
-      create: async (game: Game) => {
-        if (game !== undefined) {
-          session.value.game = game;
-        }
-
-        const sessionNew = await this.create(session.value);
-        session.value = new Session({ isChallenge: false });
-        return sessionNew;
-      },
-    };
-  }
-
-  useUpdate(sessionPassed: Session) {
-    const session = ref(cloneDeep(sessionPassed));
-
-    return {
-      entity: session,
-      update: async () => {
-        session.value = cloneDeep(await this.update(session.value));
-      },
-    };
-  }
-
-  useDelete() {
-    return {
-      delete: (session: Session) => this.delete(session),
-    };
-  }
-
   useTrackSession() {
     return {
-      start: async (session: Ref<Session>, game: Game) => {
+      start: async (session: Ref<Session>, game: GameLoading | undefined) => {
         if (game !== undefined) {
           session.value.game = game;
         }
@@ -122,13 +91,22 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
           }),
         );
 
-        const sessionNew = await this.create(session.value, { event: 'startedSessionVirtual' });
+        const { create } = useCreateSession({ valuesInitial: session.value });
+
+        const sessionNew = await create();
+        // TODO include event
+        // const sessionNew = await this.create(session.value, { event: 'startedSessionVirtual' });
         session.value = new Session({ isChallenge: false });
         return sessionNew;
       },
       pause: async (session: Session) => {
         session.stop();
-        await this.update(session, { event: 'pausedSession' });
+
+        const { update } = useUpdateSession(session);
+
+        // TODO include event
+        await update();
+        // await this.update(session, { event: 'pausedSession' });
       },
       continue: async (session: Session) => {
         const dateCurrent = new Date();
@@ -138,38 +116,20 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
             end: null,
           }),
         );
-        await this.update(session, { event: 'continuedSession' });
+        const { update } = useUpdateSession(session);
+        await update();
+        // TODO include event
+        // await this.update(session, { event: 'continuedSession' });
       },
       stop: async (session: Session) => {
         session.stop();
         session.isVirtual = false;
-        await this.update(session, { event: 'stoppedSession' });
+        const { update } = useUpdateSession(session);
+        await update();
+        // TODO include event
+        // await this.update(session, { event: 'stoppedSession' });
       },
     };
-  }
-
-  async create(session: Session, { event = 'createdSession' }: { event?: string } = {}) {
-    const response = await mutate<{createSession: Session}>(mutationCreateSession, {
-      session: session.prepareForServer(),
-    });
-
-    const sessionNew = await Session.parseFromServer(response.createSession);
-
-    queue.notify(event, sessionNew);
-
-    return sessionNew;
-  }
-
-  async update(session: Session, { event = 'updatedSession' }: { event?: string } = {}) {
-    const response = await mutate<{ updateSession: Session }>(mutationUpdateSession, {
-      session: session.prepareForServer(),
-    });
-
-    const sessionNew = await Session.parseFromServer(response.updateSession);
-
-    queue.notify(event, sessionNew);
-
-    return sessionNew;
   }
 
   async loadPage(data: InputCollection) {
@@ -190,19 +150,6 @@ implements ServiceCollectionInterface<Session>, ServiceEntityInterface<Session> 
         }
       },
     });
-  }
-
-  async delete(session: Session) {
-    const { mutate } = useMutation(mutationDeleteSession);
-    const response = await mutate({
-      variables: {
-        id: session.id,
-      },
-    });
-
-    queue.notify('deletedSession', session);
-
-    return response.data.deleteSession;
   }
 }
 

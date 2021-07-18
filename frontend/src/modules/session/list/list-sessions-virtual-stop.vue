@@ -41,6 +41,7 @@ import { isEqual } from 'date-fns';
 import { Session } from '@/modules/session/session.model';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 import ItemSession from '@/modules/session/item-session.vue';
+import { useUpdateSession } from '@/modules/session/composables/useUpdateSession';
 
 export default defineComponent({
   name: 'ListSessionsVirtualStop',
@@ -55,7 +56,7 @@ export default defineComponent({
     const { t } = useI18n();
 
     const useTrackSession = ServiceSession.useTrackSession();
-    const updateSession = ServiceSession.useUpdate(props.session);
+    const updateSession = useUpdateSession(props.session);
 
     const vuelidate = useVuelidate(computed(() => ({
       game: {

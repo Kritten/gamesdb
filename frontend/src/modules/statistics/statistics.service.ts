@@ -49,7 +49,7 @@ class ServiceStatisticsClass {
       });
     }
 
-    const { getOrLoad } = useGame();
+    const { get } = useGame();
 
     return loadPageBase<GamesCountPlayedItem, {statisticsGamesCountPlayed: ServiceCollectionLoadPage<GamesCountPlayedItemServer>}>({
       data,
@@ -58,7 +58,7 @@ class ServiceStatisticsClass {
         count: response.statisticsGamesCountPlayed.count,
         items: response.statisticsGamesCountPlayed.items.map((item) => ({
           countPlayed: item.countPlayed,
-          game: getOrLoad(item.id),
+          game: get(item.id),
         })),
       }),
     });
@@ -84,14 +84,14 @@ class ServiceStatisticsClass {
       });
     }
 
-    const { getOrLoad } = useGame();
+    const { get } = useGame();
 
     return loadPageBase<GamesTimePlayedItem, {statisticsGamesTimePlayed: ServiceCollectionLoadPage<GamesTimePlayedItemServer>}>({
       data,
       query: queryStatisticsGamesTimePlayed,
       parseResult: async (response) => ({
         count: response.statisticsGamesTimePlayed.count,
-        items: response.statisticsGamesTimePlayed.items.map((item) => ({ timePlayed: item.timePlayed, game: getOrLoad(item.id) })),
+        items: response.statisticsGamesTimePlayed.items.map((item) => ({ timePlayed: item.timePlayed, game: get(item.id) })),
       }),
     });
   }

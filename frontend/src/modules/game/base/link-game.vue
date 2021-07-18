@@ -16,7 +16,13 @@
         />
       </div>
       <div class="col">
+        <span
+          v-if="noLink"
+        >
+          {{ game.name }}
+        </span>
         <router-link
+          v-else
           :to="{name: 'game', params: {id: game.id}}"
           class="text-primary"
         >
@@ -44,6 +50,11 @@ export default defineComponent({
       required: false,
       type: String,
       default: '17px',
+    },
+    noLink: {
+      required: false,
+      type: Boolean,
+      default: false,
     },
   },
 });

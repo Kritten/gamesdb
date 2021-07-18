@@ -7,6 +7,8 @@ const sessions = ref<Record<ID, Session>>({});
 
 export const useSession = () => {
   const useEntity = baseUseEntity<Session>({
+    // TODO FIX this ts-ignore
+    // @ts-ignore
     entities: sessions,
   });
 

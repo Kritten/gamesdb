@@ -17,7 +17,7 @@ export type TypeBaseUseCreateEntityParameters<T, P> = {
   nameMutation: keyof P,
   nameVariable: string,
   emits?: Array<string>,
-  valuesInitial?: Record<string, unknown>,
+  valuesInitial?: Partial<T>,
 }
 
 export type TypeBaseUseUpdateEntityParameters<T, P> = {

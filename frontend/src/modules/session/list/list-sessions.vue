@@ -27,6 +27,7 @@
         :key="session.id"
         v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
         :session="session"
+        :game="game"
       />
     </tbody>
   </q-markup-table>

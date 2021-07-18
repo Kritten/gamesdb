@@ -7,15 +7,26 @@
       label: t('game.label'),
       items: collectionGame.items.value,
       useInput: true,
-      optionLabel:'name',
       loading: collectionGame.isLoading.value,
+      displayValue: modelValue ? modelValue.name : '',
       clearable: true,
       autofocus: true,
     }"
     :on-scroll="onScroll"
     :filter="filterFn"
-    @update:model-value="$emit('update:modelValue', $event)"
-  />
+    @update:model-value="updateGame"
+  >
+    <template #option="{ itemProps, opt }">
+      <q-item v-bind="itemProps">
+        <q-item-section>
+          <link-game
+            :game="opt.value"
+            no-link
+          />
+        </q-item-section>
+      </q-item>
+    </template>
+  </base-input-select>
 </template>
 
 <script lang="ts">
@@ -30,10 +41,12 @@ import { ServiceGame } from '@/modules/game/game.service';
 import { useI18n } from 'vue-i18n';
 import { QSelect } from 'quasar';
 import { Validation } from '@vuelidate/core';
+import { GameLoading } from '@/modules/game/game.types';
+import LinkGame from '@/modules/game/base/link-game.vue';
 
 export default defineComponent({
   name: 'InputSelectGame',
-  components: { BaseInputSelect },
+  components: { LinkGame, BaseInputSelect },
   props: {
     modelValue: {
       required: false,
@@ -47,7 +60,7 @@ export default defineComponent({
     },
   },
   emits: ['update:modelValue'],
-  setup() {
+  setup(props, { emit }) {
     const { t } = useI18n();
 
     const baseInputSelect = ref<{refresh:() => void} | null>(null);
@@ -58,7 +71,7 @@ export default defineComponent({
       },
     });
 
-    const collectionGame = useCollection<Game>(
+    const collectionGame = useCollection<GameLoading>(
       ServiceGame.loadPage,
       {
         inputCollectionData: { count: 50, filters: filtersGame },
@@ -104,6 +117,9 @@ export default defineComponent({
 
           });
         });
+      },
+      updateGame(event: {value: unknown}) {
+        emit('update:modelValue', event);
       },
     };
   },

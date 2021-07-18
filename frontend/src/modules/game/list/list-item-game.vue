@@ -2,11 +2,17 @@
   <div
     class="col-12 col-md-6 col-lg-4"
   >
-    <q-card class="column full-height">
+    <div v-if="game.value === null">
+      test
+    </div>
+    <q-card
+      v-else
+      class="column full-height"
+    >
       <q-card-section class="row col-grow">
         <div class="col">
           <span class="text-h6">
-            {{ game.name }}
+            {{ game.value.name }}
           </span>
         </div>
         <div class="col-shrink">
@@ -27,7 +33,7 @@
             @mouseleave="autoplay = true"
           >
             <q-carousel-slide
-              v-for="(image, index) in game.images"
+              v-for="(image, index) in game.value.images"
               :key="index"
               :name="index"
             >
@@ -47,7 +53,7 @@
             <tr>
               <td>{{ t('rating.label') }}</td>
               <td>
-                <display-rating :rating="game.ratingAverage" />
+                <display-rating :rating="game.value.ratingAverage" />
               </td>
             </tr>
             <tr>
@@ -56,26 +62,26 @@
             </tr>
             <tr>
               <td>{{ t('game.complexity') }}</td>
-              <td><display-complexity :complexity="game.complexity" /></td>
+              <td><display-complexity :complexity="game.value.complexity" /></td>
             </tr>
             <tr>
               <td>{{ t('game.size') }}</td>
               <td>
-                <display-size :size="game.size" />
+                <display-size :size="game.value.size" />
               </td>
             </tr>
             <tr>
               <td>{{ t('playtime.label') }}</td>
               <td>
                 <display-playtime-game
-                  :minutes-playtime-min="game.minutesPlaytimeMin"
-                  :minutes-playtime-max="game.minutesPlaytimeMax"
+                  :minutes-playtime-min="game.value.minutesPlaytimeMin"
+                  :minutes-playtime-max="game.value.minutesPlaytimeMax"
                 />
               </td>
             </tr>
             <tr>
               <td>{{ t('game.isCoop') }}</td>
-              <td><display-is-coop :is-coop="game.isCoop" /> </td>
+              <td><display-is-coop :is-coop="game.value.isCoop" /> </td>
             </tr>
           </tbody>
         </q-markup-table>
@@ -91,7 +97,7 @@
             icon="fas fa-eye"
             color="primary"
             :label="t('common.details')"
-            :to="{name: 'game', params: {id: game.id}}"
+            :to="{name: 'game', params: {id: game.value.id}}"
           />
         </div>
       </q-card-actions>
@@ -100,7 +106,6 @@
 </template>
 
 <script lang="ts">
-import { Game } from '@/modules/game/game.model';
 import {
   computed, defineComponent, PropType, ref,
 } from 'vue';
@@ -111,6 +116,7 @@ import DisplayRating from '@/modules/rating/base/display-rating.vue';
 import DisplayPlaytimeGame from '@/modules/game/base/display-playtime-game.vue';
 import DisplayIsCoop from '@/modules/game/base/display-is-coop.vue';
 import UpdateGame from '@/modules/game/update/update-game.vue';
+import { GameLoading } from '@/modules/game/game.types';
 
 export default defineComponent({
   name: 'ListItemGame',
@@ -125,7 +131,7 @@ export default defineComponent({
   props: {
     game: {
       required: true,
-      type: Object as PropType<Game>,
+      type: Object as PropType<GameLoading>,
     },
   },
   setup(props) {
@@ -138,10 +144,15 @@ export default defineComponent({
       autoplay,
       slide,
       infoCountPlayers: computed(
-        () => t('game.infoCountPlayers', {
-          countPlayersMin: props.game.countPlayersMin,
-          countPlayersMax: props.game.countPlayersMax,
-        }, props.game.countPlayersMin === props.game.countPlayersMax ? 1 : 2),
+        () => {
+          if (props.game.value === null) {
+            return '';
+          }
+          return t('game.infoCountPlayers', {
+            countPlayersMin: props.game.value.countPlayersMin,
+            countPlayersMax: props.game.value.countPlayersMax,
+          }, props.game.value.countPlayersMin === props.game.value.countPlayersMax ? 1 : 2);
+        },
       ),
     };
   },

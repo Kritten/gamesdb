@@ -3,8 +3,10 @@
     <div class="col-12">
       <input-select-game
         v-if="hideGame === false"
-        v-model="gameInternal"
+        :model-value="game"
+
         :validation="validation.game"
+        @update:model-value="updateGame"
       />
     </div>
     <div class="col-12">
@@ -192,9 +194,6 @@ export default defineComponent({
 
     return {
       t,
-      gameInternal: useModelWrapper<Game>({
-        props, emit, name: 'game',
-      }),
       playersInternal: useModelWrapper<Array<Player>>({
         props, emit, name: 'players',
       }),
@@ -211,6 +210,9 @@ export default defineComponent({
       playtimeNew,
       playtimeAdd,
       playtimeRemove,
+      updateGame(event: unknown) {
+        emit('update:game', event);
+      },
       errorMessagePlaytimes: computed(() => {
         // todo
         // @ts-ignore

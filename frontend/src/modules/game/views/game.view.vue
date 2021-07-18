@@ -77,8 +77,6 @@ import {
   ref, defineComponent, computed, Ref,
 } from 'vue';
 import { useRoute } from 'vue-router';
-import { ServiceGame } from '@/modules/game/game.service';
-import { Game } from '@/modules/game/game.model';
 import CreateSession from '@/modules/session/create/create-session.vue';
 import ListSession from '@/modules/session/list/list-sessions.vue';
 import DeleteGame from '@/modules/game/delete/delete-game.vue';
@@ -92,6 +90,7 @@ import ItemGame from '@/modules/game/item-game.vue';
 import { useI18n } from 'vue-i18n';
 import { displayIsCoop } from '@/modules/app/utilities/helpers';
 import BaseCard from '@/modules/app/base/base-card.vue';
+import { useGame } from '@/modules/game/composables/useGame';
 
 export default defineComponent({
   name: 'ViewGame',
@@ -108,10 +107,10 @@ export default defineComponent({
     const { t } = useI18n();
     const route = useRoute();
     const idGame = route.params.id as string;
-    const game = ref<Game | null>(null);
     const countSessions = ref<number>();
 
-    ServiceGame.getOrLoadGame(idGame).then((value: Game) => { game.value = value; });
+    const { get } = useGame();
+    const game = get(idGame);
 
     const properties: Ref<Array<{
       label: string,

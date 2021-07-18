@@ -20,11 +20,10 @@ export const queryPageGame = gql`
     ) {
       count
       items {
-        ...game
+        id
       }
     }
   }
-  ${fragments.game}
 `;
 
 export const queryGame = gql`

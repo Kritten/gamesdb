@@ -1,13 +1,12 @@
-import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
+import { EntityInterface, EntityLoading } from '@/modules/app/utilities/entity/entity.types';
 import { Rating } from '@/modules/rating/rating.model';
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
 import { Mood } from '@/modules/mood/mood.model';
 import { Game } from '@/modules/game/game.model';
 import { Universe } from '@/modules/universe/universe.model';
 import { Category } from '@/modules/category/category.model';
-import { Ref } from 'vue';
 
-export type GameLoading = Ref<Game | null>;
+export type GameLoading = EntityLoading<Game>;
 
 export interface GameInterface extends EntityInterface {
   name?: string;

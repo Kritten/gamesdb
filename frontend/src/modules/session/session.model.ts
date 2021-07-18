@@ -1,14 +1,14 @@
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { SessionInterface } from '@/modules/session/session.types';
-import { Game } from '@/modules/game/game.model';
 import { Player } from '@/modules/player/player.model';
 import { Playtime } from '@/modules/playtime/playtime.model';
 import { EntityInterface, ID } from '@/modules/app/utilities/entity/entity.types';
-import { ServiceGame } from '@/modules/game/game.service';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 import { PlaytimeInterface } from '@/modules/playtime/playtime.types';
-import { isEqual } from 'date-fns';
 import { usePlayers } from '@/modules/player/composables/usePlayers';
+import { useGame } from '@/modules/game/composables/useGame';
+import { Game } from '@/modules/game/game.model';
+import { GameLoading } from '@/modules/game/game.types';
 
 export class Session extends Entity implements SessionInterface {
   comment?: string | null;
@@ -17,7 +17,8 @@ export class Session extends Entity implements SessionInterface {
 
   isVirtual: boolean;
 
-  game?: Game;
+  // TODO: Why is ref removed? https://github.com/vuejs/vue-next/issues/3478
+  game?: Game | GameLoading;
 
   players: Player[];
 
@@ -73,8 +74,8 @@ export class Session extends Entity implements SessionInterface {
     }
 
     if (entity.game !== undefined) {
-      const idGame = entity.game.id;
-      entity.game = await ServiceGame.getOrLoadGame(idGame as ID);
+      const idGame = (entity.game as unknown as Game).id;
+      entity.game = useGame().get(idGame as ID);
     }
 
     entity.playtimes = await Promise.all(
@@ -90,7 +91,7 @@ export class Session extends Entity implements SessionInterface {
     if (this.game === undefined) {
       throw Error('Session has to have a game');
     }
-    data.game = this.game.id;
+    data.game = (this.game as Game).id;
     data.comment = this.comment;
     data.isChallenge = this.isChallenge;
     data.isVirtual = this.isVirtual;

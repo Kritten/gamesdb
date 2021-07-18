@@ -12,6 +12,16 @@
     @filter="filterInternal"
   >
     <template
+      v-if="hasSlotOption"
+      #option="scope"
+    >
+      <slot
+        name="option"
+        v-bind="scope"
+      />
+    </template>
+
+    <template
       v-if="Array.isArray(modelValue)"
       #option="{ itemProps, opt, selected, toggleOption }"
     >
@@ -76,7 +86,7 @@ export default defineComponent({
     },
   },
   emits: ['update:modelValue'],
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     const qSelect = ref<QSelect | null>(null);
 
     const multiple = Array.isArray(props.modelValue);
@@ -123,6 +133,7 @@ export default defineComponent({
       filterInternal,
       optionsMerged,
       itemsInternal,
+      hasSlotOption: slots.option !== undefined,
       refresh() {
         if (qSelect.value !== null) {
           qSelect.value.refresh();

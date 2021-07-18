@@ -30,7 +30,10 @@
       />
     </td>
     <td>
-      <update-session :session="session" />
+      <update-session
+        :session="session"
+        :game="game"
+      />
       <delete-session :session="session" />
     </td>
   </tr>
@@ -40,9 +43,10 @@
 import { Session } from '@/modules/session/session.model';
 import DeleteSession from '@/modules/session/delete/delete-session.vue';
 import UpdateSession from '@/modules/session/update/update-session.vue';
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { compareAsc, compareDesc } from 'date-fns';
 import BaseDateTime from '@/modules/app/base/base-date-time.vue';
+import { GameLoading } from '@/modules/game/game.types';
 
 export default defineComponent({
   name: 'ListItemSession',
@@ -55,6 +59,11 @@ export default defineComponent({
     session: {
       required: true,
       type: Session,
+    },
+    game: {
+      type: Object as PropType<GameLoading>,
+      required: false,
+      default: undefined,
     },
   },
   setup(props) {

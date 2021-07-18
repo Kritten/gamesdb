@@ -32,16 +32,16 @@
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ServiceSession } from '@/modules/session/session.service';
-import { Game } from '@/modules/game/game.model';
 import ItemSession from '@/modules/session/item-session.vue';
 import {
-  computed, defineComponent, Ref,
+  computed, defineComponent, PropType, Ref,
 } from 'vue';
 import useVuelidate, { Validation } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import BaseEntityCreate from '@/modules/app/base/entity/base-entity-create.vue';
 import { useCreateSession } from '@/modules/session/composables/useCreateSession';
 import { Session } from '@/modules/session/session.model';
+import { GameLoading } from '@/modules/game/game.types';
 
 export default defineComponent({
   name: 'CreateSession',
@@ -51,7 +51,7 @@ export default defineComponent({
   },
   props: {
     game: {
-      type: Game,
+      type: Object as PropType<GameLoading>,
       required: false,
       default: undefined,
     },
@@ -94,7 +94,7 @@ export default defineComponent({
         const result = await vuelidateStart.value.$validate();
 
         if (result) {
-          await useTrackSession.start(entity, props.game as Game);
+          await useTrackSession.start(entity, props.game);
           close();
         } else {
           validation.game.$touch();

@@ -59,6 +59,7 @@ import { cloneDeep } from 'lodash';
 import RandomGame from '@/modules/game/random-game.vue';
 import { useGame } from '@/modules/game/composables/useGame';
 import BaseSpinner from '@/modules/app/base/base-spinner.vue';
+import { GameLoading } from '@/modules/game/game.types';
 
 export default defineComponent({
   name: 'ListGames',
@@ -97,7 +98,7 @@ export default defineComponent({
     const sortBy = ref<string[]>(['entity.name']);
     const sortDesc = ref<boolean[]>([false]);
 
-    const collection = useCollection<Game>(ServiceGame.loadPage, {
+    const collection = useCollection<GameLoading>(ServiceGame.loadPage, {
       inputCollectionData: {
         sortBy, sortDesc, filters, count: 30,
       },

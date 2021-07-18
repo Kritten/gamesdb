@@ -15,6 +15,7 @@
         v-model:winners="entity.value.winners"
         v-model:playtimes="entity.value.playtimes"
         :validation="validation"
+        :hide-game="game !== undefined"
       />
     </template>
   </base-entity-update>
@@ -24,12 +25,12 @@
 import { useI18n } from 'vue-i18n';
 import { Session } from '@/modules/session/session.model';
 import ItemSession from '@/modules/session/item-session.vue';
-import { ServiceSession } from '@/modules/session/session.service';
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { isEqual } from 'date-fns';
 import { required } from '@vuelidate/validators';
 import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
 import { useUpdateSession } from '@/modules/session/composables/useUpdateSession';
+import { GameLoading } from '@/modules/game/game.types';
 
 export default defineComponent({
   name: 'UpdateSession',
@@ -42,10 +43,14 @@ export default defineComponent({
       required: true,
       type: Session,
     },
+    game: {
+      type: Object as PropType<GameLoading>,
+      required: false,
+      default: undefined,
+    },
   },
-  setup(props) {
+  setup() {
     const { t } = useI18n();
-    const updateSession = ServiceSession.useUpdate(props.session);
 
     const validationRules = {
       game: {
@@ -55,7 +60,6 @@ export default defineComponent({
 
     return {
       t,
-      updateSession,
       validationRules,
       isEqual,
       useUpdateSession,
