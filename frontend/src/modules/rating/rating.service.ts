@@ -1,5 +1,4 @@
 import { ref } from 'vue';
-import { useMutation } from '@vue/apollo-composable';
 
 import {
   mutationCreateRating,
@@ -12,6 +11,7 @@ import { cloneDeep } from 'lodash';
 import { ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { queue } from '@/queue';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
+import { mutate } from '@/modules/app/utilities/helpers';
 import {
   ServiceCollectionInterface,
   InputCollection, ServiceCollectionLoadPage,
@@ -50,17 +50,11 @@ implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
   }
 
   async create(rating: Rating) {
-    const { mutate } = useMutation(mutationCreateRating);
+    const response = await mutate<{createRating: Rating}>(mutationCreateRating, {
+      rating: rating.prepareForServer(),
+    });
 
-    const response = await mutate(
-      {
-        variables: {
-          rating: rating.prepareForServer(),
-        },
-      },
-    );
-
-    const ratingNew = await Rating.parseFromServer(response.data.createRating);
+    const ratingNew = await Rating.parseFromServer(response.createRating);
 
     queue.notify('createdRating', ratingNew);
 
@@ -68,15 +62,11 @@ implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
   }
 
   async update(rating: Rating) {
-    const { mutate } = useMutation(mutationUpdateRating);
-
-    const response = await mutate({
-      variables: {
-        rating: rating.prepareForServer(),
-      },
+    const response = await mutate<{updateRating: Rating}>(mutationUpdateRating, {
+      rating: rating.prepareForServer(),
     });
 
-    const ratingNew = await Rating.parseFromServer(response.data.updateRating);
+    const ratingNew = await Rating.parseFromServer(response.updateRating);
 
     queue.notify('updatedRating', ratingNew);
 
@@ -84,17 +74,13 @@ implements ServiceCollectionInterface<Rating>, ServiceEntityInterface<Rating> {
   }
 
   async delete(rating: Rating) {
-    const { mutate } = useMutation(mutationDeleteRating);
-
-    const response = await mutate({
-      variables: {
-        id: rating.id,
-      },
+    const response = await mutate<{deleteRating: boolean}>(mutationDeleteRating, {
+      id: rating.id,
     });
 
     queue.notify('deletedRating', rating);
 
-    return response.data.deleteRating;
+    return response.deleteRating;
   }
 
   async loadPage(data: InputCollection) {
