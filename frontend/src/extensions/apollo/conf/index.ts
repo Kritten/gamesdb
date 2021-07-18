@@ -1,5 +1,5 @@
-import type { ApolloClientOptions } from '@apollo/client';
-import { createHttpLink, InMemoryCache } from '@apollo/client';
+import type { ApolloClientOptions } from '@apollo/client/core';
+import { createHttpLink, InMemoryCache } from '@apollo/client/core';
 /* import type { BootFileParams } from '@quasar/app' */
 
 export /* async */ function getClientOptions(/* {app, router, ...}: Partial<BootFileParams<unknown>> */) {

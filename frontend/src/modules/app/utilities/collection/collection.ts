@@ -8,9 +8,7 @@ import {
   ServiceCollectionLoadPageType,
 } from '@/modules/app/utilities/collection/collection.types';
 import { debounce } from 'lodash';
-import { useMutation } from '@vue/apollo-composable';
 import { DocumentNode } from 'graphql';
-import { ApolloQueryResult } from '@apollo/client';
 import { query } from '@/modules/app/utilities/helpers';
 
 /**
