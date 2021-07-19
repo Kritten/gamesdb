@@ -5,6 +5,7 @@
     :use-update-entity="useUpdateEntity"
     :validation-rules="validationRules"
     :options-button="{ label: undefined }"
+    @submit="$emit('updated')"
   >
     <template #item="{ entity, validation }">
       <item-wishlist
@@ -39,6 +40,7 @@ export default defineComponent({
       type: Wishlist,
     },
   },
+  emits: ['updated'],
   setup() {
     const { t } = useI18n();
 

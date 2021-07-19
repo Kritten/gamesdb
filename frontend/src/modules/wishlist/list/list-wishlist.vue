@@ -109,7 +109,7 @@ export default defineComponent({
       watchFilters: false,
     });
 
-    for (const event of ['createdWishlist', 'updatedWishlist', 'deletedWishlist']) {
+    for (const event of ['createdWishlistItem', 'updatedWishlistItem', 'deletedWishlistItem']) {
       queue.listen(event, () => {
         collection.reset();
       });

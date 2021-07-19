@@ -11,7 +11,7 @@ export const useUpdateWishlist = (wishlistItemPassed: Wishlist) => {
     mutation: mutationUpdateWishlist,
     nameMutation: 'updateWishlist',
     nameVariable: 'wishlist',
-    emits: ['updatedWishlist'],
+    emits: ['updatedWishlistItem'],
   });
 
   return {

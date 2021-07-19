@@ -29,7 +29,7 @@ implements ServiceCollectionInterface<Wishlist> {
     // TODO
     // store.commit('moduleWishlist/addWishlistItem', wishlistNew);
 
-    queue.notify('updatedWishlist', wishlistNew);
+    queue.notify('updatedWishlistItem', wishlistNew);
 
     return wishlistNew;
   }

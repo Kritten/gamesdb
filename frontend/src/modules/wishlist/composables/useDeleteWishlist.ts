@@ -7,7 +7,7 @@ export const useDeleteWishlist = () => {
   const useDeleteEntity = baseUseDeleteEntity<Wishlist, { deleteWishlist: Wishlist }>({
     deleteEntity: useWishlist().deleteWishlistItem,
     mutation: mutationDeleteWishlist,
-    emits: ['deletedWishlist'],
+    emits: ['deletedWishlistItem'],
   });
 
   return {

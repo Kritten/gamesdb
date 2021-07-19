@@ -7,7 +7,10 @@
           opened
         >
           <template #actions>
-            <update-wishlist-item :wishlist-item="wishlistItem" />
+            <update-wishlist-item
+              :wishlist-item="wishlistItem"
+              @updated="loadWishlistItem"
+            />
           </template>
 
           <q-card-section>
@@ -90,9 +93,13 @@ export default defineComponent({
 
     const wishlistItem = ref<Wishlist | null>(null);
 
-    ServiceWishlist.getOrLoad(idWishlist).then((value) => {
-      wishlistItem.value = value;
-    });
+    const loadWishlistItem = () => {
+      ServiceWishlist.getOrLoad(idWishlist).then((value) => {
+        wishlistItem.value = value;
+      });
+    };
+
+    loadWishlistItem();
 
     const properties: Ref<Array<{
       label: string,
@@ -136,6 +143,7 @@ export default defineComponent({
       t,
       wishlistItem,
       properties,
+      loadWishlistItem,
     };
   },
 });

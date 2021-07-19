@@ -10,7 +10,7 @@ export const useCreateWishlist = ({ valuesInitial = {} }: { valuesInitial?: Part
     mutation: mutationCreateWishlist,
     nameMutation: 'createWishlist',
     nameVariable: 'wishlist',
-    emits: ['createdWishlist'],
+    emits: ['createdWishlistItem'],
     valuesInitial,
   });
 
