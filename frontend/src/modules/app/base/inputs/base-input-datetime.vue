@@ -4,6 +4,9 @@
     v-bind="optionsMerged"
     readonly
     borderless
+    :input-style="{
+      width: '8rem',
+    }"
   >
     <template #prepend>
       <q-icon

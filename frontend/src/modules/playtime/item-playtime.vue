@@ -1,6 +1,6 @@
 <template>
   <div class="row q-gutter-md">
-    <div class="col">
+    <div class="col-shrink">
       <base-input-datetime
         v-model="startInternal"
         :options="{
@@ -9,7 +9,9 @@
       />
     </div>
 
-    <div class="col">
+    <q-space />
+
+    <div class="col-shrink">
       <base-input-datetime
         v-model="endInternal"
         :options="{
