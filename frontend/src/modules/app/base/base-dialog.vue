@@ -14,72 +14,77 @@
     :maximized="screen.lt.sm"
   >
     <q-card :style="style">
-      <q-form
-        @submit.prevent="submit"
+      <q-pull-to-refresh
+        :disable="pullToRefresh === false"
+        @refresh="refresh"
       >
-        <q-toolbar v-if="title !== null">
-          <q-toolbar-title>
-            {{ title }}
-          </q-toolbar-title>
-          <q-btn
-            round
-            flat
-            icon="fas fa-times"
-            @click="close"
-          />
-        </q-toolbar>
-
-        <q-card-section
-          :class="{
-            'q-pa-none': removePaddingContent,
-          }"
+        <q-form
+          @submit.prevent="submit"
         >
-          <slot />
-        </q-card-section>
+          <q-toolbar v-if="title !== null">
+            <q-toolbar-title>
+              {{ title }}
+            </q-toolbar-title>
+            <q-btn
+              round
+              flat
+              icon="fas fa-times"
+              @click="close"
+            />
+          </q-toolbar>
 
-        <!--        <q-card-section>-->
-        <!--          <table>-->
-        <!--            <tr>-->
-        <!--              <td colspan="2">-->
-        <!--                {{ validation }}-->
-        <!--              </td>-->
-        <!--            </tr>-->
-        <!--            <tr>-->
-        <!--              <td>$dirty</td>-->
-        <!--              <td>{{ validation?.$dirty }}</td>-->
-        <!--            </tr>-->
-        <!--            <tr>-->
-        <!--              <td>$anyDirty</td>-->
-        <!--              <td>{{ validation?.$anyDirty }}</td>-->
-        <!--            </tr>-->
-        <!--            <tr>-->
-        <!--              <td>$invalid</td>-->
-        <!--              <td>{{ validation?.$invalid }}</td>-->
-        <!--            </tr>-->
-        <!--          </table>-->
-        <!--        </q-card-section>-->
-
-        <q-card-actions
-          v-if="hideActions === false"
-          align="right"
-        >
-          <q-btn
-            :label="t('common.cancel')"
-            @click="close"
-          />
-          <slot
-            name="buttons"
-            :close="close"
-          />
-          <base-button-submit
-            :label="textSubmit"
-            :options="{
-              disabled: validation?.$dirty && validation?.$invalid,
+          <q-card-section
+            :class="{
+              'q-pa-none': removePaddingContent,
             }"
-            v-bind="optionsButtonSubmit"
-          />
-        </q-card-actions>
-      </q-form>
+          >
+            <slot :refresh="refreshForConsumer" />
+          </q-card-section>
+
+          <!--        <q-card-section>-->
+          <!--          <table>-->
+          <!--            <tr>-->
+          <!--              <td colspan="2">-->
+          <!--                {{ validation }}-->
+          <!--              </td>-->
+          <!--            </tr>-->
+          <!--            <tr>-->
+          <!--              <td>$dirty</td>-->
+          <!--              <td>{{ validation?.$dirty }}</td>-->
+          <!--            </tr>-->
+          <!--            <tr>-->
+          <!--              <td>$anyDirty</td>-->
+          <!--              <td>{{ validation?.$anyDirty }}</td>-->
+          <!--            </tr>-->
+          <!--            <tr>-->
+          <!--              <td>$invalid</td>-->
+          <!--              <td>{{ validation?.$invalid }}</td>-->
+          <!--            </tr>-->
+          <!--          </table>-->
+          <!--        </q-card-section>-->
+
+          <q-card-actions
+            v-if="hideActions === false"
+            align="right"
+          >
+            <q-btn
+              :label="t('common.cancel')"
+              @click="close"
+            />
+            <slot
+              name="buttons"
+              :close="close"
+            />
+            <base-button-submit
+              :label="textSubmit"
+              :options="{
+                disabled: validation?.$dirty && validation?.$invalid,
+              }"
+              v-bind="optionsButtonSubmit"
+            />
+          </q-card-actions>
+        </q-form>
+      </q-pull-to-refresh>
     </q-card>
   </q-dialog>
 </template>
@@ -133,6 +138,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    pullToRefresh: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['submit'],
   setup(props, { emit }) {
@@ -157,10 +167,13 @@ export default defineComponent({
     //   }
     // });
 
+    const refreshForConsumer = ref<{callback:(() => void) | null}>({ callback: null });
+
     return {
       t,
       screen,
       isOpen,
+      refreshForConsumer,
       open,
       close,
       optionsButtonMerged: computed(() => {
@@ -191,6 +204,9 @@ export default defineComponent({
         } else {
           emit('submit', close);
         }
+      },
+      refresh(done: () => void) {
+        refreshForConsumer.value.callback = done;
       },
     };
   },

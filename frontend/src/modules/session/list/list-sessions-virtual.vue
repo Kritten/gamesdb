@@ -82,7 +82,9 @@ import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { Session } from '@/modules/session/session.model';
 import { useI18n } from 'vue-i18n';
 import { queue } from '@/queue';
-import { defineComponent, ref } from 'vue';
+import {
+  defineComponent, PropType, ref, watch,
+} from 'vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import UpdateSession from '@/modules/session/update/update-session.vue';
 import { formatDistanceToNowStrict } from 'date-fns';
@@ -93,8 +95,13 @@ export default defineComponent({
   name: 'ListSessionsVirtual',
   components: { ListSessionsVirtualStop, UpdateSession },
   props: {
+    refresh: {
+      required: false,
+      type: Object as PropType<{callback:(() => void) | null}>,
+      default: () => ({ callback: () => {} }),
+    },
   },
-  setup() {
+  setup(props) {
     const { t } = useI18n();
     const filters = ref<ServiceCollectionFilters>({
       isVirtual: {
@@ -122,6 +129,13 @@ export default defineComponent({
         collection.reset();
       });
     }
+
+    watch(props.refresh, async () => {
+      if (props.refresh.callback !== null) {
+        await collection.reset();
+        props.refresh.callback();
+      }
+    });
 
     return {
       t,

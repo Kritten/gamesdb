@@ -31,8 +31,11 @@
           }"
           hide-actions
           remove-padding-content
+          pull-to-refresh
         >
-          <list-sessions-virtual />
+          <template #default="{ refresh }">
+            <list-sessions-virtual :refresh="refresh" />
+          </template>
         </base-dialog>
 
         <q-separator
