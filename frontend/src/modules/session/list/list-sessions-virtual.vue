@@ -21,7 +21,7 @@
         :session="session"
       >
         <td>
-          {{ session.game.name }}
+          {{ session.game === null ? '' : session.game.name }}
         </td>
         <td class="text-right">
           {{ session.players.length }}
@@ -33,7 +33,7 @@
           <span
             v-if="session.currentPlaytime !== undefined"
           >
-            {{ formatDistanceToNowStrict(session.currentPlaytime.start, {locale: de, includeSeconds: true }) }}
+            <display-playtime-current :session="session" />
           </span>
         </td>
         <td style="width: 1px">
@@ -87,13 +87,12 @@ import {
 } from 'vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import UpdateSession from '@/modules/session/update/update-session.vue';
-import { formatDistanceToNowStrict } from 'date-fns';
-import { de } from 'date-fns/locale';
 import ListSessionsVirtualStop from '@/modules/session/list/list-sessions-virtual-stop.vue';
+import DisplayPlaytimeCurrent from '@/modules/playtime/display-playtime-current.vue';
 
 export default defineComponent({
   name: 'ListSessionsVirtual',
-  components: { ListSessionsVirtualStop, UpdateSession },
+  components: { DisplayPlaytimeCurrent, ListSessionsVirtualStop, UpdateSession },
   props: {
     refresh: {
       required: false,
@@ -141,8 +140,6 @@ export default defineComponent({
       t,
       collection,
       useTrackSession,
-      formatDistanceToNowStrict,
-      de,
     };
   },
 });
