@@ -17,7 +17,7 @@
       <q-form
         @submit.prevent="submit"
       >
-        <q-toolbar>
+        <q-toolbar v-if="title !== null">
           <q-toolbar-title>
             {{ title }}
           </q-toolbar-title>

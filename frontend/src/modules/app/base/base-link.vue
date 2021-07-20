@@ -4,7 +4,9 @@
     :href="path"
     target="_blank"
   >
-    {{ options.label }}
+    <slot name="default">
+      {{ options.label }}
+    </slot>
   </a>
   <router-link
     v-else
@@ -12,7 +14,9 @@
       ...options
     }"
   >
-    {{ options.label }}
+    <slot name="default">
+      {{ options.label }}
+    </slot>
   </router-link>
 </template>
 
@@ -36,6 +40,9 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
+<style lang="scss">
+a {
+  text-decoration: none;
+  color: var(--q-primary)
+}
 </style>

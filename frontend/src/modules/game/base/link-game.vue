@@ -21,14 +21,13 @@
         >
           {{ game.name }}
         </span>
-        <!--        TODO Replace with <base-link>-->
-        <router-link
-          v-else
-          :to="{name: 'game', params: {id: game.id}}"
-          class="text-primary"
+        <base-link
+          :options="{
+            to: {name: 'game', params: {id: game.id}}
+          }"
         >
           {{ game.name }}
-        </router-link>
+        </base-link>
       </div>
     </template>
   </div>
@@ -38,10 +37,11 @@
 import { defineComponent } from 'vue';
 import { getValidator } from '@/modules/app/utilities/helpers';
 import BaseSpinner from '@/modules/app/base/base-spinner.vue';
+import BaseLink from '@/modules/app/base/base-link.vue';
 
 export default defineComponent({
   name: 'LinkGame',
-  components: { BaseSpinner },
+  components: { BaseLink, BaseSpinner },
   props: {
     game: {
       required: true,

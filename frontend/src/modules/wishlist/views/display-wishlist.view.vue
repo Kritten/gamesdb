@@ -1,55 +1,61 @@
 <template>
-  <el-container>
-    <el-main>
-      <el-row
-        type="flex"
-        justify="center"
-      >
-        <el-col :md="12">
-          <i18n-t
-            keypath="wishlist.headerInfo"
-          >
-            <template #header>
-              <h1>{{ t('wishlist.headerInfoHeader') }}</h1>
-            </template>
-            <template #disclaimer>
-              <p>{{ t('wishlist.headerInfoDisclaimer') }}</p>
-            </template>
-            <template #content>
-              <p>{{ t('wishlist.headerInfoContent') }}</p>
-            </template>
-            <template #return>
-              <p>{{ t('wishlist.headerInfoReturn') }}</p>
-            </template>
-            <template #classics>
-              <p>{{ t('wishlist.headerInfoClassics') }}</p>
-            </template>
-            <template #nogos>
-              <p style="color: #F56C6C">
-                {{ t('wishlist.headerInfoNogos') }}
-              </p>
-            </template>
-          </i18n-t>
-          <list-wishlist :filters="filters">
-            <template #items="{ wishlistItems }">
-              <el-row
-                :gutter="20"
-                type="flex"
-                class="list-wishlist"
+  <q-layout>
+    <q-page-container
+      class="full-height q-pa-md"
+    >
+      <div class="row justify-center">
+        <div
+          id="wrapper"
+          class="col"
+        >
+          <div class="row">
+            <div class="col">
+              <i18n-t
+                keypath="wishlist.headerInfo"
               >
-                <template
+                <template #header>
+                  <div class="text-h3 q-mb-lg">
+                    {{ t('wishlist.headerInfoHeader') }}
+                  </div>
+                </template>
+                <template #disclaimer>
+                  <p>{{ t('wishlist.headerInfoDisclaimer') }}</p>
+                </template>
+                <template #content>
+                  <p>{{ t('wishlist.headerInfoContent') }}</p>
+                </template>
+                <template #return>
+                  <p>{{ t('wishlist.headerInfoReturn') }}</p>
+                </template>
+                <template #classics>
+                  <p>{{ t('wishlist.headerInfoClassics') }}</p>
+                </template>
+                <template #nogos>
+                  <p style="color: #F56C6C">
+                    {{ t('wishlist.headerInfoNogos') }}
+                  </p>
+                </template>
+              </i18n-t>
+            </div>
+          </div>
+
+          <div class="row">
+            <list-wishlist :filters="filters">
+              <template #items="{ wishlistItems }">
+                <div
                   v-for="wishlistItem in wishlistItems"
                   :key="wishlistItem.id"
+                  class="col-12 col-md-6"
                 >
                   <list-wishlist-item-extern :wishlist-item="wishlistItem" />
-                </template>
-              </el-row>
-            </template>
-          </list-wishlist>
-        </el-col>
-      </el-row>
-    </el-main>
-  </el-container>
+                </div>
+              </template>
+            </list-wishlist>
+          </div>
+        </div>
+      </div>
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script lang="ts">
@@ -81,4 +87,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+#wrapper{
+  max-width: 900px;
+}
+</style>

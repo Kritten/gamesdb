@@ -11,6 +11,7 @@ export default {
     delete: 'löschen',
     yes: 'Ja',
     no: 'Nein',
+    confirm: 'Bestätigen',
     open: 'öffnen',
     close: 'schließen',
     cancel: 'abbrechen',

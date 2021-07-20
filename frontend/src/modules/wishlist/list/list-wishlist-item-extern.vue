@@ -1,106 +1,130 @@
 <template>
-  <el-col
-    :lg="12"
-    style="padding-top: 10px; padding-bottom: 10px;"
-  >
-    <el-card class="list-wishlist-item-extern">
-      <!--      :type="wishlistItem.images.length === 1 ? undefined : 'card'"-->
-<!--            :arrow="wishlistItem.images.length === 1 ? 'never' : 'always'"-->
-      <el-carousel
-        trigger="click"
-        indicator-position="none"
-        height="200px"
-        :autoplay="false"
-        :arrow="wishlistItem.images.length === 1 ? 'never' : 'always'"
-      >
-        <el-carousel-item
-          v-for="image in wishlistItem.images"
-          :key="image.id"
-        >
-          <el-image
-            :src="image.link"
-            :fit="'contain'"
-            style="height: 200px; width: 100%"
-          />
-        </el-carousel-item>
-      </el-carousel>
+  <div class="row full-height">
+    <div class="col full-height">
+      <q-card class="column full-height">
+        <q-card-section>
+          <div class="text-h6">
+            {{ wishlistItem.name }}
+          </div>
+        </q-card-section>
 
-      <el-row class="row-name">
-        <el-col>
-          <h2>{{ wishlistItem.name }}</h2>
-        </el-col>
-      </el-row>
+        <q-card-section>
+          <q-carousel
+            v-model="slide"
+            height="15rem"
+            animated
+            infinite
+            :autoplay="autoplay"
+            transition-prev="slide-right"
+            transition-next="slide-left"
+            @mouseenter="autoplay = false"
+            @mouseleave="autoplay = true"
+          >
+            <q-carousel-slide
+              v-for="(image, index) in wishlistItem.images"
+              :key="index"
+              :name="index"
+            >
+              <q-img
+                :src="image"
+                fit="contain"
+                height="14rem"
+              />
+            </q-carousel-slide>
+          </q-carousel>
+        </q-card-section>
 
-      <el-row class="row-bottom">
-        <el-col>
-          <el-row class="row-gift-for">
-            <el-col>
-              <strong>{{ t('wishlist.giftFor') }}: </strong>
+        <q-card-section>
+          <div class="row q-mb-md">
+            <div class="col-6 text-bold">
+              {{ t('wishlist.giftFor') }}
+            </div>
+            <div class="col-6">
               <display-gift-for :value="wishlistItem.giftFor" />
-            </el-col>
-          </el-row>
-          <el-row class="row-price-range">
-            <el-col>
-              <strong>{{ t('wishlist.price') }}: </strong>
+            </div>
+          </div>
+          <div class="row q-mb-md">
+            <div class="col-6 text-bold">
+              {{ t('wishlist.price') }}
+            </div>
+            <div class="col-6">
               <display-price-range :value="wishlistItem.price" />
-            </el-col>
-          </el-row>
-          <el-row class="row-description">
-            <el-col>
-              <div v-html="wishlistItem.description"></div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col
-              class="col-info"
-              :span="12"
-            >
-              <el-link
-                v-if="wishlistItem.link !== ''"
-                :underline="false"
-                :href="wishlistItem.link"
-                icon="el-icon-info"
-                target="_blank"
-              >
-                {{ t('wishlist.buy') }}
-              </el-link>
-            </el-col>
-            <el-col
-              class="col-button"
-              :span="12"
-            >
-              <el-button
-                v-if="wishlistItem.taken"
-                @click="giveBack"
-              >
-                {{ t('wishlist.giveBack') }}
-              </el-button>
-              <el-button
-                v-else
-                type="primary"
-                @click="take"
-              >
-                {{ t('wishlist.take') }}
-              </el-button>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-    </el-card>
-  </el-col>
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section class="col-grow">
+          <div v-html="wishlistItem.description" />
+        </q-card-section>
+
+        <q-card-actions>
+          <q-btn
+            type="a"
+            :href="wishlistItem.link"
+            flat
+            icon="fas fa-search"
+            :label="t('wishlist.buy')"
+          />
+
+          <q-space />
+
+          <base-dialog
+            v-if="wishlistItem.taken"
+            :text-submit="t('common.confirm')"
+            @submit="giveBack"
+          >
+            <template #activator="{ open }">
+              <q-btn
+                flat
+                icon="fas fa-cancel"
+                :label="t('wishlist.giveBack')"
+                @click="open"
+              />
+            </template>
+
+            {{ t('wishlist.confirm.giveBack') }}
+          </base-dialog>
+
+          <base-dialog
+            v-else
+            :text-submit="t('common.confirm')"
+            @submit="take"
+          >
+            <template #activator="{ open }">
+              <q-btn
+                flat
+                icon="fas fa-gift"
+                color="primary"
+                :label="t('wishlist.take')"
+                @click="open"
+              />
+            </template>
+
+            {{ t('wishlist.confirm.take') }}
+          </base-dialog>
+        </q-card-actions>
+      </q-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, Ref } from 'vue';
+import {
+  defineComponent, PropType, ref, Ref,
+} from 'vue';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
 import DisplayGiftFor from '@/modules/wishlist/display/display-gift-for.vue';
 import { useI18n } from 'vue-i18n';
 import DisplayPriceRange from '@/modules/wishlist/display/display-price-range.vue';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
+import BaseLink from '@/modules/app/base/base-link.vue';
+import BaseDialog from '@/modules/app/base/base-dialog.vue';
 
 export default defineComponent({
   name: 'ListWishlistItemExtern',
-  components: { DisplayPriceRange, DisplayGiftFor },
+  components: {
+    BaseDialog, BaseLink, DisplayPriceRange, DisplayGiftFor,
+  },
   props: {
     wishlistItem: {
       required: true,
@@ -109,30 +133,22 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n();
+    const autoplay = ref(true);
+    const slide = ref(0);
 
     return {
       t,
-      take() {
-        console.warn('missing');
-        // ElMessageBox.confirm(t('wishlist.confirm.take'), {
-        //   cancelButtonText: t('common.cancel'),
-        //   confirmButtonText: t('common.yes'),
-        // }).then(() => {
-        //   const wishlistItemEdited = props.wishlistItem as Wishlist;
-        //   wishlistItemEdited.taken = true;
-        //   ServiceWishlist.updateTaken(wishlistItemEdited);
-        // }).catch(() => {});
-      },
+      autoplay,
+      slide,
       giveBack() {
-        console.warn('missing');
-        // ElMessageBox.confirm(t('wishlist.confirm.giveBack'), {
-        //   cancelButtonText: t('common.cancel'),
-        //   confirmButtonText: t('common.yes'),
-        // }).then(() => {
-        //   const wishlistItemEdited = props.wishlistItem as Wishlist;
-        //   wishlistItemEdited.taken = false;
-        //   ServiceWishlist.updateTaken(wishlistItemEdited);
-        // }).catch(() => {});
+        const wishlistItemEdited = props.wishlistItem;
+        wishlistItemEdited.taken = false;
+        ServiceWishlist.updateTaken(wishlistItemEdited);
+      },
+      take() {
+        const wishlistItemEdited = props.wishlistItem;
+        wishlistItemEdited.taken = true;
+        ServiceWishlist.updateTaken(wishlistItemEdited);
       },
     };
   },

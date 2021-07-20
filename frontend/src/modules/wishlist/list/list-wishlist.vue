@@ -18,27 +18,17 @@
       <div
         class="row q-col-gutter-lg"
       >
-        <list-wishlist-item
-          v-for="(wishlist, index) in collection.items.value"
-          :key="wishlist.id"
-          v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
-          :wishlist="wishlist"
-        />
-      <!--        <slot-->
-      <!--          name="items"-->
-      <!--          :wishlistItems="collection.items.value"-->
-      <!--        >-->
-      <!--          <table>-->
-      <!--            <tr>-->
-      <!--              <th>{{ t('wishlist.item.label') }}</th>-->
-      <!--            </tr>-->
-      <!--            <list-wishlist-item-->
-      <!--              v-for="wishlist in collection.items.value"-->
-      <!--              :key="wishlist.id"-->
-      <!--              :wishlist="wishlist"-->
-      <!--            />-->
-      <!--          </table>-->
-      <!--        </slot>-->
+        <slot
+          name="items"
+          :wishlistItems="collection.items.value"
+        >
+          <list-wishlist-item
+            v-for="(wishlist, index) in collection.items.value"
+            :key="wishlist.id"
+            v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
+            :wishlist="wishlist"
+          />
+        </slot>
       </div>
     </div>
   </div>

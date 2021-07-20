@@ -20,11 +20,11 @@ import { ID } from '../app/utilities/entity/entity.types';
 class ServiceWishlistClass
 implements ServiceCollectionInterface<Wishlist> {
   async updateTaken(wishlist: Wishlist) {
-    const response = await mutate<{updateWishlist: Wishlist}>(mutationUpdateWishlistTaken, {
+    const response = await mutate<{updateWishlistTaken: Wishlist}>(mutationUpdateWishlistTaken, {
       wishlist: wishlist.prepareForServer(),
     });
 
-    const wishlistNew = await Wishlist.parseFromServer(response.updateWishlist);
+    const wishlistNew = await Wishlist.parseFromServer(response.updateWishlistTaken);
 
     // TODO
     // store.commit('moduleWishlist/addWishlistItem', wishlistNew);
