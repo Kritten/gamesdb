@@ -8,6 +8,7 @@
               :i18n-prefix="i18nPrefix"
               :use-create-entity="useCreateEntity"
               :validation-rules="validationRules"
+              :values-initial="valuesInitial"
               @submit="$emit('submitCreate', $event)"
             >
               <template #item="propsCreate">
@@ -50,6 +51,11 @@ export default defineComponent({
     useCreateEntity: {
       required: true,
       type: Function,
+    },
+    valuesInitial: {
+      required: false,
+      type: Object,
+      default: () => ({}),
     },
   },
   emits: ['submitCreate'],

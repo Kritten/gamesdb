@@ -3,7 +3,7 @@ import { Game } from '@/modules/game/game.model';
 import { useGame } from '@/modules/game/composables/useGame';
 import { mutationCreateGame } from '@/modules/game/graphql/game.graphql';
 
-export const useCreateGame = () => {
+export const useCreateGame = ({ valuesInitial = {} }: { valuesInitial?: Partial<Game> } = {}) => {
   const useCreateEntity = baseUseCreateEntity<Game, { createGame: Game }>({
     cls: Game,
     setEntity: useGame().setGame,
@@ -11,6 +11,7 @@ export const useCreateGame = () => {
     nameMutation: 'createGame',
     nameVariable: 'game',
     emits: ['createdGame'],
+    valuesInitial,
   });
 
   return {
