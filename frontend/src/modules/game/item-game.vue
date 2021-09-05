@@ -1,6 +1,9 @@
 <template>
   <div class="row q-col-gutter-md">
-    <div class="col-12">
+    <div
+      v-if="isDigitalInternal === false"
+      class="col-12"
+    >
       <base-input-number
         v-model="idBGGInternal"
         :options="{
@@ -135,7 +138,10 @@
         </div>
 
         <div class="col-12">
-          <div class="row items-center">
+          <div
+            v-if="isDigitalInternal === false"
+            class="row items-center"
+          >
             <div :class="[infoForGame === null ? 'col-12' : 'col-6']">
               <base-input-number
                 v-model="minutesPlaytimeMinInternal"
@@ -168,7 +174,10 @@
           </div>
 
           <div class="col-12">
-            <div class="row items-center">
+            <div
+              v-if="isDigitalInternal === false"
+              class="row items-center"
+            >
               <div :class="[infoForGame === null ? 'col-12' : 'col-6']">
                 <base-input-number
                   v-model="minutesPlaytimeMaxInternal"
@@ -211,20 +220,23 @@
                     :validation="validation?.isCoop"
                   />
                 </div>
-                <div class="col-6">
-                  <base-input-boolean
-                    v-model="isDigitalInternal"
-                    :options="{
-                      label: t('game.isDigital'),
-                    }"
-                    :validation="validation?.isDigital"
-                  />
-                </div>
+                <!--                <div class="col-6">-->
+                <!--                  <base-input-boolean-->
+                <!--                    v-model="isDigitalInternal"-->
+                <!--                    :options="{-->
+                <!--                      label: t('game.isDigital'),-->
+                <!--                    }"-->
+                <!--                    :validation="validation?.isDigital"-->
+                <!--                  />-->
+                <!--                </div>-->
               </div>
             </div>
 
             <div class="col-12">
-              <div class="row items-center">
+              <div
+                v-if="isDigitalInternal === false"
+                class="row items-center"
+              >
                 <div :class="[infoForGame === null ? 'col-12' : 'col-6']">
                   <input-select-rating
                     v-model="ratingBGGInternal"
@@ -255,7 +267,10 @@
               </div>
 
               <div class="col-12">
-                <div class="row items-center">
+                <div
+                  v-if="isDigitalInternal === false"
+                  class="row items-center"
+                >
                   <div :class="[infoForGame === null ? 'col-12' : 'col-6']">
                     <input-select-complexity
                       v-model="complexityInternal"
@@ -284,28 +299,40 @@
                   </div>
                 </div>
 
-                <div class="col-12">
+                <div
+                  v-if="isDigitalInternal === false"
+                  class="col-12"
+                >
                   <input-select-size
                     v-model="sizeInternal"
                     :validation="validation?.size"
                   />
                 </div>
 
-                <div class="col-12">
+                <div
+                  v-if="isDigitalInternal === false"
+                  class="col-12"
+                >
                   <input-select-universe
                     v-model="universesInternal"
                     :validation="validation?.universes"
                   />
                 </div>
 
-                <div class="col-12">
+                <div
+                  v-if="isDigitalInternal === false"
+                  class="col-12"
+                >
                   <input-select-category
                     v-model="categoriesInternal"
                     :validation="validation?.categories"
                   />
                 </div>
 
-                <div class="col-12">
+                <div
+                  v-if="isDigitalInternal === false"
+                  class="col-12"
+                >
                   <input-select-mechanism
                     v-model="mechanismsInternal"
                     :validation="validation?.mechanisms"

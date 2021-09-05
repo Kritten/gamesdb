@@ -65,6 +65,9 @@ export default defineComponent({
       countPlayersMin: {
         required,
       },
+      countPlayersMax: {
+        required,
+      },
     };
 
     return {
