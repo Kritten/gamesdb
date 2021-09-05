@@ -22,6 +22,7 @@
           {{ game.name }}
         </span>
         <base-link
+          v-else
           :options="{
             to: {name: 'game', params: {id: game.id}}
           }"
