@@ -21,6 +21,7 @@ export default {
     required: 'Pflichtfeld',
     details: 'Details',
     count: 'Anzahl',
+    notSpecified: 'Keine Angabe',
   },
   login: {
     name: 'Name',
