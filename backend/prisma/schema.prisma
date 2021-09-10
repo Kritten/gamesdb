@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  id                       Int                        @id @default(autoincrement())
+  name                     String                     @unique(map: "IDX_23c05c292c439d77b0de816b50") @db.VarChar(255)
+  game_categories_category game_categories_category[]
+}
+
+model game {
+  id                                                             Int                         @id @default(autoincrement())
+  name                                                           String                      @unique(map: "IDX_5d1e08e04b97aa06d671cd5840") @db.VarChar(255)
+  description                                                    String?                     @db.Text
+  countPlayersMin                                                Int?                        @db.TinyInt
+  countPlayersMax                                                Int?                        @db.TinyInt
+  minutesPlaytimeMin                                             Int?                        @db.SmallInt
+  minutesPlaytimeMax                                             Int?                        @db.SmallInt
+  isCoop                                                         Int                         @default(0) @db.TinyInt
+  complexity                                                     Int?                        @db.TinyInt
+  size                                                           Int?                        @db.TinyInt
+  isExpansionOfId                                                Int?
+  isDigital                                                      Int                         @default(0) @db.TinyInt
+  idBGG                                                          Int?                        @unique(map: "IDX_4b4e83b1f44b8dc2ead5b412bf")
+  ratingBGG                                                      Float?                      @db.Float
+  images                                                         String                      @default("[]") @db.Text
+  game                                                           game?                       @relation("gameTogame_isExpansionOfId", fields: [isExpansionOfId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_96cd79727e5591e2b0dc97c68c8")
+  other_game                                                     game[]                      @relation("gameTogame_isExpansionOfId")
+  game_categories_category                                       game_categories_category[]
+  game_mechanisms_mechanism                                      game_mechanisms_mechanism[]
+  game_moods_mood                                                game_moods_mood[]
+  game_playable_with_game_gameTogame_playable_with_game_gameId_1 game_playable_with_game[]   @relation("gameTogame_playable_with_game_gameId_1")
+  game_playable_with_game_gameTogame_playable_with_game_gameId_2 game_playable_with_game[]   @relation("gameTogame_playable_with_game_gameId_2")
+  game_universes_universe                                        game_universes_universe[]
+  rating                                                         rating[]
+  session                                                        session[]
+
+  @@index([isExpansionOfId], map: "FK_96cd79727e5591e2b0dc97c68c8")
+}
+
+model game_categories_category {
+  gameId     Int
+  categoryId Int
+  category   category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c471ba514ccfd937f1d57db5ff1")
+  game       game     @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9ed7992b0c4796228a314d30fe9")
+
+  @@id([gameId, categoryId])
+  @@index([gameId], map: "IDX_9ed7992b0c4796228a314d30fe")
+  @@index([categoryId], map: "IDX_c471ba514ccfd937f1d57db5ff")
+}
+
+model game_mechanisms_mechanism {
+  gameId      Int
+  mechanismId Int
+  game        game      @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d4a8a7b83b094ee89943842fef1")
+  mechanism   mechanism @relation(fields: [mechanismId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4e81e89a70853bf4f81b48017d0")
+
+  @@id([gameId, mechanismId])
+  @@index([mechanismId], map: "IDX_4e81e89a70853bf4f81b48017d")
+  @@index([gameId], map: "IDX_d4a8a7b83b094ee89943842fef")
+}
+
+model game_moods_mood {
+  gameId Int
+  moodId Int
+  game   game @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8d46a84e15c79b33fc0c83c16ba")
+  mood   mood @relation(fields: [moodId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_37ca64c22017ec13deb067b8eb5")
+
+  @@id([gameId, moodId])
+  @@index([moodId], map: "IDX_37ca64c22017ec13deb067b8eb")
+  @@index([gameId], map: "IDX_8d46a84e15c79b33fc0c83c16b")
+}
+
+model game_playable_with_game {
+  gameId_1                                    Int
+  gameId_2                                    Int
+  game_gameTogame_playable_with_game_gameId_1 game @relation("gameTogame_playable_with_game_gameId_1", fields: [gameId_1], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_0758a53d2ca30645f159a06c047")
+  game_gameTogame_playable_with_game_gameId_2 game @relation("gameTogame_playable_with_game_gameId_2", fields: [gameId_2], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3347a3c5992b78cd0192d5662b0")
+
+  @@id([gameId_1, gameId_2])
+  @@index([gameId_1], map: "IDX_0758a53d2ca30645f159a06c04")
+  @@index([gameId_2], map: "IDX_3347a3c5992b78cd0192d5662b")
+}
+
+model game_universes_universe {
+  gameId     Int
+  universeId Int
+  game       game     @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_71d006d72e58020d5a0c3aad2ed")
+  universe   universe @relation(fields: [universeId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2990a1e1e8e095a2bccb2272998")
+
+  @@id([gameId, universeId])
+  @@index([universeId], map: "IDX_2990a1e1e8e095a2bccb227299")
+  @@index([gameId], map: "IDX_71d006d72e58020d5a0c3aad2e")
+}
+
+model mechanism {
+  id                        Int                         @id @default(autoincrement())
+  name                      String                      @unique(map: "IDX_b01167942998a91ce290f0c747") @db.VarChar(255)
+  game_mechanisms_mechanism game_mechanisms_mechanism[]
+}
+
+model mood {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique(map: "IDX_b426c64fcb715e6128eb97d81d") @db.VarChar(255)
+  game_moods_mood game_moods_mood[]
+}
+
+model player {
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @unique(map: "IDX_7baa5220210c74f8db27c06f8b") @db.VarChar(255)
+  rating                 rating[]
+  session_players_player session_players_player[]
+  session_winners_player session_winners_player[]
+}
+
+model playtime {
+  id        Int       @id @default(autoincrement())
+  start     DateTime  @db.DateTime(0)
+  end       DateTime? @db.DateTime(0)
+  sessionId Int?
+  session   session?  @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_b7670ec3c7da736816c51b81297")
+
+  @@index([sessionId], map: "FK_b7670ec3c7da736816c51b81297")
+}
+
+model rating {
+  id       Int     @id @default(autoincrement())
+  rating   Int     @db.TinyInt
+  gameId   Int?
+  playerId Int?
+  game     game?   @relation(fields: [gameId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_78a45f54bcd050be9097a0dba24")
+  player   player? @relation(fields: [playerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_7b7b67ede0cccc5f041b2f976a2")
+
+  @@unique([gameId, playerId], map: "IDX_710543210d2d806e8d2497cf2b")
+  @@index([playerId], map: "FK_7b7b67ede0cccc5f041b2f976a2")
+}
+
+model session {
+  id                     Int                      @id @default(autoincrement())
+  gameId                 Int?
+  isChallenge            Int                      @default(0) @db.TinyInt
+  comment                String?                  @db.Text
+  isVirtual              Int                      @default(0) @db.TinyInt
+  game                   game?                    @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_af5a91cf53ac3c8d252d7df5c41")
+  playtime               playtime[]
+  session_players_player session_players_player[]
+  session_winners_player session_winners_player[]
+
+  @@index([gameId], map: "FK_af5a91cf53ac3c8d252d7df5c41")
+}
+
+model session_players_player {
+  sessionId Int
+  playerId  Int
+  player    player  @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_0fbf71a8b15f1f50da31a2ac5cb")
+  session   session @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1a24b94ac5dd03f1d9eed748da2")
+
+  @@id([sessionId, playerId])
+  @@index([playerId], map: "IDX_0fbf71a8b15f1f50da31a2ac5c")
+  @@index([sessionId], map: "IDX_1a24b94ac5dd03f1d9eed748da")
+}
+
+model session_winners_player {
+  sessionId Int
+  playerId  Int
+  player    player  @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8111fb0da65a2fcf8b8ec2221d1")
+  session   session @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_6fbe14b58b8b9256d7e790402d4")
+
+  @@id([sessionId, playerId])
+  @@index([sessionId], map: "IDX_6fbe14b58b8b9256d7e790402d")
+  @@index([playerId], map: "IDX_8111fb0da65a2fcf8b8ec2221d")
+}
+
+model sessions {
+  session_id String  @id @db.VarChar(128)
+  expires    Int     @db.UnsignedInt
+  data       String? @db.MediumText
+}
+
+model universe {
+  id                      Int                       @id @default(autoincrement())
+  name                    String                    @unique(map: "IDX_c41283ff03942895f3cd21b0fb") @db.VarChar(255)
+  game_universes_universe game_universes_universe[]
+}
+
+model user {
+  id       Int    @id @default(autoincrement())
+  name     String @unique(map: "IDX_065d4d8f3b5adb4a08841eae3c") @db.VarChar(255)
+  password String @db.VarChar(255)
+}
+
+model wishlist {
+  id          Int    @id @default(autoincrement())
+  name        String @unique(map: "IDX_9e361dc28d34dc87e51127adec") @db.VarChar(255)
+  link        String @db.Text
+  taken       Int    @default(0) @db.TinyInt
+  giftFor     Int    @db.TinyInt
+  price       Int
+  description String @db.Text
+  images      String @default("[]") @db.Text
+}
