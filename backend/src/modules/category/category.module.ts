@@ -4,10 +4,9 @@ import { Category } from './category.entity';
 import { CategoryEntityService } from './category.entity.service';
 import { CategoryResolver } from './category.resolver';
 import { GameModule } from '../game/game.module';
-import {CollectionModule} from "../../utilities/collection/collection.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category]), forwardRef(() => GameModule), forwardRef(() => CollectionModule)],
+  imports: [TypeOrmModule.forFeature([Category]), forwardRef(() => GameModule)],
   providers: [CategoryResolver, CategoryEntityService],
   exports: [CategoryEntityService],
 })

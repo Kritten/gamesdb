@@ -6,12 +6,10 @@ import { CategoryEntityService } from './category.entity.service';
 import { CategoryInput, UpdateCategoryInput } from './category.input';
 import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { GameEntityService } from '../game/game.entity.service';
-import {PrismaService} from "../../utilities/collection/prisma.service";
 
 @Resolver(() => Category)
 export class CategoryResolver extends EntityResolver {
   constructor(
-    private prismaService: PrismaService,
     private categoryService: CategoryEntityService,
     private gameService: GameEntityService,
   ) {
@@ -21,7 +19,7 @@ export class CategoryResolver extends EntityResolver {
   @Query(() => [Category])
   @UseGuards(GqlAuthGuard)
   async categories() {
-    return this.prismaService.category.findMany();
+    return this.categoryService.find();
   }
 
   @Query(() => Category)
@@ -33,11 +31,16 @@ export class CategoryResolver extends EntityResolver {
   @Mutation(() => Category)
   @UseGuards(GqlAuthGuard)
   async createCategory(@Args('categoryData') categoryData: CategoryInput) {
-    return this.prismaService.category.create({
-      data: {
-        name: categoryData.name
-      }
-    });
+    const category = new Category();
+    category.name = categoryData.name;
+    await this.handleRelation(
+      'games',
+      category,
+      categoryData,
+      this.gameService,
+    );
+
+    return await this.categoryService.create(category);
   }
 
   @Mutation(() => Category)
@@ -45,30 +48,22 @@ export class CategoryResolver extends EntityResolver {
   async updateCategory(
     @Args('categoryData') categoryData: UpdateCategoryInput,
   ) {
-    return this.prismaService.category.update({
-      where: { id: parseInt(categoryData.id, 10) },
-      data: {
-        name: categoryData.name
-      }
-    });
+    const category = new Category();
+    category.id = parseInt(categoryData.id, 10);
+    category.name = categoryData.name;
+    await this.handleRelation(
+      'games',
+      category,
+      categoryData,
+      this.gameService,
+    );
 
-    // const category = new Category();
-    // category.id = parseInt(categoryData.id, 10);
-    // category.name = categoryData.name;
-    // await this.handleRelation(
-    //   'games',
-    //   category,
-    //   categoryData,
-    //   this.gameService,
-    // );
-    //
-    // return await this.categoryService.update(category);
+    return await this.categoryService.update(category);
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deleteCategory(@Args({ name: 'id', type: () => ID }) id: string) {
-    await this.prismaService.category.delete({ where: { id: parseInt(id, 10) }});
-    return true;
+    return await this.categoryService.delete(parseInt(id, 10));
   }
 }

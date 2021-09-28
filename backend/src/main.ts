@@ -4,7 +4,6 @@ import passport from 'passport';
 import session from 'express-session';
 import { ConfigService } from '@nestjs/config';
 import MySQLStore from 'express-mysql-session';
-import {PrismaService} from "./utilities/collection/prisma.service";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,9 +35,6 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
-
-  const prismaService = app.get(PrismaService);
-  prismaService.enableShutdownHooks(app);
 
   await app.listen(4021);
 }
