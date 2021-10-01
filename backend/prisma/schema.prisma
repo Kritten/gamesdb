@@ -21,11 +21,11 @@ model game {
   countPlayersMax                                                Int?                        @db.TinyInt
   minutesPlaytimeMin                                             Int?                        @db.SmallInt
   minutesPlaytimeMax                                             Int?                        @db.SmallInt
-  isCoop                                                         Int                         @default(0) @db.TinyInt
+  isCoop                                                         Boolean                     @default(false) @db.TinyInt
   complexity                                                     Int?                        @db.TinyInt
   size                                                           Int?                        @db.TinyInt
   isExpansionOfId                                                Int?
-  isDigital                                                      Int                         @default(0) @db.TinyInt
+  isDigital                                                      Boolean                     @default(false) @db.TinyInt
   idBGG                                                          Int?                        @unique(map: "IDX_4b4e83b1f44b8dc2ead5b412bf")
   ratingBGG                                                      Float?                      @db.Float
   images                                                         String                      @default("[]") @db.Text
@@ -143,9 +143,9 @@ model rating {
 model session {
   id                     Int                      @id @default(autoincrement())
   gameId                 Int?
-  isChallenge            Int                      @default(0) @db.TinyInt
+  isChallenge            Boolean                  @default(false) @db.TinyInt
   comment                String?                  @db.Text
-  isVirtual              Int                      @default(0) @db.TinyInt
+  isVirtual              Boolean                  @default(false) @db.TinyInt
   game                   game?                    @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_af5a91cf53ac3c8d252d7df5c41")
   playtime               playtime[]
   session_players_player session_players_player[]
@@ -198,7 +198,7 @@ model wishlist {
   id          Int    @id @default(autoincrement())
   name        String @unique(map: "IDX_9e361dc28d34dc87e51127adec") @db.VarChar(255)
   link        String @db.Text
-  taken       Int    @default(0) @db.TinyInt
+  taken       Boolean @default(false) @db.TinyInt
   giftFor     Int    @db.TinyInt
   price       Int
   description String @db.Text
