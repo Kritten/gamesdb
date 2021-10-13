@@ -2,78 +2,57 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Player } from './player.entity';
-import { PlayerEntityService } from './player.entity.service';
 import { PlayerInput, UpdatePlayerInput } from './player.input';
-import { EntityResolver } from '../../utilities/entity/entity.resolver';
-import { SessionEntityService } from '../session/session.entity.service';
+import {PrismaService} from "../../utilities/collection/prisma.service";
 
 @Resolver(() => Player)
-export class PlayerResolver extends EntityResolver {
+export class PlayerResolver {
   constructor(
-    private playerService: PlayerEntityService,
-    private sessionService: SessionEntityService,
+    private prismaService: PrismaService,
   ) {
-    super();
   }
 
   @Query(() => [Player])
   @UseGuards(GqlAuthGuard)
   async players() {
-    return this.playerService.find();
+    return this.prismaService.player.findMany();
   }
 
   @Query(() => Player)
   @UseGuards(GqlAuthGuard)
   async player(@Args({ name: 'id', type: () => ID }) id: string) {
-    return this.playerService.findOne(parseInt(id, 10));
+    return await this.prismaService.player.findUnique({
+      where: {
+        id: parseInt(id, 10),
+      }
+    });
   }
 
   @Mutation(() => Player)
   @UseGuards(GqlAuthGuard)
   async createPlayer(@Args('playerData') playerData: PlayerInput) {
-    const player = new Player();
-    player.name = playerData.name;
-    await this.handleRelation(
-      'sessionsPlayed',
-      player,
-      playerData,
-      this.sessionService,
-    );
-    await this.handleRelation(
-      'sessionsWon',
-      player,
-      playerData,
-      this.sessionService,
-    );
-
-    return await this.playerService.create(player);
+    return this.prismaService.player.create({
+      data: {
+        name: playerData.name
+      }
+    });
   }
 
   @Mutation(() => Player)
   @UseGuards(GqlAuthGuard)
   async updatePlayer(@Args('playerData') playerData: UpdatePlayerInput) {
-    const player = new Player();
-    player.id = parseInt(playerData.id, 10);
-    player.name = playerData.name;
-    await this.handleRelation(
-      'sessionsPlayed',
-      player,
-      playerData,
-      this.sessionService,
-    );
-    await this.handleRelation(
-      'sessionsWon',
-      player,
-      playerData,
-      this.sessionService,
-    );
-
-    return await this.playerService.update(player);
+    return this.prismaService.player.update({
+      where: { id: parseInt(playerData.id, 10) },
+      data: {
+        name: playerData.name
+      }
+    });
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deletePlayer(@Args({ name: 'id', type: () => ID }) id: string) {
-    return await this.playerService.delete(parseInt(id, 10));
+    await this.prismaService.player.delete({ where: { id: parseInt(id, 10) }});
+    return true;
   }
 }

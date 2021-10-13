@@ -1,65 +1,65 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { Rating } from './rating.entity';
-import { RatingEntityService } from './rating.entity.service';
 import { RatingInput, UpdateRatingInput } from './rating.input';
-import { PlayerEntityService } from '../player/player.entity.service';
-import { GameEntityService } from '../game/game.entity.service';
 import { RatingCollectionData } from './collection/rating.collectionData';
-import { RatingCollectionService } from './collection/rating.collection.service';
 import { InputCollection } from '../../utilities/collection/collection.input';
+import {PrismaService} from "../../utilities/collection/prisma.service";
 
 @Resolver(() => Rating)
-export class RatingResolver extends EntityResolver {
+export class RatingResolver {
   constructor(
-    private ratingService: RatingEntityService,
-    private ratingCollectionService: RatingCollectionService,
-    private gameService: GameEntityService,
-    private playerService: PlayerEntityService,
+    private prismaService: PrismaService,
   ) {
-    super();
   }
 
   @Query(() => RatingCollectionData)
   @UseGuards(GqlAuthGuard)
   async ratings(@Args('ratingData') data: InputCollection) {
-    return this.ratingCollectionService.loadPage(data);
+    // todo: loadPage
+    return this.prismaService.rating.findMany();
   }
 
   @Query(() => Rating)
   @UseGuards(GqlAuthGuard)
   async rating(@Args({ name: 'id', type: () => ID }) id: string) {
-    return this.ratingService.findOne(parseInt(id, 10));
+    return await this.prismaService.rating.findUnique({
+      where: {
+        id: parseInt(id, 10),
+      }
+    });
   }
 
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard)
   async createRating(@Args('ratingData') ratingData: RatingInput) {
-    const rating = new Rating();
-    rating.rating = ratingData.rating;
-    await this.handleRelation('game', rating, ratingData, this.gameService);
-    await this.handleRelation('player', rating, ratingData, this.playerService);
-
-    return await this.ratingService.create(rating);
+    return this.prismaService.rating.create({
+      data: {
+        rating: ratingData.rating,
+        gameId: parseInt(ratingData.game, 10),
+        playerId: parseInt(ratingData.player, 10),
+      }
+    });
   }
 
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard)
   async updateRating(@Args('ratingData') ratingData: UpdateRatingInput) {
-    const rating = new Rating();
-    rating.id = parseInt(ratingData.id);
-    rating.rating = ratingData.rating;
-    await this.handleRelation('game', rating, ratingData, this.gameService);
-    await this.handleRelation('player', rating, ratingData, this.playerService);
-
-    return await this.ratingService.update(rating);
+    return this.prismaService.rating.update({
+      where: { id: parseInt(ratingData.id, 10) },
+      data: {
+        rating: ratingData.rating,
+        gameId: parseInt(ratingData.game, 10),
+        playerId: parseInt(ratingData.player, 10),
+      }
+    });
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deleteRating(@Args({ name: 'id', type: () => ID }) id: string) {
-    return await this.ratingService.delete(parseInt(id, 10));
+    await this.prismaService.rating.delete({ where: { id: parseInt(id, 10) }});
+    return true;
   }
 }

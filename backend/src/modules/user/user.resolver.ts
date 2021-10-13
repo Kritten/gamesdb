@@ -1,15 +1,15 @@
 import { Args, ID, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import { EntityResolver } from '../../utilities/entity/entity.resolver';
-import { UserEntityService } from './user.entity.service';
 import { User } from './user.entity';
 import { CurrentUser } from './user-current.decorator';
+import {PrismaService} from "../../utilities/collection/prisma.service";
 
 @Resolver(() => User)
-export class UserResolver extends EntityResolver {
-  constructor(private userService: UserEntityService) {
-    super();
+export class UserResolver {
+  constructor(
+    private prismaService: PrismaService,
+  ) {
   }
 
   @Query(() => User)
@@ -22,6 +22,10 @@ export class UserResolver extends EntityResolver {
       return user;
     }
 
-    return this.userService.findOne(id);
+    return this.prismaService.user.findUnique({
+      where: {
+        id,
+      }
+    });
   }
 }

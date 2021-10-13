@@ -1,12 +1,3 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
-  OneToMany,
-  ManyToOne, AfterLoad, getConnection,
-} from 'typeorm';
 import { Category } from '../category/category.entity';
 import { Mechanism } from '../mechanism/mechanism.entity';
 import { Mood } from '../mood/mood.entity';
@@ -15,184 +6,87 @@ import { Session } from '../session/session.entity';
 import {Field, Float, ID, Int, ObjectType} from '@nestjs/graphql';
 import { Rating } from '../rating/rating.entity';
 
-@Entity()
 @ObjectType()
 export class Game {
-  @PrimaryGeneratedColumn()
   @Field(() => ID)
   id: number;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    unique: true,
-  })
   name: string;
 
-  @Column({
-    type: 'int',
-    nullable: true,
-    unique: true,
-  })
   @Field(() => Int)
   idBGG?: number;
 
-  @Column({
-    type: 'float',
-    nullable: true,
-  })
   @Field(() => Float)
   ratingBGG?: number;
 
-  @Column({
-    type: 'text',
-    nullable: true,
-  })
   description?: string;
 
-  @Column({
-    type: 'tinyint',
-    nullable: true,
-  })
   @Field(() => Int)
   countPlayersMin?: number;
 
-  @Column({
-    type: 'tinyint',
-    nullable: true,
-  })
   @Field(() => Int)
   countPlayersMax?: number;
 
-  @Column({
-    type: 'smallint',
-    nullable: true,
-  })
   @Field(() => Int)
   minutesPlaytimeMin?: number;
 
-  @Column({
-    type: 'smallint',
-    nullable: true,
-  })
   @Field(() => Int)
   minutesPlaytimeMax?: number;
 
-  @Column({
-    type: 'boolean',
-    default: false,
-  })
   isCoop?: boolean;
 
-  @Column({
-    type: 'boolean',
-    default: false,
-  })
   isDigital: boolean;
 
-  @Column({
-    type: 'tinyint',
-    nullable: true,
-  })
   @Field(() => Int)
   complexity?: number;
 
-  @Column({
-    type: 'tinyint',
-    nullable: true,
-  })
   @Field(() => Int)
   size?: number;
 
-  @Column({
-    type: 'text',
-    default: '[]'
-  })
   images: string;
 
-  @ManyToMany(
-    () => Universe,
-    universe => universe.games,
-  )
-  @JoinTable()
   @Field(() => [Universe], { defaultValue: [] })
   universes: Universe[];
 
-  @ManyToMany(
-    () => Category,
-    category => category.games,
-  )
-  @JoinTable()
   @Field(() => [Category], { defaultValue: [] })
   categories: Category[];
 
-  @ManyToMany(
-    () => Mechanism,
-    mechanism => mechanism.games,
-  )
-  @JoinTable()
   @Field(() => [Mechanism], { defaultValue: [] })
   mechanisms: Mechanism[];
 
-  @ManyToMany(
-    () => Mood,
-    mood => mood.games,
-  )
-  @JoinTable()
   @Field(() => [Mood], { defaultValue: [] })
   moods: Mood[];
 
-  @ManyToMany(() => Game)
-  @JoinTable()
   @Field(() => [Game], { defaultValue: [] })
   playableWith: Game[];
 
-  @ManyToOne(
-    () => Game,
-    game => game.expansions,
-  )
-  @JoinTable()
   @Field(() => Game, { nullable: true })
   isExpansionOf: Game;
 
-  @OneToMany(
-    () => Game,
-    game => game.isExpansionOf,
-  )
-  @JoinTable()
   @Field(() => [Game], { defaultValue: [] })
   expansions: Game[];
 
-  @OneToMany(
-    () => Rating,
-    rating => rating.game,
-  )
   @Field(() => [Rating], { defaultValue: [] })
   ratings: Rating[];
 
-  @OneToMany(
-    () => Session,
-    session => session.game,
-  )
-  @JoinTable()
   @Field(() => [Session], { defaultValue: [] })
   sessions: Session[];
 
   public ratingAverage?: number | null;
 
-  @AfterLoad()
-  public async calculateRatingAverage() {
-    const rating = await getConnection().query(`
-      select
-        Avg(rating.rating) as rating
-      from
-        game
-      left join
-          rating
-          on rating.gameId = game.id
-      where game.id = ${this.id}
-    `);
-
-    this.ratingAverage = rating[0].rating;
-  }
+  // @AfterLoad()
+  // public async calculateRatingAverage() {
+  //   const rating = await getConnection().query(`
+  //     select
+  //       Avg(rating.rating) as rating
+  //     from
+  //       game
+  //     left join
+  //         rating
+  //         on rating.gameId = game.id
+  //     where game.id = ${this.id}
+  //   `);
+  //
+  //   this.ratingAverage = rating[0].rating;
+  // }
 }

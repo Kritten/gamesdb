@@ -1,169 +1,343 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import { GameEntityService } from './game.entity.service';
 import { Game } from './game.entity';
-import { GameInput, UpdateGameInput } from './game.input';
-import { CategoryEntityService } from '../category/category.entity.service';
-import { EntityResolver } from '../../utilities/entity/entity.resolver';
-import { MechanismEntityService } from '../mechanism/mechanism.entity.service';
-import { MoodEntityService } from '../mood/mood.entity.service';
-import { SessionEntityService } from '../session/session.entity.service';
-import { UniverseEntityService } from '../universe/universe.entity.service';
+import {GameInput, GameInputDatabase, UpdateGameInput} from './game.input';
 import { InputCollection } from '../../utilities/collection/collection.input';
-import { GameCollectionService } from './collection/game.collection.service';
 import { GameCollectionData } from './collection/game.collectionData';
+import {PrismaService} from "../../utilities/collection/prisma.service";
+import { Prisma } from '@prisma/client'
+import {handleRelation} from "../../utilities/utilities";
 
 @Resolver(() => Game)
-export class GameResolver extends EntityResolver {
+export class GameResolver {
   constructor(
-    private gameEntityService: GameEntityService,
-    private gameCollectionService: GameCollectionService,
-    private categoryService: CategoryEntityService,
-    private universeService: UniverseEntityService,
-    private mechanismService: MechanismEntityService,
-    private moodService: MoodEntityService,
-    private sessionService: SessionEntityService,
+    private prismaService: PrismaService,
   ) {
-    super();
   }
+
+  getWhere(data: InputCollection) {
+    const where = [];
+
+    // const indexParams = 0;
+    for (let i = 0; i < data.filters.length; i++) {
+      const filter = data.filters[i];
+      let value;
+      if (filter.valueBoolean !== undefined) {
+        value = filter.valueBoolean;
+      } else if (filter.valueFloat !== undefined) {
+        value = filter.valueFloat;
+      } else if (filter.valueInt !== undefined) {
+        value = filter.valueInt;
+      } else if (filter.valueString !== undefined) {
+        value = filter.valueString;
+      } else if (filter.valueDate !== undefined) {
+        value = filter.valueDate;
+      } else if (filter.valueRange !== undefined) {
+        value = filter.valueRange;
+      }
+
+      if (value === undefined || value === -1) {
+        continue;
+      }
+      const valueFormatted = filter.operator !== 'like' ? value : `'%${value}%'`;
+
+      where.push(`entity.${filter.field} ${filter.operator} ${valueFormatted}`);
+
+      // let nameFunctionWhere = 'where';
+      // if (i > 0) {
+      //   nameFunctionWhere = 'andWhere';
+      // }
+      //
+      // let operation = `${filter.operator} :${indexParams}`;
+      // let params = {
+      //   [indexParams]: valueFormatted,
+      // };
+      //
+      // if (Array.isArray(value)) {
+      //   if (value[1] === 100) {
+      //     operation = `>= :${indexParams}`;
+      //     params = {
+      //       [indexParams]: value[0],
+      //     };
+      //     indexParams += 1;
+      //   } else {
+      //     operation = `${filter.operator} :${indexParams} and :${indexParams +
+      //     1}`;
+      //     params = {
+      //       [indexParams]: value[0],
+      //       [indexParams + 1]: value[1],
+      //     };
+      //     indexParams += 2;
+      //   }
+      // } else {
+      //   indexParams += 1;
+      // }
+
+      // if (filter.field.includes('.')) {
+      //   query[nameFunctionWhere](`${filter.field} ${operation}`, params);
+      // } else {
+      //   query[nameFunctionWhere](`entity.${filter.field} ${operation}`, params);
+      // }
+
+    }
+
+    return `WHERE ${where.join(' AND ')}`;
+  }
+
 
   @Query(() => GameCollectionData)
   @UseGuards(GqlAuthGuard)
   async games(@Args('gameData') data: InputCollection) {
-    return this.gameCollectionService.loadPage(data);
+    // todo: loadPage
+    // const where = {
+    //   isDigital: false
+    // };
+
+    // console.log(this.gameEntityService.getQuery());
+
+
+    const where = this.getWhere(data);
+
+    const query = `
+        SELECT 
+             entity.id, 
+            COALESCE(AVG(rating.rating), 0) as ratingAverage
+        FROM 
+          game as entity
+          LEFT JOIN
+              rating
+              ON entity.id = rating.gameId
+        ${where}
+        GROUP BY
+            entity.id
+        ORDER BY
+          ${data.sortBy.map((sortBy, index) => `${sortBy} ${data.sortDesc[index] ? 'desc' : 'asc'}`).join(', ')}
+        `;
+
+    // const rating = await getConnection().query(`
+    //   select
+    //     Avg(rating.rating) as rating
+    //   from
+    //     game
+    //   left join
+    //       rating
+    //       on rating.gameId = game.id
+    //   where game.id = ${this.id}
+    // `);
+    // query.
+    const items = await this.prismaService.$queryRaw<Array<Game>>(Prisma.raw(query));
+    // const items = await this.prismaService.game.findMany({
+    //   select: {
+    //     id: true,
+    //     _count: true,
+    //   },
+    //   skip: (data.page - 1) * data.count,
+    //   take: data.count,
+    //   orderBy: data.sortBy.map((sortBy, index) => ({
+    //     [sortBy]: data.sortDesc[index] ? 'desc' : 'asc'
+    //   })),
+    //   where,
+    // });
+
+    // console.log(items, "items");
+
+    const count = (await this.prismaService.$queryRaw<Array<{count: number}>>(Prisma.raw(`
+      SELECT 
+        count(entity.id) as count
+      FROM
+        game as entity
+      ${where}
+    `)))[0].count;
+
+    return {items, count};
   }
 
   @Query(() => Game)
   @UseGuards(GqlAuthGuard)
   async game(@Args({ name: 'id', type: () => ID }) id: string) {
-    return this.gameEntityService.findOne(parseInt(id, 10), {
-      // relations: ['ratings.game'],
-    });
+    const game = (await this.prismaService.game.findUnique({
+      where: {
+        id: parseInt(id, 10),
+      },
+    })) as unknown as Game;
+
+    console.warn(game, "game");
+
+    game.ratingAverage = (await this.prismaService.rating.aggregate({
+      _avg: {
+        rating: true,
+      },
+      where: {
+        game: {
+          id: game.id
+        },
+      }
+    }))._avg.rating;
+
+    return game;
   }
 
   @Mutation(() => Game)
   @UseGuards(GqlAuthGuard)
   async createGame(@Args('gameData') gameData: GameInput) {
-    const game = new Game();
-    game.name = gameData.name;
-    game.description = gameData.description;
-    game.idBGG = gameData.idBGG;
-    game.ratingBGG = gameData.ratingBGG;
-    game.countPlayersMin = gameData.countPlayersMin;
-    game.countPlayersMax = gameData.countPlayersMax;
-    game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
-    game.minutesPlaytimeMax = gameData.minutesPlaytimeMax;
-    game.isCoop = gameData.isCoop;
-    game.isDigital = gameData.isDigital;
-    game.complexity = gameData.complexity;
-    game.size = gameData.size;
-    game.images = gameData.images;
-    await this.handleRelation(
-      'universes',
-      game,
-      gameData,
-      this.universeService,
-    );
-    await this.handleRelation(
-      'categories',
-      game,
-      gameData,
-      this.categoryService,
-    );
-    await this.handleRelation(
-      'mechanisms',
-      game,
-      gameData,
-      this.mechanismService,
-    );
-    await this.handleRelation('moods', game, gameData, this.moodService);
-    await this.handleRelation(
-      'playableWith',
-      game,
-      gameData,
-      this.gameEntityService,
-    );
-    await this.handleRelation(
-      'isExpansionOf',
-      game,
-      gameData,
-      this.gameEntityService,
-    );
-    await this.handleRelation(
-      'expansions',
-      game,
-      gameData,
-      this.gameEntityService,
-    );
-    await this.handleRelation('sessions', game, gameData, this.sessionService);
+    console.warn(gameData, "gameData");
+    const gameDatabase: GameInputDatabase = {
+      ...gameData,
+      universes: handleRelation({
+        entities: gameData.universes,
+      }),
+      categories: handleRelation({
+        entities: gameData.categories,
+      }),
+      mechanisms: handleRelation({
+        entities: gameData.mechanisms,
+      }),
+      moods: handleRelation({
+        entities: gameData.moods,
+      }),
+      playableWith: handleRelation({
+        entities: gameData.playableWith,
+      }),
+      expansions: handleRelation({
+        entities: gameData.expansions,
+      }),
+    };
 
-    return await this.gameEntityService.create(game);
+
+    console.warn(gameDatabase, "gameDatabase");
+    // gameData.universes = this.handleRelation1({
+    //   entities: gameData.universes,
+    // });
+
+    console.warn(gameData, "gameData new");
+
+    const game = await this.prismaService.game.create({
+      data: gameData,
+    });
+    //
+    // return game;
+    // const game = new Game();
+    // game.name = gameData.name;
+    // game.description = gameData.description;
+    // game.idBGG = gameData.idBGG;
+    // game.ratingBGG = gameData.ratingBGG;
+    // game.countPlayersMin = gameData.countPlayersMin;
+    // game.countPlayersMax = gameData.countPlayersMax;
+    // game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
+    // game.minutesPlaytimeMax = gameData.minutesPlaytimeMax;
+    // game.isCoop = gameData.isCoop;
+    // game.isDigital = gameData.isDigital;
+    // game.complexity = gameData.complexity;
+    // game.size = gameData.size;
+    // game.images = gameData.images;
+    // await this.handleRelation(
+    //   'universes',
+    //   game,
+    //   gameData,
+    //   this.universeService,
+    // );
+    // await this.handleRelation(
+    //   'categories',
+    //   game,
+    //   gameData,
+    //   this.categoryService,
+    // );
+    // await this.handleRelation(
+    //   'mechanisms',
+    //   game,
+    //   gameData,
+    //   this.mechanismService,
+    // );
+    // await this.handleRelation('moods', game, gameData, this.moodService);
+    // await this.handleRelation(
+    //   'playableWith',
+    //   game,
+    //   gameData,
+    //   this.gameEntityService,
+    // );
+    // await this.handleRelation(
+    //   'isExpansionOf',
+    //   game,
+    //   gameData,
+    //   this.gameEntityService,
+    // );
+    // await this.handleRelation(
+    //   'expansions',
+    //   game,
+    //   gameData,
+    //   this.gameEntityService,
+    // );
+    // await this.handleRelation('sessions', game, gameData, this.sessionService);
+    //
+    // return await this.gameEntityService.create(game);
   }
 
   @Mutation(() => Game)
   @UseGuards(GqlAuthGuard)
   async updateGame(@Args('gameData') gameData: UpdateGameInput) {
-    const game = new Game();
-    game.id = parseInt(gameData.id, 10);
-    game.name = gameData.name;
-    game.idBGG = gameData.idBGG;
-    game.ratingBGG = gameData.ratingBGG;
-    game.description = gameData.description;
-    game.countPlayersMin = gameData.countPlayersMin;
-    game.countPlayersMax = gameData.countPlayersMax;
-    game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
-    game.minutesPlaytimeMax = gameData.minutesPlaytimeMax;
-    game.isCoop = gameData.isCoop;
-    game.isDigital = gameData.isDigital;
-    game.complexity = gameData.complexity;
-    game.size = gameData.size;
-    game.images = gameData.images;
-    await this.handleRelation(
-      'universes',
-      game,
-      gameData,
-      this.universeService,
-    );
-    await this.handleRelation(
-      'categories',
-      game,
-      gameData,
-      this.categoryService,
-    );
-    await this.handleRelation(
-      'mechanisms',
-      game,
-      gameData,
-      this.mechanismService,
-    );
-    await this.handleRelation('moods', game, gameData, this.moodService);
-    await this.handleRelation(
-      'playableWith',
-      game,
-      gameData,
-      this.gameEntityService,
-    );
-    await this.handleRelation(
-      'isExpansionOf',
-      game,
-      gameData,
-      this.gameEntityService,
-    );
-    await this.handleRelation(
-      'expansions',
-      game,
-      gameData,
-      this.gameEntityService,
-    );
-    await this.handleRelation('sessions', game, gameData, this.sessionService);
-
-    return await this.gameEntityService.update(game);
+    return ;
+    // const game = new Game();
+    // game.id = parseInt(gameData.id, 10);
+    // game.name = gameData.name;
+    // game.idBGG = gameData.idBGG;
+    // game.ratingBGG = gameData.ratingBGG;
+    // game.description = gameData.description;
+    // game.countPlayersMin = gameData.countPlayersMin;
+    // game.countPlayersMax = gameData.countPlayersMax;
+    // game.minutesPlaytimeMin = gameData.minutesPlaytimeMin;
+    // game.minutesPlaytimeMax = gameData.minutesPlaytimeMax;
+    // game.isCoop = gameData.isCoop;
+    // game.isDigital = gameData.isDigital;
+    // game.complexity = gameData.complexity;
+    // game.size = gameData.size;
+    // game.images = gameData.images;
+    // await handleRelation(
+    //   'universes',
+    //   game,
+    //   gameData,
+    //   this.universeService,
+    // );
+    // await handleRelation(
+    //   'categories',
+    //   game,
+    //   gameData,
+    //   this.categoryService,
+    // );
+    // await handleRelation(
+    //   'mechanisms',
+    //   game,
+    //   gameData,
+    //   this.mechanismService,
+    // );
+    // await handleRelation('moods', game, gameData, this.moodService);
+    // await handleRelation(
+    //   'playableWith',
+    //   game,
+    //   gameData,
+    //   this.gameEntityService,
+    // );
+    // await handleRelation(
+    //   'isExpansionOf',
+    //   game,
+    //   gameData,
+    //   this.gameEntityService,
+    // );
+    // await handleRelation(
+    //   'expansions',
+    //   game,
+    //   gameData,
+    //   this.gameEntityService,
+    // );
+    // await handleRelation('sessions', game, gameData, this.sessionService);
+    //
+    // return await this.gameEntityService.update(game);
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deleteGame(@Args({ name: 'id', type: () => ID }) id: string) {
-    return await this.gameEntityService.delete(parseInt(id, 10));
+    await this.prismaService.game.delete({ where: { id: parseInt(id, 10) }});
+    return true;
   }
 }

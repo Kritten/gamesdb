@@ -2,7 +2,6 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { UserEntityService } from '../user/user.entity.service';
 import { User } from '../user/user.entity';
 import { createHash } from 'crypto';
-import { getManager } from 'typeorm/index';
 
 @Injectable()
 export class AuthService {

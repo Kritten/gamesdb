@@ -1,51 +1,46 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
-import { EntityResolver } from '../../utilities/entity/entity.resolver';
 import { Playtime } from './playtime.entity';
-import { PlaytimeEntityService } from './playtime.entity.service';
 import { PlaytimeInput, UpdatePlaytimeInput } from './playtime.input';
-import { SessionEntityService } from '../session/session.entity.service';
-import { PlaytimeCollectionService } from './collection/playtime.collection.service';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { PlaytimeCollectionData } from './collection/playtime.collectionData';
+import {PrismaService} from "../../utilities/collection/prisma.service";
 
 @Resolver(() => Playtime)
-export class PlaytimeResolver extends EntityResolver {
+export class PlaytimeResolver {
   constructor(
-    private playtimeService: PlaytimeEntityService,
-    private playtimeCollectionService: PlaytimeCollectionService,
-    private sessionService: SessionEntityService,
+    private prismaService: PrismaService,
   ) {
-    super();
   }
 
   @Query(() => PlaytimeCollectionData)
   @UseGuards(GqlAuthGuard)
   async playtimes(@Args('playtimeData') data: InputCollection) {
-    return this.playtimeCollectionService.loadPage(data);
+    // todo: loadPage
+    return this.prismaService.playtime.findMany();
   }
 
   @Query(() => Playtime)
   @UseGuards(GqlAuthGuard)
   async playtime(@Args({ name: 'id', type: () => ID }) id: string) {
-    return this.playtimeService.findOne(parseInt(id, 10));
+    return await this.prismaService.playtime.findUnique({
+      where: {
+        id: parseInt(id, 10),
+      }
+    });
   }
 
   @Mutation(() => Playtime)
   @UseGuards(GqlAuthGuard)
   async createPlaytime(@Args('playtimeData') playtimeData: PlaytimeInput) {
-    const playtime = new Playtime();
-    playtime.start = playtimeData.start;
-    playtime.end = playtimeData.end;
-    await this.handleRelation(
-      'session',
-      playtime,
-      playtimeData,
-      this.sessionService,
-    );
-
-    return await this.playtimeService.create(playtime);
+    return this.prismaService.playtime.create({
+      data: {
+        start: playtimeData.start,
+        end: playtimeData.end,
+        sessionId: parseInt(playtimeData.session, 10),
+      }
+    });
   }
 
   @Mutation(() => Playtime)
@@ -53,23 +48,20 @@ export class PlaytimeResolver extends EntityResolver {
   async updatePlaytime(
     @Args('playtimeData') playtimeData: UpdatePlaytimeInput,
   ) {
-    const playtime = new Playtime();
-    playtime.id = parseInt(playtimeData.id, 10);
-    playtime.start = playtimeData.start;
-    playtime.end = playtimeData.end;
-    await this.handleRelation(
-      'session',
-      playtime,
-      playtimeData,
-      this.sessionService,
-    );
-
-    return await this.playtimeService.update(playtime);
+    return this.prismaService.playtime.update({
+      where: { id: parseInt(playtimeData.id, 10) },
+      data: {
+        start: playtimeData.start,
+        end: playtimeData.end,
+        sessionId: parseInt(playtimeData.session, 10),
+      }
+    });
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deletePlaytime(@Args({ name: 'id', type: () => ID }) id: string) {
-    return await this.playtimeService.delete(parseInt(id, 10));
+    await this.prismaService.playtime.delete({ where: { id: parseInt(id, 10) }});
+    return true;
   }
 }

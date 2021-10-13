@@ -2,45 +2,41 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Universe } from './universe.entity';
-import { UniverseEntityService } from './universe.entity.service';
 import { UniverseInput, UpdateUniverseInput } from './universe.input';
-import { EntityResolver } from '../../utilities/entity/entity.resolver';
-import { GameEntityService } from '../game/game.entity.service';
+import {PrismaService} from "../../utilities/collection/prisma.service";
+import {handleRelation} from "../../utilities/utilities";
 
 @Resolver(() => Universe)
-export class UniverseResolver extends EntityResolver {
+export class UniverseResolver {
   constructor(
-    private universeService: UniverseEntityService,
-    private gameService: GameEntityService,
+    private prismaService: PrismaService,
   ) {
-    super();
   }
 
   @Query(() => [Universe])
   @UseGuards(GqlAuthGuard)
   async universes() {
-    return this.universeService.find();
+    return this.prismaService.universe.findMany();
   }
 
   @Query(() => Universe)
   @UseGuards(GqlAuthGuard)
   async universe(@Args({ name: 'id', type: () => ID }) id: string) {
-    return this.universeService.findOne(parseInt(id, 10));
+    return await this.prismaService.universe.findUnique({
+      where: {
+        id: parseInt(id, 10),
+      }
+    });
   }
 
   @Mutation(() => Universe)
   @UseGuards(GqlAuthGuard)
   async createUniverse(@Args('universeData') universeData: UniverseInput) {
-    const universe = new Universe();
-    universe.name = universeData.name;
-    await this.handleRelation(
-      'games',
-      universe,
-      universeData,
-      this.gameService,
-    );
-
-    return await this.universeService.create(universe);
+    return this.prismaService.universe.create({
+      data: {
+        name: universeData.name,
+      }
+    });
   }
 
   @Mutation(() => Universe)
@@ -48,22 +44,18 @@ export class UniverseResolver extends EntityResolver {
   async updateUniverse(
     @Args('universeData') universeData: UpdateUniverseInput,
   ) {
-    const universe = new Universe();
-    universe.id = parseInt(universeData.id, 10);
-    universe.name = universeData.name;
-    await this.handleRelation(
-      'games',
-      universe,
-      universeData,
-      this.gameService,
-    );
-
-    return await this.universeService.update(universe);
+    return this.prismaService.universe.update({
+      where: { id: parseInt(universeData.id, 10) },
+      data: {
+        name: universeData.name,
+      }
+    });
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deleteUniverse(@Args({ name: 'id', type: () => ID }) id: string) {
-    return await this.universeService.delete(parseInt(id, 10));
+    await this.prismaService.universe.delete({ where: { id: parseInt(id, 10) }});
+    return true;
   }
 }

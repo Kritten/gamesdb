@@ -1,16 +1,13 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Mechanism } from './mechanism.entity';
 import { MechanismResolver } from './mechanism.resolver';
-import { MechanismEntityService } from './mechanism.entity.service';
 import { GameModule } from '../game/game.module';
+import {CollectionModule} from "../../utilities/collection/collection.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Mechanism]),
     forwardRef(() => GameModule),
+    CollectionModule,
   ],
-  providers: [MechanismResolver, MechanismEntityService],
-  exports: [MechanismEntityService],
+  providers: [MechanismResolver],
 })
 export class MechanismModule {}

@@ -1,19 +1,15 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Rating } from './rating.entity';
 import { RatingResolver } from './rating.resolver';
-import { RatingEntityService } from './rating.entity.service';
 import { GameModule } from '../game/game.module';
 import { PlayerModule } from '../player/player.module';
-import { RatingCollectionService } from './collection/rating.collection.service';
+import {CollectionModule} from "../../utilities/collection/collection.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Rating]),
     forwardRef(() => GameModule),
     forwardRef(() => PlayerModule),
+    CollectionModule,
   ],
-  providers: [RatingResolver, RatingEntityService, RatingCollectionService],
-  exports: [RatingEntityService],
+  providers: [RatingResolver],
 })
 export class RatingModule {}

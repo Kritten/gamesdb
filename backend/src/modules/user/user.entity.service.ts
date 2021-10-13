@@ -1,27 +1,29 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { User } from './user.entity';
-import { getManager } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
-import { EntityService } from '../../utilities/entity/entity.service';
+import {PrismaService} from "../../utilities/collection/prisma.service";
 
 @Injectable()
-export class UserEntityService extends EntityService<User> {
+export class UserEntityService {
   constructor(
     @Inject(forwardRef(() => AuthService)) private authService: AuthService,
+    private prismaService: PrismaService,
   ) {
-    super(User);
   }
 
   async findOneByName(name: string): Promise<User> {
-    const users = await getManager().find(User, {
+    const user = await this.prismaService.user.findUnique({
       where: {
         name,
       },
     });
-    if (users !== null && users.length > 0) {
-      return users[0];
-    }
-    return null;
+
+    return user as unknown as User;
+
+    // if (users !== null && users.length > 0) {
+    //   return users[0];
+    // }
+    // return null;
   }
 
   async create(data: User | User[]): Promise<User | User[]> {
@@ -34,6 +36,13 @@ export class UserEntityService extends EntityService<User> {
       );
     }
 
-    return await getManager().save(User, users);
+    await this.prismaService.user.createMany({
+     data: users.map(user => ({
+       name: user.name,
+       password: user.password,
+     })),
+    });
+
+    return users;
   }
 }

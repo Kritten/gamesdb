@@ -1,4 +1,5 @@
 import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
+import {InputDatabaseRelation, Modify} from "../../utilities/types";
 
 @InputType()
 class SessionPlaytimeInput {
@@ -9,9 +10,6 @@ class SessionPlaytimeInput {
 
 @InputType()
 export class SessionInput {
-  @Field(() => ID)
-  id?: string;
-
   comment?: string;
 
   isChallenge?: boolean;
@@ -36,3 +34,9 @@ export class UpdateSessionInput extends PartialType(SessionInput) {
   @Field(() => ID)
   id: string;
 }
+
+export type SessionInputDatabase = Modify<SessionInput, {
+  gameId: number,
+  players: InputDatabaseRelation,
+  winners: InputDatabaseRelation,
+}>;

@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { GameModule } from './modules/game/game.module';
 import { CategoryModule } from './modules/category/category.module';
 import { MoodModule } from './modules/mood/mood.module';
@@ -25,25 +24,25 @@ import { CollectionModule } from './utilities/collection/collection.module';
   imports: [
     ConsoleModule,
     ConfigModule.forRoot({ envFilePath: '../.env' }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mariadb',
-        host: configService.get<string>('MYSQL_HOST', 'localhost'),
-        port: configService.get<number>('MYSQL_PORT', 32770),
-        username: configService.get<string>('MYSQL_USER', 'root'),
-        password: configService.get<string>(
-          'MYSQL_PASSWORD',
-          configService.get<string>('MYSQL_ROOT_PASSWORD'),
-        ),
-        database: configService.get<string>('MYSQL_DATABASE'),
-        autoLoadEntities: true,
-        synchronize: true,
-        timezone: 'Z',
-        bigNumberStrings: false,
-      }),
-      inject: [ConfigService],
-    }),
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: (configService: ConfigService) => ({
+    //     type: 'mariadb',
+    //     host: configService.get<string>('MYSQL_HOST', 'localhost'),
+    //     port: configService.get<number>('MYSQL_PORT', 32770),
+    //     username: configService.get<string>('MYSQL_USER', 'root'),
+    //     password: configService.get<string>(
+    //       'MYSQL_PASSWORD',
+    //       configService.get<string>('MYSQL_ROOT_PASSWORD'),
+    //     ),
+    //     database: configService.get<string>('MYSQL_DATABASE'),
+    //     autoLoadEntities: true,
+    //     synchronize: true,
+    //     timezone: 'Z',
+    //     bigNumberStrings: false,
+    //   }),
+    //   inject: [ConfigService],
+    // }),
     GraphQLModule.forRoot({
       debug: true,
       playground: true,

@@ -1,7 +1,5 @@
-import { SelectQueryBuilder } from 'typeorm';
-
 export const annotationsStatistics: {
-  [key: string]: (query: SelectQueryBuilder<unknown>) => void;
+  [key: string]: (query) => void;
 } = {
   rating(query) {
     query.addSelect([

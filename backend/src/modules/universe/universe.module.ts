@@ -1,13 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Universe } from './universe.entity';
 import { UniverseResolver } from './universe.resolver';
-import { UniverseEntityService } from './universe.entity.service';
 import { GameModule } from '../game/game.module';
+import {CollectionModule} from "../../utilities/collection/collection.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Universe]), forwardRef(() => GameModule)],
-  providers: [UniverseResolver, UniverseEntityService],
-  exports: [UniverseEntityService],
+  imports: [forwardRef(() => GameModule), CollectionModule],
+  providers: [UniverseResolver],
 })
 export class UniverseModule {}

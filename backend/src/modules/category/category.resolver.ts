@@ -2,20 +2,14 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Category } from './category.entity';
-import { CategoryEntityService } from './category.entity.service';
 import { CategoryInput, UpdateCategoryInput } from './category.input';
-import { EntityResolver } from '../../utilities/entity/entity.resolver';
-import { GameEntityService } from '../game/game.entity.service';
 import {PrismaService} from "../../utilities/collection/prisma.service";
 
 @Resolver(() => Category)
-export class CategoryResolver extends EntityResolver {
+export class CategoryResolver {
   constructor(
     private prismaService: PrismaService,
-    private categoryService: CategoryEntityService,
-    private gameService: GameEntityService,
   ) {
-    super();
   }
 
   @Query(() => [Category])
@@ -27,7 +21,11 @@ export class CategoryResolver extends EntityResolver {
   @Query(() => Category)
   @UseGuards(GqlAuthGuard)
   async category(@Args({ name: 'id', type: () => ID }) id: string) {
-    return this.categoryService.findOne(parseInt(id, 10));
+    return await this.prismaService.category.findUnique({
+      where: {
+        id: parseInt(id, 10),
+      }
+    });
   }
 
   @Mutation(() => Category)

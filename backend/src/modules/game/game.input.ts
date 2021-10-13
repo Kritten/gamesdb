@@ -1,10 +1,8 @@
 import {Field, Float, ID, InputType, Int, PartialType} from '@nestjs/graphql';
+import {InputDatabaseRelation, Modify} from "../../utilities/types";
 
 @InputType()
 export class GameInput {
-  @Field(() => ID)
-  id?: string;
-
   name: string;
 
   description?: string;
@@ -70,3 +68,12 @@ export class UpdateGameInput extends PartialType(GameInput) {
   @Field(() => ID)
   id: string;
 }
+
+export type GameInputDatabase = Modify<GameInput, {
+  universes: InputDatabaseRelation,
+  categories: InputDatabaseRelation,
+  mechanisms: InputDatabaseRelation,
+  moods: InputDatabaseRelation,
+  playableWith: InputDatabaseRelation,
+  expansions: InputDatabaseRelation,
+}>;

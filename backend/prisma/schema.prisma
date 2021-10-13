@@ -29,14 +29,14 @@ model game {
   idBGG                                                          Int?                        @unique(map: "IDX_4b4e83b1f44b8dc2ead5b412bf")
   ratingBGG                                                      Float?                      @db.Float
   images                                                         String                      @default("[]") @db.Text
-  game                                                           game?                       @relation("gameTogame_isExpansionOfId", fields: [isExpansionOfId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_96cd79727e5591e2b0dc97c68c8")
-  other_game                                                     game[]                      @relation("gameTogame_isExpansionOfId")
-  game_categories_category                                       game_categories_category[]
-  game_mechanisms_mechanism                                      game_mechanisms_mechanism[]
-  game_moods_mood                                                game_moods_mood[]
+  isExpansionOf                                                  game?                       @relation("gameTogame_isExpansionOfId", fields: [isExpansionOfId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_96cd79727e5591e2b0dc97c68c8")
+  expansions                                                     game[]                      @relation("gameTogame_isExpansionOfId")
+  categories                                                     game_categories_category[]
+  mechanisms                                                     game_mechanisms_mechanism[]
+  moods                                                          game_moods_mood[]
   game_playable_with_game_gameTogame_playable_with_game_gameId_1 game_playable_with_game[]   @relation("gameTogame_playable_with_game_gameId_1")
   game_playable_with_game_gameTogame_playable_with_game_gameId_2 game_playable_with_game[]   @relation("gameTogame_playable_with_game_gameId_2")
-  game_universes_universe                                        game_universes_universe[]
+  universes                                                      game_universes_universe[]
   rating                                                         rating[]
   session                                                        session[]
 
@@ -99,23 +99,23 @@ model game_universes_universe {
 }
 
 model mechanism {
-  id                        Int                         @id @default(autoincrement())
-  name                      String                      @unique(map: "IDX_b01167942998a91ce290f0c747") @db.VarChar(255)
-  game_mechanisms_mechanism game_mechanisms_mechanism[]
+  id    Int                         @id @default(autoincrement())
+  name  String                      @unique(map: "IDX_b01167942998a91ce290f0c747") @db.VarChar(255)
+  games game_mechanisms_mechanism[]
 }
 
 model mood {
-  id              Int               @id @default(autoincrement())
-  name            String            @unique(map: "IDX_b426c64fcb715e6128eb97d81d") @db.VarChar(255)
-  game_moods_mood game_moods_mood[]
+  id    Int               @id @default(autoincrement())
+  name  String            @unique(map: "IDX_b426c64fcb715e6128eb97d81d") @db.VarChar(255)
+  games game_moods_mood[]
 }
 
 model player {
-  id                     Int                      @id @default(autoincrement())
-  name                   String                   @unique(map: "IDX_7baa5220210c74f8db27c06f8b") @db.VarChar(255)
-  rating                 rating[]
-  session_players_player session_players_player[]
-  session_winners_player session_winners_player[]
+  id             Int                      @id @default(autoincrement())
+  name           String                   @unique(map: "IDX_7baa5220210c74f8db27c06f8b") @db.VarChar(255)
+  ratings        rating[]
+  sessionsPlayed session_players_player[]
+  sessionsWon    session_winners_player[]
 }
 
 model playtime {
@@ -141,15 +141,15 @@ model rating {
 }
 
 model session {
-  id                     Int                      @id @default(autoincrement())
-  gameId                 Int?
-  isChallenge            Boolean                  @default(false) @db.TinyInt
-  comment                String?                  @db.Text
-  isVirtual              Boolean                  @default(false) @db.TinyInt
-  game                   game?                    @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_af5a91cf53ac3c8d252d7df5c41")
-  playtime               playtime[]
-  session_players_player session_players_player[]
-  session_winners_player session_winners_player[]
+  id          Int                      @id @default(autoincrement())
+  gameId      Int?
+  isChallenge Boolean                  @default(false) @db.TinyInt
+  comment     String?                  @db.Text
+  isVirtual   Boolean                  @default(false) @db.TinyInt
+  game        game?                    @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_af5a91cf53ac3c8d252d7df5c41")
+  playtimes   playtime[]
+  players     session_players_player[]
+  winners     session_winners_player[]
 
   @@index([gameId], map: "FK_af5a91cf53ac3c8d252d7df5c41")
 }
@@ -183,9 +183,9 @@ model sessions {
 }
 
 model universe {
-  id                      Int                       @id @default(autoincrement())
-  name                    String                    @unique(map: "IDX_c41283ff03942895f3cd21b0fb") @db.VarChar(255)
-  game_universes_universe game_universes_universe[]
+  id    Int                       @id @default(autoincrement())
+  name  String                    @unique(map: "IDX_c41283ff03942895f3cd21b0fb") @db.VarChar(255)
+  games game_universes_universe[]
 }
 
 model user {
@@ -195,12 +195,12 @@ model user {
 }
 
 model wishlist {
-  id          Int    @id @default(autoincrement())
-  name        String @unique(map: "IDX_9e361dc28d34dc87e51127adec") @db.VarChar(255)
-  link        String @db.Text
+  id          Int     @id @default(autoincrement())
+  name        String  @unique(map: "IDX_9e361dc28d34dc87e51127adec") @db.VarChar(255)
+  link        String  @db.Text
   taken       Boolean @default(false) @db.TinyInt
-  giftFor     Int    @db.TinyInt
+  giftFor     Int     @db.TinyInt
   price       Int
-  description String @db.Text
-  images      String @default("[]") @db.Text
+  description String  @db.Text
+  images      String  @default("[]") @db.Text
 }
