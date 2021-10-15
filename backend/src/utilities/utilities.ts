@@ -19,6 +19,10 @@ export const getPagination = (data: InputCollection) => {
 };
 
 export const getOrderBy = (data: InputCollection) => {
+  if (data.sortBy.length === 0) {
+    return '';
+  }
+
   return `ORDER BY ${data.sortBy.map((sortBy, index) => `'${sortBy}' ${data.sortDesc[index] ? 'desc' : 'asc'}`).join(', ')}`;
 };
 
@@ -86,6 +90,10 @@ export const getWhere = (data: InputCollection) => {
     //   query[nameFunctionWhere](`entity.${filter.field} ${operation}`, params);
     // }
 
+  }
+
+  if (where.length === 0) {
+    return '';
   }
 
   return `WHERE ${where.join(' AND ')}`;

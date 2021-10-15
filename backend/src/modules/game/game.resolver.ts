@@ -7,7 +7,7 @@ import { InputCollection } from '../../utilities/collection/collection.input';
 import { GameCollectionData } from './collection/game.collectionData';
 import {PrismaService} from "../../utilities/collection/prisma.service";
 import { Prisma } from '@prisma/client'
-import {getPagination, getWhere, handleRelation} from "../../utilities/utilities";
+import {getOrderBy, getPagination, getWhere, handleRelation} from "../../utilities/utilities";
 
 @Resolver(() => Game)
 export class GameResolver {
@@ -19,14 +19,8 @@ export class GameResolver {
   @Query(() => GameCollectionData)
   @UseGuards(GqlAuthGuard)
   async games(@Args('gameData') data: InputCollection) {
-    // todo: loadPage
-    // const where = {
-    //   isDigital: false
-    // };
-
-    // console.log(this.gameEntityService.getQuery());
-
     const where = getWhere(data);
+    const orderBy = getOrderBy(data);
     const pagination = getPagination(data);
 
     const query = `
@@ -41,11 +35,10 @@ export class GameResolver {
         ${where}
         GROUP BY
             entity.id
-        ORDER BY
-            ${data.sortBy.map((sortBy, index) => `${sortBy} ${data.sortDesc[index] ? 'desc' : 'asc'}`).join(', ')}
+        ${orderBy}
         ${pagination}
         `;
-
+    console.warn(query, "query");
     // const rating = await getConnection().query(`
     //   select
     //     Avg(rating.rating) as rating
