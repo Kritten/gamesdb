@@ -7,7 +7,7 @@ import { InputCollection } from '../../utilities/collection/collection.input';
 import { GameCollectionData } from './collection/game.collectionData';
 import {PrismaService} from "../../utilities/collection/prisma.service";
 import { Prisma } from '@prisma/client'
-import {handleRelation} from "../../utilities/utilities";
+import {getPagination, getWhere, handleRelation} from "../../utilities/utilities";
 
 @Resolver(() => Game)
 export class GameResolver {
@@ -15,76 +15,6 @@ export class GameResolver {
     private prismaService: PrismaService,
   ) {
   }
-
-  getWhere(data: InputCollection) {
-    const where = [];
-
-    // const indexParams = 0;
-    for (let i = 0; i < data.filters.length; i++) {
-      const filter = data.filters[i];
-      let value;
-      if (filter.valueBoolean !== undefined) {
-        value = filter.valueBoolean;
-      } else if (filter.valueFloat !== undefined) {
-        value = filter.valueFloat;
-      } else if (filter.valueInt !== undefined) {
-        value = filter.valueInt;
-      } else if (filter.valueString !== undefined) {
-        value = filter.valueString;
-      } else if (filter.valueDate !== undefined) {
-        value = filter.valueDate;
-      } else if (filter.valueRange !== undefined) {
-        value = filter.valueRange;
-      }
-
-      if (value === undefined || value === -1) {
-        continue;
-      }
-      const valueFormatted = filter.operator !== 'like' ? value : `'%${value}%'`;
-
-      where.push(`entity.${filter.field} ${filter.operator} ${valueFormatted}`);
-
-      // let nameFunctionWhere = 'where';
-      // if (i > 0) {
-      //   nameFunctionWhere = 'andWhere';
-      // }
-      //
-      // let operation = `${filter.operator} :${indexParams}`;
-      // let params = {
-      //   [indexParams]: valueFormatted,
-      // };
-      //
-      // if (Array.isArray(value)) {
-      //   if (value[1] === 100) {
-      //     operation = `>= :${indexParams}`;
-      //     params = {
-      //       [indexParams]: value[0],
-      //     };
-      //     indexParams += 1;
-      //   } else {
-      //     operation = `${filter.operator} :${indexParams} and :${indexParams +
-      //     1}`;
-      //     params = {
-      //       [indexParams]: value[0],
-      //       [indexParams + 1]: value[1],
-      //     };
-      //     indexParams += 2;
-      //   }
-      // } else {
-      //   indexParams += 1;
-      // }
-
-      // if (filter.field.includes('.')) {
-      //   query[nameFunctionWhere](`${filter.field} ${operation}`, params);
-      // } else {
-      //   query[nameFunctionWhere](`entity.${filter.field} ${operation}`, params);
-      // }
-
-    }
-
-    return `WHERE ${where.join(' AND ')}`;
-  }
-
 
   @Query(() => GameCollectionData)
   @UseGuards(GqlAuthGuard)
@@ -96,8 +26,8 @@ export class GameResolver {
 
     // console.log(this.gameEntityService.getQuery());
 
-
-    const where = this.getWhere(data);
+    const where = getWhere(data);
+    const pagination = getPagination(data);
 
     const query = `
         SELECT 
@@ -112,7 +42,8 @@ export class GameResolver {
         GROUP BY
             entity.id
         ORDER BY
-          ${data.sortBy.map((sortBy, index) => `${sortBy} ${data.sortDesc[index] ? 'desc' : 'asc'}`).join(', ')}
+            ${data.sortBy.map((sortBy, index) => `${sortBy} ${data.sortDesc[index] ? 'desc' : 'asc'}`).join(', ')}
+        ${pagination}
         `;
 
     // const rating = await getConnection().query(`
@@ -161,8 +92,6 @@ export class GameResolver {
         id: parseInt(id, 10),
       },
     })) as unknown as Game;
-
-    console.warn(game, "game");
 
     game.ratingAverage = (await this.prismaService.rating.aggregate({
       _avg: {

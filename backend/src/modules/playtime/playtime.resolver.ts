@@ -6,6 +6,8 @@ import { PlaytimeInput, UpdatePlaytimeInput } from './playtime.input';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { PlaytimeCollectionData } from './collection/playtime.collectionData';
 import {PrismaService} from "../../utilities/collection/prisma.service";
+import {getOrderBy, getPagination, getWhere} from "../../utilities/utilities";
+import {Prisma} from "@prisma/client";
 
 @Resolver(() => Playtime)
 export class PlaytimeResolver {
@@ -17,9 +19,59 @@ export class PlaytimeResolver {
   @Query(() => PlaytimeCollectionData)
   @UseGuards(GqlAuthGuard)
   async playtimes(@Args('playtimeData') data: InputCollection) {
-    // todo: loadPage
-    return this.prismaService.playtime.findMany();
+    const where = getWhere(data);
+    const orderBy = getOrderBy(data);
+    const pagination = getPagination(data);
+
+    const query = `
+        SELECT 
+             entity.id,
+             entity.start,
+             entity.end
+        FROM 
+          playtime as entity
+          LEFT JOIN
+              session
+              ON entity.sessionId = session.id
+          LEFT JOIN
+            game
+            ON session.gameId = game.id
+        ${where}
+        GROUP BY
+            entity.id
+        ${orderBy}
+        ${pagination}
+        `;
+
+    let items = await this.prismaService.$queryRaw<Array<Playtime>>(Prisma.raw(query));
+
+    const count = (await this.prismaService.$queryRaw<Array<{count: number}>>(Prisma.raw(`
+      SELECT 
+        count(entity.id) as count
+      FROM
+          playtime as entity
+      LEFT JOIN
+        session
+        ON entity.sessionId = session.id
+      LEFT JOIN
+        game
+        ON session.gameId = game.id
+      ${where}
+    `)))[0].count;
+
+    items = items.map(item => {
+      item.start = new Date(item.start);
+
+      if (item.end !== null) {
+        item.end = new Date(item.end);
+      }
+
+      return item;
+    })
+
+    return {items, count};
   }
+
 
   @Query(() => Playtime)
   @UseGuards(GqlAuthGuard)
