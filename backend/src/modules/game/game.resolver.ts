@@ -38,7 +38,6 @@ export class GameResolver {
         ${orderBy}
         ${pagination}
         `;
-    console.warn(query, "query");
     // const rating = await getConnection().query(`
     //   select
     //     Avg(rating.rating) as rating

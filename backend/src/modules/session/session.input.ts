@@ -3,7 +3,6 @@ import {InputDatabaseRelation, Modify} from "../../utilities/types";
 
 @InputType()
 class SessionPlaytimeInput {
-  id?: string;
   start: Date;
   end?: Date | null;
 }
