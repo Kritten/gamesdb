@@ -1,8 +1,15 @@
-import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
+import {Field, ID, InputType, PartialType} from '@nestjs/graphql';
 import {InputDatabaseRelation, Modify} from "../../utilities/types";
 
 @InputType()
 class SessionPlaytimeInput {
+  start: Date;
+  end?: Date | null;
+}
+
+@InputType()
+class SessionPlaytimeUpdate {
+  id?: string;
   start: Date;
   end?: Date | null;
 }
@@ -32,6 +39,9 @@ export class SessionInput {
 export class UpdateSessionInput extends PartialType(SessionInput) {
   @Field(() => ID)
   id: string;
+
+  @Field(() => [SessionPlaytimeUpdate])
+  playtimes?: SessionPlaytimeUpdate[];
 }
 
 export type SessionInputDatabase = Modify<SessionInput, {

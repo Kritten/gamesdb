@@ -258,7 +258,6 @@ input GameInput {
     countPlayersMin: Int
     description: String
     expansions: [ID!]
-    id: ID
     idBGG: Int
     images: String
     isCoop: Boolean
@@ -331,7 +330,6 @@ input RatingInput {
 input SessionInput {
     comment: String
     game: ID
-    id: ID
     isChallenge: Boolean
     isVirtual: Boolean
     players: [ID!]
@@ -340,6 +338,11 @@ input SessionInput {
 }
 
 input SessionPlaytimeInput {
+    end: DateTime
+    start: DateTime!
+}
+
+input SessionPlaytimeUpdate {
     end: DateTime
     id: String
     start: DateTime!
@@ -421,7 +424,7 @@ input UpdateSessionInput {
     isChallenge: Boolean
     isVirtual: Boolean
     players: [ID!]
-    playtimes: [SessionPlaytimeInput!]
+    playtimes: [SessionPlaytimeUpdate!]
     winners: [ID!]
 }
 
