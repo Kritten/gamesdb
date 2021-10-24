@@ -13,7 +13,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.10.8",
+    "@quasar/extras": "^1.11.2",
     "@quasar/icongenie": "^2.4.0",
     "@types/lodash": "^4.14.171",
     "@vuelidate/core": "^2.0.0-alpha.21",
@@ -24,13 +24,13 @@
     "env-cmd": "^10.1.0",
     "fast-xml-parser": "^3.19.0",
     "lodash": "^4.17.21",
-    "quasar": "^2.0.2",
+    "quasar": "^2.2.0",
     "vue-i18n": "^9.1.7",
     "vuedraggable": "^4.0.3"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",
-    "@quasar/app": "^3.0.2",
+    "@quasar/app": "^3.1.6",
     "@quasar/quasar-app-extension-apollo": "^2.0.0-beta.3",
     "@types/node": "^10.17.15",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
