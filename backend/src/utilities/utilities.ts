@@ -23,7 +23,7 @@ export const getOrderBy = (data: InputCollection) => {
     return '';
   }
 
-  return `ORDER BY ${data.sortBy.map((sortBy, index) => `'${sortBy}' ${data.sortDesc[index] ? 'desc' : 'asc'}`).join(', ')}`;
+  return `ORDER BY ${data.sortBy.map((sortBy, index) => `${sortBy} ${data.sortDesc[index] ? 'desc' : 'asc'}`).join(', ')}`;
 };
 
 export const inputCollectionToPrisma = (data: InputCollection) => {
