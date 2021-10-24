@@ -54,7 +54,12 @@ export const inputCollectionToPrisma = (data: InputCollection) => {
     } else if (filter.valueInt !== undefined) {
       value = filter.valueInt;
     } else if (filter.valueString !== undefined) {
-      value = filter.valueString;
+      const number = parseInt(filter.valueString, 10)
+      if (isNaN(number) === false) {
+        value = number;
+      } else {
+        value = filter.valueString;
+      }
     } else if (filter.valueDate !== undefined) {
       value = filter.valueDate;
       // value = `'${format(new Date(filter.valueDate), 'yyyy-MM-dd HH:mm:ss')}'`;

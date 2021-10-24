@@ -56,14 +56,18 @@ export class SessionResolver {
   @Query(() => SessionCollectionData)
   @UseGuards(GqlAuthGuard)
   async sessions(@Args('sessionData') data: InputCollection) {
+    const inputs = inputCollectionToPrisma(data);
+
     const items = await this.prismaService.session.findMany({
-      ...inputCollectionToPrisma(data),
+      ...inputs,
       include,
     });
 
     return {
       items: mapItems(items),
-      count: await this.prismaService.session.count(),
+      count: await this.prismaService.session.count({
+        where: inputs.where,
+      }),
     }
 
     // const where = getWhere(data);
@@ -167,13 +171,53 @@ export class SessionResolver {
   @Mutation(() => Session)
   @UseGuards(GqlAuthGuard)
   async updateSession(@Args('sessionData') sessionData: UpdateSessionInput) {
-    return mapItem(await this.prismaService.session.update({
-      where: { id: parseInt(sessionData.id, 10) },
+    const id = parseInt(sessionData.id, 10);
+
+    const session = mapItem(await this.prismaService.session.update({
+      where: { id, },
       data: {
         comment: sessionData.comment,
         isChallenge: sessionData.isChallenge,
         isVirtual: sessionData.isVirtual,
         gameId: parseInt(sessionData.game, 10),
+        players: {
+          deleteMany: {}
+          // disconnect: {
+          //   sessionId_playerId: {
+          //
+          //   }
+          // }
+
+          // set: [],
+          // create: sessionData.players.map((id) => ({
+          //   player: {
+          //     connect: { id: parseInt(id, 10) },
+          //   },
+          // })),
+        },
+        winners: {
+          deleteMany: {}
+        //   create: sessionData.players.map((id) => ({
+        //     player: {
+        //       connect: { id: parseInt(id, 10) },
+        //     },
+        //   })),
+        },
+        playtimes: {
+          deleteMany: {},
+        //   createMany: {
+        //     data: sessionData.playtimes,
+        //   }
+        }
+      },
+      include,
+    }));
+
+    console.warn(session, "sessionDeleted");
+
+    await this.prismaService.session.update({
+      where: { id },
+      data: {
         players: {
           create: sessionData.players.map((id) => ({
             player: {
@@ -182,34 +226,48 @@ export class SessionResolver {
           })),
         },
         winners: {
-          create: sessionData.players.map((id) => ({
+          create: sessionData.winners.map((id) => ({
             player: {
               connect: { id: parseInt(id, 10) },
             },
           })),
         },
-        // playtimes: {
-        //   createMany: {
-        //     data: sessionData.playtimes,
-        //   }
-        // }
+        playtimes: {
+          createMany: {
+            data: sessionData.playtimes.map((playtime) => ({
+              start: playtime.start,
+              end: playtime.end,
+            })),
+          },
+        },
       },
-      include,
-    }));
+    });
+
     /**
      * TODO: Handling playtimes
      */
-    // // Delete deleted playtimes
+    // Delete deleted playtimes
     // const setKeptPlaytimes = sessionData.playtimes.reduce((set, value) => {
     //   if (value.id !== undefined) {
     //     set.add(parseInt(value.id, 10));
     //   }
     //   return set;
     // }, new Set<number>());
-    //
-    // const playtimesToBeDeleted = sessionUpdated.playtimes.filter(
+
+    // const playtimes = await this.prismaService.playtime.findMany({
+    //   where: {
+    //     session: {
+    //       id,
+    //     }
+    //   }
+    // })
+    // const playtimesToBeDeleted = playtimes.filter(
     //   playtime => !setKeptPlaytimes.has(playtime.id),
     // );
+
+    // console.warn(setKeptPlaytimes, "setKeptPlaytimes");
+    // console.log(playtimesToBeDeleted, "playtimesToBeDeleted");
+    // console.log(playtimes, "playtimes");
     //
     // if (playtimesToBeDeleted.length > 0) {
     //   await this.playtimeService.delete(
@@ -249,6 +307,11 @@ export class SessionResolver {
     //     session: sessionUpdated,
     //   },
     // });
+
+    return mapItem(await this.prismaService.session.findUnique({
+      where: {id},
+      include,
+    }));
   }
 
   @Mutation(() => Boolean)
