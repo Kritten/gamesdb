@@ -9,8 +9,9 @@
 
     <div class="col-12">
       <input-select-game
-        v-model="gameInternal"
+        :model-value="game"
         :validation="validation?.game"
+        @update:modelValue="updateGame"
       />
     </div>
 
@@ -59,17 +60,22 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = useI18n();
 
+    // const gameInternal = useModelWrapper({
+    //   props, emit, name: 'game',
+    // });
+
     return {
       t,
+      // gameInternal,
       ratingInternal: useModelWrapper({
         props, emit, name: 'rating',
-      }),
-      gameInternal: useModelWrapper({
-        props, emit, name: 'game',
       }),
       playerInternal: useModelWrapper({
         props, emit, name: 'player',
       }),
+      updateGame(event: unknown) {
+        emit('update:game', event);
+      },
     };
   },
 });
