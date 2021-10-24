@@ -8,6 +8,8 @@ const countTotal = ref<number>();
 
 export const useRating = () => {
   const useEntity = baseUseEntity<Rating>({
+    // TODO FIX this ts-ignore
+    // @ts-ignore
     entities: ratings,
   });
 

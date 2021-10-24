@@ -190,10 +190,10 @@ type Query {
 }
 
 type Rating {
-    game: Game!
+    game: Game
     id: ID!
-    player: Player!
-    rating: Int
+    player: Player
+    rating: Int!
 }
 
 type RatingCollectionData {

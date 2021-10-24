@@ -4,7 +4,7 @@
       {{ rating.player.name }}
     </td>
     <td>
-      {{ rating.game.name }}
+      <link-game :game="rating.game" />
     </td>
     <td>
       <display-rating :rating="rating.rating" />
@@ -22,10 +22,13 @@ import { Rating } from '@/modules/rating/rating.model';
 import UpdateRating from '@/modules/rating/update/update-rating.vue';
 import { defineComponent } from 'vue';
 import DisplayRating from '@/modules/rating/base/display-rating.vue';
+import LinkGame from '@/modules/game/base/link-game.vue';
 
 export default defineComponent({
   name: 'ListItemRating',
-  components: { DisplayRating, UpdateRating, DeleteRating },
+  components: {
+    LinkGame, DisplayRating, UpdateRating, DeleteRating,
+  },
   props: {
     rating: {
       required: true,

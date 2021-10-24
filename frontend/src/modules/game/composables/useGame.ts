@@ -17,6 +17,7 @@ export const useGame = () => {
     if (gameOld !== undefined) {
       gameOld.value = game;
     } else {
+      // @ts-ignore
       games.set(game.id as ID, ref(game));
     }
   };

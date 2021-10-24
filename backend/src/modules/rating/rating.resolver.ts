@@ -6,6 +6,25 @@ import { RatingInput, UpdateRatingInput } from './rating.input';
 import { RatingCollectionData } from './collection/rating.collectionData';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import {PrismaService} from "../../utilities/collection/prisma.service";
+import {getOrderBy, getPagination, getWhere} from "../../utilities/utilities";
+import {Prisma} from "@prisma/client";
+
+type RatingFromDatabase = {
+  id: number | string,
+  rating: number,
+  player: number,
+  game: number
+}
+
+const mapItem = (item: RatingFromDatabase) => ({
+  ...item,
+  player: {id: item.player},
+  game: {id: item.game, name: ''},
+});
+
+const mapItems = (items: Array<RatingFromDatabase>) => {
+  return items.map(item => mapItem(item));
+};
 
 @Resolver(() => Rating)
 export class RatingResolver {
@@ -17,8 +36,51 @@ export class RatingResolver {
   @Query(() => RatingCollectionData)
   @UseGuards(GqlAuthGuard)
   async ratings(@Args('ratingData') data: InputCollection) {
-    // todo: loadPage
-    return this.prismaService.rating.findMany();
+    const where = getWhere(data);
+    const orderBy = getOrderBy(data);
+    const pagination = getPagination(data);
+
+    const query = `
+        SELECT
+           entity.id,
+           player.id as player,
+           game.id as game,
+           rating
+        FROM
+          rating as entity
+          LEFT JOIN
+            game
+            ON entity.gameId = game.id
+          LEFT JOIN
+            player
+            ON entity.playerId = player.id
+        ${where}
+        GROUP BY
+            entity.id
+        ${orderBy}
+        ${pagination}
+        `;
+
+    const items = await this.prismaService.$queryRaw<Array<RatingFromDatabase>>(Prisma.raw(query));
+
+    const count = (await this.prismaService.$queryRaw<Array<{count: number}>>(Prisma.raw(`
+      SELECT 
+        count(entity.id) as count
+      FROM
+        rating as entity
+        LEFT JOIN
+          game
+          ON entity.gameId = game.id
+        LEFT JOIN
+          player
+          ON entity.playerId = player.id
+      ${where}
+    `)))[0].count;
+
+    return {
+      items: mapItems(items),
+      count
+    };
   }
 
   @Query(() => Rating)

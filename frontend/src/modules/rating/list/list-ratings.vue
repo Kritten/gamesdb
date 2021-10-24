@@ -70,8 +70,8 @@ export default defineComponent({
     const filters = ref<ServiceCollectionFilters>({});
 
     const optionsSortBy = [
-      { field: 'relation:game.name', name: 'game' },
-      { field: 'relation:player.name', name: 'player' },
+      { field: 'game.name', name: 'game' },
+      { field: 'player.name', name: 'player' },
     ];
 
     const filtersInitial: ServiceCollectionFilters = {};

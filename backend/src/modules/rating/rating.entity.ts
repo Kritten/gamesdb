@@ -8,7 +8,7 @@ export class Rating {
   id: string;
 
   @Field(() => Int)
-  rating?: number;
+  rating: number;
 
   @Field(() => Game)
   game: Game;

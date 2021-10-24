@@ -1,6 +1,8 @@
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { RatingInterface } from '@/modules/rating/rating.types';
 import { usePlayers } from '@/modules/player/composables/usePlayers';
+import { useGame } from '@/modules/game/composables/useGame';
+import { GameLoading } from '@/modules/game/game.types';
 import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
 import { EntityInterface, ID } from '../app/utilities/entity/entity.types';
@@ -10,7 +12,7 @@ export class Rating extends Entity implements RatingInterface {
 
   player?: Player;
 
-  game?: Game;
+  game?: Game | GameLoading;
 
   constructor(data: RatingInterface = {}) {
     super(data);
@@ -29,7 +31,8 @@ export class Rating extends Entity implements RatingInterface {
     }
 
     if (entity.game !== undefined) {
-      entity.game = new Game(entity.game);
+      const idGame = (entity.game as unknown as Game).id;
+      entity.game = useGame().get(idGame as ID);
     }
 
     return entity;
