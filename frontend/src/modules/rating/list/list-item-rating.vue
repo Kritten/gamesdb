@@ -10,7 +10,10 @@
       <display-rating :rating="rating.rating" />
     </td>
     <td>
-      <update-rating :rating="rating" />
+      <update-rating
+        v-if="rating.game !== null"
+        :rating="rating"
+      />
       <delete-rating :rating="rating" />
     </td>
   </tr>

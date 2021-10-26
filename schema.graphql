@@ -173,7 +173,6 @@ type Query {
     players: [Player!]!
     playtime(id: ID!): Playtime!
     playtimes(playtimeData: InputCollection!): PlaytimeCollectionData!
-    rating(id: ID!): Rating!
     ratings(ratingData: InputCollection!): RatingCollectionData!
     session(id: ID!): Session!
     sessions(sessionData: InputCollection!): SessionCollectionData!
@@ -190,9 +189,9 @@ type Query {
 }
 
 type Rating {
-    game: Game
+    game: Game!
     id: ID!
-    player: Player
+    player: Player!
     rating: Int!
 }
 

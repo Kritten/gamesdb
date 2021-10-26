@@ -1,6 +1,9 @@
 <template>
+  <!--  Destructuring von rating notwendig, damit rating.game kein Ref mehr ist -->
   <base-entity-update
-    :entity="rating"
+    :entity="{
+      ...rating,
+    }"
     i18n-prefix="rating"
     :use-update-entity="useUpdateRating"
     :validation-rules="validationRules"

@@ -9,6 +9,11 @@ import {PrismaService} from "../../utilities/collection/prisma.service";
 import {getOrderBy, getPagination, getWhere} from "../../utilities/utilities";
 import {Prisma} from "@prisma/client";
 
+const include = {
+  game: true,
+  player: true,
+};
+
 type RatingFromDatabase = {
   id: number | string,
   rating: number,
@@ -83,15 +88,28 @@ export class RatingResolver {
     };
   }
 
-  @Query(() => Rating)
-  @UseGuards(GqlAuthGuard)
-  async rating(@Args({ name: 'id', type: () => ID }) id: string) {
-    return await this.prismaService.rating.findUnique({
-      where: {
-        id: parseInt(id, 10),
-      }
-    });
-  }
+  // @Query(() => Rating)
+  // @UseGuards(GqlAuthGuard)
+  // async rating(@Args({ name: 'id', type: () => ID }) id: string) {
+  //   console.log(123)
+  //   const foo = (await this.prismaService.rating.findUnique({
+  //     where: {
+  //       id: parseInt(id, 10),
+  //     },
+  //     include: {
+  //       game: true
+  //     }
+  //     // include,
+  //   }));
+  //   console.warn(foo, "foo");
+  //
+  //   return foo;
+  //   // return await this.prismaService.rating.findUnique({
+  //   //   where: {
+  //   //     id: parseInt(id, 10),
+  //   //   }
+  //   // });
+  // }
 
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard)
@@ -101,7 +119,8 @@ export class RatingResolver {
         rating: ratingData.rating,
         gameId: parseInt(ratingData.game, 10),
         playerId: parseInt(ratingData.player, 10),
-      }
+      },
+      include,
     });
   }
 
