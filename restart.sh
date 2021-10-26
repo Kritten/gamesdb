@@ -34,6 +34,8 @@ rm -r dist
 mkdir dist
 cp -r dist_tmp/* dist
 
+npx prisma generate
+
 echo "7/7 restart server"
 supervisorctl restart gamesdb
 
