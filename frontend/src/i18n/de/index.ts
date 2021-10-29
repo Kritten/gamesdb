@@ -38,6 +38,8 @@ export default {
       longestPlayedDigital: 'Am längsten gespielte digitale Spiele',
       playtimesPerDayAnalog: 'Spielzeit pro Tag (Analog)',
       playtimesPerDayDigital: 'Spielzeit pro Tag (Digital)',
+      lastSessionAnalog: 'Zuletzt gespielt (Analog)',
+      lastSessionDigital: 'Zuletzt gespielt (Digital)',
     },
   },
   filter: {

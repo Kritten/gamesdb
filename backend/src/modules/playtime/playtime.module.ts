@@ -11,5 +11,8 @@ import {CollectionModule} from "../../utilities/collection/collection.module";
   providers: [
     PlaytimeResolver,
   ],
+  exports: [
+    PlaytimeResolver
+  ]
 })
 export class PlaytimeModule {}

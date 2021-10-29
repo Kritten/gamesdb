@@ -11,6 +11,7 @@ import {CollectionModule} from "../../utilities/collection/collection.module";
     forwardRef(() => PlayerModule),
     forwardRef(() => PlaytimeModule),
     CollectionModule,
+    PlaytimeModule,
   ],
   providers: [SessionResolver],
 })

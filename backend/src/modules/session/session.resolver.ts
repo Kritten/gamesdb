@@ -8,6 +8,7 @@ import { InputCollection } from '../../utilities/collection/collection.input';
 import {PrismaService} from "../../utilities/collection/prisma.service";
 import {getOrderBy, getPagination, getWhere, handleRelation, inputCollectionToPrisma} from "../../utilities/utilities";
 import {Prisma} from "@prisma/client";
+import {PlaytimeResolver} from "../playtime/playtime.resolver";
 
 const include = {
   playtimes: true,
@@ -36,81 +37,121 @@ const include = {
   }
 };
 
+type SessionFromDatabase = {
+  id: number,
+  players: string
+  winners: string,
+  gameId: number,
+}
+
 const mapItem = (item: {players: Array<{ player: {id: number} }>, winners: Array<{ player: {id: number} }>}) => ({
   ...item,
   players: item.players.map(player => ({id: player.player.id})),
   winners: item.winners.map(player => ({id: player.player.id})),
 });
 
-const mapItems = (items: Array<{players: Array<{ player: {id: number} }>, winners: Array<{ player: {id: number} }>}>) => {
-  return items.map(item => mapItem(item));
+const mapItemFromDatabase = (item: SessionFromDatabase) => ({
+  ...item,
+  game: { id: item.gameId },
+  players: item.players.split(',').map(id => ({id,})),
+  winners: item.winners.split(',').map(id => ({id,})),
+});
+
+const mapItemsFromDatabase = (items: Array<SessionFromDatabase>) => {
+  return items.map(item => mapItemFromDatabase(item));
 };
 
 @Resolver(() => Session)
 export class SessionResolver {
   constructor(
     private prismaService: PrismaService,
+    private playtimeResolver: PlaytimeResolver,
   ) {
   }
 
   @Query(() => SessionCollectionData)
   @UseGuards(GqlAuthGuard)
   async sessions(@Args('sessionData') data: InputCollection) {
-    const inputs = inputCollectionToPrisma(data);
+    const where = getWhere(data);
+    const orderBy = getOrderBy(data);
+    const pagination = getPagination(data);
 
-    const items = await this.prismaService.session.findMany({
-      ...inputs,
-      include,
-    });
+    const query = `
+        SELECT 
+             entity.id,
+             entity.comment,
+             entity.isChallenge,
+             entity.isVirtual,
+             entity.gameId,
+             group_concat(DISTINCT(player.id)) as players,
+             group_concat(DISTINCT(winner.id)) as winners,
+             MIN(playtime.start) as startMin,
+             MAX(playtime.start) as startMax,
+             MIN(playtime.end) as endMin,
+             MAX(playtime.end) as endMax
+        FROM 
+          session as entity
+          JOIN
+            session_players_player
+            ON entity.id = session_players_player.sessionId
+          JOIN
+            player
+            ON session_players_player.playerId = player.id
 
-    return {
-      items: mapItems(items),
-      count: await this.prismaService.session.count({
-        where: inputs.where,
-      }),
-    }
+          JOIN
+            session_winners_player
+            ON entity.id = session_winners_player.sessionId
+          JOIN
+            player as winner
+            ON session_winners_player.playerId = winner.id
+          LEFT JOIN
+            playtime
+            on entity.id = playtime.sessionId
+          LEFT JOIN
+            game
+            on entity.gameId = game.id
+        ${where}
+        GROUP BY
+            entity.id
+        ${orderBy}
+        ${pagination}
+        `;
 
-    // const where = getWhere(data);
-    // const orderBy = getOrderBy(data);
-    // const pagination = getPagination(data);
-    //
-    // const query = `
-    //     SELECT
-    //          entity.id,
-    //          entity.isChallenge,
-    //          entity.isVirtual,
-    //          entity.comment,
-    //          entity.gameId
-    //     FROM
-    //       session as entity
-    //     ${where}
-    //     GROUP BY
-    //         entity.id
-    //     ${orderBy}
-    //     ${pagination}
-    //     `;
-    // const items = await this.prismaService.$queryRaw<Array<Session & {gameId: number}>>(Prisma.raw(query));
-    //
-    // const count = (await this.prismaService.$queryRaw<Array<{count: number}>>(Prisma.raw(`
-    //   SELECT
-    //     count(entity.id) as count
-    //   FROM
-    //     session as entity
-    //   ${where}
-    // `)))[0].count;
-    //
-    // console.warn(items, "items");
-    // console.log(count, "count");
-    //
-    // return {
-    //   items: items.map(item => ({
-    //     ...item,
-    //     game: {
-    //       id: item.gameId,
-    //     }
-    //   })),
-    //   count,
-    // };
+    let items = mapItemsFromDatabase(await this.prismaService.$queryRaw<Array<SessionFromDatabase>>(Prisma.raw(query)));
+
+    items = await Promise.all(items.map(async (item) => {
+      const playtimes = await this.playtimeResolver.playtimes({
+        filters: [
+          {
+            field: 'sessionId',
+            valueInt: item.id,
+            operator: '=',
+          }
+        ],
+        page: 1,
+        count: null,
+        sortBy: ['start'],
+        sortDesc: [false],
+      });
+
+      return {
+        ...item,
+        playtimes: playtimes.items,
+      };
+    }));
+
+    const count = (await this.prismaService.$queryRaw<Array<{count: number}>>(Prisma.raw(`
+      SELECT
+        count(entity.id) as count
+      FROM
+          session as entity
+        LEFT JOIN
+          game
+          on entity.gameId = game.id
+      ${where}
+    `)))[0].count;
+
+    return {items, count};
   }
 
   @Query(() => Session)

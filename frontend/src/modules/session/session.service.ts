@@ -55,7 +55,7 @@ implements ServiceCollectionInterface<Session> {
     this.loadPage({
       count: 1,
       page: 1,
-      sortBy: ['aggregation:playtime.MAX(start)'],
+      sortBy: ['startMax'],
       sortDesc: [true],
       filters,
     }).then(async ({ items }) => {

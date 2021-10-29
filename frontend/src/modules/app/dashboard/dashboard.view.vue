@@ -13,17 +13,6 @@
     </template>
   </draggable>
 
-<!--  <h2>Spielzeit pro Tag</h2>-->
-<!--  <h3>Analoge Spiele</h3>-->
-<!--  <playtimes-per-day analog-only />-->
-<!--  <h3>Digitale Spiele</h3>-->
-<!--  <playtimes-per-day digital-only />-->
-
-<!--  <h2>Zuletzt gespielt</h2>-->
-<!--  <last-session analog-only />-->
-<!--  <h2>Zuletzt gezockt</h2>-->
-<!--  <last-session digital-only />-->
-
 <!--  <h2>Bestbewertetste Spiele</h2>-->
 <!--  <games-best-rated analog-only />-->
 <!--  <h2>Bestbewertetste {{ t('game.digital.label', 2) }}</h2>-->
@@ -58,6 +47,8 @@ export default defineComponent({
     const cardsDataOrder = [
       'playtimesPerDayAnalog',
       'playtimesPerDayDigital',
+      'lastSessionAnalog',
+      'lastSessionDigital',
       'listGamesByCountPlayedAnalog',
       'listGamesByCountPlayedDigital',
       'listGamesByTimePlayedAnalog',
@@ -85,6 +76,28 @@ export default defineComponent({
         colsXl: 3,
         padding: true,
       },
+
+      lastSessionAnalog: {
+        header: t('dashboard.game.lastSessionAnalog'),
+        component: LastSession,
+        props: {
+          analogOnly: true,
+        },
+        cols: 6,
+        colsXl: 3,
+        padding: true,
+      },
+      lastSessionDigital: {
+        header: t('dashboard.game.lastSessionDigital'),
+        component: LastSession,
+        props: {
+          digitalOnly: true,
+        },
+        cols: 6,
+        colsXl: 3,
+        padding: true,
+      },
+
       listGamesByCountPlayedAnalog: {
         header: t('dashboard.game.mostPlayedAnalog'),
         component: GamesCountPlayed,
@@ -103,6 +116,7 @@ export default defineComponent({
         cols: 6,
         colsXl: 3,
       },
+
       listGamesByTimePlayedAnalog: {
         header: t('dashboard.game.longestPlayedAnalog'),
         component: GamesTimePlayed,
