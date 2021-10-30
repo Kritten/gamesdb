@@ -1,4 +1,4 @@
-import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
+import {Field, GraphQLISODateTime, ID, InputType, PartialType} from '@nestjs/graphql';
 
 @InputType()
 export class PlaytimeInput {
@@ -7,6 +7,7 @@ export class PlaytimeInput {
 
   start: Date;
 
+  @Field(() => GraphQLISODateTime)
   end?: Date | null;
 
   @Field(() => ID)

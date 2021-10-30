@@ -17,6 +17,7 @@ export const mutationCreatePlayer = gql`
     createPlayer(playerData: $player) {
       id
       name
+      lastSession
     }
   }
 `;
@@ -28,6 +29,7 @@ export const mutationUpdatePlayer = gql`
     updatePlayer(playerData: $player) {
       id
       name
+      lastSession
     }
   }
 `;
