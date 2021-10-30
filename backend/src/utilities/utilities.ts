@@ -10,7 +10,11 @@ export const handleRelation = ({entities}: {entities: Array<string>}) => {
 }
 
 
-export const getPagination = (data: InputCollection) => {
+export const getPagination = (data: Partial<InputCollection>) => {
+  if (data.count === undefined || data.page === undefined) {
+    return '';
+  }
+
   if (data.count === null) {
     return '';
   }
@@ -18,7 +22,11 @@ export const getPagination = (data: InputCollection) => {
   return `LIMIT ${data.count} OFFSET ${(data.page - 1) * data.count}`;
 };
 
-export const getOrderBy = (data: InputCollection) => {
+export const getOrderBy = (data: Partial<InputCollection>) => {
+  if (data.sortBy === undefined || data.sortDesc === undefined) {
+    return '';
+  }
+
   if (data.sortBy.length === 0) {
     return '';
   }
@@ -118,7 +126,11 @@ export const inputCollectionToPrisma = (data: InputCollection) => {
   return result;
 };
 
-export const getWhere = (data: InputCollection) => {
+export const getWhere = (data: Partial<InputCollection>) => {
+  if (data.filters === undefined) {
+    return '';
+  }
+
   const where = [];
 
   // const indexParams = 0;
@@ -189,4 +201,19 @@ export const getWhere = (data: InputCollection) => {
   }
 
   return `WHERE ${where.join(' AND ')}`;
+}
+
+export const getQuery = (query: string, data: Partial<InputCollection> = {}) => {
+  const where = getWhere(data);
+  const orderBy = getOrderBy(data);
+  const pagination = getPagination(data);
+
+  return `
+    ${query}
+    ${where}
+    GROUP BY
+        entity.id
+    ${orderBy}
+    ${pagination}
+  `;
 }
