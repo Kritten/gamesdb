@@ -22,8 +22,9 @@ export type GamesTimePlayedItem = {
 };
 
 export type GamesBestRatedItem = {
-  id: number;
-  name: string;
-  rating?: number;
-  count: number;
+  game: GameLoading;
+};
+
+export type GamesBestRatedItemServer = {
+  id: string;
 };

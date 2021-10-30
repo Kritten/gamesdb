@@ -39,6 +39,8 @@ export class Game extends Entity implements GameInterface {
 
   ratingAverage: number | null;
 
+  ratingCount: number | null;
+
   universes: Universe[];
 
   categories: Category[];
@@ -72,6 +74,7 @@ export class Game extends Entity implements GameInterface {
     this.ratingBGG = setDefaultIfNullOrUndefined<number | null>(data.ratingBGG, null);
     this.size = setDefaultIfNullOrUndefined<number | null>(data.size, null);
     this.ratingAverage = setDefaultIfNullOrUndefined<number | null>(data.ratingAverage, null);
+    this.ratingCount = setDefaultIfNullOrUndefined<number | null>(data.ratingCount, null);
     this.universes = setDefaultIfNullOrUndefined<Universe[]>(data.universes, []);
     this.categories = setDefaultIfNullOrUndefined<Category[]>(data.categories, []);
     this.mechanisms = setDefaultIfNullOrUndefined<Mechanism[]>(data.mechanisms, []);

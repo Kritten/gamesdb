@@ -73,6 +73,7 @@ export class Game {
   sessions: Session[];
 
   public ratingAverage?: number | null;
+  public ratingCount?: number | null;
 
   // @AfterLoad()
   // public async calculateRatingAverage() {

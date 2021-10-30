@@ -25,8 +25,17 @@ export class GameResolver {
 
     const query = `
         SELECT 
-             entity.id, 
-            COALESCE(AVG(rating.rating), 0) as ratingAverage
+             entity.id,
+#              entity.name,
+#              entity.minutesPlaytimeMin,
+#              entity.minutesPlaytimeMax,
+#              entity.complexity,
+#              entity.countPlayersMin,
+#              entity.countPlayersMax,
+#              entity.description,
+#              entity.isDigital,
+            COALESCE(AVG(rating.rating), 0) as ratingAverage,
+            COALESCE(COUNT(rating.rating), 0) as ratingCount
         FROM 
           game as entity
           LEFT JOIN
@@ -85,8 +94,11 @@ export class GameResolver {
       },
     })) as unknown as Game;
 
-    game.ratingAverage = (await this.prismaService.rating.aggregate({
+    const dataRating = await this.prismaService.rating.aggregate({
       _avg: {
+        rating: true,
+      },
+      _count: {
         rating: true,
       },
       where: {
@@ -94,7 +106,10 @@ export class GameResolver {
           id: game.id
         },
       }
-    }))._avg.rating;
+    });
+
+    game.ratingAverage = dataRating._avg.rating;
+    game.ratingCount = dataRating._count.rating;
 
     return game;
   }

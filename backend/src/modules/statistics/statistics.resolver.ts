@@ -35,14 +35,6 @@ export class StatisticsResolver {
     return this.statisticsService.gamesTimePlayed(data);
   }
 
-  @Query(() => GamesBestRatedCollectionDataModel)
-  @UseGuards(GqlAuthGuard)
-  async statisticsGamesBestRated(
-    @Args('statisticsData') data: InputCollection,
-  ) {
-    return this.statisticsService.gamesBestRated(data);
-  }
-
   @Query(() => GraphCollectionDataModel)
   @UseGuards(GqlAuthGuard)
   async statisticsPlaytimesGroupedByDaytime(

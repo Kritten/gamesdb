@@ -36,6 +36,8 @@ export default {
       mostPlayedDigital: 'Meist gespielte digitale Spiele',
       longestPlayedAnalog: 'Am längsten gespielte analoge Spiele',
       longestPlayedDigital: 'Am längsten gespielte digitale Spiele',
+      bestRatedAnalog: 'Bestbewertetste analoge Spiele',
+      bestRatedDigital: 'Bestbewertetste digitale Spiele',
       playtimesPerDayAnalog: 'Spielzeit pro Tag (Analog)',
       playtimesPerDayDigital: 'Spielzeit pro Tag (Digital)',
       lastSessionAnalog: 'Zuletzt gespielt (Analog)',
@@ -158,6 +160,7 @@ export default {
   },
   rating: {
     label: 'Bewertung | Bewertungen',
+    none: 'Keine Bewertungen',
     confirm: {
       delete: 'Soll die Bewertung wirklich gelöscht werden?',
     },

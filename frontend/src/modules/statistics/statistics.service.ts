@@ -1,5 +1,4 @@
 import {
-  queryStatisticsGamesBestRated,
   queryStatisticsGamesCountPlayed,
   queryStatisticsGamesTimePlayed,
 } from '@/modules/statistics/graphql/statistics.graphql';
@@ -22,11 +21,12 @@ import {
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
 import { InputCollection, ServiceCollectionLoadPage } from '@/modules/app/utilities/collection/collection.types';
 import {
-  GamesBestRatedItem,
+  GamesBestRatedItem, GamesBestRatedItemServer,
   GamesCountPlayedItem, GamesCountPlayedItemServer,
   GamesTimePlayedItem, GamesTimePlayedItemServer,
 } from '@/modules/statistics/statistics.types';
 import { useGame } from '@/modules/game/composables/useGame';
+import { queryPageGame } from '@/modules/game/graphql/game.graphql';
 
 class ServiceStatisticsClass {
   async loadPageStatisticsGamesCountPlayed(data: InputCollection, payload: unknown = {}) {
@@ -116,12 +116,14 @@ class ServiceStatisticsClass {
       });
     }
 
-    return loadPageBase<GamesBestRatedItem, {statisticsGamesBestRated: ServiceCollectionLoadPage<GamesBestRatedItem>}>({
+    const { get } = useGame();
+
+    return loadPageBase<GamesBestRatedItem, {games: ServiceCollectionLoadPage<GamesBestRatedItemServer>}>({
       data,
-      query: queryStatisticsGamesBestRated,
+      query: queryPageGame,
       parseResult: async (response) => ({
-        count: response.statisticsGamesBestRated.count,
-        items: response.statisticsGamesBestRated.items,
+        count: response.games.count,
+        items: response.games.items.map((item) => ({ game: get(item.id) })),
       }),
     });
   }

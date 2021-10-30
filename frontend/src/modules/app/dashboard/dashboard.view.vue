@@ -12,11 +12,6 @@
       />
     </template>
   </draggable>
-
-<!--  <h2>Bestbewertetste Spiele</h2>-->
-<!--  <games-best-rated analog-only />-->
-<!--  <h2>Bestbewertetste {{ t('game.digital.label', 2) }}</h2>-->
-<!--  <games-best-rated digital-only />-->
 </template>
 
 <script lang="ts">
@@ -37,9 +32,6 @@ export default defineComponent({
   components: {
     draggable,
     DataCard,
-    GamesBestRated,
-    LastSession,
-    ListSessionsVirtual,
   },
   setup() {
     const { t } = useI18n();
@@ -53,6 +45,8 @@ export default defineComponent({
       'listGamesByCountPlayedDigital',
       'listGamesByTimePlayedAnalog',
       'listGamesByTimePlayedDigital',
+      'listGamesBestRatedAnalog',
+      'listGamesBestRatedDigital',
     ];
 
     const cardsData: Record<string, TypeCardData> = {
@@ -129,6 +123,25 @@ export default defineComponent({
       listGamesByTimePlayedDigital: {
         header: t('dashboard.game.longestPlayedDigital'),
         component: GamesTimePlayed,
+        props: {
+          digitalOnly: true,
+        },
+        cols: 6,
+        colsXl: 3,
+      },
+
+      listGamesBestRatedAnalog: {
+        header: t('dashboard.game.bestRatedAnalog'),
+        component: GamesBestRated,
+        props: {
+          analogOnly: true,
+        },
+        cols: 6,
+        colsXl: 3,
+      },
+      listGamesBestRatedDigital: {
+        header: t('dashboard.game.bestRatedDigital'),
+        component: GamesBestRated,
         props: {
           digitalOnly: true,
         },

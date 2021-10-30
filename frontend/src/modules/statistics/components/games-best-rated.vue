@@ -1,26 +1,44 @@
 <template>
-  <table border="1">
-    <tr
-      v-for="(data, index) in collectionStatisticsGamesBestRated.items.value"
-      :key="index"
-    >
-      <td>{{ data.name }}</td>
-      <td v-if="data.rating !== null">
-        {{ data.rating.toFixed(2) }} ({{ data.count }})
-      </td>
-      <td v-else>
-        -
-      </td>
-    </tr>
-  </table>
-
-  <button
-    v-if="collectionStatisticsGamesBestRated.hasNextPage.value"
-    :disabled="collectionStatisticsGamesBestRated.isLoading.value === true"
-    @click="collectionStatisticsGamesBestRated.loadNextItems"
+  <q-markup-table
+    dense
+    flat
   >
-    Mehr laden
-  </button>
+    <thead>
+      <tr>
+        <th class="text-left">
+          {{ t('game.label') }}
+        </th>
+        <th class="text-right">
+          {{ t('rating.label') }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="(data, index) in collectionStatisticsGamesBestRated.items.value"
+        :key="index"
+      >
+        <td
+          class="text-left"
+        >
+          <link-game :game="data.game" />
+        </td>
+        <td class="text-right">
+          <template v-if="data.game !== null">
+            <template v-if="data.game.ratingAverage !== null">
+              <display-rating
+                dense
+                :rating="data.game.ratingAverage"
+              /> ({{ data.game.ratingCount }})
+            </template>
+            <template v-else>
+              {{ t('rating.none') }}
+            </template>
+          </template>
+        </td>
+      </tr>
+    </tbody>
+  </q-markup-table>
 </template>
 
 <script lang="ts">
@@ -28,9 +46,13 @@ import { defineComponent, ref } from 'vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
 import { GamesBestRatedItem } from '@/modules/statistics/statistics.types';
+import { useI18n } from 'vue-i18n';
+import LinkGame from '@/modules/game/base/link-game.vue';
+import DisplayRating from '@/modules/rating/base/display-rating.vue';
 
 export default defineComponent({
   name: 'GamesBestRated',
+  components: { DisplayRating, LinkGame },
   props: {
     analogOnly: {
       required: false,
@@ -44,11 +66,14 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { t } = useI18n();
+
     const collectionStatisticsGamesBestRated = useCollection<GamesBestRatedItem>(
       ServiceStatistics.loadPageStatisticsGamesBestRated,
       {
         inputCollectionData: {
-          sortBy: ref(['rating']),
+          count: 5,
+          sortBy: ref(['ratingAverage']),
           sortDesc: ref([true]),
         },
         payload: {
@@ -59,6 +84,7 @@ export default defineComponent({
     );
 
     return {
+      t,
       collectionStatisticsGamesBestRated,
     };
   },

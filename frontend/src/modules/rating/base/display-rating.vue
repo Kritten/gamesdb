@@ -3,7 +3,7 @@
     v-if="rating !== null"
     :model-value="(rating + 1) / 2.0"
     readonly
-    size="1.5rem"
+    :size="dense ? '1rem' : '1.5rem'"
     icon="far fa-star"
     icon-selected="fas fa-star"
     icon-half="fas fa-star-half-alt"
@@ -21,6 +21,11 @@ export default defineComponent({
   props: {
     rating: {
       required: true,
+    },
+    dense: {
+      required: false,
+      type: Boolean,
+      default: false,
     },
   },
 });

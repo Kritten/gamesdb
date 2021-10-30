@@ -17,6 +17,7 @@ export const fragments = {
       ratingBGG
       size
       ratingAverage
+      ratingCount
       images
       universes {
         id

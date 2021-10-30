@@ -39,6 +39,7 @@ type Game {
     playableWith: [Game!]!
     ratingAverage: Float
     ratingBGG: Float
+    ratingCount: Float
     ratings: [Rating!]!
     sessions: [Session!]!
     size: Int
@@ -48,18 +49,6 @@ type Game {
 type GameCollectionData {
     count: Int!
     items: [Game!]!
-}
-
-type GamesBestRatedCollectionDataModel {
-    count: Int!
-    items: [GamesBestRatedItem!]!
-}
-
-type GamesBestRatedItem {
-    count: Int!
-    id: ID!
-    name: String!
-    rating: Float
 }
 
 type GamesCountPlayedCollectionDataModel {
@@ -177,7 +166,6 @@ type Query {
     session(id: ID!): Session!
     sessions(sessionData: InputCollection!): SessionCollectionData!
     statisticsCounts: CountsModel!
-    statisticsGamesBestRated(statisticsData: InputCollection!): GamesBestRatedCollectionDataModel!
     statisticsGamesCountPlayed(statisticsData: InputCollection!): GamesCountPlayedCollectionDataModel!
     statisticsGamesTimePlayed(statisticsData: InputCollection!): GamesTimePlayedCollectionDataModel!
     statisticsPlaytimesGroupedByDaytime(statisticsData: InputCollection!): GraphCollectionDataModel!

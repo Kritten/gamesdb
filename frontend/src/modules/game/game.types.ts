@@ -22,6 +22,7 @@ export interface GameInterface extends EntityInterface {
   ratingBGG?: number | null;
   size?: number | null;
   ratingAverage?: number | null;
+  ratingCount?: number | null;
   universes?: Universe[];
   categories?: Category[];
   mechanisms?: Mechanism[];
