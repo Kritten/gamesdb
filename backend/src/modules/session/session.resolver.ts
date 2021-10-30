@@ -50,12 +50,14 @@ const mapItem = (item: {players: Array<{ player: {id: number} }>, winners: Array
   winners: item.winners.map(player => ({id: player.player.id})),
 });
 
-const mapItemFromDatabase = (item: SessionFromDatabase) => ({
+const mapItemFromDatabase = (item: SessionFromDatabase) => {
+  return {
   ...item,
-  game: { id: item.gameId },
-  players: item.players.split(',').map(id => ({id,})),
-  winners: item.winners.split(',').map(id => ({id,})),
-});
+    game: { id: item.gameId },
+    players: item.players !== null ? item.players.split(',').map(id => ({id,})) : [],
+      winners: item.winners !== null ? item.winners.split(',').map(id => ({id,})) : [],
+  }
+};
 
 const mapItemsFromDatabase = (items: Array<SessionFromDatabase>) => {
   return items.map(item => mapItemFromDatabase(item));
@@ -91,17 +93,17 @@ export class SessionResolver {
              MAX(playtime.end) as endMax
         FROM 
           session as entity
-          JOIN
+          LEFT JOIN
             session_players_player
             ON entity.id = session_players_player.sessionId
-          JOIN
+          LEFT JOIN
             player
             ON session_players_player.playerId = player.id
 
-          JOIN
+          LEFT JOIN
             session_winners_player
             ON entity.id = session_winners_player.sessionId
-          JOIN
+          LEFT JOIN
             player as winner
             ON session_winners_player.playerId = winner.id
           LEFT JOIN
