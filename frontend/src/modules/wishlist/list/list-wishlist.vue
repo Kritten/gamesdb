@@ -143,6 +143,11 @@ export default defineComponent({
       optionsSortBy,
       resetFilters,
       updateFilter,
+      onIntersection(entry: {isIntersecting: boolean}) {
+        if (entry.isIntersecting === true && collection.hasNextPage.value) {
+          void collection.loadNextItems();
+        }
+      },
     };
   },
 });

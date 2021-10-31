@@ -158,9 +158,23 @@ export const getWhere = (data: Partial<InputCollection>) => {
     if (value === undefined || value === -1) {
       continue;
     }
+
     const valueFormatted = filter.operator !== 'like' ? value : `'%${value}%'`;
 
-    where.push(`${filter.field} ${filter.operator} ${valueFormatted}`);
+    if (filter.operator === 'between') {
+      if (value[0] === null && value[1] === null) {
+        // SKIP
+      } else if (value[0] === null) {
+        where.push(`${filter.field} <= ${value[1]}`);
+      } else if (value[1] === null) {
+        where.push(`${filter.field} >= ${value[0]}`);
+      } else {
+        where.push(`${filter.field} BETWEEN ${value[0]} AND ${value[1]}`);
+      }
+    } else {
+      where.push(`${filter.field} ${filter.operator} ${valueFormatted}`);
+    }
+
 
     // let nameFunctionWhere = 'where';
     // if (i > 0) {

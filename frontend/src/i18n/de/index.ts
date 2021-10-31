@@ -185,13 +185,13 @@ export default {
     headerInfoDisclaimer:
       'Du willst (oder musst) uns etwas schenken? Und du hast keine Idee was? Dann bist du hier genau richtig!',
     headerInfoContent:
-      "Unten kannst du unsere Wünsche durchstöbern und wenn du ein Geschenk gefunden hast, kannst auf 'Verschenken' klicken. Dadurch wird der Wunsch von der Liste genommen.",
+      "Unten kannst du unsere Wünsche durchstöbern und wenn du ein Geschenk gefunden hast kannst auf 'Verschenken' klicken. Dadurch wird der Wunsch von der Liste genommen.",
     headerInfoReturn:
-      'Solltest du dich umentscheiden, kannst du das Produkt aber mit einem Klick wieder auf die Wunschliste zurücklegen. Bitte füge nur Geschenke wieder hinzu, die du selbst von der Wunschliste genommen hast!',
+      'Solltest du dich umentscheiden kannst du das Produkt aber mit einem Klick wieder auf die Wunschliste zurücklegen. Bitte füge nur Geschenke wieder hinzu, die du selbst von der Wunschliste genommen hast!',
     headerInfoClassics:
-      'Worüber wir uns immer freuen: Knusperflocken (a.k.a Entenärsche), Nutella und (herzhaftes) Knabberzeug.',
+      'Worüber wir uns immer freuen: Knusperflocken (a.k.a Entenärsche) und (herzhaftes) Knabberzeug.',
     headerInfoNogos:
-      'Bitte schenkt uns keine Süßigkeiten (bis auf die oben genannten). Süßes essen wir nicht und müssen das sonst wegschmeißen.',
+      'Bitte schenkt uns ansonsten keine Süßigkeiten.',
     name: 'Name',
     price: 'Preis',
     taken: 'Vergeben',

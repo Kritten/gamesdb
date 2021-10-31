@@ -6,6 +6,47 @@ import { WishlistInput, UpdateWishlistInput } from './wishlist.input';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { WishlistCollectionData } from './collection/rating.collectionData';
 import {PrismaService} from "../../utilities/collection/prisma.service";
+import {getQuery} from "../../utilities/utilities";
+import {Prisma} from "@prisma/client";
+
+const queryWishlists = (data: Partial<InputCollection> = {}, extractCount = false) => getQuery(`
+    SELECT
+      COUNT(DISTINCT entity.id) as count,
+      entity.id,
+      entity.name,
+      entity.description,
+      entity.link,
+      entity.images,
+      entity.giftFor,
+      entity.taken,
+      entity.price
+    FROM
+        wishlist as entity
+`, data, extractCount);
+
+const queryWishlist = (id: string | number) => {
+  return queryWishlists({
+    filters: [
+      {
+        field: 'entity.id',
+        valueInt: typeof id === 'number' ? id : parseInt(id, 10),
+        operator: '=',
+      }
+    ]
+  });
+}
+
+type WishlistFromDatabase = {
+  id: number,
+  count: number,
+  name: string,
+  description: string,
+  link: string,
+  images: string,
+  giftFor: string,
+  taken: boolean,
+  price: number,
+}
 
 @Resolver(() => Wishlist)
 export class WishlistResolver {
@@ -16,8 +57,23 @@ export class WishlistResolver {
 
   @Query(() => WishlistCollectionData)
   async wishlists(@Args('wishlistData') data: InputCollection) {
-    // todo: loadPage
-    return this.prismaService.wishlist.findMany();
+    data.filters.map((filter) => {
+      if (filter.valueRange !== undefined) {
+        if (filter.valueRange[0] === 0) {
+          filter.valueRange[0] = null;
+        }
+
+        if (filter.valueRange[1] === 100) {
+          filter.valueRange[1] = null;
+        }
+      }
+    });
+
+    const items = await this.prismaService.$queryRaw<Array<WishlistFromDatabase>>(Prisma.raw(queryWishlists(data)));
+
+    const count = await this.prismaService.$queryRaw<Array<WishlistFromDatabase>>(Prisma.raw(queryWishlists(data, true)));
+
+    return {items, count: count[0].count};
   }
 
   @Mutation(() => Wishlist)
@@ -35,17 +91,13 @@ export class WishlistResolver {
   @Query(() => Wishlist)
   @UseGuards(GqlAuthGuard)
   async wishlist(@Args({ name: 'id', type: () => ID }) id: string) {
-    return await this.prismaService.wishlist.findUnique({
-      where: {
-        id: parseInt(id, 10),
-      }
-    });
+    return (await this.prismaService.$queryRaw<WishlistFromDatabase>(Prisma.raw(queryWishlist(id))))[0];
   }
 
   @Mutation(() => Wishlist)
   @UseGuards(GqlAuthGuard)
   async createWishlist(@Args('wishlistData') wishlistData: WishlistInput) {
-    return this.prismaService.wishlist.create({
+    const wishlist = await this.prismaService.wishlist.create({
       data: {
         name: wishlistData.name,
         price: wishlistData.price,
@@ -56,6 +108,8 @@ export class WishlistResolver {
         images: wishlistData.images,
       }
     });
+
+    return (await this.prismaService.$queryRaw<WishlistFromDatabase>(Prisma.raw(queryWishlist(wishlist.id))))[0];
   }
 
   @Mutation(() => Wishlist)
@@ -63,7 +117,7 @@ export class WishlistResolver {
   async updateWishlist(
     @Args('wishlistData') wishlistData: UpdateWishlistInput,
   ) {
-    return this.prismaService.wishlist.update({
+    await this.prismaService.wishlist.update({
       where: { id: parseInt(wishlistData.id, 10) },
       data: {
         name: wishlistData.name,
@@ -75,6 +129,8 @@ export class WishlistResolver {
         images: wishlistData.images,
       }
     });
+
+    return (await this.prismaService.$queryRaw<WishlistFromDatabase>(Prisma.raw(queryWishlist(wishlistData.id))))[0];
   }
 
   @Mutation(() => Boolean)
