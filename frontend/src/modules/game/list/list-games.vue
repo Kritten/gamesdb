@@ -13,7 +13,7 @@
             v-else
             class="inline"
             size="xs"
-          />/{{ countTotalAnalog }})
+          />/{{ countTotal }})
 
           <!--              {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}-->
         </div>
@@ -50,10 +50,11 @@ import ListItemGame from '@/modules/game/list/list-item-game.vue';
 import ListFiltersGame from '@/modules/game/list/list-filters-game.vue';
 import BaseListSort from '@/modules/app/base/base-list-sort.vue';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
-import { Game } from '@/modules/game/game.model';
 import { useI18n } from 'vue-i18n';
 import { queue } from '@/queue';
-import { defineComponent, ref, nextTick } from 'vue';
+import {
+  defineComponent, ref, nextTick, computed,
+} from 'vue';
 import { ServiceCollectionFilters, InputCollectionFilter } from '@/modules/app/utilities/collection/collection.types';
 import { cloneDeep } from 'lodash';
 import RandomGame from '@/modules/game/random-game.vue';
@@ -84,7 +85,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n();
-    const { countTotalAnalog } = useGame();
+    const { countTotalAnalog, countTotalDigital } = useGame();
 
     const filtersInitial: ServiceCollectionFilters = {
       isDigital: {
@@ -154,9 +155,26 @@ export default defineComponent({
       { field: 'timePlayed:timePlayed', name: t('game.timePlayed') },
     ];
 
+    const countTotal = computed(() => {
+      let result = 0;
+
+      if (countTotalDigital.value === undefined || countTotalAnalog.value === undefined) {
+        return result;
+      }
+
+      if (!(props.digitalOnly === false && props.analogOnly === true)) {
+        result += countTotalDigital.value;
+      }
+      if (!(props.analogOnly === false && props.digitalOnly === true)) {
+        result += countTotalAnalog.value;
+      }
+
+      return result;
+    });
+
     return {
       t,
-      countTotalAnalog,
+      countTotal,
       collection,
       filters,
       sortBy,
