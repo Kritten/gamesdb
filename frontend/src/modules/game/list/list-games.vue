@@ -89,7 +89,7 @@ export default defineComponent({
 
     const filtersInitial: ServiceCollectionFilters = {
       isDigital: {
-        field: 'isDigital',
+        field: 'entity.isDigital',
         valueBoolean: props.digitalOnly,
         operator: '=',
       },
@@ -150,7 +150,7 @@ export default defineComponent({
       { field: 'entity.minutesPlaytimeMax', name: t('game.minutesPlaytimeMax') },
       { field: 'entity.size', name: t('game.size') },
       { field: 'entity.complexity', name: t('game.complexity') },
-      { field: 'ratingAverage', name: t('rating.label') },
+      { field: 'entity.ratingAverage', name: t('rating.label') },
       { field: 'countPlayed:countPlayed', name: t('game.countPlayed') },
       { field: 'timePlayed:timePlayed', name: t('game.timePlayed') },
     ];

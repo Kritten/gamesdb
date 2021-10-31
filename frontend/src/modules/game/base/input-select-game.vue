@@ -67,7 +67,7 @@ export default defineComponent({
 
     const filtersGame = ref<ServiceCollectionFilters>({
       name: {
-        field: 'name', valueString: undefined, operator: 'like',
+        field: 'entity.name', valueString: undefined, operator: 'like',
       },
     });
 

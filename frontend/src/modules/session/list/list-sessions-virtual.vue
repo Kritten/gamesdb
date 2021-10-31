@@ -104,7 +104,7 @@ export default defineComponent({
     const { t } = useI18n();
     const filters = ref<ServiceCollectionFilters>({
       isVirtual: {
-        field: 'isVirtual', valueBoolean: true, operator: '=',
+        field: 'entity.isVirtual', valueBoolean: true, operator: '=',
       },
     });
     const collection = useCollection<Session>(ServiceSession.loadPage, {

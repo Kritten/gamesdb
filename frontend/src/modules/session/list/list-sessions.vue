@@ -58,10 +58,10 @@ export default defineComponent({
     const { t } = useI18n();
     const filters = ref<ServiceCollectionFilters>({
       game: {
-        field: 'gameId', valueString: props.game.id, operator: '=',
+        field: 'entity.gameId', valueString: props.game.id, operator: '=',
       },
       isVirtual: {
-        field: 'isVirtual', valueBoolean: false, operator: '=',
+        field: 'entity.isVirtual', valueBoolean: false, operator: '=',
       },
     });
 

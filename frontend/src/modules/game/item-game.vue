@@ -393,7 +393,6 @@ import { getValidator, useModelWrapper } from '@/modules/app/utilities/helpers';
 import {
   defineComponent, PropType, ref,
 } from 'vue';
-import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { Universe } from '@/modules/universe/universe.model';
 import { Category } from '@/modules/category/category.model';
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
@@ -514,12 +513,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = useI18n();
 
-    const filters = ref<ServiceCollectionFilters>({
-      name: {
-        field: 'name', valueString: undefined, operator: 'like',
-      },
-    });
-
     const infoForGame = ref<TypeBGGGame | null>(null);
     const loadingInfoForGame = ref(false);
 
@@ -581,7 +574,6 @@ export default defineComponent({
 
     return {
       t,
-      filters,
       infoForGame,
       loadingInfoForGame,
       idBGGInternal,
