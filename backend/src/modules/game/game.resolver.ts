@@ -27,7 +27,7 @@ const queryGames = (data: Partial<InputCollection> = {}, extractCount = false) =
       entity.ratingBGG,
       entity.images,
       AVG(rating.rating) as ratingAverage,
-      COALESCE(COUNT(rating.rating), 0) as ratingCount,
+      COALESCE(COUNT(DISTINCT(rating.id)), 0) as ratingCount,
       group_concat(DISTINCT(mechanism.id)) as mechanisms,
       group_concat(DISTINCT(category.id)) as categories,
       group_concat(DISTINCT(mood.id)) as moods,
