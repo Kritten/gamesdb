@@ -9,4 +9,13 @@ export interface BaseInputData {
 
 export type Modify<T, R> = Omit<T, keyof R> & R;
 
-export type InputDatabaseRelation = { connect: Array<{ id: string }> }
+export type InputDatabaseRelation = {
+  create?: Array<{
+    [key: string]: {
+      connect: {
+        id: number
+      }
+    }
+  }>,
+  deleteMany?: {},
+}

@@ -74,6 +74,15 @@ export type GameInputDatabase = Modify<GameInput, {
   categories: InputDatabaseRelation,
   mechanisms: InputDatabaseRelation,
   moods: InputDatabaseRelation,
-  playableWith: InputDatabaseRelation,
-  expansions: InputDatabaseRelation,
+  // playableWith: InputDatabaseRelation,
+  // expansions: InputDatabaseRelation,
+}>;
+
+export type GameInputDatabaseUpdate = Modify<UpdateGameInput, {
+  universes: InputDatabaseRelation,
+  categories: InputDatabaseRelation,
+  mechanisms: InputDatabaseRelation,
+  moods: InputDatabaseRelation,
+  // playableWith: InputDatabaseRelation,
+  // expansions: InputDatabaseRelation,
 }>;

@@ -1,10 +1,14 @@
 import {InputCollection} from "./collection/collection.input";
 import {format} from 'date-fns';
 
-export const handleRelation = ({entities}: {entities: Array<string>}) => {
+export const handleRelation = ({nameEntity, entities}: {nameEntity: string, entities: Array<string>}) => {
   return {
-    connect: entities.map((entity) => ({
-      id: entity,
+    create: entities.map((entity) => ({
+      [nameEntity]: {
+        connect: {
+          id: parseInt(entity),
+        }
+      }
     })),
   };
 }
@@ -203,7 +207,7 @@ export const getWhere = (data: Partial<InputCollection>) => {
   return `WHERE ${where.join(' AND ')}`;
 }
 
-export const getQuery = (query: string, data: Partial<InputCollection> = {}) => {
+export const getQuery = (query: string, data: Partial<InputCollection> = {}, extractCount = false) => {
   const where = getWhere(data);
   const orderBy = getOrderBy(data);
   const pagination = getPagination(data);
@@ -211,9 +215,8 @@ export const getQuery = (query: string, data: Partial<InputCollection> = {}) => 
   return `
     ${query}
     ${where}
-    GROUP BY
-        entity.id
+    ${extractCount ? '' : 'GROUP BY entity.id'}
     ${orderBy}
-    ${pagination}
+    ${extractCount ? '' : pagination}
   `;
 }

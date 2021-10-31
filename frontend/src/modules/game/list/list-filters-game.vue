@@ -29,7 +29,7 @@
               <base-list-filter
                 :filters="filters"
                 label="game.filters.name"
-                name="name"
+                name="entity.name"
                 type="string"
                 @update-filter="$emit('update-filter', $event)"
               />
@@ -38,7 +38,7 @@
               <base-list-filter
                 :filters="filters"
                 label="game.filters.countPlayers"
-                name="countPlayers"
+                name="entity.countPlayers"
                 :filter-inputs="[{
                   name: 'countPlayersMin',
                   operator: '<=',
@@ -54,7 +54,7 @@
               <base-list-filter
                 :filters="filters"
                 label="game.filters.isCoop"
-                name="isCoop"
+                name="entity.isCoop"
                 type="boolean"
                 @update-filter="$emit('update-filter', $event)"
               />
@@ -63,7 +63,7 @@
               <base-list-filter
                 :filters="filters"
                 label="game.filters.minutesPlaytimeMin"
-                name="minutesPlaytimeMin"
+                name="entity.minutesPlaytimeMin"
                 :filter-inputs="[{
                   name: 'minutesPlaytimeMin',
                   operator: '>=',
@@ -76,7 +76,7 @@
               <base-list-filter
                 :filters="filters"
                 label="game.filters.minutesPlaytimeMax"
-                name="minutesPlaytimeMax"
+                name="entity.minutesPlaytimeMax"
                 :filter-inputs="[{
                   name: 'minutesPlaytimeMax',
                   operator: '<=',
