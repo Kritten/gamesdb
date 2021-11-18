@@ -37,6 +37,7 @@
           :key="game.id"
           v-intersection.once="collection.items.value.length - index === 10 && onIntersection"
           :game="game"
+          :reduced="reduced"
         />
       </div>
       <base-spinner v-if="collection.isLoading.value" />
@@ -82,6 +83,11 @@ export default defineComponent({
       required: false,
       default: false,
     },
+    reduced: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const { t } = useI18n();
@@ -96,7 +102,7 @@ export default defineComponent({
     };
 
     const filters = ref<ServiceCollectionFilters>(cloneDeep(filtersInitial));
-    const sortBy = ref<string[]>(['name']);
+    const sortBy = ref<string[]>(['entity.name']);
     const sortDesc = ref<boolean[]>([false]);
 
     const collection = useCollection<GameLoading>(ServiceGame.loadPage, {

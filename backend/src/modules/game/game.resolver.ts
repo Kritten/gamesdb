@@ -110,7 +110,7 @@ export class GameResolver {
   }
 
   @Query(() => GameCollectionData)
-  @UseGuards(GqlAuthGuard)
+  // @UseGuards(GqlAuthGuard)
   async games(@Args('gameData') data: InputCollection) {
     const items = mapItemsFromDatabase(await this.prismaService.$queryRaw<Array<GameFromDatabase>>(Prisma.raw(queryGames(data))));
 
@@ -120,7 +120,7 @@ export class GameResolver {
   }
 
   @Query(() => Game)
-  @UseGuards(GqlAuthGuard)
+  // @UseGuards(GqlAuthGuard)
   async game(@Args({ name: 'id', type: () => ID }) id: string) {
     const items = await this.prismaService.$queryRaw<Array<GameFromDatabase>>(Prisma.raw(queryGame(id)));
 

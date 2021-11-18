@@ -8,6 +8,7 @@ import ViewDisplayWishlist from '@/modules/wishlist/views/display-wishlist.view.
 import ViewApp from '@/modules/app/app.view.vue';
 import ViewDashboard from '@/modules/app/dashboard/dashboard.view.vue';
 import ViewGames from '@/modules/game/views/games.view.vue';
+import ViewDisplayGames from '@/modules/game/views/display-games.view.vue';
 import ViewGamesDigital from '@/modules/game/views/gamesDigital.view.vue';
 import ViewGame from '@/modules/game/views/game.view.vue';
 import ViewCategory from '@/modules/category/category.view.vue';
@@ -74,6 +75,11 @@ const routes: RouteRecordRaw[] = [
     path: '/wishlist',
     name: 'display-wishlist',
     component: ViewDisplayWishlist,
+  },
+  {
+    path: '/gamelist',
+    name: 'display-games',
+    component: ViewDisplayGames,
   },
   {
     path: '/',

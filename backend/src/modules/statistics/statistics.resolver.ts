@@ -14,7 +14,7 @@ export class StatisticsResolver {
   constructor(private statisticsService: StatisticsService) {}
 
   @Query(() => CountsModel)
-  @UseGuards(GqlAuthGuard)
+  // @UseGuards(GqlAuthGuard)
   async statisticsCounts() {
     return this.statisticsService.counts();
   }

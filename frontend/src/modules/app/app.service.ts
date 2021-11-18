@@ -45,6 +45,8 @@ class ServiceAppClass {
       }
     } catch (e) {
       setUser(null);
+
+      await this.loadInitialData(true).then();
     }
 
     useApp().setIsInitialized(true);
@@ -58,35 +60,42 @@ class ServiceAppClass {
     }
   }
 
-  async loadInitialData() {
-    await Promise.all([
-      query<{categories: Array<EntityInterface>}>(queryCategories)
-        .then((response) => Category.convertFromServerToStore<Category>(response.categories))
-        .then((categories) => {
-          useCategory().setCategories(categories);
-        }),
-      query<{mechanisms: Array<EntityInterface>}>(queryMechanisms)
-        .then((response) => Mechanism.convertFromServerToStore<Mechanism>(response.mechanisms))
-        .then((mechanisms) => {
-          useMechanism().setMechanisms(mechanisms);
-        }),
-      query<{moods: Array<EntityInterface>}>(queryMoods)
-        .then((response) => Mood.convertFromServerToStore<Mood>(response.moods))
-        .then((moods) => {
-          useMood().setMoods(moods);
-        }),
-      query<{players: Array<EntityInterface>}>(queryPlayers)
-        .then((response) => Player.convertFromServerToStore<Player>(response.players))
-        .then((players) => {
-          usePlayers().setPlayers(players);
-        }),
-      query<{universes: Array<EntityInterface>}>(queryUniverses)
-        .then((response) => Universe.convertFromServerToStore<Universe>(response.universes))
-        .then((universes) => {
-          useUniverse().setUniverses(universes);
-        }),
-      useStatistics().loadStatisticsCounts(),
-    ]);
+  async loadInitialData(onlyStatistics = false) {
+    let promises = [];
+
+    promises.push(useStatistics().loadStatisticsCounts());
+
+    if (onlyStatistics === false) {
+      promises = promises.concat([
+        query<{categories: Array<EntityInterface>}>(queryCategories)
+          .then((response) => Category.convertFromServerToStore<Category>(response.categories))
+          .then((categories) => {
+            useCategory().setCategories(categories);
+          }),
+        query<{mechanisms: Array<EntityInterface>}>(queryMechanisms)
+          .then((response) => Mechanism.convertFromServerToStore<Mechanism>(response.mechanisms))
+          .then((mechanisms) => {
+            useMechanism().setMechanisms(mechanisms);
+          }),
+        query<{moods: Array<EntityInterface>}>(queryMoods)
+          .then((response) => Mood.convertFromServerToStore<Mood>(response.moods))
+          .then((moods) => {
+            useMood().setMoods(moods);
+          }),
+        query<{players: Array<EntityInterface>}>(queryPlayers)
+          .then((response) => Player.convertFromServerToStore<Player>(response.players))
+          .then((players) => {
+            usePlayers().setPlayers(players);
+          }),
+        query<{universes: Array<EntityInterface>}>(queryUniverses)
+          .then((response) => Universe.convertFromServerToStore<Universe>(response.universes))
+          .then((universes) => {
+            useUniverse().setUniverses(universes);
+          }),
+      ]);
+    }
+
+    await Promise.all(promises);
   }
 }
 

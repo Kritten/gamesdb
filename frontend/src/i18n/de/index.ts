@@ -28,6 +28,7 @@ export default {
     password: 'Passwort',
     submit: 'Anmelden',
     wrongCredentials: 'Falsche Zugangsdaten',
+    gamesList: 'Spieleliste',
   },
   dashboard: {
     label: 'Dashboard',

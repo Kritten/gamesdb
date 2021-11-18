@@ -1,6 +1,6 @@
 <template>
   <div
-    class="col-12 col-md-6 col-lg-4"
+    class="col-12 col-md-6 col-lg-4 col-xl-3"
   >
     <div v-if="game.value === null">
       test
@@ -15,7 +15,10 @@
             {{ game.value.name }}
           </span>
         </div>
-        <div class="col-shrink">
+        <div
+          v-if="reduced === false"
+          class="col-shrink"
+        >
           <update-game :game="game" />
         </div>
       </q-card-section>
@@ -47,7 +50,7 @@
         </div>
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section v-if="reduced === false">
         <q-markup-table flat>
           <tbody>
             <tr>
@@ -88,6 +91,7 @@
       </q-card-section>
 
       <q-card-actions
+        v-if="reduced === false"
         align="right"
         class="row"
       >
@@ -132,6 +136,11 @@ export default defineComponent({
     game: {
       required: true,
       type: Object as PropType<GameLoading>,
+    },
+    reduced: {
+      required: false,
+      type: Boolean,
+      default: false,
     },
   },
   setup(props) {

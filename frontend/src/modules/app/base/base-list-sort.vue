@@ -9,7 +9,10 @@
                 {{ t('sort.label') }}
               </div>
             </div>
-            <div class="col-shrink">
+            <div
+              class="col-shrink"
+              style="min-width: 200px"
+            >
               <base-input-select
                 v-model="sortBySingle"
                 :options="{

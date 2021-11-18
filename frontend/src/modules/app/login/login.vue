@@ -23,6 +23,25 @@
                 />
               </q-form>
             </div>
+
+            <div class="col-12 q-mt-lg text-center">
+              Hier geht es zur&nbsp;
+              <base-link
+                :options="{
+                  to: {name: 'display-wishlist'}
+                }"
+              >
+                {{ t('wishlist.label') }}
+              </base-link>
+              &nbsp;oder zu unserer&nbsp;
+              <base-link
+                :options="{
+                  to: {name: 'display-games'}
+                }"
+              >
+                {{ t('login.gamesList', 2) }}
+              </base-link>
+            </div>
           </div>
         </div>
       </div>
@@ -36,10 +55,11 @@ import { ServiceLogin } from '@/modules/app/login/login.service';
 import { defineComponent } from 'vue';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 import BaseButtonSubmit from '@/modules/app/base/base-button-submit.vue';
+import BaseLink from '@/modules/app/base/base-link.vue';
 
 export default defineComponent({
   name: 'Login',
-  components: { BaseButtonSubmit, BaseInputText },
+  components: { BaseLink, BaseButtonSubmit, BaseInputText },
   setup() {
     const { t } = useI18n();
     const loginService = ServiceLogin.useLogin();
