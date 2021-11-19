@@ -15,15 +15,10 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v2
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
-#      - uses: actions/setup-node@v1
-#        with:
-#          node-version: '12'
+          node-version: '14'
+          cache: 'npm'
       - run: npm ci
       - run: ls
       - run: npm run build-action
