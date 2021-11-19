@@ -156,9 +156,9 @@ export default defineComponent({
       { field: 'entity.minutesPlaytimeMax', name: t('game.minutesPlaytimeMax') },
       { field: 'entity.size', name: t('game.size') },
       { field: 'entity.complexity', name: t('game.complexity') },
-      { field: 'entity.ratingAverage', name: t('rating.label') },
-      { field: 'countPlayed:countPlayed', name: t('game.countPlayed') },
-      { field: 'timePlayed:timePlayed', name: t('game.timePlayed') },
+      // { field: 'entity.ratingAverage', name: t('rating.label') },
+      // { field: 'countPlayed:countPlayed', name: t('game.countPlayed') },
+      // { field: 'timePlayed:timePlayed', name: t('game.timePlayed') },
     ];
 
     const countTotal = computed(() => {
