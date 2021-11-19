@@ -55,10 +55,11 @@ jobs:
         working-directory: backend
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: '12'
-      - run: npm install
+          node-version: '14'
+          cache: 'npm'
+      - run: npm ci
       - run: ls
       - run: npm run build
         continue-on-error: true
