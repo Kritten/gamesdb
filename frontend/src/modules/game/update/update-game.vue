@@ -37,7 +37,7 @@ import { defineComponent, PropType } from 'vue';
 import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
 import { useUpdateGame } from '@/modules/game/composables/useUpdateGame';
 import { required } from '@vuelidate/validators';
-import { GameLoading } from '@/modules/game/game.types';
+import { Game } from '@/modules/game/game.model';
 
 export default defineComponent({
   name: 'UpdateGame',
@@ -45,7 +45,7 @@ export default defineComponent({
   props: {
     game: {
       required: true,
-      type: Object as PropType<GameLoading>,
+      type: Object as PropType<Game>,
     },
   },
   setup() {

@@ -19,7 +19,7 @@
           v-if="reduced === false"
           class="col-shrink"
         >
-          <update-game :game="game" />
+          <update-game :game="game.value" />
         </div>
       </q-card-section>
       <q-card-section class="row">
