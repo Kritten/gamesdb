@@ -88,16 +88,10 @@
             <div class="col-12 col-md-6">
               <base-list-filter
                 :filters="filters"
-                :items="itemsUniverses"
-                :options="{
-                  optionValue: 'id',
-                  optionLabel: 'name',
-                  emitValue: true,
-                  mapOptions: true,
-                }"
                 label="game.filters.universes"
                 name="universe.id"
-                type="select"
+                type="entity"
+                :input="inputSelectUniverse"
                 @update-filter="$emit('update-filter', $event)"
               />
             </div>
@@ -116,6 +110,7 @@ import {
 import BaseListFilter from '@/modules/app/base/base-list-filter.vue';
 import { useI18n } from 'vue-i18n';
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
+import InputSelectUniverse from '@/modules/universe/base/input-select-universe.vue';
 
 export default defineComponent({
   name: 'ListFiltersGame',
@@ -132,13 +127,12 @@ export default defineComponent({
 
     const { universes: itemsUniverses } = useUniverse();
 
-    console.log(itemsUniverses.value, 'itemsUniverses');
-
     return {
       t,
       i18nPrefix: 'game',
       filters: computed(() => props.modelValue),
       itemsUniverses,
+      inputSelectUniverse: InputSelectUniverse,
     };
   },
 });

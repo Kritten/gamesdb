@@ -1,4 +1,5 @@
 import { Ref } from 'vue';
+import { Entity } from '@/modules/app/utilities/entity/entity.model';
 
 export type InputCollectionFilter = {
   field: string;
@@ -6,6 +7,7 @@ export type InputCollectionFilter = {
   valueFloat?: number;
   valueBoolean?: boolean;
   valueString?: string;
+  valueEntity?: Entity;
   valueDate?: Date;
   valueRange?: [number, number];
   operator: string;

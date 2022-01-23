@@ -95,6 +95,12 @@ export function useCollection<T>(
           if (typeof filter.valueBoolean === 'number') {
             filterNew.valueBoolean = undefined;
           }
+
+          if (filter.valueEntity !== undefined) {
+            filterNew.valueString = filter.valueEntity.id;
+            delete filterNew.valueEntity;
+          }
+
           return filterNew;
         }),
         leftJoins,

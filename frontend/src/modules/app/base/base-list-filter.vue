@@ -49,6 +49,16 @@
             }"
           />
         </template>
+        <template v-else-if="type === 'entity'">
+          <component
+            :is="input"
+            v-model="value"
+            :options="{
+              label: t(label),
+              ...options,
+            }"
+          />
+        </template>
       </slot>
     </div>
   </div>
@@ -56,7 +66,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, watch, nextTick, computed, PropType,
+  defineComponent, watch, nextTick, computed, PropType, Component,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
@@ -86,7 +96,7 @@ export default defineComponent({
     },
     type: {
       required: true,
-      type: String as PropType<'string' | 'int' | 'float' | 'boolean' | 'select' | 'range'>,
+      type: String as PropType<'string' | 'int' | 'float' | 'boolean' | 'select' | 'range' | 'entity'>,
     },
     label: {
       required: true,
@@ -108,6 +118,11 @@ export default defineComponent({
       default() {
         return [];
       },
+    },
+    input: {
+      type: Object as PropType<Component>,
+      required: false,
+      default: undefined,
     },
     options: {
       required: false,
@@ -149,6 +164,10 @@ export default defineComponent({
       case 'range':
         nameValueField = 'valueRange';
         operator.push('between');
+        break;
+      case 'entity':
+        nameValueField = 'valueEntity';
+        operator.push('=');
         break;
       default:
         // @ts-ignore
