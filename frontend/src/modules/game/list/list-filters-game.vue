@@ -85,6 +85,22 @@
                 @update-filter="$emit('update-filter', $event)"
               />
             </div>
+            <div class="col-12 col-md-6">
+              <base-list-filter
+                :filters="filters"
+                :items="itemsUniverses"
+                :options="{
+                  optionValue: 'id',
+                  optionLabel: 'name',
+                  emitValue: true,
+                  mapOptions: true,
+                }"
+                label="game.filters.universes"
+                name="universe.id"
+                type="select"
+                @update-filter="$emit('update-filter', $event)"
+              />
+            </div>
           </div>
         </q-card-section>
         <q-card-actions align="right" />
@@ -99,6 +115,7 @@ import {
 } from 'vue';
 import BaseListFilter from '@/modules/app/base/base-list-filter.vue';
 import { useI18n } from 'vue-i18n';
+import { useUniverse } from '@/modules/universe/composables/useUniverse';
 
 export default defineComponent({
   name: 'ListFiltersGame',
@@ -113,10 +130,15 @@ export default defineComponent({
   setup(props) {
     const { t } = useI18n();
 
+    const { universes: itemsUniverses } = useUniverse();
+
+    console.log(itemsUniverses.value, 'itemsUniverses');
+
     return {
       t,
       i18nPrefix: 'game',
       filters: computed(() => props.modelValue),
+      itemsUniverses,
     };
   },
 });

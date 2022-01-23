@@ -4,7 +4,7 @@ import { baseUseEntity } from '@/modules/app/base/composables/baseUseEntity';
 import { Universe } from '@/modules/universe/universe.model';
 
 const universes = ref<Record<ID, Universe>>({});
-const universesSortedByLastPlayed = computed(() => Object.values(universes.value).sort(
+const universesSortedByName = computed(() => Object.values(universes.value).sort(
   (a, b) => a.name.localeCompare(b.name),
 ));
 
@@ -18,7 +18,7 @@ export const useUniverse = () => {
     setUniverse: useEntity.setEntity,
     deleteUniverse: useEntity.deleteEntity,
 
-    universes: universesSortedByLastPlayed,
+    universes: universesSortedByName,
     universeById: (id: ID) => universes.value[id],
   };
 };

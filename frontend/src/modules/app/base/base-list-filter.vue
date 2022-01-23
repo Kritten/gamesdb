@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, watch, nextTick, computed,
+  defineComponent, watch, nextTick, computed, PropType,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
@@ -86,7 +86,7 @@ export default defineComponent({
     },
     type: {
       required: true,
-      validator: (value) => value === 'string' || value === 'int' || value === 'float' || value === 'boolean' || value === 'select' || value === 'range',
+      type: String as PropType<'string' | 'int' | 'float' | 'boolean' | 'select' | 'range'>,
     },
     label: {
       required: true,

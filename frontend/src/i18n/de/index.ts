@@ -94,6 +94,7 @@ export default {
       countPlayers: 'Spieleranzahl',
       minutesPlaytimeMin: 'Spielzeit (min)',
       minutesPlaytimeMax: 'Spielzeit (max)',
+      universes: 'Universen',
     },
     confirm: {
       delete: "Soll das Spiel '{name}' wirklich gelöscht werden?",
