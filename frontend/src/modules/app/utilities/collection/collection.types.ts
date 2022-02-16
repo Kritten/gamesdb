@@ -7,7 +7,7 @@ export type InputCollectionFilter = {
   valueFloat?: number;
   valueBoolean?: boolean;
   valueString?: string;
-  valueEntity?: Entity;
+  valueEntity?: Entity | Array<Entity>;
   valueDate?: Date;
   valueRange?: [number, number];
   operator: string;

@@ -1,7 +1,7 @@
-import {InputCollection} from "./collection/collection.input";
-import {format} from 'date-fns';
+import { InputCollection } from "./collection/collection.input";
+import { format } from 'date-fns';
 
-export const handleRelation = ({nameEntity, entities}: {nameEntity: string, entities: Array<string>}) => {
+export const handleRelation = ({ nameEntity, entities }: { nameEntity: string, entities: Array<string> }) => {
   return {
     create: entities.map((entity) => ({
       [nameEntity]: {
@@ -51,7 +51,7 @@ export const inputCollectionToPrisma = (data: InputCollection) => {
       sortBy = sortBy.replace('entity.', '');
     }
 
-    return {[sortBy]: data.sortDesc[index] ? 'desc' : 'asc'};
+    return { [sortBy]: data.sortDesc[index] ? 'desc' : 'asc' };
   });
 
   const filters = {};
@@ -171,6 +171,8 @@ export const getWhere = (data: Partial<InputCollection>) => {
       } else {
         where.push(`${filter.field} BETWEEN ${value[0]} AND ${value[1]}`);
       }
+    } else if (filter.operator === 'in') {
+      where.push(`${filter.field} ${filter.operator} (${valueFormatted})`);
     } else {
       where.push(`${filter.field} ${filter.operator} ${valueFormatted}`);
     }

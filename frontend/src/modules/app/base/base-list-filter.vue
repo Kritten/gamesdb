@@ -56,6 +56,7 @@
             :options="{
               label: t(label),
               ...options,
+              multiple: true
             }"
           />
         </template>

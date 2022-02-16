@@ -99,6 +99,26 @@ export default defineComponent({
         valueBoolean: props.digitalOnly,
         operator: '=',
       },
+      'universe.id': {
+        field: 'universe.id',
+        valueEntity: [],
+        operator: '=',
+      },
+      'mood.id': {
+        field: 'mood.id',
+        valueEntity: [],
+        operator: '=',
+      },
+      'category.id': {
+        field: 'category.id',
+        valueEntity: [],
+        operator: '=',
+      },
+      'mechanism.id': {
+        field: 'mechanism.id',
+        valueEntity: [],
+        operator: '=',
+      },
     };
 
     const filters = ref<ServiceCollectionFilters>(cloneDeep(filtersInitial));

@@ -95,6 +95,9 @@ export default {
       minutesPlaytimeMin: 'Spielzeit (min)',
       minutesPlaytimeMax: 'Spielzeit (max)',
       universes: 'Universen',
+      moods: 'Stimmungen',
+      categories: 'Kategorien',
+      mechanisms: 'Mechanism',
     },
     confirm: {
       delete: "Soll das Spiel '{name}' wirklich gelöscht werden?",

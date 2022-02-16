@@ -97,7 +97,16 @@ export function useCollection<T>(
           }
 
           if (filter.valueEntity !== undefined) {
-            filterNew.valueString = filter.valueEntity.id;
+            // Wenn der Filter aus mehreren Werten besteht
+            if (Array.isArray(filter.valueEntity)) {
+              // Setze den Filter nur wenn es auch was zu Filtern gibt
+              if (filter.valueEntity.length > 0) {
+                filterNew.valueString = filter.valueEntity.map((entity) => entity.id).join(',');
+                filterNew.operator = 'in';
+              }
+            } else {
+              filterNew.valueString = filter.valueEntity.id;
+            }
             delete filterNew.valueEntity;
           }
 

@@ -95,6 +95,36 @@
                 @update-filter="$emit('update-filter', $event)"
               />
             </div>
+            <div class="col-12 col-md-6">
+              <base-list-filter
+                :filters="filters"
+                label="game.filters.moods"
+                name="mood.id"
+                type="entity"
+                :input="inputSelectMood"
+                @update-filter="$emit('update-filter', $event)"
+              />
+            </div>
+            <div class="col-12 col-md-6">
+              <base-list-filter
+                :filters="filters"
+                label="game.filters.categories"
+                name="category.id"
+                type="entity"
+                :input="inputSelectCategory"
+                @update-filter="$emit('update-filter', $event)"
+              />
+            </div>
+            <div class="col-12 col-md-6">
+              <base-list-filter
+                :filters="filters"
+                label="game.filters.mechanisms"
+                name="mechanism.id"
+                type="entity"
+                :input="inputSelectMechanism"
+                @update-filter="$emit('update-filter', $event)"
+              />
+            </div>
           </div>
         </q-card-section>
         <q-card-actions align="right" />
@@ -111,6 +141,9 @@ import BaseListFilter from '@/modules/app/base/base-list-filter.vue';
 import { useI18n } from 'vue-i18n';
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
 import InputSelectUniverse from '@/modules/universe/base/input-select-universe.vue';
+import InputSelectMood from '@/modules/mood/base/input-select-mood.vue';
+import InputSelectCategory from '@/modules/category/base/input-select-category.vue';
+import InputSelectMechanism from '@/modules/mechanism/base/input-select-mechanism.vue';
 
 export default defineComponent({
   name: 'ListFiltersGame',
@@ -133,6 +166,9 @@ export default defineComponent({
       filters: computed(() => props.modelValue),
       itemsUniverses,
       inputSelectUniverse: InputSelectUniverse,
+      inputSelectMood: InputSelectMood,
+      inputSelectCategory: InputSelectCategory,
+      inputSelectMechanism: InputSelectMechanism,
     };
   },
 });
