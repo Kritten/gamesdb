@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Database",
+            "type": "shell",
+            "command": "cd backend && docker-compose up -d",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+            },
+            "isBackground": true,
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
+        },
+        {
+            "label": "Backend Server",
+            "type": "shell",
+            "command": "cd backend && npm run start:debug",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+            },
+            "runOptions": {
+                "runOn": "folderOpen",
+            }
+        },
+        {
+            "label": "Frontend Server",
+            "type": "shell",
+            "command": "cd frontend && npm run dev",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+            },
+            "runOptions": {
+                "runOn": "folderOpen",
+            }
+        },
+        {
+            "label": "Proxy Server",
+            "type": "shell",
+            "command": "npm run proxy",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+            },
+            "runOptions": {
+                "runOn": "folderOpen",
+            }
+        }
+    ]
+}
