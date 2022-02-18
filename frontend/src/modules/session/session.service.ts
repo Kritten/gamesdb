@@ -1,25 +1,15 @@
 import { Ref, ref } from 'vue';
-import { useMutation } from '@vue/apollo-composable';
+import { compareAsc } from 'date-fns';
 import { Session } from '@/modules/session/session.model';
 import {
-  mutationCreateSession,
-  mutationDeleteSession,
-  mutationUpdateSession,
   queryPageSession,
 } from '@/modules/session/graphql/session.graphql';
 import { Playtime } from '@/modules/playtime/playtime.model';
-import { Entity } from '@/modules/app/utilities/entity/entity.model';
-import { ID, ServiceEntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import { queue } from '@/queue';
 import {
   ServiceCollectionInterface,
   InputCollection, ServiceCollectionLoadPage,
 } from '@/modules/app/utilities/collection/collection.types';
-import { cloneDeep } from 'lodash';
-import { compareAsc } from 'date-fns';
-import { Game } from '@/modules/game/game.model';
 import { loadPageBase } from '@/modules/app/utilities/collection/collection';
-import { mutate } from '@/modules/app/utilities/helpers';
 import { useSession } from '@/modules/session/composables/useSession';
 import { GameLoading } from '@/modules/game/game.types';
 import { useCreateSession } from '@/modules/session/composables/useCreateSession';
@@ -52,13 +42,13 @@ implements ServiceCollectionInterface<Session> {
       });
     }
 
-    this.loadPage({
+    void this.loadPage({
       count: 1,
       page: 1,
       sortBy: ['startMax'],
       sortDesc: [true],
       filters,
-    }).then(async ({ items }) => {
+    }).then(({ items }) => {
       if (items.length > 0) {
         session.value = items[0];
         lastDate.value = session.value.playtimes.map((playtime) => playtime.end as Date).sort(compareAsc)[

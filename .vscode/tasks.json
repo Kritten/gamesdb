@@ -49,6 +49,38 @@
             "runOptions": {
                 "runOn": "folderOpen",
             }
+        },
+        {
+            "label": "Frontend",
+            "type": "shell",
+            "command": "/bin/bash",
+            "options": {
+                "cwd": "${workspaceFolder}/frontend"
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "panel": "dedicated",
+            },
+            "runOptions": {
+                "runOn": "folderOpen",
+            }
+        },
+        {
+            "label": "Backend",
+            "type": "shell",
+            "command": "/bin/bash",
+            "options": {
+                "cwd": "${workspaceFolder}/backend"
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "panel": "dedicated",
+            },
+            "runOptions": {
+                "runOn": "folderOpen",
+            }
         }
     ]
 }

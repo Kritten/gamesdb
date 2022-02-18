@@ -389,15 +389,15 @@
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { getValidator, useModelWrapper } from '@/modules/app/utilities/helpers';
 import {
   defineComponent, PropType, ref,
 } from 'vue';
+import { Validation } from '@vuelidate/core';
+import { getValidator, useModelWrapper } from '@/modules/app/utilities/helpers';
 import { Universe } from '@/modules/universe/universe.model';
 import { Category } from '@/modules/category/category.model';
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
 import { Mood } from '@/modules/mood/mood.model';
-import { Validation } from '@vuelidate/core';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
@@ -564,7 +564,7 @@ export default defineComponent({
     const moodsInternal = useModelWrapper<Array<Mood>>({
       props, emit, name: 'moods',
     });
-    const imagesInternal = useModelWrapper<Array<Mood>>({
+    const imagesInternal = useModelWrapper<Array<string>>({
       props, emit, name: 'images',
     });
 
@@ -614,6 +614,7 @@ export default defineComponent({
           minutesPlaytimeMaxInternal.value = response.maxplaytime;
           ratingBGGInternal.value = ratingFromBGG(response.statistics.ratings.average);
           complexityInternal.value = complexityFromBGG(response.statistics.ratings.averageweight);
+          imagesInternal.value.push(response.image);
         } else {
           infoForGame.value = response;
         }
