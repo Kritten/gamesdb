@@ -7,5 +7,14 @@
         "src/*"
       ]
     }
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    ".eslintrc.js",
+    ".prettierrc.js",
+    "lint-staged.config.js",
+    "vite.config.ts"
+  ]
 }
