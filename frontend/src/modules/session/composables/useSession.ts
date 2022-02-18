@@ -6,15 +6,15 @@ import { Session } from '../session.model';
 const sessions = ref<Record<ID, Session>>({});
 
 export const useSession = () => {
-  const useEntity = baseUseEntity<Session>({
-    // TODO FIX this ts-ignore
-    // @ts-ignore
-    entities: sessions,
-  });
+    const useEntity = baseUseEntity<Session>({
+        // TODO FIX this ts-ignore
+        // @ts-ignore
+        entities: sessions,
+    });
 
-  return {
-    setSessions: useEntity.setEntities,
-    setSession: useEntity.setEntity,
-    deleteSession: useEntity.deleteEntity,
-  };
+    return {
+        setSessions: useEntity.setEntities,
+        setSession: useEntity.setEntity,
+        deleteSession: useEntity.deleteEntity,
+    };
 };

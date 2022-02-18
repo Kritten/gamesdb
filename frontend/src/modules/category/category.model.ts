@@ -4,24 +4,24 @@ import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
 
 export class Category extends Entity implements CategoryInterface {
-  name: string;
+    name: string;
 
-  constructor(data: CategoryInterface = {}) {
-    super(data);
-    this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
-  }
+    constructor(data: CategoryInterface = {}) {
+        super(data);
+        this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
+    }
 
-  static async parseFromServer(data: EntityInterface): Promise<Category> {
-    const entity = (await super.parseFromServer(data)) as Category;
+    static async parseFromServer(data: EntityInterface): Promise<Category> {
+        const entity = (await super.parseFromServer(data)) as Category;
 
-    return entity;
-  }
+        return entity;
+    }
 
-  prepareForServer() {
-    const data = super.prepareForServer();
+    prepareForServer() {
+        const data = super.prepareForServer();
 
-    data.name = this.name;
+        data.name = this.name;
 
-    return data;
-  }
+        return data;
+    }
 }

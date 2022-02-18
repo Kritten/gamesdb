@@ -4,15 +4,18 @@ import { useCategory } from '@/modules/category/composables/useCategory';
 import { mutationCreateCategory } from '@/modules/category/graphql/category.graphql';
 
 export const useCreateCategory = () => {
-  const useCreateEntity = baseUseCreateEntity<Category, { createCategory: Category }>({
-    cls: Category,
-    setEntity: useCategory().setCategory,
-    mutation: mutationCreateCategory,
-    nameMutation: 'createCategory',
-    nameVariable: 'category',
-  });
+    const useCreateEntity = baseUseCreateEntity<
+        Category,
+        { createCategory: Category }
+    >({
+        cls: Category,
+        setEntity: useCategory().setCategory,
+        mutation: mutationCreateCategory,
+        nameMutation: 'createCategory',
+        nameVariable: 'category',
+    });
 
-  return {
-    ...useCreateEntity,
-  };
+    return {
+        ...useCreateEntity,
+    };
 };

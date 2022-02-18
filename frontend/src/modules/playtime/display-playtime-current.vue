@@ -1,55 +1,54 @@
 <template>
-  {{ result }}
+    {{ result }}
 </template>
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import {
-  defineComponent, PropType, onUnmounted, ref,
-} from 'vue';
-import { Session } from '@/modules/session/session.model';
+import { defineComponent, PropType, onUnmounted, ref } from 'vue';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { de } from 'date-fns/locale';
+import { Session } from '@/modules/session/session.model';
 
 export default defineComponent({
-  name: 'DisplayPlaytimeCurrent',
-  props: {
-    session: {
-      required: true,
-      type: Object as PropType<Session>,
+    name: 'DisplayPlaytimeCurrent',
+    props: {
+        session: {
+            required: true,
+            type: Object as PropType<Session>,
+        },
     },
-  },
-  setup(props) {
-    const { t } = useI18n();
+    setup(props) {
+        const { t } = useI18n();
 
-    const calculateResult = () => {
-      if (props.session.currentPlaytime === undefined) {
-        return '';
-      }
-      return formatDistanceToNowStrict(props.session.currentPlaytime.start, {
-        locale: de,
-      });
-    };
+        const calculateResult = () => {
+            if (props.session.currentPlaytime === undefined) {
+                return '';
+            }
+            return formatDistanceToNowStrict(
+                props.session.currentPlaytime.start,
+                {
+                    locale: de,
+                }
+            );
+        };
 
-    const result = ref(calculateResult());
+        const result = ref(calculateResult());
 
-    const idInterval = setInterval(() => {
-      result.value = calculateResult();
-    }, 1000);
+        const idInterval = setInterval(() => {
+            result.value = calculateResult();
+        }, 1000);
 
-    onUnmounted(() => {
-      clearInterval(idInterval);
-    });
+        onUnmounted(() => {
+            clearInterval(idInterval);
+        });
 
-    return {
-      t,
-      result,
-      de,
-    };
-  },
+        return {
+            t,
+            result,
+            de,
+        };
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

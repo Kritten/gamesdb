@@ -1,10 +1,10 @@
 <template>
-  <base-input-select-entity
-    v-model="categoryInternal"
-    :validation="validation"
-    :items="categories"
-    i18n-prefix="category"
-  />
+    <base-input-select-entity
+        v-model="categoryInternal"
+        :validation="validation"
+        :items="categories"
+        i18n-prefix="category"
+    />
 </template>
 
 <script lang="ts">
@@ -17,36 +17,34 @@ import { useCategory } from '@/modules/category/composables/useCategory';
 import { Category } from '@/modules/category/category.model';
 
 export default defineComponent({
-  name: 'InputSelectCategory',
-  components: { BaseInputSelectEntity },
-  props: {
-    modelValue: {
-      required: false,
-      type: [Object, Array] as PropType<Category | Array<Category>>,
-      default: undefined,
+    name: 'InputSelectCategory',
+    components: { BaseInputSelectEntity },
+    props: {
+        modelValue: {
+            required: false,
+            type: [Object, Array] as PropType<Category | Array<Category>>,
+            default: undefined,
+        },
+        validation: {
+            required: false,
+            type: Object as PropType<Validation>,
+            default: undefined,
+        },
+        options: {
+            required: false,
+            type: Object as PropType<Partial<TypeOptionsInput>>,
+            default: () => ({}),
+        },
     },
-    validation: {
-      required: false,
-      type: Object as PropType<Validation>,
-      default: undefined,
-    },
-    options: {
-      required: false,
-      type: Object as PropType<Partial<TypeOptionsInput>>,
-      default: () => ({}),
-    },
-  },
-  setup(props, { emit }) {
-    const { categories } = useCategory();
+    setup(props, { emit }) {
+        const { categories } = useCategory();
 
-    return {
-      categories,
-      categoryInternal: useModelWrapper({ props, emit }),
-    };
-  },
+        return {
+            categories,
+            categoryInternal: useModelWrapper({ props, emit }),
+        };
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

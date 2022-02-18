@@ -5,32 +5,32 @@ import { TypeBaseUseCreateEntityParameters } from '@/modules/app/base/composable
 import { queue } from '@/queue';
 
 export const baseUseCreateEntity = <T extends Entity, P>({
-  cls,
-  setEntity,
-  mutation,
-  nameMutation,
-  nameVariable,
-  emits = [],
-  valuesInitial = {},
+    cls,
+    setEntity,
+    mutation,
+    nameMutation,
+    nameVariable,
+    emits = [],
+    valuesInitial = {},
 }: TypeBaseUseCreateEntityParameters<T, P>) => {
-  const entity = ref((new cls(valuesInitial))) as Ref<T>;
+    const entity = ref(new cls(valuesInitial)) as Ref<T>;
 
-  return {
-    entity,
-    create: async () => {
-      const response = await mutate<P>(mutation, {
-        [nameVariable]: entity.value.prepareForServer(),
-      });
+    return {
+        entity,
+        create: async () => {
+            const response = await mutate<P>(mutation, {
+                [nameVariable]: entity.value.prepareForServer(),
+            });
 
-      const entityNew = (await cls.parseFromServer(response[nameMutation]));
+            const entityNew = await cls.parseFromServer(response[nameMutation]);
 
-      setEntity(entityNew);
+            setEntity(entityNew);
 
-      emits.map((event) => queue.notify(event));
+            emits.map((event) => queue.notify(event));
 
-      entity.value = new cls(valuesInitial);
+            entity.value = new cls(valuesInitial);
 
-      return entityNew;
-    },
-  };
+            return entityNew;
+        },
+    };
 };

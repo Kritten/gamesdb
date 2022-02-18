@@ -1,30 +1,27 @@
 <template>
-  <base-entity-page
-    :entities="universes"
-    :columns="columns"
+    <base-entity-page
+        :entities="universes"
+        :columns="columns"
+        :use-create-entity="useCreateEntity"
+        :use-update-entity="useUpdateEntity"
+        :use-delete-entity="useDeleteEntity"
+        :validation-rules="validationRules"
+        i18n-prefix="universe"
+    >
+        <template #item="{ entity, validation }">
+            <item-universe
+                v-model:name="entity.value.name"
+                :validation="validation"
+            />
+        </template>
 
-    :use-create-entity="useCreateEntity"
-    :use-update-entity="useUpdateEntity"
-    :use-delete-entity="useDeleteEntity"
-
-    :validation-rules="validationRules"
-
-    i18n-prefix="universe"
-  >
-    <template #item="{ entity, validation }">
-      <item-universe
-        v-model:name="entity.value.name"
-        :validation="validation"
-      />
-    </template>
-
-    <template #item-update="{ entity, validation }">
-      <item-universe
-        v-model:name="entity.value.name"
-        :validation="validation"
-      />
-    </template>
-  </base-entity-page>
+        <template #item-update="{ entity, validation }">
+            <item-universe
+                v-model:name="entity.value.name"
+                :validation="validation"
+            />
+        </template>
+    </base-entity-page>
 </template>
 
 <script lang="ts">
@@ -38,37 +35,37 @@ import { useCreateUniverse } from '@/modules/universe/composables/useCreateUnive
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
 
 export default defineComponent({
-  name: 'ViewUniverse',
-  components: { ItemUniverse, BaseEntityPage },
-  setup() {
-    const { universes } = useUniverse();
+    name: 'ViewUniverse',
+    components: { ItemUniverse, BaseEntityPage },
+    setup() {
+        const { universes } = useUniverse();
 
-    const columns = [
-      {
-        name: 'name',
-        label: 'Name',
-        field: 'name',
-        align: 'left',
-        sortable: true,
-      },
-    ];
+        const columns = [
+            {
+                name: 'name',
+                label: 'Name',
+                field: 'name',
+                align: 'left',
+                sortable: true,
+            },
+        ];
 
-    const validationRules = {
-      name: {
-        required,
-      },
-    };
+        const validationRules = {
+            name: {
+                required,
+            },
+        };
 
-    return {
-      universes,
-      columns,
+        return {
+            universes,
+            columns,
 
-      validationRules,
-      useCreateEntity: useCreateUniverse,
-      useUpdateEntity: useUpdateUniverse,
-      useDeleteEntity: useDeleteUniverse,
-    };
-  },
+            validationRules,
+            useCreateEntity: useCreateUniverse,
+            useUpdateEntity: useUpdateUniverse,
+            useDeleteEntity: useDeleteUniverse,
+        };
+    },
 });
 </script>
 

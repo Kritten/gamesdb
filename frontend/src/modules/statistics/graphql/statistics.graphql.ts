@@ -2,88 +2,88 @@ import gql from 'graphql-tag';
 
 export const queryStatisticsCounts = gql`
     query statisticsCounts {
-      statisticsCounts {
-        gamesAnalog
-        gamesDigital
-        ratings
-        wishlists
-      }
+        statisticsCounts {
+            gamesAnalog
+            gamesDigital
+            ratings
+            wishlists
+        }
     }
 `;
 
 export const queryStatisticsGamesCountPlayed = gql`
-  query statisticsGamesCountPlayed(
-    $page: Int!
-    $count: Int
-    $sortBy: [String!]!
-    $sortDesc: [Boolean!]!
-    $filters: [InputCollectionFilter!]!
-  ) {
-    statisticsGamesCountPlayed(
-      statisticsData: {
-        page: $page
-        count: $count
-        sortBy: $sortBy
-        sortDesc: $sortDesc
-        filters: $filters
-      }
+    query statisticsGamesCountPlayed(
+        $page: Int!
+        $count: Int
+        $sortBy: [String!]!
+        $sortDesc: [Boolean!]!
+        $filters: [InputCollectionFilter!]!
     ) {
-      count
-      items {
-        id
-        countPlayed
-      }
+        statisticsGamesCountPlayed(
+            statisticsData: {
+                page: $page
+                count: $count
+                sortBy: $sortBy
+                sortDesc: $sortDesc
+                filters: $filters
+            }
+        ) {
+            count
+            items {
+                id
+                countPlayed
+            }
+        }
     }
-  }
 `;
 
 export const queryStatisticsGamesTimePlayed = gql`
-  query statisticsGamesTimePlayed(
-    $page: Int!
-    $count: Int
-    $sortBy: [String!]!
-    $sortDesc: [Boolean!]!
-    $filters: [InputCollectionFilter!]!
-  ) {
-    statisticsGamesTimePlayed(
-      statisticsData: {
-        page: $page
-        count: $count
-        sortBy: $sortBy
-        sortDesc: $sortDesc
-        filters: $filters
-      }
+    query statisticsGamesTimePlayed(
+        $page: Int!
+        $count: Int
+        $sortBy: [String!]!
+        $sortDesc: [Boolean!]!
+        $filters: [InputCollectionFilter!]!
     ) {
-      count
-      items {
-        id
-        timePlayed
-      }
+        statisticsGamesTimePlayed(
+            statisticsData: {
+                page: $page
+                count: $count
+                sortBy: $sortBy
+                sortDesc: $sortDesc
+                filters: $filters
+            }
+        ) {
+            count
+            items {
+                id
+                timePlayed
+            }
+        }
     }
-  }
 `;
 
 export const QueryStatisticsPlaytimesGroupedByDaytime = gql`
-  query statisticsPlaytimesGroupedByDaytime(
-    $page: Int!
-    $count: Int
-    $sortBy: [String!]!
-    $sortDesc: [Boolean!]!
-    $filters: [InputCollectionFilter!]!
-  ) {
-    statisticsPlaytimesGroupedByDaytime(
-      statisticsData: {
-        page: $page
-        count: $count
-        sortBy: $sortBy
-        sortDesc: $sortDesc
-        filters: $filters
-      }
+    query statisticsPlaytimesGroupedByDaytime(
+        $page: Int!
+        $count: Int
+        $sortBy: [String!]!
+        $sortDesc: [Boolean!]!
+        $filters: [InputCollectionFilter!]!
     ) {
-      count
-      items {
-        data
-      }
+        statisticsPlaytimesGroupedByDaytime(
+            statisticsData: {
+                page: $page
+                count: $count
+                sortBy: $sortBy
+                sortDesc: $sortDesc
+                filters: $filters
+            }
+        ) {
+            count
+            items {
+                data
+            }
+        }
     }
-  }
 `;

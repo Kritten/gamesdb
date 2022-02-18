@@ -4,16 +4,19 @@ import { baseUseUpdateEntity } from '@/modules/app/base/composables/baseUseUpdat
 import { mutationUpdatePlayer } from '@/modules/player/graphql/player.graphql';
 
 export const useUpdatePlayer = (playerPassed: Player) => {
-  const useUpdateEntity = baseUseUpdateEntity<Player, { updatePlayer: Player }>({
-    cls: Player,
-    entityPassed: playerPassed,
-    setEntity: usePlayers().setPlayer,
-    mutation: mutationUpdatePlayer,
-    nameMutation: 'updatePlayer',
-    nameVariable: 'player',
-  });
+    const useUpdateEntity = baseUseUpdateEntity<
+        Player,
+        { updatePlayer: Player }
+    >({
+        cls: Player,
+        entityPassed: playerPassed,
+        setEntity: usePlayers().setPlayer,
+        mutation: mutationUpdatePlayer,
+        nameMutation: 'updatePlayer',
+        nameVariable: 'player',
+    });
 
-  return {
-    ...useUpdateEntity,
-  };
+    return {
+        ...useUpdateEntity,
+    };
 };

@@ -4,24 +4,24 @@ import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
 
 export class Universe extends Entity implements UniverseInterface {
-  name: string;
+    name: string;
 
-  constructor(data: UniverseInterface = {}) {
-    super(data);
-    this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
-  }
+    constructor(data: UniverseInterface = {}) {
+        super(data);
+        this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
+    }
 
-  static async parseFromServer(data: EntityInterface): Promise<Universe> {
-    const entity = (await super.parseFromServer(data)) as Universe;
+    static async parseFromServer(data: EntityInterface): Promise<Universe> {
+        const entity = (await super.parseFromServer(data)) as Universe;
 
-    return entity;
-  }
+        return entity;
+    }
 
-  prepareForServer() {
-    const data = super.prepareForServer();
+    prepareForServer() {
+        const data = super.prepareForServer();
 
-    data.name = this.name;
+        data.name = this.name;
 
-    return data;
-  }
+        return data;
+    }
 }

@@ -1,30 +1,27 @@
 <template>
-  <base-entity-page
-    :entities="mechanisms"
-    :columns="columns"
+    <base-entity-page
+        :entities="mechanisms"
+        :columns="columns"
+        :use-create-entity="useCreateEntity"
+        :use-update-entity="useUpdateEntity"
+        :use-delete-entity="useDeleteEntity"
+        :validation-rules="validationRules"
+        i18n-prefix="category"
+    >
+        <template #item="{ entity, validation }">
+            <item-category
+                v-model:name="entity.value.name"
+                :validation="validation"
+            />
+        </template>
 
-    :use-create-entity="useCreateEntity"
-    :use-update-entity="useUpdateEntity"
-    :use-delete-entity="useDeleteEntity"
-
-    :validation-rules="validationRules"
-
-    i18n-prefix="category"
-  >
-    <template #item="{ entity, validation }">
-      <item-category
-        v-model:name="entity.value.name"
-        :validation="validation"
-      />
-    </template>
-
-    <template #item-update="{ entity, validation }">
-      <item-category
-        v-model:name="entity.value.name"
-        :validation="validation"
-      />
-    </template>
-  </base-entity-page>
+        <template #item-update="{ entity, validation }">
+            <item-category
+                v-model:name="entity.value.name"
+                :validation="validation"
+            />
+        </template>
+    </base-entity-page>
 </template>
 
 <script lang="ts">
@@ -38,37 +35,37 @@ import { useCategory } from '@/modules/category/composables/useCategory';
 import ItemCategory from '@/modules/category/item-category.vue';
 
 export default defineComponent({
-  name: 'ViewMechanism',
-  components: { ItemCategory, BaseEntityPage },
-  setup() {
-    const { categories } = useCategory();
+    name: 'ViewMechanism',
+    components: { ItemCategory, BaseEntityPage },
+    setup() {
+        const { categories } = useCategory();
 
-    const columns = [
-      {
-        name: 'name',
-        label: 'Name',
-        field: 'name',
-        align: 'left',
-        sortable: true,
-      },
-    ];
+        const columns = [
+            {
+                name: 'name',
+                label: 'Name',
+                field: 'name',
+                align: 'left',
+                sortable: true,
+            },
+        ];
 
-    const validationRules = {
-      name: {
-        required,
-      },
-    };
+        const validationRules = {
+            name: {
+                required,
+            },
+        };
 
-    return {
-      mechanisms: categories,
-      columns,
+        return {
+            mechanisms: categories,
+            columns,
 
-      validationRules,
-      useCreateEntity: useCreateCategory,
-      useUpdateEntity: useUpdateCategory,
-      useDeleteEntity: useDeleteCategory,
-    };
-  },
+            validationRules,
+            useCreateEntity: useCreateCategory,
+            useUpdateEntity: useUpdateCategory,
+            useDeleteEntity: useDeleteCategory,
+        };
+    },
 });
 </script>
 

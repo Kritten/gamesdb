@@ -1,4 +1,4 @@
 export const moduleRating = {
-  namespaced: true,
-  state: {},
+    namespaced: true,
+    state: {},
 };

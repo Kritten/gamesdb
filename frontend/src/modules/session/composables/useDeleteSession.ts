@@ -4,13 +4,16 @@ import { useSession } from '@/modules/session/composables/useSession';
 import { mutationDeleteSession } from '@/modules/session/graphql/session.graphql';
 
 export const useDeleteSession = () => {
-  const useDeleteEntity = baseUseDeleteEntity<Session, { deleteSessions: Session }>({
-    deleteEntity: useSession().deleteSession,
-    mutation: mutationDeleteSession,
-    emits: ['deletedSession'],
-  });
+    const useDeleteEntity = baseUseDeleteEntity<
+        Session,
+        { deleteSessions: Session }
+    >({
+        deleteEntity: useSession().deleteSession,
+        mutation: mutationDeleteSession,
+        emits: ['deletedSession'],
+    });
 
-  return {
-    ...useDeleteEntity,
-  };
+    return {
+        ...useDeleteEntity,
+    };
 };

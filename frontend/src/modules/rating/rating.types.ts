@@ -4,7 +4,7 @@ import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
 
 export interface RatingInterface extends EntityInterface {
-  rating?: number;
-  player?: Player;
-  game?: Game | GameLoading;
+    rating?: number;
+    player?: Player;
+    game?: Game | GameLoading;
 }

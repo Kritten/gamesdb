@@ -25,78 +25,105 @@ import { useCategory } from '@/modules/category/composables/useCategory';
 import { queue } from '@/queue';
 
 class ServiceAppClass {
-  async initialize() {
-    const { setUser } = useUser();
-    try {
-      const response = await query<{user: UserInterface}>(queryUserCurrent);
+    async initialize() {
+        const { setUser } = useUser();
+        try {
+            const response = await query<{ user: UserInterface }>(
+                queryUserCurrent
+            );
 
-      setUser(response.user);
+            setUser(response.user);
 
-      await this.loadInitialData().then();
+            await this.loadInitialData().then();
 
-      this.initializeEventListener();
+            this.initializeEventListener();
 
-      const router = useRouter();
-      if ((router.currentRoute as unknown as {name: string}).name === 'login') {
-        void router
-          .push({
-            name: 'dashboard',
-          });
-      }
-    } catch (e) {
-      setUser(null);
+            const router = useRouter();
+            if (
+                (router.currentRoute as unknown as { name: string }).name ===
+                'login'
+            ) {
+                void router.push({
+                    name: 'dashboard',
+                });
+            }
+        } catch (e) {
+            setUser(null);
 
-      await this.loadInitialData(true).then();
+            await this.loadInitialData(true).then();
+        }
+
+        useApp().setIsInitialized(true);
     }
 
-    useApp().setIsInitialized(true);
-  }
-
-  initializeEventListener() {
-    for (const event of ['createdGame', 'createdRating', 'deletedGame', 'deletedRating']) {
-      queue.listen(event, () => {
-        void useStatistics().loadStatisticsCounts();
-      });
-    }
-  }
-
-  async loadInitialData(onlyStatistics = false) {
-    let promises = [];
-
-    promises.push(useStatistics().loadStatisticsCounts());
-
-    if (onlyStatistics === false) {
-      promises = promises.concat([
-        query<{categories: Array<EntityInterface>}>(queryCategories)
-          .then((response) => Category.convertFromServerToStore<Category>(response.categories))
-          .then((categories) => {
-            useCategory().setCategories(categories);
-          }),
-        query<{mechanisms: Array<EntityInterface>}>(queryMechanisms)
-          .then((response) => Mechanism.convertFromServerToStore<Mechanism>(response.mechanisms))
-          .then((mechanisms) => {
-            useMechanism().setMechanisms(mechanisms);
-          }),
-        query<{moods: Array<EntityInterface>}>(queryMoods)
-          .then((response) => Mood.convertFromServerToStore<Mood>(response.moods))
-          .then((moods) => {
-            useMood().setMoods(moods);
-          }),
-        query<{players: Array<EntityInterface>}>(queryPlayers)
-          .then((response) => Player.convertFromServerToStore<Player>(response.players))
-          .then((players) => {
-            usePlayers().setPlayers(players);
-          }),
-        query<{universes: Array<EntityInterface>}>(queryUniverses)
-          .then((response) => Universe.convertFromServerToStore<Universe>(response.universes))
-          .then((universes) => {
-            useUniverse().setUniverses(universes);
-          }),
-      ]);
+    initializeEventListener() {
+        for (const event of [
+            'createdGame',
+            'createdRating',
+            'deletedGame',
+            'deletedRating',
+        ]) {
+            queue.listen(event, () => {
+                void useStatistics().loadStatisticsCounts();
+            });
+        }
     }
 
-    await Promise.all(promises);
-  }
+    async loadInitialData(onlyStatistics = false) {
+        let promises = [];
+
+        promises.push(useStatistics().loadStatisticsCounts());
+
+        if (onlyStatistics === false) {
+            promises = promises.concat([
+                query<{ categories: Array<EntityInterface> }>(queryCategories)
+                    .then((response) =>
+                        Category.convertFromServerToStore<Category>(
+                            response.categories
+                        )
+                    )
+                    .then((categories) => {
+                        useCategory().setCategories(categories);
+                    }),
+                query<{ mechanisms: Array<EntityInterface> }>(queryMechanisms)
+                    .then((response) =>
+                        Mechanism.convertFromServerToStore<Mechanism>(
+                            response.mechanisms
+                        )
+                    )
+                    .then((mechanisms) => {
+                        useMechanism().setMechanisms(mechanisms);
+                    }),
+                query<{ moods: Array<EntityInterface> }>(queryMoods)
+                    .then((response) =>
+                        Mood.convertFromServerToStore<Mood>(response.moods)
+                    )
+                    .then((moods) => {
+                        useMood().setMoods(moods);
+                    }),
+                query<{ players: Array<EntityInterface> }>(queryPlayers)
+                    .then((response) =>
+                        Player.convertFromServerToStore<Player>(
+                            response.players
+                        )
+                    )
+                    .then((players) => {
+                        usePlayers().setPlayers(players);
+                    }),
+                query<{ universes: Array<EntityInterface> }>(queryUniverses)
+                    .then((response) =>
+                        Universe.convertFromServerToStore<Universe>(
+                            response.universes
+                        )
+                    )
+                    .then((universes) => {
+                        useUniverse().setUniverses(universes);
+                    }),
+            ]);
+        }
+
+        await Promise.all(promises);
+    }
 }
 
 export const ServiceApp = new ServiceAppClass();

@@ -1,5 +1,5 @@
 <template>
-  {{ dateFormatted }}
+    {{ dateFormatted }}
 </template>
 
 <script lang="ts">
@@ -8,52 +8,54 @@ import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 
 export default defineComponent({
-  name: 'BaseDateTime',
-  props: {
-    value: {
-      required: true,
-      type: Date,
+    name: 'BaseDateTime',
+    props: {
+        value: {
+            required: true,
+            type: Date,
+        },
+        timeOnly: {
+            required: false,
+            type: Boolean,
+            default: false,
+        },
+        dateOnly: {
+            required: false,
+            type: Boolean,
+            default: false,
+        },
+        compact: {
+            required: false,
+            type: Boolean,
+            default: false,
+        },
     },
-    timeOnly: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
-    dateOnly: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
-    compact: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const formatDate = props.compact === true ? 'dd.MM.yyyy' : 'PPP';
-    const formatTime = props.compact === true ? 'HH:mm:ss' : 'p';
-    // const formatDate = 'dd.MM.yyyy';
-    // const formatTime = 'HH:mm:ss';
+    setup(props) {
+        const formatDate = props.compact === true ? 'dd.MM.yyyy' : 'PPP';
+        const formatTime = props.compact === true ? 'HH:mm:ss' : 'p';
+        // const formatDate = 'dd.MM.yyyy';
+        // const formatTime = 'HH:mm:ss';
 
-    const getFormat = () => {
-      let formatUsed = `${formatDate} ${formatTime}`;
-      if (props.timeOnly) {
-        formatUsed = formatTime;
-      } else if (props.dateOnly) {
-        formatUsed = formatDate;
-      }
+        const getFormat = () => {
+            let formatUsed = `${formatDate} ${formatTime}`;
+            if (props.timeOnly) {
+                formatUsed = formatTime;
+            } else if (props.dateOnly) {
+                formatUsed = formatDate;
+            }
 
-      return formatUsed;
-    };
+            return formatUsed;
+        };
 
-    return {
-      dateFormatted: computed(() => format(props.value as unknown as Date, getFormat(), { locale: de })),
-    };
-  },
+        return {
+            dateFormatted: computed(() =>
+                format(props.value as unknown as Date, getFormat(), {
+                    locale: de,
+                })
+            ),
+        };
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

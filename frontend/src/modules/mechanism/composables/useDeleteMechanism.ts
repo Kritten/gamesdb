@@ -4,12 +4,15 @@ import { useMechanism } from '@/modules/mechanism/composables/useMechanism';
 import { mutationDeleteMechanism } from '@/modules/mechanism/graphql/mechanism.graphql';
 
 export const useDeleteMechanism = () => {
-  const useDeleteEntity = baseUseDeleteEntity<Mechanism, { deleteMechanism: Mechanism }>({
-    deleteEntity: useMechanism().deleteMechanism,
-    mutation: mutationDeleteMechanism,
-  });
+    const useDeleteEntity = baseUseDeleteEntity<
+        Mechanism,
+        { deleteMechanism: Mechanism }
+    >({
+        deleteEntity: useMechanism().deleteMechanism,
+        mutation: mutationDeleteMechanism,
+    });
 
-  return {
-    ...useDeleteEntity,
-  };
+    return {
+        ...useDeleteEntity,
+    };
 };

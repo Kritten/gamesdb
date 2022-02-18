@@ -1,14 +1,12 @@
-import {
-  computed, Ref, ref, watch,
-} from 'vue';
-import {
-  InputCollection,
-  InputCollectionData,
-  ServiceCollectionFilters,
-  ServiceCollectionLoadPageType,
-} from '@/modules/app/utilities/collection/collection.types';
+import { computed, Ref, ref, watch } from 'vue';
 import { debounce } from 'lodash';
 import { DocumentNode } from 'graphql';
+import {
+    InputCollection,
+    InputCollectionData,
+    ServiceCollectionFilters,
+    ServiceCollectionLoadPageType,
+} from '@/modules/app/utilities/collection/collection.types';
 import { query } from '@/modules/app/utilities/helpers';
 
 /**
@@ -23,200 +21,209 @@ import { query } from '@/modules/app/utilities/helpers';
  * @param {function(): boolean} data.hasNextPage
  */
 export function useCollection<T>(
-  loadPage: ServiceCollectionLoadPageType<T>,
-  {
-    inputCollectionData = {},
-    payload,
-    immediate = true,
-    watchFilters = true,
-    prependValues = false,
-    hasNextPage: hasNextPagePassed,
-  }: {
-    inputCollectionData?: Partial<InputCollectionData>;
-    payload?: unknown;
-    immediate?: boolean;
-    watchFilters?: boolean;
-    prependValues?: boolean;
-    hasNextPage?: ({
-      items,
-      countItems,
-      page,
-      isLoading,
+    loadPage: ServiceCollectionLoadPageType<T>,
+    {
+        inputCollectionData = {},
+        payload,
+        immediate = true,
+        watchFilters = true,
+        prependValues = false,
+        hasNextPage: hasNextPagePassed,
     }: {
-      items: Ref<T[]>;
-      countItems: Ref<number>;
-      page: Ref<number>;
-      isLoading: Ref<boolean>;
-    }) => boolean;
-  } = {},
+        inputCollectionData?: Partial<InputCollectionData>;
+        payload?: unknown;
+        immediate?: boolean;
+        watchFilters?: boolean;
+        prependValues?: boolean;
+        hasNextPage?: ({
+            items,
+            countItems,
+            page,
+            isLoading,
+        }: {
+            items: Ref<T[]>;
+            countItems: Ref<number>;
+            page: Ref<number>;
+            isLoading: Ref<boolean>;
+        }) => boolean;
+    } = {}
 ) {
-  const {
-    page = 1,
-    count = 10,
-    sortBy = ref(['entity.name']),
-    sortDesc = ref([false]),
-    filters = ref<ServiceCollectionFilters>({}),
-    leftJoins = [],
-  } = inputCollectionData;
+    const {
+        page = 1,
+        count = 10,
+        sortBy = ref(['entity.name']),
+        sortDesc = ref([false]),
+        filters = ref<ServiceCollectionFilters>({}),
+        leftJoins = [],
+    } = inputCollectionData;
 
-  const items = ref<T[]>([]);
-  const countItems = ref(-1);
-  const isLoading = ref(false);
-  const pageRef = ref<number>(page);
-  // const sortByRef = ref<string[]>(sortBy);
-  // const orderByRef = ref<boolean[]>(sortDesc);
-  let counterRequests = 0;
+    const items = ref<T[]>([]);
+    const countItems = ref(-1);
+    const isLoading = ref(false);
+    const pageRef = ref<number>(page);
+    // const sortByRef = ref<string[]>(sortBy);
+    // const orderByRef = ref<boolean[]>(sortDesc);
+    let counterRequests = 0;
 
-  let hasNextPage;
-  if (hasNextPagePassed !== undefined) {
-    hasNextPage = computed(() => hasNextPagePassed({
-      // @ts-ignore
-      items,
-      countItems,
-      page: pageRef,
-      isLoading,
-    }));
-  } else {
-    hasNextPage = computed(() => countItems.value !== items.value.length);
-  }
+    let hasNextPage;
+    if (hasNextPagePassed !== undefined) {
+        hasNextPage = computed(() =>
+            hasNextPagePassed({
+                // @ts-ignore
+                items,
+                countItems,
+                page: pageRef,
+                isLoading,
+            })
+        );
+    } else {
+        hasNextPage = computed(() => countItems.value !== items.value.length);
+    }
 
-  const loadNextItemsInternal = async (counter: number, addToExistingItems: boolean) => {
-    isLoading.value = true;
+    const loadNextItemsInternal = async (
+        counter: number,
+        addToExistingItems: boolean
+    ) => {
+        isLoading.value = true;
 
-    const response = await loadPage(
-      {
-        page: pageRef.value,
-        count,
-        sortBy: sortBy.value,
-        sortDesc: sortDesc.value,
-        // TODO kann dann mit vuetify weg
-        filters: Object.values(filters.value).map((filter) => {
-          const filterNew = { ...filter };
-          if (typeof filter.valueBoolean === 'number') {
-            filterNew.valueBoolean = undefined;
-          }
+        const response = await loadPage(
+            {
+                page: pageRef.value,
+                count,
+                sortBy: sortBy.value,
+                sortDesc: sortDesc.value,
+                // TODO kann dann mit vuetify weg
+                filters: Object.values(filters.value).map((filter) => {
+                    const filterNew = { ...filter };
+                    if (typeof filter.valueBoolean === 'number') {
+                        filterNew.valueBoolean = undefined;
+                    }
 
-          if (filter.valueEntity !== undefined) {
-            // Wenn der Filter aus mehreren Werten besteht
-            if (Array.isArray(filter.valueEntity)) {
-              // Setze den Filter nur wenn es auch was zu Filtern gibt
-              if (filter.valueEntity.length > 0) {
-                filterNew.valueString = filter.valueEntity.map((entity) => entity.id).join(',');
-                filterNew.operator = 'in';
-              }
+                    if (filter.valueEntity !== undefined) {
+                        // Wenn der Filter aus mehreren Werten besteht
+                        if (Array.isArray(filter.valueEntity)) {
+                            // Setze den Filter nur wenn es auch was zu Filtern gibt
+                            if (filter.valueEntity.length > 0) {
+                                filterNew.valueString = filter.valueEntity
+                                    .map((entity) => entity.id)
+                                    .join(',');
+                                filterNew.operator = 'in';
+                            }
+                        } else {
+                            filterNew.valueString = filter.valueEntity.id;
+                        }
+                        delete filterNew.valueEntity;
+                    }
+
+                    return filterNew;
+                }),
+                leftJoins,
+            },
+            payload
+        );
+
+        if (counter < counterRequests) {
+            return;
+        }
+
+        countItems.value = response.count;
+        if (addToExistingItems === true) {
+            if (prependValues) {
+                // @ts-ignore
+                items.value = response.items.concat(items.value);
             } else {
-              filterNew.valueString = filter.valueEntity.id;
+                // @ts-ignore
+                items.value = items.value.concat(response.items);
             }
-            delete filterNew.valueEntity;
-          }
+        }
+        pageRef.value += 1;
 
-          return filterNew;
-        }),
-        leftJoins,
-      },
-      payload,
-    );
+        isLoading.value = false;
 
-    if (counter < counterRequests) {
-      return;
+        return response;
+    };
+
+    const loadNextItems = async ({
+        addToExistingItems = true,
+    }: { addToExistingItems?: boolean } = {}) => {
+        counterRequests += 1;
+        return loadNextItemsInternal(counterRequests, addToExistingItems);
+    };
+
+    if (watchFilters) {
+        watch(
+            filters,
+            (value) => {
+                console.warn('CALLED WATCH FILTERS, check if used');
+                resetDebounced();
+            },
+            { deep: true }
+        );
     }
 
-    countItems.value = response.count;
-    if (addToExistingItems === true) {
-      if (prependValues) {
-        // @ts-ignore
-        items.value = response.items.concat(items.value);
-      } else {
-        // @ts-ignore
-        items.value = items.value.concat(response.items);
-      }
-    }
-    pageRef.value += 1;
-
-    isLoading.value = false;
-
-    return response;
-  };
-
-  const loadNextItems = async ({ addToExistingItems = true }: {addToExistingItems?: boolean} = {}) => {
-    counterRequests += 1;
-    return loadNextItemsInternal(counterRequests, addToExistingItems);
-  };
-
-  if (watchFilters) {
     watch(
-      filters,
-      (value) => {
-        console.warn('CALLED WATCH FILTERS, check if used');
-        resetDebounced();
-      },
-      { deep: true },
+        sortBy,
+        (value) => {
+            void reset();
+        },
+        { deep: true }
     );
-  }
 
-  watch(
-    sortBy,
-    (value) => {
-      void reset();
-    },
-    { deep: true },
-  );
+    watch(
+        sortDesc,
+        (value) => {
+            void reset();
+        },
+        { deep: true }
+    );
 
-  watch(
-    sortDesc,
-    (value) => {
-      void reset();
-    },
-    { deep: true },
-  );
+    const reset = async () => {
+        items.value = [];
+        countItems.value = -1;
+        pageRef.value = 1;
+        await loadNextItems();
+    };
 
-  const reset = async () => {
-    items.value = [];
-    countItems.value = -1;
-    pageRef.value = 1;
-    await loadNextItems();
-  };
+    const resetDebounced = debounce(() => {
+        void reset();
+    }, 500);
 
-  const resetDebounced = debounce(() => {
-    void reset();
-  }, 500);
+    if (immediate) {
+        loadNextItems();
+    }
 
-  if (immediate) {
-    loadNextItems();
-  }
-
-  return {
-    items,
-    countItems,
-    hasNextPage,
-    isLoading,
-    loadNextItems,
-    reset,
-    resetDebounced,
-  };
+    return {
+        items,
+        countItems,
+        hasNextPage,
+        isLoading,
+        loadNextItems,
+        reset,
+        resetDebounced,
+    };
 }
 
 export async function loadPageBase<T, R>({
-  data,
-  query: queryPassed,
-  parseResult,
-  after,
+    data,
+    query: queryPassed,
+    parseResult,
+    after,
 }: {
-  data: InputCollection;
-  query: DocumentNode;
-  parseResult: (response: R) => Promise<{ items: T[]; count: number }>;
-  after?: ({ items, count }: { items: T[]; count: number }) => void;
+    data: InputCollection;
+    query: DocumentNode;
+    parseResult: (response: R) => Promise<{ items: T[]; count: number }>;
+    after?: ({ items, count }: { items: T[]; count: number }) => void;
 }) {
-  const response = await query<R>(queryPassed, data);
+    const response = await query<R>(queryPassed, data);
 
-  const { items, count: countItems } = await parseResult(response);
+    const { items, count: countItems } = await parseResult(response);
 
-  if (after !== undefined) {
-    after({ items, count: countItems });
-  }
+    if (after !== undefined) {
+        after({ items, count: countItems });
+    }
 
-  return {
-    count: countItems,
-    items,
-  };
+    return {
+        count: countItems,
+        items,
+    };
 }

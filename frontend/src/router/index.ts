@@ -1,10 +1,10 @@
 import { route } from 'quasar/wrappers';
 import {
-  createMemoryHistory,
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-  Router,
+    createMemoryHistory,
+    createRouter,
+    createWebHashHistory,
+    createWebHistory,
+    Router,
 } from 'vue-router';
 import { ref } from 'vue';
 import routes from './routes';
@@ -21,31 +21,33 @@ import routes from './routes';
 const router = ref<Router>();
 
 export default route((/* { store, ssrContext } */) => {
-  const createHistory = process.env.SERVER
-    ? createMemoryHistory
-    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
+    const createHistory = process.env.SERVER
+        ? createMemoryHistory
+        : process.env.VUE_ROUTER_MODE === 'history'
+        ? createWebHistory
+        : createWebHashHistory;
 
-  const routerCreated = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
+    const routerCreated = createRouter({
+        scrollBehavior: () => ({ left: 0, top: 0 }),
+        routes,
 
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
-    history: createHistory(
-      process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE,
-    ),
-  });
+        // Leave this as is and make changes in quasar.conf.js instead!
+        // quasar.conf.js -> build -> vueRouterMode
+        // quasar.conf.js -> build -> publicPath
+        history: createHistory(
+            process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE
+        ),
+    });
 
-  router.value = routerCreated;
+    router.value = routerCreated;
 
-  return routerCreated;
+    return routerCreated;
 });
 
 export const useRouter = (): Router => {
-  if (router.value === undefined) {
-    throw new Error('Router not instantiated');
-  }
+    if (router.value === undefined) {
+        throw new Error('Router not instantiated');
+    }
 
-  return router.value;
+    return router.value;
 };

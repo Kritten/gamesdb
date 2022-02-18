@@ -4,12 +4,15 @@ import { baseUseDeleteEntity } from '@/modules/app/base/composables/baseUseDelet
 import { mutationDeletePlayer } from '@/modules/player/graphql/player.graphql';
 
 export const useDeletePlayer = () => {
-  const useDeleteEntity = baseUseDeleteEntity<Player, { deletePlayer: Player }>({
-    deleteEntity: usePlayers().deletePlayer,
-    mutation: mutationDeletePlayer,
-  });
+    const useDeleteEntity = baseUseDeleteEntity<
+        Player,
+        { deletePlayer: Player }
+    >({
+        deleteEntity: usePlayers().deletePlayer,
+        mutation: mutationDeletePlayer,
+    });
 
-  return {
-    ...useDeleteEntity,
-  };
+    return {
+        ...useDeleteEntity,
+    };
 };

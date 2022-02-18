@@ -4,12 +4,15 @@ import { useCategory } from '@/modules/category/composables/useCategory';
 import { mutationDeleteCategory } from '@/modules/category/graphql/category.graphql';
 
 export const useDeleteCategory = () => {
-  const useDeleteEntity = baseUseDeleteEntity<Category, { deleteCategory: Category }>({
-    deleteEntity: useCategory().deleteCategory,
-    mutation: mutationDeleteCategory,
-  });
+    const useDeleteEntity = baseUseDeleteEntity<
+        Category,
+        { deleteCategory: Category }
+    >({
+        deleteEntity: useCategory().deleteCategory,
+        mutation: mutationDeleteCategory,
+    });
 
-  return {
-    ...useDeleteEntity,
-  };
+    return {
+        ...useDeleteEntity,
+    };
 };

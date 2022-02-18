@@ -1,10 +1,10 @@
 <template>
-  <base-input-select-entity
-    v-model="mechanismInternal"
-    :validation="validation"
-    :items="mechanisms"
-    i18n-prefix="mechanism"
-  />
+    <base-input-select-entity
+        v-model="mechanismInternal"
+        :validation="validation"
+        :items="mechanisms"
+        i18n-prefix="mechanism"
+    />
 </template>
 
 <script lang="ts">
@@ -17,36 +17,34 @@ import { useMechanism } from '@/modules/mechanism/composables/useMechanism';
 import { Mechanism } from '@/modules/mechanism/mechanism.model';
 
 export default defineComponent({
-  name: 'InputSelectMechanism',
-  components: { BaseInputSelectEntity },
-  props: {
-    modelValue: {
-      required: false,
-      type: [Object, Array] as PropType<Mechanism | Array<Mechanism>>,
-      default: undefined,
+    name: 'InputSelectMechanism',
+    components: { BaseInputSelectEntity },
+    props: {
+        modelValue: {
+            required: false,
+            type: [Object, Array] as PropType<Mechanism | Array<Mechanism>>,
+            default: undefined,
+        },
+        validation: {
+            required: false,
+            type: Object as PropType<Validation>,
+            default: undefined,
+        },
+        options: {
+            required: false,
+            type: Object as PropType<Partial<TypeOptionsInput>>,
+            default: () => ({}),
+        },
     },
-    validation: {
-      required: false,
-      type: Object as PropType<Validation>,
-      default: undefined,
-    },
-    options: {
-      required: false,
-      type: Object as PropType<Partial<TypeOptionsInput>>,
-      default: () => ({}),
-    },
-  },
-  setup(props, { emit }) {
-    const { mechanisms } = useMechanism();
+    setup(props, { emit }) {
+        const { mechanisms } = useMechanism();
 
-    return {
-      mechanisms,
-      mechanismInternal: useModelWrapper({ props, emit }),
-    };
-  },
+        return {
+            mechanisms,
+            mechanismInternal: useModelWrapper({ props, emit }),
+        };
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

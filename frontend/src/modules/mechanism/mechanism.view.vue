@@ -1,30 +1,27 @@
 <template>
-  <base-entity-page
-    :entities="mechanisms"
-    :columns="columns"
+    <base-entity-page
+        :entities="mechanisms"
+        :columns="columns"
+        :use-create-entity="useCreateEntity"
+        :use-update-entity="useUpdateEntity"
+        :use-delete-entity="useDeleteEntity"
+        :validation-rules="validationRules"
+        i18n-prefix="mechanism"
+    >
+        <template #item="{ entity, validation }">
+            <item-mechanism
+                v-model:name="entity.value.name"
+                :validation="validation"
+            />
+        </template>
 
-    :use-create-entity="useCreateEntity"
-    :use-update-entity="useUpdateEntity"
-    :use-delete-entity="useDeleteEntity"
-
-    :validation-rules="validationRules"
-
-    i18n-prefix="mechanism"
-  >
-    <template #item="{ entity, validation }">
-      <item-mechanism
-        v-model:name="entity.value.name"
-        :validation="validation"
-      />
-    </template>
-
-    <template #item-update="{ entity, validation }">
-      <item-mechanism
-        v-model:name="entity.value.name"
-        :validation="validation"
-      />
-    </template>
-  </base-entity-page>
+        <template #item-update="{ entity, validation }">
+            <item-mechanism
+                v-model:name="entity.value.name"
+                :validation="validation"
+            />
+        </template>
+    </base-entity-page>
 </template>
 
 <script lang="ts">
@@ -38,37 +35,37 @@ import { useDeleteMechanism } from '@/modules/mechanism/composables/useDeleteMec
 import ItemMechanism from '@/modules/mechanism/item-mechanism.vue';
 
 export default defineComponent({
-  name: 'ViewMechanism',
-  components: { ItemMechanism, BaseEntityPage },
-  setup() {
-    const { mechanisms } = useMechanism();
+    name: 'ViewMechanism',
+    components: { ItemMechanism, BaseEntityPage },
+    setup() {
+        const { mechanisms } = useMechanism();
 
-    const columns = [
-      {
-        name: 'name',
-        label: 'Name',
-        field: 'name',
-        align: 'left',
-        sortable: true,
-      },
-    ];
+        const columns = [
+            {
+                name: 'name',
+                label: 'Name',
+                field: 'name',
+                align: 'left',
+                sortable: true,
+            },
+        ];
 
-    const validationRules = {
-      name: {
-        required,
-      },
-    };
+        const validationRules = {
+            name: {
+                required,
+            },
+        };
 
-    return {
-      mechanisms,
-      columns,
+        return {
+            mechanisms,
+            columns,
 
-      validationRules,
-      useCreateEntity: useCreateMechanism,
-      useUpdateEntity: useUpdateMechanism,
-      useDeleteEntity: useDeleteMechanism,
-    };
-  },
+            validationRules,
+            useCreateEntity: useCreateMechanism,
+            useUpdateEntity: useUpdateMechanism,
+            useDeleteEntity: useDeleteMechanism,
+        };
+    },
 });
 </script>
 

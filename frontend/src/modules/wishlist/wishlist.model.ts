@@ -4,50 +4,58 @@ import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 import { EntityInterface } from '../app/utilities/entity/entity.types';
 
 export class Wishlist extends Entity implements WishlistInterface {
-  name: string;
+    name: string;
 
-  price: number;
+    price: number;
 
-  description: string;
+    description: string;
 
-  link: string;
+    link: string;
 
-  images: Array<string>;
+    images: Array<string>;
 
-  taken: boolean;
+    taken: boolean;
 
-  giftFor: number;
+    giftFor: number;
 
-  constructor(data: WishlistInterface = {}) {
-    super(data);
-    this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
-    this.price = setDefaultIfNullOrUndefined<number>(data.price, 1000);
-    this.description = setDefaultIfNullOrUndefined<string>(data.description, '');
-    this.link = setDefaultIfNullOrUndefined<string>(data.link, '');
-    this.images = setDefaultIfNullOrUndefined<Array<string>>(data.images, []);
-    this.taken = setDefaultIfNullOrUndefined<boolean>(data.taken, false);
-    this.giftFor = setDefaultIfNullOrUndefined<number>(data.giftFor, 0);
-  }
+    constructor(data: WishlistInterface = {}) {
+        super(data);
+        this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
+        this.price = setDefaultIfNullOrUndefined<number>(data.price, 1000);
+        this.description = setDefaultIfNullOrUndefined<string>(
+            data.description,
+            ''
+        );
+        this.link = setDefaultIfNullOrUndefined<string>(data.link, '');
+        this.images = setDefaultIfNullOrUndefined<Array<string>>(
+            data.images,
+            []
+        );
+        this.taken = setDefaultIfNullOrUndefined<boolean>(data.taken, false);
+        this.giftFor = setDefaultIfNullOrUndefined<number>(data.giftFor, 0);
+    }
 
-  static async parseFromServer(data: EntityInterface): Promise<Wishlist> {
-    const entity = (await super.parseFromServer(data)) as Wishlist;
+    static async parseFromServer(data: EntityInterface): Promise<Wishlist> {
+        const entity = (await super.parseFromServer(data)) as Wishlist;
 
-    entity.images = JSON.parse(entity.images as unknown as string) as Array<string>;
+        entity.images = JSON.parse(
+            entity.images as unknown as string
+        ) as Array<string>;
 
-    return entity;
-  }
+        return entity;
+    }
 
-  prepareForServer() {
-    const data = super.prepareForServer();
+    prepareForServer() {
+        const data = super.prepareForServer();
 
-    data.name = this.name;
-    data.price = this.price;
-    data.description = this.description;
-    data.link = this.link;
-    data.images = JSON.stringify(this.images);
-    data.taken = this.taken;
-    data.giftFor = this.giftFor;
+        data.name = this.name;
+        data.price = this.price;
+        data.description = this.description;
+        data.link = this.link;
+        data.images = JSON.stringify(this.images);
+        data.taken = this.taken;
+        data.giftFor = this.giftFor;
 
-    return data;
-  }
+        return data;
+    }
 }

@@ -4,15 +4,18 @@ import { useUniverse } from '@/modules/universe/composables/useUniverse';
 import { mutationCreateUniverse } from '@/modules/universe/graphql/universe.graphql';
 
 export const useCreateUniverse = () => {
-  const useCreateEntity = baseUseCreateEntity<Universe, { createUniverse: Universe }>({
-    cls: Universe,
-    setEntity: useUniverse().setUniverse,
-    mutation: mutationCreateUniverse,
-    nameMutation: 'createUniverse',
-    nameVariable: 'universe',
-  });
+    const useCreateEntity = baseUseCreateEntity<
+        Universe,
+        { createUniverse: Universe }
+    >({
+        cls: Universe,
+        setEntity: useUniverse().setUniverse,
+        mutation: mutationCreateUniverse,
+        nameMutation: 'createUniverse',
+        nameVariable: 'universe',
+    });
 
-  return {
-    ...useCreateEntity,
-  };
+    return {
+        ...useCreateEntity,
+    };
 };

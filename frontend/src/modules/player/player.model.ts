@@ -1,33 +1,36 @@
+import { parseISO } from 'date-fns';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 import { PlayerInterface } from '@/modules/player/player.types';
 import { setDefaultIfNullOrUndefined } from '@/modules/app/utilities/helpers';
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
-import { parseISO } from 'date-fns';
 
 export class Player extends Entity implements PlayerInterface {
-  name: string;
+    name: string;
 
-  lastSession: Date;
+    lastSession: Date;
 
-  constructor(data: PlayerInterface = {}) {
-    super(data);
-    this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
-    this.lastSession = setDefaultIfNullOrUndefined<Date>(data.lastSession, new Date());
-  }
+    constructor(data: PlayerInterface = {}) {
+        super(data);
+        this.name = setDefaultIfNullOrUndefined<string>(data.name, '');
+        this.lastSession = setDefaultIfNullOrUndefined<Date>(
+            data.lastSession,
+            new Date()
+        );
+    }
 
-  static async parseFromServer(data: EntityInterface): Promise<Player> {
-    const entity = (await super.parseFromServer(data)) as Player;
+    static async parseFromServer(data: EntityInterface): Promise<Player> {
+        const entity = (await super.parseFromServer(data)) as Player;
 
-    entity.lastSession = parseISO((entity.lastSession as unknown) as string);
+        entity.lastSession = parseISO(entity.lastSession as unknown as string);
 
-    return entity;
-  }
+        return entity;
+    }
 
-  prepareForServer() {
-    const data = super.prepareForServer();
+    prepareForServer() {
+        const data = super.prepareForServer();
 
-    data.name = this.name;
+        data.name = this.name;
 
-    return data;
-  }
+        return data;
+    }
 }

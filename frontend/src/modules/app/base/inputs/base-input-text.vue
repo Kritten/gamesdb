@@ -1,80 +1,80 @@
 <template>
-  <q-input
-    :model-value="modelValue"
-    v-bind="optionsMerged"
-    :error="baseInput.errorMessage.value !== ''"
-    :error-message="baseInput.errorMessage.value"
-    @update:model-value="baseInput.input"
-  >
-    <template #after>
-      <slot name="after" />
-    </template>
+    <q-input
+        :model-value="modelValue"
+        v-bind="optionsMerged"
+        :error="baseInput.errorMessage.value !== ''"
+        :error-message="baseInput.errorMessage.value"
+        @update:model-value="baseInput.input"
+    >
+        <template #after>
+            <slot name="after" />
+        </template>
 
-    <template #append>
-      <slot name="append" />
-    </template>
-  </q-input>
+        <template #append>
+            <slot name="append" />
+        </template>
+    </q-input>
 </template>
 
 <script lang="ts">
-import {
-  computed, defineComponent, PropType,
-} from 'vue';
-import { getValidator, toNumber } from '@/modules/app/utilities/helpers';
-import { configBaseInput, useBaseInput } from '@/modules/app/base/inputs/base-input';
+import { computed, defineComponent, PropType } from 'vue';
 import { Validation } from '@vuelidate/core';
+import { getValidator, toNumber } from '@/modules/app/utilities/helpers';
+import {
+    configBaseInput,
+    useBaseInput,
+} from '@/modules/app/base/inputs/base-input';
 
 export default defineComponent({
-  name: 'BaseInputText',
-  props: {
-    modelValue: {
-      required: true,
-      validator: getValidator({
-        number: true, string: true, null: true, undefined: true,
-      }),
-    },
-    validation: {
-      required: false,
-      type: Object as PropType<Validation>,
-      default: undefined,
-    },
-    options: {
-      required: false,
-      type: Object,
-      default: () => ({}),
-    },
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const baseInput = useBaseInput<
-      string | null,
-      string | number | null
-      >(
-        props,
-        emit,
-        (value) => {
-          if (props.options.type === 'number') {
-            const valueParsed = typeof value === 'string' ? toNumber(value) : value;
-
-            return typeof valueParsed !== 'number' ? null : valueParsed;
-          }
-
-          return value;
+    name: 'BaseInputText',
+    props: {
+        modelValue: {
+            required: true,
+            validator: getValidator({
+                number: true,
+                string: true,
+                null: true,
+                undefined: true,
+            }),
         },
-      );
+        validation: {
+            required: false,
+            type: Object as PropType<Validation>,
+            default: undefined,
+        },
+        options: {
+            required: false,
+            type: Object,
+            default: () => ({}),
+        },
+    },
+    emits: ['update:modelValue'],
+    setup(props, { emit }) {
+        const baseInput = useBaseInput<string | null, string | number | null>(
+            props,
+            emit,
+            (value) => {
+                if (props.options.type === 'number') {
+                    const valueParsed =
+                        typeof value === 'string' ? toNumber(value) : value;
 
-    return {
-      baseInput,
-      optionsMerged: computed(() => ({
-        ...configBaseInput,
-        ...props.options,
-        label: baseInput.label.value,
-      })),
-    };
-  },
+                    return typeof valueParsed !== 'number' ? null : valueParsed;
+                }
+
+                return value;
+            }
+        );
+
+        return {
+            baseInput,
+            optionsMerged: computed(() => ({
+                ...configBaseInput,
+                ...props.options,
+                label: baseInput.label.value,
+            })),
+        };
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
 
 export const queryUserCurrent = gql`
-  query {
-    user {
-      id
-      name
+    query {
+        user {
+            id
+            name
+        }
     }
-  }
 `;

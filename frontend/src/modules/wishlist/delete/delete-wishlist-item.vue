@@ -1,11 +1,11 @@
 <template>
-  <base-entity-delete
-    :entity="wishlistItem"
-    i18n-prefix="wishlist"
-    :use-delete-entity="useDeleteEntity"
-    label
-    @submit="deleted"
-  />
+    <base-entity-delete
+        :entity="wishlistItem"
+        i18n-prefix="wishlist"
+        :use-delete-entity="useDeleteEntity"
+        label
+        @submit="deleted"
+    />
 </template>
 
 <script lang="ts">
@@ -16,26 +16,24 @@ import BaseEntityDelete from '@/modules/app/base/entity/base-entity-delete.vue';
 import { useRouter } from '@/router';
 
 export default defineComponent({
-  name: 'DeleteWishlistItem',
-  components: { BaseEntityDelete },
-  props: {
-    wishlistItem: {
-      required: true,
-      type: Wishlist,
+    name: 'DeleteWishlistItem',
+    components: { BaseEntityDelete },
+    props: {
+        wishlistItem: {
+            required: true,
+            type: Wishlist,
+        },
     },
-  },
-  emits: ['deleted'],
-  setup() {
-    return {
-      useDeleteEntity: useDeleteWishlist,
-      deleted() {
-        void useRouter().push({ name: 'wishlist' });
-      },
-    };
-  },
+    emits: ['deleted'],
+    setup() {
+        return {
+            useDeleteEntity: useDeleteWishlist,
+            deleted() {
+                void useRouter().push({ name: 'wishlist' });
+            },
+        };
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

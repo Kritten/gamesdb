@@ -1,10 +1,10 @@
 <template>
-  <base-input-select-entity
-    v-model="moodsInternal"
-    :validation="validation"
-    :items="moods"
-    i18n-prefix="mood"
-  />
+    <base-input-select-entity
+        v-model="moodsInternal"
+        :validation="validation"
+        :items="moods"
+        i18n-prefix="mood"
+    />
 </template>
 
 <script lang="ts">
@@ -17,36 +17,34 @@ import { Mood } from '@/modules/mood/mood.model';
 import { useMood } from '@/modules/mood/composables/useMood';
 
 export default defineComponent({
-  name: 'InputSelectMood',
-  components: { BaseInputSelectEntity },
-  props: {
-    modelValue: {
-      required: false,
-      type: [Object, Array] as PropType<Mood | Array<Mood>>,
-      default: undefined,
+    name: 'InputSelectMood',
+    components: { BaseInputSelectEntity },
+    props: {
+        modelValue: {
+            required: false,
+            type: [Object, Array] as PropType<Mood | Array<Mood>>,
+            default: undefined,
+        },
+        validation: {
+            required: false,
+            type: Object as PropType<Validation>,
+            default: undefined,
+        },
+        options: {
+            required: false,
+            type: Object as PropType<Partial<TypeOptionsInput>>,
+            default: () => ({}),
+        },
     },
-    validation: {
-      required: false,
-      type: Object as PropType<Validation>,
-      default: undefined,
-    },
-    options: {
-      required: false,
-      type: Object as PropType<Partial<TypeOptionsInput>>,
-      default: () => ({}),
-    },
-  },
-  setup(props, { emit }) {
-    const { moods } = useMood();
+    setup(props, { emit }) {
+        const { moods } = useMood();
 
-    return {
-      moods,
-      moodsInternal: useModelWrapper({ props, emit }),
-    };
-  },
+        return {
+            moods,
+            moodsInternal: useModelWrapper({ props, emit }),
+        };
+    },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -4,13 +4,16 @@ import { useWishlist } from '@/modules/wishlist/composables/useWishlist';
 import { mutationDeleteWishlist } from '@/modules/wishlist/graphql/wishlist.graphql';
 
 export const useDeleteWishlist = () => {
-  const useDeleteEntity = baseUseDeleteEntity<Wishlist, { deleteWishlist: Wishlist }>({
-    deleteEntity: useWishlist().deleteWishlistItem,
-    mutation: mutationDeleteWishlist,
-    emits: ['deletedWishlistItem'],
-  });
+    const useDeleteEntity = baseUseDeleteEntity<
+        Wishlist,
+        { deleteWishlist: Wishlist }
+    >({
+        deleteEntity: useWishlist().deleteWishlistItem,
+        mutation: mutationDeleteWishlist,
+        emits: ['deletedWishlistItem'],
+    });
 
-  return {
-    ...useDeleteEntity,
-  };
+    return {
+        ...useDeleteEntity,
+    };
 };
