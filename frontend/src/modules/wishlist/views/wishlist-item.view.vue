@@ -67,7 +67,7 @@
 <script lang="ts">
 import { computed, defineComponent, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import DeleteWishlistItem from '@/modules/wishlist/delete/delete-wishlist-item.vue';
 
@@ -93,7 +93,7 @@ export default defineComponent({
         const wishlistItem = ref<Wishlist | null>(null);
 
         const loadWishlistItem = () => {
-            ServiceWishlist.getOrLoad(idWishlist).then((value) => {
+            void ServiceWishlist.getOrLoad(idWishlist).then((value) => {
                 wishlistItem.value = value;
             });
         };

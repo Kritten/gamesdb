@@ -26,6 +26,7 @@ export class Entity implements EntityInterface {
         }, {} as { [key: string]: T });
     }
 
+    // eslint-disable-next-line @typescript-eslint/require-await
     static async parseFromServer(data: EntityInterface): Promise<Entity> {
         return new this(data);
     }

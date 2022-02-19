@@ -127,7 +127,7 @@ export default defineComponent({
         const resetFilters = async () => {
             filtersProcessed.value = cloneDeep(filtersInitial);
 
-            collection.reset();
+            void collection.reset();
 
             await resetDebounced();
         };

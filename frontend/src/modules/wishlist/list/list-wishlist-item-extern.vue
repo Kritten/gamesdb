@@ -110,7 +110,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, Ref } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
 import DisplayGiftFor from '@/modules/wishlist/display/display-gift-for.vue';
@@ -140,15 +140,15 @@ export default defineComponent({
             t,
             autoplay,
             slide,
-            giveBack() {
+            async giveBack() {
                 const wishlistItemEdited = props.wishlistItem;
                 wishlistItemEdited.taken = false;
-                ServiceWishlist.updateTaken(wishlistItemEdited);
+                await ServiceWishlist.updateTaken(wishlistItemEdited);
             },
-            take() {
+            async take() {
                 const wishlistItemEdited = props.wishlistItem;
                 wishlistItemEdited.taken = true;
-                ServiceWishlist.updateTaken(wishlistItemEdited);
+                await ServiceWishlist.updateTaken(wishlistItemEdited);
             },
         };
     },

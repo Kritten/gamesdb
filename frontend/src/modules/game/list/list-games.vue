@@ -163,7 +163,7 @@ export default defineComponent({
         const resetFilters = async () => {
             filters.value = cloneDeep(filtersInitial);
 
-            collection.reset();
+            void collection.reset();
 
             await resetDebounced();
         };
@@ -171,7 +171,7 @@ export default defineComponent({
         /**
          * prevent initial fetch
          */
-        resetDebounced();
+        void resetDebounced();
 
         const updateFilter = (data: {
             name: string;

@@ -81,6 +81,10 @@ import BaseInputNumber from '@/modules/app/base/inputs/base-input-number.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
 import BaseInputRange from '@/modules/app/base/inputs/base-input-range.vue';
+import {
+    InputCollectionFilter,
+    ServiceCollectionFilters,
+} from '@/modules/app/utilities/collection/collection.types';
 
 export default defineComponent({
     name: 'BaseListFilter',
@@ -94,7 +98,7 @@ export default defineComponent({
     props: {
         filters: {
             required: true,
-            type: Object,
+            type: Object as PropType<ServiceCollectionFilters>,
         },
         name: {
             required: true,
@@ -123,7 +127,7 @@ export default defineComponent({
         },
         filterInputs: {
             required: false,
-            type: Array as PropType<Array<unknown>>,
+            type: Array as PropType<Array<{ name: string; operator: string }>>,
             default: undefined,
         },
         items: {
@@ -146,7 +150,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { t } = useI18n();
 
-        let nameValueField: string;
+        let nameValueField: keyof InputCollectionFilter;
         // @ts-ignore
         let nameField: string[] = [props.name];
         let operator: string[] = [];
@@ -197,11 +201,8 @@ export default defineComponent({
             { immediate: true }
         );
 
-        // @ts-ignore
         if (props.filterInputs !== undefined) {
-            // @ts-ignore
             nameField = props.filterInputs.map((filter) => filter.name);
-            // @ts-ignore
             operator = props.filterInputs.map((filter) => filter.operator);
         }
 
@@ -227,7 +228,6 @@ export default defineComponent({
 
         const value = computed({
             get() {
-                // @ts-ignore
                 const filter = props.filters[nameField[0]];
                 return filter === undefined
                     ? undefined
@@ -257,7 +257,7 @@ export default defineComponent({
             () => {
                 // @ts-ignore
                 if (props.filters[nameField[0]] === undefined) {
-                    nextTick(() => {
+                    void nextTick(() => {
                         emitValue(undefined);
                     });
                 }

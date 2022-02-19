@@ -12,19 +12,22 @@ class ServiceLoginClass {
             password: null,
         });
 
-        const login = async function () {
+        const login = async () => {
             const payload = {
                 username: data.username,
                 password: data.password,
             };
 
-            const response = await fetch(`${process.env.GRAPHQL_URI}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
+            const response = await fetch(
+                `${process.env.GRAPHQL_URI ?? ''}/login`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                }
+            );
 
             if (response.ok) {
                 await ServiceApp.initialize();
@@ -44,7 +47,9 @@ class ServiceLoginClass {
 
     useLogout() {
         const logout = async () => {
-            const response = await fetch(`${process.env.GRAPHQL_URI}/logout`);
+            const response = await fetch(
+                `${process.env.GRAPHQL_URI ?? ''}/logout`
+            );
 
             if (response.ok) {
                 const { setUser } = useUser();

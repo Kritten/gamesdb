@@ -21,7 +21,6 @@ import GamesTimePlayed from '@/modules/statistics/components/games-time-played.v
 import GamesBestRated from '@/modules/statistics/components/games-best-rated.vue';
 import PlaytimesPerDay from '@/modules/statistics/components/playtimes-per-day.vue';
 import LastSession from '@/modules/statistics/components/last-session.vue';
-import ListSessionsVirtual from '@/modules/session/list/list-sessions-virtual.vue';
 import DataCard from '@/modules/app/dashboard/data-card.vue';
 import type { TypeCardData } from '@/modules/app/dashboard/dashboard.types';
 

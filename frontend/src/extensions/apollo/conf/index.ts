@@ -8,7 +8,7 @@ export /* async */ function getClientOptions(/* {app, router, ...}: Partial<Boot
         <ApolloClientOptions<unknown>>{
             link: createHttpLink({
                 uri:
-                    `${process.env.GRAPHQL_URI}/graphql` ||
+                    `${process.env.GRAPHQL_URI ?? ''}/graphql` ||
                     // Change to your graphql endpoint.
                     'http://localhost:4000/graphql',
             }),

@@ -5,7 +5,6 @@ import {
     eachDayOfInterval,
     endOfDay,
     format,
-    parse,
     set,
     startOfDay,
     startOfMonth,
@@ -68,6 +67,7 @@ class ServiceStatisticsClass {
         >({
             data,
             query: queryStatisticsGamesCountPlayed,
+            // eslint-disable-next-line @typescript-eslint/require-await
             parseResult: async (response) => ({
                 count: response.statisticsGamesCountPlayed.count,
                 items: response.statisticsGamesCountPlayed.items.map(
@@ -113,6 +113,7 @@ class ServiceStatisticsClass {
         >({
             data,
             query: queryStatisticsGamesTimePlayed,
+            // eslint-disable-next-line @typescript-eslint/require-await
             parseResult: async (response) => ({
                 count: response.statisticsGamesTimePlayed.count,
                 items: response.statisticsGamesTimePlayed.items.map((item) => ({
@@ -154,6 +155,7 @@ class ServiceStatisticsClass {
         >({
             data,
             query: queryPageGame,
+            // eslint-disable-next-line @typescript-eslint/require-await
             parseResult: async (response) => ({
                 count: response.games.count,
                 items: response.games.items.map((item) => ({
@@ -164,14 +166,10 @@ class ServiceStatisticsClass {
     }
 
     loadPageStatisticsPlaytimesPerDay = async (
-        { page, count, sortBy, sortDesc, filters, leftJoins }: InputCollection,
+        { page, filters, leftJoins }: InputCollection,
         payload: unknown = {}
     ) => {
-        const {
-            endInitial,
-            analogOnly = false,
-            digitalOnly = false,
-        } = payload as {
+        const { endInitial } = payload as {
             endInitial: Date;
             analogOnly?: boolean;
             digitalOnly?: boolean;
@@ -263,7 +261,6 @@ class ServiceStatisticsClass {
         for (let i = 0; i < entries.length; i += 1) {
             const [dateString, playtimes] = entries[i];
             // console.log(dateString, 'dateString');
-            const date = parse(dateString, 'yyyy-MM-dd HH:mm:ss', 0);
             playtimes.sort((playtime1, playtime2) =>
                 compareAsc(playtime1.start, playtime2.start)
             );

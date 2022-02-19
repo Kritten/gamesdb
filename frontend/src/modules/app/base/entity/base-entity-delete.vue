@@ -47,7 +47,9 @@ export default defineComponent({
         },
         useDeleteEntity: {
             required: true,
-            type: Function,
+            type: Function as PropType<
+                () => { delete: (entity: Entity) => Promise<boolean> }
+            >,
         },
         label: {
             required: false,

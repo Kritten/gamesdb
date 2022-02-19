@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
@@ -35,7 +35,12 @@ export default defineComponent({
         },
         useUpdateEntity: {
             required: true,
-            type: Function,
+            type: Function as PropType<
+                (entityPassed: Entity) => {
+                    entity: Ref<Entity>;
+                    update: () => Promise<void>;
+                }
+            >,
         },
         optionsButton: {
             required: false,
@@ -73,7 +78,7 @@ export default defineComponent({
 
         const validation = useVuelidate(
             computed(() => props.validationRules),
-            updateEntity.entity,
+            updateEntity.entity as unknown as Ref<Record<string, unknown>>,
             { $stopPropagation: true }
         );
 

@@ -71,7 +71,7 @@ class ServiceSessionClass implements ServiceCollectionInterface<Session> {
                     session.value.game = game;
                 }
 
-                if (session.value.game === undefined) return;
+                if (session.value.game === undefined) return undefined;
 
                 session.value.isVirtual = true;
                 const dateCurrent = new Date();

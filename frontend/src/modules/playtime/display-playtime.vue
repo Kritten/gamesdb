@@ -26,7 +26,7 @@ export default defineComponent({
             required: true,
         },
     },
-    setup(props, { emit }) {
+    setup() {
         const { t } = useI18n();
 
         return {

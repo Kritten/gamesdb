@@ -145,7 +145,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseListFilter from '@/modules/app/base/base-list-filter.vue';
 import { useUniverse } from '@/modules/universe/composables/useUniverse';
@@ -153,6 +153,7 @@ import InputSelectUniverse from '@/modules/universe/base/input-select-universe.v
 import InputSelectMood from '@/modules/mood/base/input-select-mood.vue';
 import InputSelectCategory from '@/modules/category/base/input-select-category.vue';
 import InputSelectMechanism from '@/modules/mechanism/base/input-select-mechanism.vue';
+import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 
 export default defineComponent({
     name: 'ListFiltersGame',
@@ -160,7 +161,7 @@ export default defineComponent({
     props: {
         modelValue: {
             required: true,
-            type: Object,
+            type: Object as PropType<ServiceCollectionFilters>,
         },
     },
     emits: ['reset', 'update-filter'],

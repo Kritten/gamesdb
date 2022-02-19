@@ -24,10 +24,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, PropType, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
+import { Entity } from '@/modules/app/utilities/entity/entity.model';
 
 export default defineComponent({
     name: 'BaseEntityCreate',
@@ -39,7 +40,16 @@ export default defineComponent({
         },
         useCreateEntity: {
             required: true,
-            type: Function,
+            type: Function as PropType<
+                ({
+                    valuesInitial,
+                }: {
+                    valuesInitial?: Record<string, unknown>;
+                }) => {
+                    entity: Ref<Entity>;
+                    create: () => Promise<Entity>;
+                }
+            >,
         },
         validationRules: {
             required: false,
@@ -67,7 +77,7 @@ export default defineComponent({
 
         const validation = useVuelidate(
             computed(() => props.validationRules),
-            createEntity.entity,
+            createEntity.entity as unknown as Ref<Record<string, unknown>>,
             { $stopPropagation: true }
         );
 

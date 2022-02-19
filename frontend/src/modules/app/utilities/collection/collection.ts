@@ -122,8 +122,9 @@ export function useCollection<T>(
             payload
         );
 
+        // Check if it's still the most recent request
         if (counter < counterRequests) {
-            return;
+            return undefined;
         }
 
         countItems.value = response.count;
@@ -174,7 +175,7 @@ export function useCollection<T>(
 
     watch(
         sortBy,
-        (value) => {
+        () => {
             void reset();
         },
         { deep: true }
@@ -182,7 +183,7 @@ export function useCollection<T>(
 
     watch(
         sortDesc,
-        (value) => {
+        () => {
             void reset();
         },
         { deep: true }
