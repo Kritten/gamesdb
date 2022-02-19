@@ -1,8 +1,8 @@
 import { Ref, ref } from 'vue';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
-import { mutate } from '@/modules/app/utilities/helpers';
 import { TypeBaseUseCreateEntityParameters } from '@/modules/app/base/composables/baseEntity.types';
 import { queue } from '@/queue';
+import { mutate } from '@/boot/apollo';
 
 export const baseUseCreateEntity = <T extends Entity, P>({
     cls: Cls,

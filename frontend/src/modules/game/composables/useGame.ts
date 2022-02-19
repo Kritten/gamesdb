@@ -1,9 +1,9 @@
 import { ref } from 'vue';
 import { ID } from '@/modules/app/utilities/entity/entity.types';
 import { Game } from '@/modules/game/game.model';
-import { query } from '@/modules/app/utilities/helpers';
 import { GameInterface, GameLoading } from '@/modules/game/game.types';
 import { queryGame } from '@/modules/game/graphql/game.graphql';
+import { query } from '@/boot/apollo';
 
 const countTotalAnalog = ref<number>();
 const countTotalDigital = ref<number>();

@@ -7,7 +7,7 @@ import {
     ServiceCollectionFilters,
     ServiceCollectionLoadPageType,
 } from '@/modules/app/utilities/collection/collection.types';
-import { query } from '@/modules/app/utilities/helpers';
+import { query } from '@/boot/apollo';
 
 /**
  * Used for paginated data loading

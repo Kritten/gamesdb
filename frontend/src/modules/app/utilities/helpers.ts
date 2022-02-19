@@ -1,10 +1,7 @@
 import { computed } from 'vue';
-import { DocumentNode } from 'graphql';
 
 import { ErrorObject } from '@vuelidate/core';
 import { useI18n } from 'vue-i18n';
-import { type } from 'os';
-import { apolloClients } from '@/boot/apollo';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 
 type TypePropsSingle = Entity | number | string | boolean | Date;
@@ -121,38 +118,6 @@ export function useId(): { generate: () => number } {
         },
     };
 }
-
-export const query = async <T>(
-    queryPassed: DocumentNode,
-    variables?: Record<string, unknown>
-): Promise<T> => {
-    const response = await apolloClients.default.query({
-        query: queryPassed,
-        variables,
-    });
-
-    return response.data as unknown as T;
-    // TODO: Replace when apollo is updated
-    // const { onResult } = useQuery(queryPassed, variables === undefined ? {} : variables);
-    // console.warn(onResult, 'onResult');
-    // resolve({} as T);
-    // onResult((response) => {
-    //   console.warn(response, 'response');
-    //   resolve(response.data as unknown as T);
-    // });
-};
-
-export const mutate = async <T>(
-    mutationPassed: DocumentNode,
-    variables?: Record<string, unknown>
-): Promise<T> => {
-    const response = await apolloClients.default.mutate({
-        mutation: mutationPassed,
-        variables,
-    });
-
-    return response.data as unknown as T;
-};
 
 export const displayIsCoop = (isCoop: boolean) => {
     const { t } = useI18n();

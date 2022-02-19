@@ -13,10 +13,10 @@ import {
     ServiceCollectionInterface,
     ServiceCollectionLoadPage,
 } from '@/modules/app/utilities/collection/collection.types';
-import { mutate, query } from '@/modules/app/utilities/helpers';
 import { WishlistInterface } from '@/modules/wishlist/wishlist.types';
 import { useWishlist } from '@/modules/wishlist/composables/useWishlist';
 import { ID } from '../app/utilities/entity/entity.types';
+import { mutate, query } from '@/boot/apollo';
 
 class ServiceWishlistClass implements ServiceCollectionInterface<Wishlist> {
     async updateTaken(wishlist: Wishlist) {

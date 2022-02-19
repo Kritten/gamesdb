@@ -1,9 +1,10 @@
 import { ApolloClient /* , createHttpLink */ } from '@apollo/client/core';
 import { boot } from 'quasar/wrappers';
 /* import type { BootFileParams } from '@quasar/app' */
+import { DocumentNode } from 'graphql';
 import { getClientOptions } from '@/extensions/apollo/conf';
 
-export let apolloClients: Record<string, ApolloClient<unknown>>;
+let apolloClients: Record<string, ApolloClient<unknown>>;
 
 export default boot(
     /* async */ (/* {app, router, ...}: BootFileParams<unknown> */) => {
@@ -30,3 +31,35 @@ export default boot(
         };
     }
 );
+
+export const query = async <T>(
+    queryPassed: DocumentNode,
+    variables?: Record<string, unknown>
+): Promise<T> => {
+    const response = await apolloClients.default.query({
+        query: queryPassed,
+        variables,
+    });
+
+    return response.data as unknown as T;
+    // TODO: Replace when apollo is updated
+    // const { onResult } = useQuery(queryPassed, variables === undefined ? {} : variables);
+    // console.warn(onResult, 'onResult');
+    // resolve({} as T);
+    // onResult((response) => {
+    //   console.warn(response, 'response');
+    //   resolve(response.data as unknown as T);
+    // });
+};
+
+export const mutate = async <T>(
+    mutationPassed: DocumentNode,
+    variables?: Record<string, unknown>
+): Promise<T> => {
+    const response = await apolloClients.default.mutate({
+        mutation: mutationPassed,
+        variables,
+    });
+
+    return response.data as unknown as T;
+};

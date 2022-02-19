@@ -1,5 +1,4 @@
 import { queryUserCurrent } from '@/modules/user/graphql/user.graphql';
-import { User } from '@/modules/user/user.model';
 import { queryCategories } from '@/modules/category/graphql/category.graphql';
 import { Category } from '@/modules/category/category.model';
 import { queryMechanisms } from '@/modules/mechanism/graphql/mechanism.graphql';
@@ -11,7 +10,6 @@ import { Player } from '@/modules/player/player.model';
 import { queryUniverses } from '@/modules/universe/graphql/universe.graphql';
 import { Universe } from '@/modules/universe/universe.model';
 import { UserInterface } from '@/modules/user/user.types';
-import { query } from '@/modules/app/utilities/helpers';
 import { EntityInterface } from '@/modules/app/utilities/entity/entity.types';
 import { useUser } from '@/modules/user/composables/useUser';
 import { useApp } from '@/modules/app/composables/useApp';
@@ -23,6 +21,7 @@ import { useMood } from '@/modules/mood/composables/useMood';
 import { useMechanism } from '@/modules/mechanism/composables/useMechanism';
 import { useCategory } from '@/modules/category/composables/useCategory';
 import { queue } from '@/queue';
+import { query } from '@/boot/apollo';
 
 class ServiceAppClass {
     async initialize() {
