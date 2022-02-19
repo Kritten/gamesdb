@@ -167,7 +167,11 @@ export default defineComponent({
         );
 
         const weeks = computed(() => {
-            const days = collectionStatisticsPlaytimesPerDay.items.value;
+            const days: Array<{
+                date: string;
+                seconds: number;
+                isFirstDayOfMonth?: boolean;
+            }> = collectionStatisticsPlaytimesPerDay.items.value;
 
             if (days.length === 0) {
                 return [];
@@ -175,7 +179,6 @@ export default defineComponent({
 
             let numberOfDays = 0;
             while (numberOfDays < days.length) {
-                // @ts-ignore
                 days[numberOfDays].isFirstDayOfMonth = true;
                 numberOfDays += getDaysInMonth(
                     parse(days[numberOfDays].date, 'yyyy-MM-dd HH:mm:ss', 0)
@@ -209,7 +212,7 @@ export default defineComponent({
 
             for (let i = 0; i < weeks.value.length; i += 1) {
                 const week = weeks.value[i];
-                // @ts-ignore
+
                 const weekDay = week.find(
                     (day) => day.isFirstDayOfMonth === true
                 );
@@ -240,8 +243,6 @@ export default defineComponent({
 
         const calculateBackgroundColor = (seconds: number) => {
             const ratio = seconds / 86400;
-
-            const foo = [0, 0.041, 0.125, 0.2, 0.3333333];
 
             if (ratio > 0) {
                 if (ratio < 0.041) {

@@ -37,6 +37,7 @@
 import { computed, defineComponent, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
+    EmitFunction,
     getValidator,
     useId,
     useModelWrapper,
@@ -87,7 +88,7 @@ export default defineComponent({
             modelValueInternal: useModelWrapper<boolean>({
                 // @ts-ignore
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'modelValue',
             }),
             baseInput,

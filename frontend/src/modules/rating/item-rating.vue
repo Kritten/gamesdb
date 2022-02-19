@@ -33,7 +33,7 @@ import InputSelectGame from '@/modules/game/base/input-select-game.vue';
 import InputSelectPlayer from '@/modules/player/base/input-select-player.vue';
 import { Game } from '../game/game.model';
 import { Player } from '../player/player.model';
-import { useModelWrapper } from '../app/utilities/helpers';
+import { EmitFunction, useModelWrapper } from '../app/utilities/helpers';
 
 export default defineComponent({
     name: 'ItemRating',
@@ -72,12 +72,12 @@ export default defineComponent({
             // gameInternal,
             ratingInternal: useModelWrapper({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'rating',
             }),
             playerInternal: useModelWrapper({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'player',
             }),
             updateGame(event: unknown) {

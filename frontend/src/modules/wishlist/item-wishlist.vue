@@ -82,7 +82,11 @@ import { Validation } from '@vuelidate/core';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
 import { Wishlist } from '@/modules/wishlist/wishlist.model';
-import { toNumber, useModelWrapper } from '@/modules/app/utilities/helpers';
+import {
+    EmitFunction,
+    toNumber,
+    useModelWrapper,
+} from '@/modules/app/utilities/helpers';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 import BaseInputBoolean from '@/modules/app/base/inputs/base-input-boolean.vue';
 import BaseInputSelect from '@/modules/app/base/inputs/base-input-select.vue';
@@ -167,38 +171,38 @@ export default defineComponent({
             collectionGame,
             nameInternal: useModelWrapper<string>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'name',
             }),
             priceInternal: useModelWrapper<number>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'price',
                 parse: (value) => toNumber(value as string),
             }),
             takenInternal: useModelWrapper<boolean>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'taken',
             }),
             descriptionInternal: useModelWrapper<string>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'description',
             }),
             linkInternal: useModelWrapper<string>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'link',
             }),
             imagesInternal: useModelWrapper({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'images',
             }),
             giftForInternal: useModelWrapper({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'giftFor',
                 parse: (value) => toNumber(value as string),
             }),

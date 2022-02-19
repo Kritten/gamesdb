@@ -3,11 +3,14 @@ import { DocumentNode } from 'graphql';
 
 import { ErrorObject } from '@vuelidate/core';
 import { useI18n } from 'vue-i18n';
+import { type } from 'os';
 import { apolloClients } from '@/boot/apollo';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
 
 type TypePropsSingle = Entity | number | string | boolean | Date;
 type TypeProps = TypePropsSingle | Array<TypePropsSingle>;
+
+export type EmitFunction = (event: string, ...args: unknown[]) => void;
 
 export function useModelWrapper<T extends TypeProps>({
     props,
@@ -19,7 +22,7 @@ export function useModelWrapper<T extends TypeProps>({
 }: {
     props: { [key: string]: Entity | Entity[] | unknown };
     // TODO any ist hier notwendig weil string irgendwie nicht funktioniert
-    emit: (event: unknwon, ...args: unknown[]) => void;
+    emit: EmitFunction;
     name?: string;
     isEntity?: boolean;
     entities?: { [key: string]: unknown };

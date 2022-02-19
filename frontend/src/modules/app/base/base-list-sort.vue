@@ -111,10 +111,7 @@ export default defineComponent({
         const addSortBy = () => {
             emit('update:sortBy', [...props.sortBy, sortByNew.value]);
             // @ts-ignore
-            emit('update:sortDesc', [
-                ...props.sortDesc,
-                sortDescNew.value === 'true',
-            ]);
+            emit('update:sortDesc', [...props.sortDesc, sortDescNew.value]);
         };
 
         const removeSortBy = (index: number) => {

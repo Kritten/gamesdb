@@ -17,7 +17,11 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
 import { Validation } from '@vuelidate/core';
-import { getValidator, useModelWrapper } from '@/modules/app/utilities/helpers';
+import {
+    EmitFunction,
+    getValidator,
+    useModelWrapper,
+} from '@/modules/app/utilities/helpers';
 import { useBaseInput } from '@/modules/app/base/inputs/base-input';
 import BaseInputText from '@/modules/app/base/inputs/base-input-text.vue';
 
@@ -55,7 +59,7 @@ export default defineComponent({
             baseInput,
             modelInternal: useModelWrapper<number>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'modelValue',
             }),
             optionsMerged: computed(() => ({

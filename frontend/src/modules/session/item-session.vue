@@ -125,7 +125,11 @@
 import { useI18n } from 'vue-i18n';
 import { computed, defineComponent, PropType } from 'vue';
 import { Validation } from '@vuelidate/core';
-import { translate, useModelWrapper } from '@/modules/app/utilities/helpers';
+import {
+    EmitFunction,
+    translate,
+    useModelWrapper,
+} from '@/modules/app/utilities/helpers';
 import { Game } from '@/modules/game/game.model';
 import InputSelectGame from '@/modules/game/base/input-select-game.vue';
 import InputSelectPlayer from '@/modules/player/base/input-select-player.vue';
@@ -149,12 +153,12 @@ export default defineComponent({
     },
     props: {
         game: {
-            type: Game,
+            type: Object as PropType<Game>,
             required: false,
             default: undefined,
         },
         comment: {
-            validator: (value) => typeof value === 'string' || value === null,
+            type: Object as PropType<string | null>,
             required: true,
         },
         isChallenge: {
@@ -162,15 +166,15 @@ export default defineComponent({
             required: true,
         },
         players: {
-            type: Array,
+            type: Array as PropType<Array<unknown>>,
             required: true,
         },
         winners: {
-            type: Array,
+            type: Array as PropType<Array<unknown>>,
             required: true,
         },
         playtimes: {
-            type: Array,
+            type: Array as PropType<Array<unknown>>,
             required: true,
         },
         hideGame: {
@@ -190,7 +194,7 @@ export default defineComponent({
 
         const playtimesInternal = useModelWrapper<Array<Playtime>>({
             props,
-            emit,
+            emit: emit as EmitFunction,
             name: 'playtimes',
         });
 
@@ -201,22 +205,22 @@ export default defineComponent({
             t,
             playersInternal: useModelWrapper<Array<Player>>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'players',
             }),
             winnersInternal: useModelWrapper<Array<Player>>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'winners',
             }),
             commentInternal: useModelWrapper<string>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'comment',
             }),
             isChallengeInternal: useModelWrapper<boolean>({
                 props,
-                emit,
+                emit: emit as EmitFunction,
                 name: 'isChallenge',
             }),
             playtimesInternal,
@@ -227,10 +231,10 @@ export default defineComponent({
                 emit('update:game', event);
             },
             errorMessagePlaytimes: computed(() => {
-                // todo
-                // @ts-ignore
-                if (props.validation.playtimes?.$errors.length > 0) {
-                    // @ts-ignore
+                if (
+                    props.validation !== undefined &&
+                    props.validation.playtimes?.$errors.length > 0
+                ) {
                     return translate(
                         (props as { validation: Validation }).validation
                             .playtimes?.$errors[0],
