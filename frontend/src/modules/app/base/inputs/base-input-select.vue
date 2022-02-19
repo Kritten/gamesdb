@@ -21,7 +21,7 @@
         </template>
 
         <template
-            v-if="Array.isArray(modelValue)"
+            v-else-if="Array.isArray(modelValue)"
             #option="{ itemProps, opt, selected, toggleOption }"
         >
             <q-item v-bind="itemProps">
@@ -118,6 +118,7 @@ export default defineComponent({
             optionsMerged.value.items
         );
 
+        // eslint-disable-next-line vue/no-setup-props-destructure
         let filterInternal = props.filter;
         if (filterInternal === undefined) {
             filterInternal = (

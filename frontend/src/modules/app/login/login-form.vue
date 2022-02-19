@@ -66,7 +66,7 @@ import BaseButtonSubmit from '@/modules/app/base/base-button-submit.vue';
 import BaseLink from '@/modules/app/base/base-link.vue';
 
 export default defineComponent({
-    name: 'Login',
+    name: 'LoginForm',
     components: { BaseLink, BaseButtonSubmit, BaseInputText },
     setup() {
         const { t } = useI18n();

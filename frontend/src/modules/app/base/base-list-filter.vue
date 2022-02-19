@@ -123,15 +123,13 @@ export default defineComponent({
         },
         filterInputs: {
             required: false,
-            type: Array,
+            type: Array as PropType<Array<unknown>>,
             default: undefined,
         },
         items: {
-            type: Array,
             required: false,
-            default() {
-                return [];
-            },
+            type: Array as PropType<Array<unknown>>,
+            default: () => [],
         },
         input: {
             type: Object as PropType<Component>,
@@ -140,7 +138,7 @@ export default defineComponent({
         },
         options: {
             required: false,
-            type: Object,
+            type: Object as PropType<Record<string, unknown>>,
             default: () => ({}),
         },
     },
@@ -184,15 +182,20 @@ export default defineComponent({
                 operator.push('=');
                 break;
             default:
-                // @ts-ignore
-                throw Error(`Unknown filter type ${props.type}`);
+                throw Error('Unknown filter type');
         }
 
-        // @ts-ignore
-        if (props.operator !== undefined) {
-            // @ts-ignore
-            operator[0] = props.operator;
-        }
+        watch(
+            () => props.operator,
+            (value) => {
+                // @ts-ignore
+                if (value !== undefined) {
+                    // @ts-ignore
+                    operator[0] = value;
+                }
+            },
+            { immediate: true }
+        );
 
         // @ts-ignore
         if (props.filterInputs !== undefined) {
@@ -208,7 +211,7 @@ export default defineComponent({
                 valueNew = toNumber(valueNew as string);
             }
 
-            const payload: { [key: string]: {} } = {};
+            const payload: { [key: string]: Record<string, unknown> } = {};
 
             for (let i = 0; i < operator.length; i += 1) {
                 payload[nameField[i]] = {

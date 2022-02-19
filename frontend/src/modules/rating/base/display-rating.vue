@@ -19,6 +19,7 @@ export default defineComponent({
     props: {
         rating: {
             required: true,
+            type: Number,
         },
         dense: {
             required: false,

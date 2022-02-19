@@ -92,6 +92,7 @@ export default defineComponent({
             default: () => ({}),
         },
     },
+    emits: ['update:modelValue'],
     setup(props, { emit }) {
         const baseInput = useBaseInput<
             boolean | number | undefined,

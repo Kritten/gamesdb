@@ -54,10 +54,13 @@ export class Game extends Entity implements GameInterface {
 
     images: Array<string>;
 
+    // eslint-disable-next-line no-use-before-define
     playableWith: Game[];
 
+    // eslint-disable-next-line no-use-before-define
     isExpansionOf: Game | null;
 
+    // eslint-disable-next-line no-use-before-define
     expansions: Game[];
 
     ratings: Rating[];

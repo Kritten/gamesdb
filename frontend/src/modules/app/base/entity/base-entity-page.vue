@@ -69,7 +69,6 @@
 import { computed, defineComponent, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Entity } from '@/modules/app/utilities/entity/entity.model';
-import BaseEntityCreate from '@/modules/app/base/entity/base-entity-create.vue';
 import BaseEntityUpdate from '@/modules/app/base/entity/base-entity-update.vue';
 import BaseEntityDelete from '@/modules/app/base/entity/base-entity-delete.vue';
 import BaseEntityHeaderInfo from '@/modules/app/base/entity/base-entity-header-info.vue';
@@ -80,7 +79,6 @@ export default defineComponent({
         BaseEntityHeaderInfo,
         BaseEntityDelete,
         BaseEntityUpdate,
-        BaseEntityCreate,
     },
     props: {
         entities: {

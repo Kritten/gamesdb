@@ -95,13 +95,14 @@ export default defineComponent({
             watchFilters: false,
         });
 
+        // eslint-disable-next-line no-restricted-syntax
         for (const event of [
             'createdRating',
             'updatedRating',
             'deletedRating',
         ]) {
             queue.listen(event, () => {
-                collection.reset();
+                void collection.reset();
             });
         }
 

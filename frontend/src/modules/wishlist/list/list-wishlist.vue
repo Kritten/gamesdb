@@ -141,7 +141,10 @@ export default defineComponent({
             name: string;
             filter: InputCollectionFilter;
         }) => {
-            filtersProcessed.value = Object.assign(filters.value, data);
+            filtersProcessed.value = Object.assign(
+                filtersProcessed.value,
+                data
+            );
             // TODO: send type of filter, and decide if resetDebounce or reset
             collection.resetDebounced();
         };

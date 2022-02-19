@@ -57,6 +57,7 @@ class ServiceAppClass {
     }
 
     initializeEventListener() {
+        // eslint-disable-next-line no-restricted-syntax
         for (const event of [
             'createdGame',
             'createdRating',

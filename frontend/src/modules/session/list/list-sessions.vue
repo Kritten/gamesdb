@@ -89,13 +89,14 @@ export default defineComponent({
             emit('updatedCountItems', collection.countItems.value);
         });
 
+        // eslint-disable-next-line no-restricted-syntax
         for (const event of [
             'createdSession',
             'updatedSession',
             'deletedSession',
         ]) {
             queue.listen(event, () => {
-                collection.reset();
+                void collection.reset();
             });
         }
 

@@ -18,7 +18,8 @@
                         size="xs"
                     />/{{ countTotal }})
 
-                    <!--              {{ collection.countItems.value }} {{ t('game.label', collection.countItems.value) }}-->
+                    <!-- {{ collection.countItems.value }}
+                    {{ t('game.label', collection.countItems.value) }} -->
                 </div>
             </list-filters-game>
         </div>
@@ -63,7 +64,7 @@ import {
     ServiceCollectionFilters,
     InputCollectionFilter,
 } from '@/modules/app/utilities/collection/collection.types';
-import RandomGame from '@/modules/game/random-game.vue';
+// import RandomGame from '@/modules/game/random-game.vue';
 import { useGame } from '@/modules/game/composables/useGame';
 import BaseSpinner from '@/modules/app/base/base-spinner.vue';
 import { GameLoading } from '@/modules/game/game.types';
@@ -72,7 +73,7 @@ export default defineComponent({
     name: 'ListGames',
     components: {
         BaseSpinner,
-        RandomGame,
+        // RandomGame,
         ListItemGame,
         ListFiltersGame,
         BaseListSort,
@@ -142,9 +143,10 @@ export default defineComponent({
             watchFilters: false,
         });
 
+        // eslint-disable-next-line no-restricted-syntax
         for (const event of ['createdGame', 'updatedGame']) {
             queue.listen(event, () => {
-                collection.reset();
+                void collection.reset();
             });
         }
 

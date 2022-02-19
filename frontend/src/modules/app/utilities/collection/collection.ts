@@ -150,10 +150,21 @@ export function useCollection<T>(
         return loadNextItemsInternal(counterRequests, addToExistingItems);
     };
 
+    const reset = async () => {
+        items.value = [];
+        countItems.value = -1;
+        pageRef.value = 1;
+        await loadNextItems();
+    };
+
+    const resetDebounced = debounce(() => {
+        void reset();
+    }, 500);
+
     if (watchFilters) {
         watch(
             filters,
-            (value) => {
+            () => {
                 console.warn('CALLED WATCH FILTERS, check if used');
                 resetDebounced();
             },
@@ -177,19 +188,8 @@ export function useCollection<T>(
         { deep: true }
     );
 
-    const reset = async () => {
-        items.value = [];
-        countItems.value = -1;
-        pageRef.value = 1;
-        await loadNextItems();
-    };
-
-    const resetDebounced = debounce(() => {
-        void reset();
-    }, 500);
-
     if (immediate) {
-        loadNextItems();
+        void loadNextItems();
     }
 
     return {

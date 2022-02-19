@@ -184,6 +184,7 @@ export default defineComponent({
             default: undefined,
         },
     },
+    emits: ['update:game'],
     setup(props, { emit }) {
         const { t } = useI18n();
 

@@ -113,11 +113,9 @@ import { de } from 'date-fns/locale';
 import { useCollection } from '@/modules/app/utilities/collection/collection';
 import { ServiceStatistics } from '@/modules/statistics/statistics.service';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
-import BaseDateTime from '@/modules/app/base/base-date-time.vue';
 
 export default defineComponent({
     name: 'PlaytimesPerDay',
-    components: { BaseDateTime },
     props: {
         analogOnly: {
             required: false,

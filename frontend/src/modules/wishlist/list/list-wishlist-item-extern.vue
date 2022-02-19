@@ -54,6 +54,7 @@
                 </q-card-section>
 
                 <q-card-section class="col-grow">
+                    <!-- eslint-disable-next-line vue/no-v-html -->
                     <div v-html="wishlistItem.description" />
                 </q-card-section>
 
@@ -115,14 +116,12 @@ import { Wishlist } from '@/modules/wishlist/wishlist.model';
 import DisplayGiftFor from '@/modules/wishlist/display/display-gift-for.vue';
 import DisplayPriceRange from '@/modules/wishlist/display/display-price-range.vue';
 import { ServiceWishlist } from '@/modules/wishlist/wishlist.service';
-import BaseLink from '@/modules/app/base/base-link.vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
 
 export default defineComponent({
     name: 'ListWishlistItemExtern',
     components: {
         BaseDialog,
-        BaseLink,
         DisplayPriceRange,
         DisplayGiftFor,
     },

@@ -220,7 +220,7 @@ class ServiceStatisticsClass {
                 return obj;
             }, {} as { [key: string]: { date: string; seconds: number } });
 
-        for (let i = 0; i < result.length; i++) {
+        for (let i = 0; i < result.length; i += 1) {
             const data = result[i];
             interval[data.date].seconds = data.seconds;
         }
@@ -242,7 +242,7 @@ class ServiceStatisticsClass {
 
         const days: { [key: string]: Playtime[] } = {};
 
-        for (let i = 0; i < playtimesRaw.length; i++) {
+        for (let i = 0; i < playtimesRaw.length; i += 1) {
             const playtime = playtimesRaw[i];
             // format the date to current timezone
             const key = format(
@@ -260,7 +260,7 @@ class ServiceStatisticsClass {
         const entries = Object.entries(days);
         const result: { date: string; seconds: number }[] = [];
 
-        for (let i = 0; i < entries.length; i++) {
+        for (let i = 0; i < entries.length; i += 1) {
             const [dateString, playtimes] = entries[i];
             // console.log(dateString, 'dateString');
             const date = parse(dateString, 'yyyy-MM-dd HH:mm:ss', 0);
@@ -273,7 +273,7 @@ class ServiceStatisticsClass {
             // console.log(differenceInSeconds(playtimes[0].start, date), 'differenceInSeconds');
 
             let difference = 0;
-            for (let j = 0; j < playtimes.length; j++) {
+            for (let j = 0; j < playtimes.length; j += 1) {
                 const playtime = playtimes[j];
                 difference += differenceInSeconds(
                     playtime.end as Date,

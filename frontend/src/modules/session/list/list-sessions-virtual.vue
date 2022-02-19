@@ -95,7 +95,11 @@ export default defineComponent({
         refresh: {
             required: false,
             type: Object as PropType<{ callback: (() => void) | null }>,
-            default: () => ({ callback: () => {} }),
+            default: () => ({
+                callback: () => {
+                    // do nothing
+                },
+            }),
         },
     },
     setup(props) {
@@ -117,6 +121,7 @@ export default defineComponent({
 
         const useTrackSession = ServiceSession.useTrackSession();
 
+        // eslint-disable-next-line no-restricted-syntax
         for (const event of [
             'startedSessionVirtual',
             'continuedSession',
@@ -125,7 +130,7 @@ export default defineComponent({
             'updatedSession',
         ]) {
             queue.listen(event, () => {
-                collection.reset();
+                void collection.reset();
             });
         }
 

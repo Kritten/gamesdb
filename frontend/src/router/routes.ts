@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 // import { useUser } from '@/modules/user/composables/useUser';
 // import Login from 'src/modules/app/login/login.vue';
 import { watch } from 'vue';
-import Login from '@/modules/app/login/login.vue';
+import LoginForm from '@/modules/app/login/login-form.vue';
 import { User } from '@/modules/user/user.model';
 import ViewDisplayWishlist from '@/modules/wishlist/views/display-wishlist.view.vue';
 import ViewApp from '@/modules/app/app.view.vue';
@@ -58,7 +58,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/login',
         name: 'login',
-        component: Login,
+        component: LoginForm,
         beforeEnter: (to, from, next) => {
             // redirect the user to the dashboard if he is already logged in
             if (user.value !== undefined && user.value !== null) {

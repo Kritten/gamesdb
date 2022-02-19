@@ -11,7 +11,7 @@
             <input-select-game
                 :model-value="game"
                 :validation="validation?.game"
-                @update:modelValue="updateGame"
+                @update:model-value="updateGame"
             />
         </div>
 
@@ -59,6 +59,7 @@ export default defineComponent({
             default: undefined,
         },
     },
+    emits: ['update:game'],
     setup(props, { emit }) {
         const { t } = useI18n();
 

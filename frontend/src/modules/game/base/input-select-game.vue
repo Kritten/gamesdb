@@ -110,7 +110,9 @@ export default defineComponent({
                 }
 
                 void collectionGame.reset().then(() => {
-                    update(() => {});
+                    update(() => {
+                        // do nothing
+                    });
                 });
             },
             updateGame(event: { value: unknown }) {

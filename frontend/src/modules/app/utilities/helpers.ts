@@ -19,7 +19,7 @@ export function useModelWrapper<T extends TypeProps>({
 }: {
     props: { [key: string]: Entity | Entity[] | unknown };
     // TODO any ist hier notwendig weil string irgendwie nicht funktioniert
-    emit: (event: any, ...args: unknown[]) => void;
+    emit: (event: unknwon, ...args: unknown[]) => void;
     name?: string;
     isEntity?: boolean;
     entities?: { [key: string]: unknown };

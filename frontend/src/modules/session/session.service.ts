@@ -48,7 +48,7 @@ class ServiceSessionClass implements ServiceCollectionInterface<Session> {
             filters,
         }).then(({ items }) => {
             if (items.length > 0) {
-                session.value = items[0];
+                [session.value] = items;
                 lastDate.value = session.value.playtimes
                     .map((playtime) => playtime.end as Date)
                     .sort(compareAsc)[session.value.playtimes.length - 1];

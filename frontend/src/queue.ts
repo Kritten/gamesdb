@@ -1,5 +1,5 @@
+type Data = unknown;
 type Callback = (data: Data) => void;
-type Data = any;
 
 class Queue {
     private readonly listeners: { [key: string]: Callback[] };
