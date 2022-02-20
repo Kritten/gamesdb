@@ -65,7 +65,7 @@ jobs:
         working-directory: ./
       - run: ls
       - run: npm run build
-        # continue-on-error: true
+        continue-on-error: true
         env:
           #          VUE_APP_I18N_LOCALE: ${{ secrets.VUE_APP_I18N_LOCALE }}
           VUE_APP_API_ENDPOINT: ${{ secrets.VUE_APP_API_ENDPOINT }}
