@@ -4,6 +4,7 @@ import { Game } from '@/modules/game/game.model';
 import { GameInterface, GameLoading } from '@/modules/game/game.types';
 import { queryGame } from '@/modules/game/graphql/game.graphql';
 import { query } from '@/boot/apollo';
+import { log } from '@/modules/app/utilities/log';
 
 const countTotalAnalog = ref<number>();
 const countTotalDigital = ref<number>();
@@ -25,7 +26,7 @@ export const useGame = () => {
     return {
         setGame,
         deleteGame: (game: Game) => {
-            console.error('HANDLE THIS');
+            log.error('HANDLE THIS');
             games.delete(game.id as ID);
         },
 

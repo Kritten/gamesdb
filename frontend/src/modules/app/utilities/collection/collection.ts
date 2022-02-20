@@ -8,6 +8,7 @@ import {
     ServiceCollectionLoadPageType,
 } from '@/modules/app/utilities/collection/collection.types';
 import { query } from '@/boot/apollo';
+import { log } from '@/modules/app/utilities/log';
 
 /**
  * Used for paginated data loading
@@ -166,7 +167,7 @@ export function useCollection<T>(
         watch(
             filters,
             () => {
-                console.warn('CALLED WATCH FILTERS, check if used');
+                log.error('CALLED WATCH FILTERS, check if used');
                 resetDebounced();
             },
             { deep: true }
