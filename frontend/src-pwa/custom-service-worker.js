@@ -7,4 +7,5 @@
 import { precacheAndRoute } from 'workbox-precaching';
 
 // Use with precache injection
+// eslint-disable-next-line
 precacheAndRoute(self.__WB_MANIFEST);
