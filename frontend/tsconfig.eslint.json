@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    ".eslintrc.js",
+    ".prettierrc.js",
+    "lint-staged.config.js",
+    "vite.config.ts",
+    "src-pwa",
+    "lint-staged.config.js",
+    "quasar.conf.js"
+  ]
+}

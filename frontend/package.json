@@ -10,6 +10,8 @@
     "build": "env-cmd -f ../.env quasar build --mode pwa",
     "build-action": "quasar build --mode pwa",
     "lint": "eslint --ext .js,.ts,.vue ./",
+    "prepare": "cd .. && husky install",
+    "pre-commit": "npx lint-staged",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
@@ -42,6 +44,7 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.4.1",
+    "lint-staged": "^12.3.4",
     "prettier": "github:prettier/prettier",
     "workbox-webpack-plugin": "^6.1.5"
   },
