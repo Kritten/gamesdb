@@ -73,3 +73,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
   Nest is [MIT licensed](LICENSE).
+
+
+# Database Import:
+`docker exec -i backend_db_1 mysql --user kritten --password=password gamesdb < "kritten_gamesdb (34).sql"`

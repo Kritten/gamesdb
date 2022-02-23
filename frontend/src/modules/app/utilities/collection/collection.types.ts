@@ -39,7 +39,7 @@ export interface InputCollectionData
 
 export type ServiceCollectionLoadPageType<T> = (
     data: InputCollection,
-    payload?: unknown
+    payload?: Record<string, unknown>
 ) => ServiceCollectionLoadPageReturn<T>;
 
 export interface ServiceCollectionInterface<T> {

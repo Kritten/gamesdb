@@ -6,12 +6,12 @@ import { GamesCountPlayedCollectionDataModel } from './models/gamesCountPlayed.c
 import { StatisticsService } from './statistics.service';
 import { GamesTimePlayedCollectionDataModel } from './models/gamesTimePlayed.collectionData.model';
 import { GraphCollectionDataModel } from './models/graph.collectionData.model';
-import { GamesBestRatedCollectionDataModel } from './models/gamesBestRated.collectionData.model';
-import {CountsModel} from "./models/counts.model";
+import { CountsModel } from "./models/counts.model";
+import { GamesLastPlayedCollectionDataModel } from './models/gamesLastPlayed.collectionData.model';
 
 @Resolver()
 export class StatisticsResolver {
-  constructor(private statisticsService: StatisticsService) {}
+  constructor(private statisticsService: StatisticsService) { }
 
   @Query(() => CountsModel)
   // @UseGuards(GqlAuthGuard)
@@ -25,6 +25,14 @@ export class StatisticsResolver {
     @Args('statisticsData') data: InputCollection,
   ) {
     return this.statisticsService.gamesCountPlayed(data);
+  }
+
+  @Query(() => GamesLastPlayedCollectionDataModel)
+  @UseGuards(GqlAuthGuard)
+  async statisticsGamesLastPlayed(
+    @Args('statisticsData') data: InputCollection,
+  ) {
+    return this.statisticsService.gamesLastPlayed(data);
   }
 
   @Query(() => GamesTimePlayedCollectionDataModel)
@@ -41,5 +49,5 @@ export class StatisticsResolver {
     @Args('statisticsData') data: InputCollection,
   ) {
     return this.statisticsService.playtimesGroupedByDaytime(data);
-  }
+}
 }

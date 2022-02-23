@@ -1,448 +1,461 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
-
-schema {
-    query: Query
-    mutation: Mutation
-}
+"""Exposes a URL that specifies the behaviour of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behaviour of this scalar."""
+  url: String!
+) on SCALAR
 
 type Category {
-    games: [Game!]!
-    id: ID!
-    name: String!
-}
-
-type CountsModel {
-    gamesAnalog: Float!
-    gamesDigital: Float!
-    ratings: Float!
-    wishlists: Float!
-}
-
-type Game {
-    categories: [Category!]!
-    complexity: Int
-    countPlayersMax: Int
-    countPlayersMin: Int
-    description: String
-    expansions: [Game!]!
-    id: ID!
-    idBGG: Int
-    images: String!
-    isCoop: Boolean
-    isDigital: Boolean!
-    isExpansionOf: Game
-    mechanisms: [Mechanism!]!
-    minutesPlaytimeMax: Int
-    minutesPlaytimeMin: Int
-    moods: [Mood!]!
-    name: String!
-    playableWith: [Game!]!
-    ratingAverage: Float
-    ratingBGG: Float
-    ratingCount: Float
-    ratings: [Rating!]!
-    sessions: [Session!]!
-    size: Int
-    universes: [Universe!]!
-}
-
-type GameCollectionData {
-    count: Int!
-    items: [Game!]!
-}
-
-type GamesCountPlayedCollectionDataModel {
-    count: Int!
-    items: [GamesCountPlayedItem!]!
-}
-
-type GamesCountPlayedItem {
-    countPlayed: Int!
-    id: ID!
-    name: String!
-}
-
-type GamesTimePlayedCollectionDataModel {
-    count: Int!
-    items: [GamesTimePlayedItem!]!
-}
-
-type GamesTimePlayedItem {
-    id: ID!
-    name: String!
-    timePlayed: Int!
-}
-
-type GraphCollectionDataModel {
-    count: Int!
-    items: [GraphItem!]!
-}
-
-type GraphItem {
-    data: [Int!]!
-}
-
-type Mechanism {
-    games: [Game!]!
-    id: ID!
-    name: String!
-}
-
-type Mood {
-    games: [Game!]!
-    id: ID!
-    name: String!
-}
-
-type Mutation {
-    createCategory(categoryData: CategoryInput!): Category!
-    createGame(gameData: GameInput!): Game!
-    createMechanism(mechanismData: MechanismInput!): Mechanism!
-    createMood(moodData: MoodInput!): Mood!
-    createPlayer(playerData: PlayerInput!): Player!
-    createPlaytime(playtimeData: PlaytimeInput!): Playtime!
-    createRating(ratingData: RatingInput!): Rating!
-    createSession(sessionData: SessionInput!): Session!
-    createUniverse(universeData: UniverseInput!): Universe!
-    createWishlist(wishlistData: WishlistInput!): Wishlist!
-    deleteCategory(id: ID!): Boolean!
-    deleteGame(id: ID!): Boolean!
-    deleteMechanism(id: ID!): Boolean!
-    deleteMood(id: ID!): Boolean!
-    deletePlayer(id: ID!): Boolean!
-    deletePlaytime(id: ID!): Boolean!
-    deleteRating(id: ID!): Boolean!
-    deleteSession(id: ID!): Boolean!
-    deleteUniverse(id: ID!): Boolean!
-    deleteWishlist(id: ID!): Boolean!
-    updateCategory(categoryData: UpdateCategoryInput!): Category!
-    updateGame(gameData: UpdateGameInput!): Game!
-    updateMechanism(mechanismData: UpdateMechanismInput!): Mechanism!
-    updateMood(moodData: UpdateMoodInput!): Mood!
-    updatePlayer(playerData: UpdatePlayerInput!): Player!
-    updatePlaytime(playtimeData: UpdatePlaytimeInput!): Playtime!
-    updateRating(ratingData: UpdateRatingInput!): Rating!
-    updateSession(sessionData: UpdateSessionInput!): Session!
-    updateUniverse(universeData: UpdateUniverseInput!): Universe!
-    updateWishlist(wishlistData: UpdateWishlistInput!): Wishlist!
-    updateWishlistTaken(wishlistData: UpdateWishlistInput!): Wishlist!
-}
-
-type Player {
-    id: ID!
-    lastSession: DateTime
-    name: String!
-    ratings: [Rating!]!
-    sessionsPlayed: [Session!]!
-    sessionsWon: [Session!]!
-}
-
-type Playtime {
-    end: DateTime
-    id: ID!
-    session: Session!
-    start: DateTime!
-}
-
-type PlaytimeCollectionData {
-    count: Int!
-    items: [Playtime!]!
-}
-
-type Query {
-    categories: [Category!]!
-    category(id: ID!): Category!
-    game(id: ID!): Game!
-    games(gameData: InputCollection!): GameCollectionData!
-    mechanism(id: ID!): Mechanism!
-    mechanisms: [Mechanism!]!
-    mood(id: ID!): Mood!
-    moods: [Mood!]!
-    player(id: ID!): Player!
-    players: [Player!]!
-    playtime(id: ID!): Playtime!
-    playtimes(playtimeData: InputCollection!): PlaytimeCollectionData!
-    ratings(ratingData: InputCollection!): RatingCollectionData!
-    session(id: ID!): Session!
-    sessions(sessionData: InputCollection!): SessionCollectionData!
-    statisticsCounts: CountsModel!
-    statisticsGamesCountPlayed(statisticsData: InputCollection!): GamesCountPlayedCollectionDataModel!
-    statisticsGamesTimePlayed(statisticsData: InputCollection!): GamesTimePlayedCollectionDataModel!
-    statisticsPlaytimesGroupedByDaytime(statisticsData: InputCollection!): GraphCollectionDataModel!
-    universe(id: ID!): Universe!
-    universes: [Universe!]!
-    user(id: ID): User!
-    wishlist(id: ID!): Wishlist!
-    wishlists(wishlistData: InputCollection!): WishlistCollectionData!
-}
-
-type Rating {
-    game: Game!
-    id: ID!
-    player: Player!
-    rating: Int!
-}
-
-type RatingCollectionData {
-    count: Int!
-    items: [Rating!]!
-}
-
-type Session {
-    comment: String
-    game: Game
-    id: ID!
-    isChallenge: Boolean!
-    isVirtual: Boolean!
-    players: [Player!]!
-    playtimes: [Playtime!]!
-    winners: [Player!]!
-}
-
-type SessionCollectionData {
-    count: Int!
-    items: [Session!]!
-}
-
-type Universe {
-    games: [Game!]!
-    id: ID!
-    name: String!
-}
-
-type User {
-    id: ID!
-    name: String!
-    password: String!
-}
-
-type Wishlist {
-    description: String!
-    giftFor: Float!
-    id: ID!
-    images: String!
-    link: String!
-    name: String!
-    price: Int!
-    taken: Boolean
-}
-
-type WishlistCollectionData {
-    count: Int!
-    items: [Wishlist!]!
+  id: ID!
+  games: [Game!]!
+  name: String!
 }
 
 input CategoryInput {
-    games: [ID!]
-    id: ID
-    name: String!
+  id: ID
+  games: [ID!]
+  name: String!
+}
+
+type CountsModel {
+  gamesDigital: Float!
+  gamesAnalog: Float!
+  ratings: Float!
+  wishlists: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Game {
+  id: ID!
+  idBGG: Int
+  ratingBGG: Float
+  countPlayersMin: Int
+  countPlayersMax: Int
+  minutesPlaytimeMin: Int
+  minutesPlaytimeMax: Int
+  complexity: Int
+  size: Int
+  universes: [Universe!]!
+  categories: [Category!]!
+  mechanisms: [Mechanism!]!
+  moods: [Mood!]!
+  playableWith: [Game!]!
+  isExpansionOf: Game
+  expansions: [Game!]!
+  ratings: [Rating!]!
+  sessions: [Session!]!
+  name: String!
+  description: String
+  isCoop: Boolean
+  isDigital: Boolean!
+  images: String!
+  ratingAverage: Float
+  ratingCount: Float
+}
+
+type GameCollectionData {
+  count: Int!
+  items: [Game!]!
 }
 
 input GameInput {
-    categories: [ID!]
-    complexity: Int
-    countPlayersMax: Int
-    countPlayersMin: Int
-    description: String
-    expansions: [ID!]
-    idBGG: Int
-    images: String
-    isCoop: Boolean
-    isDigital: Boolean
-    isExpansionOf: ID
-    mechanisms: [ID!]
-    minutesPlaytimeMax: Int
-    minutesPlaytimeMin: Int
-    moods: [ID!]
-    name: String!
-    playableWith: [ID!]
-    ratingBGG: Float
-    ratings: [ID!]
-    size: Int
-    universes: [ID!]
+  idBGG: Int
+  ratingBGG: Float
+  countPlayersMin: Int
+  countPlayersMax: Int
+  minutesPlaytimeMin: Int
+  minutesPlaytimeMax: Int
+  complexity: Int
+  size: Int
+  universes: [ID!]
+  categories: [ID!]
+  mechanisms: [ID!]
+  moods: [ID!]
+  images: String
+  ratings: [ID!]
+  playableWith: [ID!]
+  isExpansionOf: ID
+  expansions: [ID!]
+  name: String!
+  description: String
+  isCoop: Boolean
+  isDigital: Boolean
+}
+
+type GamesCountPlayedCollectionDataModel {
+  count: Int!
+  items: [GamesCountPlayedItem!]!
+}
+
+type GamesCountPlayedItem {
+  id: ID!
+  countPlayed: Int!
+  name: String!
+}
+
+type GamesLastPlayedCollectionDataModel {
+  count: Int!
+  items: [GamesLastPlayedItem!]!
+}
+
+type GamesLastPlayedItem {
+  id: ID!
+  session: Session!
+  name: String!
+}
+
+type GamesTimePlayedCollectionDataModel {
+  count: Int!
+  items: [GamesTimePlayedItem!]!
+}
+
+type GamesTimePlayedItem {
+  id: ID!
+  timePlayed: Int!
+  name: String!
+}
+
+type GraphCollectionDataModel {
+  count: Int!
+  items: [GraphItem!]!
+}
+
+type GraphItem {
+  data: [Int!]!
 }
 
 input InputCollection {
-    count: Int
-    filters: [InputCollectionFilter!]!
-    leftJoins: [String!] = []
-    page: Int!
-    sortBy: [String!]!
-    sortDesc: [Boolean!]!
+  page: Int!
+  count: Int
+  leftJoins: [String!] = []
+  sortBy: [String!]!
+  sortDesc: [Boolean!]!
+  filters: [InputCollectionFilter!]!
 }
 
 input InputCollectionFilter {
-    field: String!
-    operator: String!
-    valueBoolean: Boolean
-    valueDate: DateTime
-    valueFloat: Float
-    valueInt: Int
-    valueRange: [Float!]
-    valueString: String
+  valueInt: Int
+  valueFloat: Float
+  valueRange: [Float!]
+  field: String!
+  valueBoolean: Boolean
+  valueString: String
+  valueDate: DateTime
+  operator: String!
+}
+
+type Mechanism {
+  id: ID!
+  games: [Game!]!
+  name: String!
 }
 
 input MechanismInput {
-    games: [ID!]
-    id: ID
-    name: String!
+  id: ID
+  games: [ID!]
+  name: String!
+}
+
+type Mood {
+  id: ID!
+  games: [Game!]!
+  name: String!
 }
 
 input MoodInput {
-    games: [ID!]
-    id: ID
-    name: String!
+  id: ID
+  games: [ID!]
+  name: String!
+}
+
+type Mutation {
+  createGame(gameData: GameInput!): Game!
+  updateGame(gameData: UpdateGameInput!): Game!
+  deleteGame(id: ID!): Boolean!
+  createCategory(categoryData: CategoryInput!): Category!
+  updateCategory(categoryData: UpdateCategoryInput!): Category!
+  deleteCategory(id: ID!): Boolean!
+  createUniverse(universeData: UniverseInput!): Universe!
+  updateUniverse(universeData: UpdateUniverseInput!): Universe!
+  deleteUniverse(id: ID!): Boolean!
+  createSession(sessionData: SessionInput!): Session!
+  updateSession(sessionData: UpdateSessionInput!): Session!
+  deleteSession(id: ID!): Boolean!
+  createMechanism(mechanismData: MechanismInput!): Mechanism!
+  updateMechanism(mechanismData: UpdateMechanismInput!): Mechanism!
+  deleteMechanism(id: ID!): Boolean!
+  createMood(moodData: MoodInput!): Mood!
+  updateMood(moodData: UpdateMoodInput!): Mood!
+  deleteMood(id: ID!): Boolean!
+  createPlayer(playerData: PlayerInput!): Player!
+  updatePlayer(playerData: UpdatePlayerInput!): Player!
+  deletePlayer(id: ID!): Boolean!
+  createPlaytime(playtimeData: PlaytimeInput!): Playtime!
+  updatePlaytime(playtimeData: UpdatePlaytimeInput!): Playtime!
+  deletePlaytime(id: ID!): Boolean!
+  updateWishlistTaken(wishlistData: UpdateWishlistInput!): Wishlist!
+  createWishlist(wishlistData: WishlistInput!): Wishlist!
+  updateWishlist(wishlistData: UpdateWishlistInput!): Wishlist!
+  deleteWishlist(id: ID!): Boolean!
+  createRating(ratingData: RatingInput!): Rating!
+  updateRating(ratingData: UpdateRatingInput!): Rating!
+  deleteRating(id: ID!): Boolean!
+}
+
+type Player {
+  id: ID!
+  sessionsPlayed: [Session!]!
+  sessionsWon: [Session!]!
+  ratings: [Rating!]!
+  name: String!
+  lastSession: DateTime
 }
 
 input PlayerInput {
-    games: [ID!]
-    id: ID
-    name: String!
+  id: ID
+  games: [ID!]
+  name: String!
+}
+
+type Playtime {
+  id: ID!
+  start: DateTime!
+  end: DateTime
+  session: Session!
+}
+
+type PlaytimeCollectionData {
+  count: Int!
+  items: [Playtime!]!
 }
 
 input PlaytimeInput {
-    end: DateTime
-    id: ID
-    session: ID!
-    start: DateTime!
+  id: ID
+  end: DateTime
+  session: ID!
+  start: DateTime!
+}
+
+type Query {
+  games(gameData: InputCollection!): GameCollectionData!
+  game(id: ID!): Game!
+  categories: [Category!]!
+  category(id: ID!): Category!
+  universes: [Universe!]!
+  universe(id: ID!): Universe!
+  sessions(sessionData: InputCollection!): SessionCollectionData!
+  session(id: ID!): Session!
+  mechanisms: [Mechanism!]!
+  mechanism(id: ID!): Mechanism!
+  moods: [Mood!]!
+  mood(id: ID!): Mood!
+  players: [Player!]!
+  player(id: ID!): Player!
+  playtimes(playtimeData: InputCollection!): PlaytimeCollectionData!
+  playtime(id: ID!): Playtime!
+  user(id: ID): User!
+  wishlists(wishlistData: InputCollection!): WishlistCollectionData!
+  wishlist(id: ID!): Wishlist!
+  ratings(ratingData: InputCollection!): RatingCollectionData!
+  statisticsCounts: CountsModel!
+  statisticsGamesCountPlayed(statisticsData: InputCollection!): GamesCountPlayedCollectionDataModel!
+  statisticsGamesLastPlayed(statisticsData: InputCollection!): GamesLastPlayedCollectionDataModel!
+  statisticsGamesTimePlayed(statisticsData: InputCollection!): GamesTimePlayedCollectionDataModel!
+  statisticsPlaytimesGroupedByDaytime(statisticsData: InputCollection!): GraphCollectionDataModel!
+}
+
+type Rating {
+  id: ID!
+  rating: Int!
+  game: Game!
+  player: Player!
+}
+
+type RatingCollectionData {
+  count: Int!
+  items: [Rating!]!
 }
 
 input RatingInput {
-    game: ID!
-    id: ID
-    player: ID!
-    rating: Int!
+  id: ID
+  rating: Int!
+  game: ID!
+  player: ID!
+}
+
+type Session {
+  id: ID!
+  players: [Player!]!
+  winners: [Player!]!
+  game: Game
+  playtimes: [Playtime!]!
+  comment: String
+  isChallenge: Boolean!
+  isVirtual: Boolean!
+}
+
+type SessionCollectionData {
+  count: Int!
+  items: [Session!]!
 }
 
 input SessionInput {
-    comment: String
-    game: ID
-    isChallenge: Boolean
-    isVirtual: Boolean
-    players: [ID!]
-    playtimes: [SessionPlaytimeInput!]
-    winners: [ID!]
+  players: [ID!]
+  winners: [ID!]
+  game: ID
+  playtimes: [SessionPlaytimeInput!]
+  comment: String
+  isChallenge: Boolean
+  isVirtual: Boolean
 }
 
 input SessionPlaytimeInput {
-    end: DateTime
-    start: DateTime!
+  start: DateTime!
+  end: DateTime
 }
 
 input SessionPlaytimeUpdate {
-    end: DateTime
-    id: String
-    start: DateTime!
+  id: String
+  start: DateTime!
+  end: DateTime
+}
+
+type Universe {
+  id: ID!
+  games: [Game!]!
+  name: String!
 }
 
 input UniverseInput {
-    games: [ID!]
-    id: ID
-    name: String!
+  id: ID
+  games: [ID!]
+  name: String!
 }
 
 input UpdateCategoryInput {
-    games: [ID!]
-    id: ID!
-    name: String
+  id: ID!
+  games: [ID!]
+  name: String
 }
 
 input UpdateGameInput {
-    categories: [ID!]
-    complexity: Int
-    countPlayersMax: Int
-    countPlayersMin: Int
-    description: String
-    expansions: [ID!]
-    id: ID!
-    idBGG: Int
-    images: String
-    isCoop: Boolean
-    isDigital: Boolean
-    isExpansionOf: ID
-    mechanisms: [ID!]
-    minutesPlaytimeMax: Int
-    minutesPlaytimeMin: Int
-    moods: [ID!]
-    name: String
-    playableWith: [ID!]
-    ratingBGG: Float
-    ratings: [ID!]
-    size: Int
-    universes: [ID!]
+  idBGG: Int
+  ratingBGG: Float
+  countPlayersMin: Int
+  countPlayersMax: Int
+  minutesPlaytimeMin: Int
+  minutesPlaytimeMax: Int
+  complexity: Int
+  size: Int
+  universes: [ID!]
+  categories: [ID!]
+  mechanisms: [ID!]
+  moods: [ID!]
+  images: String
+  ratings: [ID!]
+  playableWith: [ID!]
+  isExpansionOf: ID
+  expansions: [ID!]
+  name: String
+  description: String
+  isCoop: Boolean
+  isDigital: Boolean
+  id: ID!
 }
 
 input UpdateMechanismInput {
-    games: [ID!]
-    id: ID!
-    name: String
+  id: ID!
+  games: [ID!]
+  name: String
 }
 
 input UpdateMoodInput {
-    games: [ID!]
-    id: ID!
-    name: String
+  id: ID!
+  games: [ID!]
+  name: String
 }
 
 input UpdatePlayerInput {
-    games: [ID!]
-    id: ID!
-    name: String
+  id: ID!
+  games: [ID!]
+  name: String
 }
 
 input UpdatePlaytimeInput {
-    end: DateTime
-    id: ID!
-    session: ID
-    start: DateTime
+  id: ID!
+  end: DateTime
+  session: ID
+  start: DateTime
 }
 
 input UpdateRatingInput {
-    game: ID
-    id: ID!
-    player: ID
-    rating: Int
+  id: ID!
+  rating: Int
+  game: ID
+  player: ID
 }
 
 input UpdateSessionInput {
-    comment: String
-    game: ID
-    id: ID!
-    isChallenge: Boolean
-    isVirtual: Boolean
-    players: [ID!]
-    playtimes: [SessionPlaytimeUpdate!]
-    winners: [ID!]
+  players: [ID!]
+  winners: [ID!]
+  game: ID
+  playtimes: [SessionPlaytimeUpdate!]
+  comment: String
+  isChallenge: Boolean
+  isVirtual: Boolean
+  id: ID!
 }
 
 input UpdateUniverseInput {
-    games: [ID!]
-    id: ID!
-    name: String
+  id: ID!
+  games: [ID!]
+  name: String
 }
 
 input UpdateWishlistInput {
-    description: String
-    giftFor: Int
-    id: ID!
-    images: String
-    link: String
-    name: String
-    price: Int
-    taken: Boolean
+  id: ID!
+  name: String
+  price: Int
+  description: String
+  link: String
+  giftFor: Int
+  images: String
+  taken: Boolean
+}
+
+type User {
+  id: ID!
+  name: String!
+  password: String!
+}
+
+type Wishlist {
+  id: ID!
+  price: Int!
+  name: String!
+  taken: Boolean
+  description: String!
+  link: String!
+  giftFor: Float!
+  images: String!
+}
+
+type WishlistCollectionData {
+  count: Int!
+  items: [Wishlist!]!
 }
 
 input WishlistInput {
-    description: String!
-    giftFor: Int!
-    id: ID
-    images: String
-    link: String!
-    name: String!
-    price: Int!
-    taken: Boolean
+  id: ID
+  name: String!
+  price: Int!
+  description: String!
+  link: String!
+  giftFor: Int!
+  images: String
+  taken: Boolean
 }
 
-
-"A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
-scalar DateTime

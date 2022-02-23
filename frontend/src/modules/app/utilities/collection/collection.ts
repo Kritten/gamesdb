@@ -32,7 +32,7 @@ export function useCollection<T>(
         hasNextPage: hasNextPagePassed,
     }: {
         inputCollectionData?: Partial<InputCollectionData>;
-        payload?: unknown;
+        payload?: Record<string, unknown>;
         immediate?: boolean;
         watchFilters?: boolean;
         prependValues?: boolean;

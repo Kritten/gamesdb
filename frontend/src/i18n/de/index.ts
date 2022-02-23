@@ -22,6 +22,7 @@ export default {
         details: 'Details',
         count: 'Anzahl',
         notSpecified: 'Keine Angabe',
+        date: 'Datum',
     },
     login: {
         name: 'Name',
@@ -43,6 +44,8 @@ export default {
             playtimesPerDayDigital: 'Spielzeit pro Tag (Digital)',
             lastSessionAnalog: 'Zuletzt gespielt (Analog)',
             lastSessionDigital: 'Zuletzt gespielt (Digital)',
+            lastPlayedAnalog: 'Zuletzt gespielt (Analog)',
+            lastPlayedDigital: 'Zuletzt gespielt (Digital)',
         },
     },
     filter: {

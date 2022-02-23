@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="col-12"
-        :class="classes"
-    >
+    <div class="col-12" :class="classes">
         <q-card class="full-height">
             <q-card-section horizontal>
                 <q-toolbar>
@@ -13,10 +10,7 @@
             </q-card-section>
 
             <q-card-section :class="{ 'q-pa-none': card.padding !== true }">
-                <component
-                    :is="card.component"
-                    v-bind="card.props"
-                />
+                <component :is="card.component" v-bind="card.props" />
             </q-card-section>
         </q-card>
     </div>

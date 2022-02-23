@@ -2,13 +2,15 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Session } from './session.entity';
-import {SessionInput, SessionInputDatabase, UpdateSessionInput} from './session.input';
+import { SessionInput, SessionInputDatabase, UpdateSessionInput } from './session.input';
 import { SessionCollectionData } from './collection/session.collectionData';
 import { InputCollection } from '../../utilities/collection/collection.input';
-import {PrismaService} from "../../utilities/collection/prisma.service";
-import {getOrderBy, getPagination, getWhere, handleRelation, inputCollectionToPrisma} from "../../utilities/utilities";
-import {Prisma} from "@prisma/client";
-import {PlaytimeResolver} from "../playtime/playtime.resolver";
+import { PrismaService } from "../../utilities/collection/prisma.service";
+import { getOrderBy, getPagination, getWhere, handleRelation, inputCollectionToPrisma } from "../../utilities/utilities";
+import { Prisma } from "@prisma/client";
+import { PlaytimeResolver } from "../playtime/playtime.resolver";
+import { SessionService } from 'src/modules/session/session.service';
+import { SessionFromDatabase } from 'src/modules/session/session.type';
 
 const include = {
   playtimes: true,
@@ -37,25 +39,18 @@ const include = {
   }
 };
 
-type SessionFromDatabase = {
-  id: number,
-  players: string
-  winners: string,
-  gameId: number,
-}
-
-const mapItem = (item: {players: Array<{ player: {id: number} }>, winners: Array<{ player: {id: number} }>}) => ({
+const mapItem = (item: { players: Array<{ player: { id: number } }>, winners: Array<{ player: { id: number } }> }) => ({
   ...item,
-  players: item.players.map(player => ({id: player.player.id})),
-  winners: item.winners.map(player => ({id: player.player.id})),
+  players: item.players.map(player => ({ id: player.player.id })),
+  winners: item.winners.map(player => ({ id: player.player.id })),
 });
 
 const mapItemFromDatabase = (item: SessionFromDatabase) => {
   return {
-  ...item,
+    ...item,
     game: { id: item.gameId },
-    players: item.players !== null ? item.players.split(',').map(id => ({id,})) : [],
-      winners: item.winners !== null ? item.winners.split(',').map(id => ({id,})) : [],
+    players: item.players !== null ? item.players.split(',').map(id => ({ id, })) : [],
+    winners: item.winners !== null ? item.winners.split(',').map(id => ({ id, })) : [],
   }
 };
 
@@ -68,6 +63,7 @@ export class SessionResolver {
   constructor(
     private prismaService: PrismaService,
     private playtimeResolver: PlaytimeResolver,
+    private sessionService: SessionService,
   ) {
   }
 
@@ -80,38 +76,9 @@ export class SessionResolver {
 
     const query = `
         SELECT 
-             entity.id,
-             entity.comment,
-             entity.isChallenge,
-             entity.isVirtual,
-             entity.gameId,
-             group_concat(DISTINCT(player.id)) as players,
-             group_concat(DISTINCT(winner.id)) as winners,
-             MIN(playtime.start) as startMin,
-             MAX(playtime.start) as startMax,
-             MIN(playtime.end) as endMin,
-             MAX(playtime.end) as endMax
+          ${this.sessionService.getQuerySelect()}
         FROM 
-          session as entity
-          LEFT JOIN
-            session_players_player
-            ON entity.id = session_players_player.sessionId
-          LEFT JOIN
-            player
-            ON session_players_player.playerId = player.id
-
-          LEFT JOIN
-            session_winners_player
-            ON entity.id = session_winners_player.sessionId
-          LEFT JOIN
-            player as winner
-            ON session_winners_player.playerId = winner.id
-          LEFT JOIN
-            playtime
-            on entity.id = playtime.sessionId
-          LEFT JOIN
-            game
-            on entity.gameId = game.id
+        ${this.sessionService.getQueryFrom()}
         ${where}
         GROUP BY
             entity.id
@@ -142,7 +109,7 @@ export class SessionResolver {
       };
     }));
 
-    const count = (await this.prismaService.$queryRaw<Array<{count: number}>>(Prisma.raw(`
+    const count = (await this.prismaService.$queryRaw<Array<{ count: number }>>(Prisma.raw(`
       SELECT
         count(entity.id) as count
       FROM
@@ -153,7 +120,7 @@ export class SessionResolver {
       ${where}
     `)))[0].count;
 
-    return {items, count};
+    return { items, count };
   }
 
   @Query(() => Session)
@@ -240,17 +207,17 @@ export class SessionResolver {
         },
         winners: {
           deleteMany: {}
-        //   create: sessionData.players.map((id) => ({
-        //     player: {
-        //       connect: { id: parseInt(id, 10) },
-        //     },
-        //   })),
+          //   create: sessionData.players.map((id) => ({
+          //     player: {
+          //       connect: { id: parseInt(id, 10) },
+          //     },
+          //   })),
         },
         playtimes: {
           deleteMany: {},
-        //   createMany: {
-        //     data: sessionData.playtimes,
-        //   }
+          //   createMany: {
+          //     data: sessionData.playtimes,
+          //   }
         }
       },
       include,
@@ -352,7 +319,7 @@ export class SessionResolver {
     // });
 
     return mapItem(await this.prismaService.session.findUnique({
-      where: {id},
+      where: { id },
       include,
     }));
   }
@@ -360,7 +327,7 @@ export class SessionResolver {
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deleteSession(@Args({ name: 'id', type: () => ID }) id: string) {
-    await this.prismaService.session.delete({ where: { id: parseInt(id, 10) }});
+    await this.prismaService.session.delete({ where: { id: parseInt(id, 10) } });
     return true;
   }
 }

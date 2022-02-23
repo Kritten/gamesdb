@@ -13,6 +13,7 @@ import {
 } from 'date-fns';
 import {
     queryStatisticsGamesCountPlayed,
+    queryStatisticsGamesLastPlayed,
     queryStatisticsGamesTimePlayed,
 } from '@/modules/statistics/graphql/statistics.graphql';
 import { Playtime } from '@/modules/playtime/playtime.model';
@@ -27,13 +28,66 @@ import {
     GamesBestRatedItemServer,
     GamesCountPlayedItem,
     GamesCountPlayedItemServer,
+    GamesLastPlayedItem,
+    GamesLastPlayedItemServer,
     GamesTimePlayedItem,
     GamesTimePlayedItemServer,
 } from '@/modules/statistics/statistics.types';
 import { useGame } from '@/modules/game/composables/useGame';
 import { queryPageGame } from '@/modules/game/graphql/game.graphql';
+import { Session } from '@/modules/session/session.model';
 
 class ServiceStatisticsClass {
+    async loadPageStatisticsGamesLastPlayed(
+        data: InputCollection,
+        payload: Record<string, unknown> = {}
+    ) {
+        const { analogOnly = false, digitalOnly = false } = payload as {
+            analogOnly?: boolean;
+            digitalOnly?: boolean;
+        };
+
+        if (analogOnly) {
+            data.filters.push({
+                field: 'isDigital',
+                valueBoolean: false,
+                operator: '=',
+            });
+        } else if (digitalOnly) {
+            data.filters.push({
+                field: 'isDigital',
+                valueBoolean: true,
+                operator: '=',
+            });
+        }
+
+        const { get } = useGame();
+
+        return loadPageBase<
+            GamesLastPlayedItem,
+            {
+                statisticsGamesLastPlayed: ServiceCollectionLoadPage<GamesLastPlayedItemServer>;
+            }
+        >({
+            data,
+            query: queryStatisticsGamesLastPlayed,
+            // eslint-disable-next-line @typescript-eslint/require-await
+            parseResult: async (response) => ({
+                count: response.statisticsGamesLastPlayed.count,
+                items: await Promise.all(
+                    response.statisticsGamesLastPlayed.items.map(
+                        async (item) => ({
+                            game: get(item.id),
+                            session: await Session.parseFromServer(
+                                item.session
+                            ),
+                        })
+                    )
+                ),
+            }),
+        });
+    }
+
     async loadPageStatisticsGamesCountPlayed(
         data: InputCollection,
         payload: unknown = {}

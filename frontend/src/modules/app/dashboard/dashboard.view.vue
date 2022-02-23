@@ -23,6 +23,7 @@ import PlaytimesPerDay from '@/modules/statistics/components/playtimes-per-day.v
 import LastSession from '@/modules/statistics/components/last-session.vue';
 import DataCard from '@/modules/app/dashboard/data-card.vue';
 import type { TypeCardData } from '@/modules/app/dashboard/dashboard.types';
+import GamesLastPlayed from '@/modules/statistics/components/games-last-played.vue';
 
 export default defineComponent({
     name: 'ViewDashboard',
@@ -36,8 +37,10 @@ export default defineComponent({
         const cardsDataOrder = [
             'playtimesPerDayAnalog',
             'playtimesPerDayDigital',
-            'lastSessionAnalog',
-            'lastSessionDigital',
+            'listGamesLastPlayedAnalog',
+            'listGamesLastPlayedDigital',
+            // 'lastSessionAnalog',
+            // 'lastSessionDigital',
             'listGamesByCountPlayedAnalog',
             'listGamesByCountPlayedDigital',
             'listGamesByTimePlayedAnalog',
@@ -139,6 +142,25 @@ export default defineComponent({
             listGamesBestRatedDigital: {
                 header: t('dashboard.game.bestRatedDigital'),
                 component: GamesBestRated,
+                props: {
+                    digitalOnly: true,
+                },
+                cols: 6,
+                colsXl: 3,
+            },
+
+            listGamesLastPlayedAnalog: {
+                header: t('dashboard.game.lastPlayedAnalog'),
+                component: GamesLastPlayed,
+                props: {
+                    analogOnly: true,
+                },
+                cols: 6,
+                colsXl: 3,
+            },
+            listGamesLastPlayedDigital: {
+                header: t('dashboard.game.lastPlayedDigital'),
+                component: GamesLastPlayed,
                 props: {
                     digitalOnly: true,
                 },
