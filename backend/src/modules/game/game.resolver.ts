@@ -67,7 +67,7 @@ const queryGames = (data: Partial<InputCollection> = {}, extractCount = false) =
           universe
             ON game_universes_universe.universeId = universe.id
         
-        INNER JOIN
+        LEFT JOIN
           (
             SELECT 
               session.id, 
