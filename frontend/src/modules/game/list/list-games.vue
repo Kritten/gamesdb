@@ -201,8 +201,8 @@ export default defineComponent({
             },
             { field: 'entity.size', name: t('game.size') },
             { field: 'entity.complexity', name: t('game.complexity') },
+            { field: 'ratingAverage', name: t('rating.label') },
             { field: 'lastSession', name: t('game.list.sort.lastSession') },
-            // { field: 'entity.ratingAverage', name: t('rating.label') },
             // { field: 'countPlayed:countPlayed', name: t('game.countPlayed') },
             // { field: 'timePlayed:timePlayed', name: t('game.timePlayed') },
         ];
