@@ -3,7 +3,7 @@
         <div class="col-12">
             <list-filters-game
                 v-model="filters"
-                @reset="resetFilters"
+                @reset="resetFiltersInternal"
                 @update-filter="updateFilter"
             >
                 <div class="text-h6">
@@ -66,6 +66,7 @@ import {
 import { useGame } from '@/modules/game/composables/useGame';
 import BaseSpinner from '@/modules/app/base/base-spinner.vue';
 import { GameLoading } from '@/modules/game/game.types';
+import { useFilters } from '@/modules/app/composables/useFilters';
 
 export default defineComponent({
     name: 'ListGames',
@@ -125,9 +126,14 @@ export default defineComponent({
             },
         };
 
-        const filters = ref<ServiceCollectionFilters>(
-            cloneDeep(filtersInitial)
-        );
+        const { getFilters, resetFilters } = useFilters({
+            key: `list-games-${
+                props.digitalOnly ? 'digital' : props.analogOnly ? 'analog' : ''
+            }`,
+            initial: filtersInitial,
+        });
+
+        const filters = getFilters();
         const sortBy = ref<string[]>(['entity.name']);
         const sortDesc = ref<boolean[]>([false]);
 
@@ -158,8 +164,8 @@ export default defineComponent({
             collection.resetDebounced.cancel();
         };
 
-        const resetFilters = async () => {
-            filters.value = cloneDeep(filtersInitial);
+        const resetFiltersInternal = async () => {
+            resetFilters();
 
             void collection.reset();
 
@@ -235,7 +241,7 @@ export default defineComponent({
             sortBy,
             sortDesc,
             optionsSortBy,
-            resetFilters,
+            resetFiltersInternal,
             updateFilter,
             onIntersection(entry: { isIntersecting: boolean }) {
                 if (
