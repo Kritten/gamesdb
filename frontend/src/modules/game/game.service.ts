@@ -1,9 +1,7 @@
-import { useRouter } from 'vue-router';
 import { queryPageGame } from '@/modules/game/graphql/game.graphql';
 import { Game } from '@/modules/game/game.model';
 import { ID } from '@/modules/app/utilities/entity/entity.types';
 import {
-    ServiceCollectionFilters,
     ServiceCollectionInterface,
     InputCollection,
     ServiceCollectionLoadPage,
@@ -13,32 +11,6 @@ import type { GameLoading } from '@/modules/game/game.types';
 import { useGame } from '@/modules/game/composables/useGame';
 
 class ServiceGameClass implements ServiceCollectionInterface<GameLoading> {
-    useRandomGame({ filters }: { filters: ServiceCollectionFilters }) {
-        return {
-            select: async () => {
-                const games = await this.loadPage({
-                    count: 1,
-                    filters: Object.values(filters),
-                    page: 1,
-                    sortBy: ['RAND()'],
-                    sortDesc: [],
-                });
-
-                const game = games.items[0];
-
-                if (game.value !== null) {
-                    const router = useRouter();
-                    void router.push({
-                        name: 'game',
-                        params: {
-                            id: game.value.id as string,
-                        },
-                    });
-                }
-            },
-        };
-    }
-
     async loadPage(data: InputCollection) {
         return loadPageBase<
             GameLoading,

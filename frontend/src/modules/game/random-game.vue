@@ -1,13 +1,18 @@
 <template>
-    <button @click="useRandomGame.select()">
-        {{ t('game.random.select') }}
-    </button>
+    <q-btn
+        flat
+        icon="fas fa-random"
+        padding="none md"
+        color="primary"
+        :label="$q.screen.gt.xs ? `${t('game.random.select')}` : undefined"
+        @click="useRandomGame.select()"
+    />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ServiceGame } from '@/modules/game/game.service';
+import { useRandomGame } from '@/modules/game/composables/useRandomGame';
 
 export default defineComponent({
     name: 'RandomGame',
@@ -20,7 +25,7 @@ export default defineComponent({
     setup(props) {
         return {
             t: useI18n().t,
-            useRandomGame: ServiceGame.useRandomGame({
+            useRandomGame: useRandomGame({
                 filters: props.filters,
             }),
         };

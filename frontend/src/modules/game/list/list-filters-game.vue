@@ -11,6 +11,9 @@
                         </slot>
                         <div class="col" />
                         <div class="col-shrink">
+                            <random-game :filters="filters" />
+                        </div>
+                        <div class="col-shrink">
                             <q-btn
                                 flat
                                 :label="
@@ -154,10 +157,11 @@ import InputSelectMood from '@/modules/mood/base/input-select-mood.vue';
 import InputSelectCategory from '@/modules/category/base/input-select-category.vue';
 import InputSelectMechanism from '@/modules/mechanism/base/input-select-mechanism.vue';
 import { ServiceCollectionFilters } from '@/modules/app/utilities/collection/collection.types';
+import RandomGame from '@/modules/game/random-game.vue';
 
 export default defineComponent({
     name: 'ListFiltersGame',
-    components: { BaseListFilter },
+    components: { BaseListFilter, RandomGame },
     props: {
         modelValue: {
             required: true,
