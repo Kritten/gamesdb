@@ -17,9 +17,10 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'DisplayRating',
     props: {
+        // eslint-disable-next-line vue/require-prop-types
         rating: {
             required: true,
-            type: Number,
+            // type: Number as PropType<number | null>,
         },
         dense: {
             required: false,
