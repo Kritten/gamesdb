@@ -2,12 +2,12 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gqlauth.guard';
 import { Game } from './game.entity';
-import {GameInput, GameInputDatabase, GameInputDatabaseUpdate, UpdateGameInput} from './game.input';
+import { GameInput, GameInputDatabase, GameInputDatabaseUpdate, UpdateGameInput } from './game.input';
 import { InputCollection } from '../../utilities/collection/collection.input';
 import { GameCollectionData } from './collection/game.collectionData';
-import {PrismaService} from "../../utilities/collection/prisma.service";
+import { PrismaService } from "../../utilities/collection/prisma.service";
 import { Prisma } from '@prisma/client'
-import {getQuery, handleRelation} from "../../utilities/utilities";
+import { getQuery, handleRelation } from "../../utilities/utilities";
 
 const queryGames = (data: Partial<InputCollection> = {}, extractCount = false) => getQuery(`
     SELECT
@@ -31,7 +31,8 @@ const queryGames = (data: Partial<InputCollection> = {}, extractCount = false) =
       group_concat(DISTINCT(mechanism.id)) as mechanisms,
       group_concat(DISTINCT(category.id)) as categories,
       group_concat(DISTINCT(mood.id)) as moods,
-      group_concat(DISTINCT(universe.id)) as universes
+      group_concat(DISTINCT(universe.id)) as universes,
+      Max(playtime.end) as lastSession
     FROM
         game as entity
         LEFT JOIN
@@ -65,6 +66,27 @@ const queryGames = (data: Partial<InputCollection> = {}, extractCount = false) =
         LEFT JOIN
           universe
             ON game_universes_universe.universeId = universe.id
+        
+        INNER JOIN
+          (
+            SELECT 
+              session.id, 
+              session.gameId, 
+              session.isVirtual 
+            FROM 
+              session as session 
+            LEFT JOIN
+              playtime
+              on session.id = playtime.sessionId
+            GROUP BY 
+              session.id
+            ORDER By MAX(playtime.end) desc
+          ) as joinedsession
+            on joinedsession.gameid = entity.id AND
+            joinedsession.isVirtual = false
+        LEFT JOIN
+          playtime as playtime
+            on playtime.sessionId = joinedsession.id
 `, data, extractCount);
 
 const queryGame = (id: string | number) => {
@@ -91,10 +113,10 @@ type GameFromDatabase = {
 const mapItemFromDatabase = (item: GameFromDatabase) => {
   return {
     ...item,
-    mechanisms: item.mechanisms !== null ? item.mechanisms.split(',').map(id => ({id,})) : [],
-    categories: item.categories !== null ? item.categories.split(',').map(id => ({id,})) : [],
-    moods: item.moods !== null ? item.moods.split(',').map(id => ({id,})) : [],
-    universes: item.universes !== null ? item.universes.split(',').map(id => ({id,})) : [],
+    mechanisms: item.mechanisms !== null ? item.mechanisms.split(',').map(id => ({ id, })) : [],
+    categories: item.categories !== null ? item.categories.split(',').map(id => ({ id, })) : [],
+    moods: item.moods !== null ? item.moods.split(',').map(id => ({ id, })) : [],
+    universes: item.universes !== null ? item.universes.split(',').map(id => ({ id, })) : [],
   }
 };
 
@@ -116,7 +138,7 @@ export class GameResolver {
 
     const count = await this.prismaService.$queryRaw<Array<GameFromDatabase>>(Prisma.raw(queryGames(data, true)));
 
-    return {items, count: count[0].count};
+    return { items, count: count[0].count };
   }
 
   @Query(() => Game)
@@ -237,7 +259,7 @@ export class GameResolver {
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deleteGame(@Args({ name: 'id', type: () => ID }) id: string) {
-    await this.prismaService.game.delete({ where: { id: parseInt(id, 10) }});
+    await this.prismaService.game.delete({ where: { id: parseInt(id, 10) } });
     return true;
   }
 }

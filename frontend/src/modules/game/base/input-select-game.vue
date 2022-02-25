@@ -19,10 +19,7 @@
         <template #option="{ itemProps, opt }">
             <q-item v-bind="itemProps">
                 <q-item-section>
-                    <link-game
-                        :game="opt.value"
-                        no-link
-                    />
+                    <link-game :game="opt.value" no-link />
                 </q-item-section>
             </q-item>
         </template>
@@ -71,10 +68,18 @@ export default defineComponent({
             },
         });
 
+        const sortBy = ref(['lastSession']);
+        const sortDesc = ref([true]);
+
         const collectionGame = useCollection<GameLoading>(
             ServiceGame.loadPage,
             {
-                inputCollectionData: { count: 50, filters: filtersGame },
+                inputCollectionData: {
+                    count: 50,
+                    filters: filtersGame,
+                    sortBy,
+                    sortDesc,
+                },
                 watchFilters: false,
                 immediate: false,
             }

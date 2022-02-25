@@ -12,11 +12,9 @@
                     (<span v-if="collection.isLoading.value === false">{{
                         collection.countItems.value
                     }}</span
-                    ><base-spinner
-                        v-else
-                        class="inline"
-                        size="xs"
-                    />/{{ countTotal }})
+                    ><base-spinner v-else class="inline" size="xs" />/{{
+                        countTotal
+                    }})
 
                     <!-- {{ collection.countItems.value }}
                     {{ t('game.label', collection.countItems.value) }} -->
@@ -203,6 +201,7 @@ export default defineComponent({
             },
             { field: 'entity.size', name: t('game.size') },
             { field: 'entity.complexity', name: t('game.complexity') },
+            { field: 'lastSession', name: t('game.list.sort.lastSession') },
             // { field: 'entity.ratingAverage', name: t('rating.label') },
             // { field: 'countPlayed:countPlayed', name: t('game.countPlayed') },
             // { field: 'timePlayed:timePlayed', name: t('game.timePlayed') },

@@ -107,6 +107,11 @@ export default {
         confirm: {
             delete: "Soll das Spiel '{name}' wirklich gelöscht werden?",
         },
+        list: {
+            sort: {
+                lastSession: 'Zuletzt gespielt',
+            },
+        },
     },
     category: {
         label: 'Kategorie | Kategorien',
