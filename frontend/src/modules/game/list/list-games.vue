@@ -67,6 +67,7 @@ import { useGame } from '@/modules/game/composables/useGame';
 import BaseSpinner from '@/modules/app/base/base-spinner.vue';
 import { GameLoading } from '@/modules/game/game.types';
 import { useFilters } from '@/modules/app/composables/useFilters';
+import { useSort } from '@/modules/app/composables/useSort';
 
 export default defineComponent({
     name: 'ListGames',
@@ -133,9 +134,18 @@ export default defineComponent({
             initial: filtersInitial,
         });
 
+        const { getSort } = useSort({
+            key: `list-games-${
+                props.digitalOnly ? 'digital' : props.analogOnly ? 'analog' : ''
+            }`,
+            initial: {
+                sortBy: ['entity.name'],
+                sortDesc: [false],
+            },
+        });
+
         const filters = getFilters();
-        const sortBy = ref<string[]>(['entity.name']);
-        const sortDesc = ref<boolean[]>([false]);
+        const { sortBy, sortDesc } = getSort();
 
         const collection = useCollection<GameLoading>(ServiceGame.loadPage, {
             inputCollectionData: {
