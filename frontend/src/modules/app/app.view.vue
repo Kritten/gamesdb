@@ -1,9 +1,6 @@
 <template>
     <q-layout view="hHh lpR fFf">
-        <q-header
-            elevated
-            class="bg-primary text-white"
-        >
+        <q-header elevated class="bg-primary text-white">
             <q-toolbar>
                 <q-btn
                     dense
@@ -23,6 +20,10 @@
                     {{ title }}
                 </q-toolbar-title>
 
+                <switch-dark-mode />
+
+                <q-separator dark vertical />
+
                 <base-dialog
                     :title="t('session.virtual.label', 2)"
                     :options-button="{
@@ -38,10 +39,7 @@
                     </template>
                 </base-dialog>
 
-                <q-separator
-                    dark
-                    vertical
-                />
+                <q-separator dark vertical />
 
                 <create-session
                     :options-button="{
@@ -49,10 +47,7 @@
                     }"
                 />
 
-                <q-separator
-                    dark
-                    vertical
-                />
+                <q-separator dark vertical />
 
                 <q-btn
                     flat
@@ -87,11 +82,7 @@
                             v-if="route.separator"
                             :key="'sep' + index"
                         />
-                        <q-item
-                            :to="{ name: route.name }"
-                            clickable
-                            exact
-                        >
+                        <q-item :to="{ name: route.name }" clickable exact>
                             <q-item-section avatar>
                                 <q-icon :name="route.icon" />
                             </q-item-section>
@@ -135,10 +126,16 @@ import { useUser } from '@/modules/user/composables/useUser';
 import CreateSession from '@/modules/session/create/create-session.vue';
 import ListSessionsVirtual from '@/modules/session/list/list-sessions-virtual.vue';
 import BaseDialog from '@/modules/app/base/base-dialog.vue';
+import SwitchDarkMode from '@/modules/app/components/switch-dark-mode.vue';
 
 export default defineComponent({
     name: 'ViewApp',
-    components: { BaseDialog, ListSessionsVirtual, CreateSession },
+    components: {
+        BaseDialog,
+        ListSessionsVirtual,
+        CreateSession,
+        SwitchDarkMode,
+    },
     setup() {
         const { t } = useI18n();
         const { user } = useUser();

@@ -33,6 +33,7 @@ module.exports = configure((ctx) => ({
     boot: [
         'i18n',
         'apollo',
+        'dark',
         // '../extensions/apollo/boot',
     ],
 
