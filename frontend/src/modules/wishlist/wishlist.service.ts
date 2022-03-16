@@ -102,6 +102,7 @@ class ServiceWishlistClass implements ServiceCollectionInterface<Wishlist> {
             { value: GIFT_FOR.LieneAndKristof, label: 'Liene und Kristof' },
             { value: GIFT_FOR.Liene, label: 'Liene' },
             { value: GIFT_FOR.Kristof, label: 'Kristof' },
+            { value: GIFT_FOR.Nachwuchs, label: 'Nachwuchs' },
         ];
     }
 }
