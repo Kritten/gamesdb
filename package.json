@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Kritten/gamesdb#readme",
   "dependencies": {
-    "@nestjs/cli": "^7.5.4",
+    "@nestjs/cli": "^9.2.0",
     "http-proxy": "^1.18.1",
     "http-proxy-rules": "^1.1.3"
   },
