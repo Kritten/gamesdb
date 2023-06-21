@@ -219,6 +219,7 @@ export default {
             0: 'Liene und Kristof',
             1: 'Liene',
             2: 'Kristof',
+            3: 'Cirilla',
         },
         buy: 'mehr Infos',
         filters: {

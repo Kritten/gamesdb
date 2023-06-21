@@ -9,5 +9,5 @@ export const GIFT_FOR = {
     LieneAndKristof: 0,
     Liene: 1,
     Kristof: 2,
-    Nachwuchs: 3,
+    Cirilla: 3,
 };
