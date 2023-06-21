@@ -39,14 +39,31 @@ jobs:
           host: reinmuth.uberspace.de
           username: ${{ secrets.UBERSPACE_NAME }}
           password: ${{ secrets.UBERSPACE_PASSWORD }}
-      - uses: SamKirkland/FTP-Deploy-Action@3.1.1
-        with:
-          ftp-server: sftp://reinmuth.uberspace.de:22/var/www/virtual/kritten/projects/gamesdb/frontend/dist_tmp
-          ftp-username: ${{ secrets.UBERSPACE_NAME }}
-          ftp-password: ${{ secrets.UBERSPACE_PASSWORD }}
-          #          known-hosts: ${{ secrets.UBERSPACE_HOST }}
-          git-ftp-args: --insecure
-          local-dir: frontend/dist/pwa
+      # - uses: SamKirkland/FTP-Deploy-Action@3.1.1
+      #   with:
+      #     ftp-server: sftp://reinmuth.uberspace.de:22/var/www/virtual/kritten/projects/gamesdb/frontend/dist_tmp
+      #     ftp-username: ${{ secrets.UBERSPACE_NAME }}
+      #     ftp-password: ${{ secrets.UBERSPACE_PASSWORD }}
+      #     #          known-hosts: ${{ secrets.UBERSPACE_HOST }}
+      #     git-ftp-args: --insecure
+      #     local-dir: frontend/dist/pwa
+      - name: Deploy to Staging server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          # ARGS: "-rlgoDzvc -i"
+          SOURCE: "frontend/dist/pwa"
+          REMOTE_HOST: reinmuth.uberspace.de
+          REMOTE_USER: ${{ secrets.UBERSPACE_NAME }}
+          TARGET: /var/www/virtual/kritten/projects/gamesdb/frontend/dist_tmp
+          EXCLUDE: "/dist/, /node_modules/"
+          SCRIPT_BEFORE: |
+            whoami
+            ls -al
+          SCRIPT_AFTER: |
+            whoami
+            ls -al
+            echo $RSYNC_STDOUT
   build-backend:
     name: Build backend
     runs-on: ubuntu-latest
@@ -80,14 +97,31 @@ jobs:
       #          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - run: ls dist
       - run: pwd
-      - uses: SamKirkland/FTP-Deploy-Action@3.1.1
-        with:
-          ftp-server: sftp://reinmuth.uberspace.de:22/var/www/virtual/kritten/projects/gamesdb/backend/dist_tmp
-          ftp-username: ${{ secrets.UBERSPACE_NAME }}
-          ftp-password: ${{ secrets.UBERSPACE_PASSWORD }}
-          #          known-hosts: ${{ secrets.UBERSPACE_HOST }}
-          git-ftp-args: --insecure
-          local-dir: backend/dist
+      - name: Deploy to Staging server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          # ARGS: "-rlgoDzvc -i"
+          SOURCE: "backend/dist"
+          REMOTE_HOST: reinmuth.uberspace.de
+          REMOTE_USER: ${{ secrets.UBERSPACE_NAME }}
+          TARGET: /var/www/virtual/kritten/projects/gamesdb/backend/dist_tmp
+          EXCLUDE: "/dist/, /node_modules/"
+          SCRIPT_BEFORE: |
+            whoami
+            ls -al
+          SCRIPT_AFTER: |
+            whoami
+            ls -al
+            echo $RSYNC_STDOUT
+      # - uses: SamKirkland/FTP-Deploy-Action@3.1.1
+      #   with:
+      #     ftp-server: sftp://reinmuth.uberspace.de:22/var/www/virtual/kritten/projects/gamesdb/backend/dist_tmp
+      #     ftp-username: ${{ secrets.UBERSPACE_NAME }}
+      #     ftp-password: ${{ secrets.UBERSPACE_PASSWORD }}
+      #     #          known-hosts: ${{ secrets.UBERSPACE_HOST }}
+      #     git-ftp-args: --insecure
+      #     local-dir: backend/dist
   restart:
     name: Restarts app
     runs-on: ubuntu-latest
